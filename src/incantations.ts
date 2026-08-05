@@ -17,11 +17,15 @@ export enum LocalIncantation
 
 
 /**
- * An incantation, backed by its raw text representation.
- * 
- * Incantations are invoked by a slash at the start of a line, such as `/viewport` or `/hidden`.
+ * An incantation, backed by its identifier (such as `viewport` or `hidden`).
  */
 export type Incantation =
   | GlobalIncantation
   | LocalIncantation
 ;
+
+
+export const ALL_INCANTATION_IDENTIFIERS = [
+  ...Object.values(GlobalIncantation),
+  ...Object.values(LocalIncantation),
+];

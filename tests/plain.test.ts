@@ -1,4 +1,4 @@
-import { Parser, ParseResultKind } from "../src/parser";
+import { Parser, ParseResult } from "../src/parser";
 
 import { ltx } from "./shared";
 
@@ -9,13 +9,14 @@ import { ltx } from "./shared";
 
 describe("preserves plain LaTeX", () =>
 {
-  test("1 line", () => {
-    let source = ltx `f\left(x\right)=\sin\left(x\right)`;
+  test.for([
+    ltx `f\left(x\right)=\sin\left(x\right)`
+  ])("non-empty", source => {
     let parser = new Parser(source);
     let result = parser.parse_next();
     
     assert.isNotNull(result);
-    assert.equal(result.kind, ParseResultKind.EXPRESSION);
-    assert.equal(result.data, { latex: source });
+    assert.equal(result.kind, ParseResult.Kind.EXPRESSION);
+    assert.equal((result as ParseResult.Expression).data, { latex: source });
   });
 });
