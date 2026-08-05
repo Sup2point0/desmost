@@ -22,10 +22,12 @@
   },
 
   "scripts": {
-    "test": ""
+    "test":    "vitest run",
+      "testw": "vitest"
   },
 
   "devDependencies": {
-    "@types/desmos": "1.11"
+    "@types/desmos": "1.11",
+    "vitest": "^4.0"
   }
 }
