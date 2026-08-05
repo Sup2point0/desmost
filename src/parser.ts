@@ -1,38 +1,54 @@
 import { Incantation } from "./incantations";
 
 
-export enum ParseResultType
+export enum ParseResultKind
 {
-  ExpressionState,
+  DONE,
+  EXPRESSION,
 }
 
 
 namespace ParseResult
 {
-  export interface ExpressionState
+  export interface Done
   {
-    kind: ParseResultType.ExpressionState,
+    kind: ParseResultKind.DONE;
+  }
+
+  export interface Expression
+  {
+    kind: ParseResultKind.EXPRESSION;
+    data: Desmos.ExpressionState;
   }
 }
 
 
-export type ParseResult = ParseResult.ExpressionState;
+export type ParseResult =
+  | ParseResult.Done
+  | ParseResult.Expression
+;
 
 
 export class Parser
 {
   private source: string;
-  private i: number = 0;
+  private i:      number = 0;
+  private length: number;
 
   constructor(source: string)
   {
     this.source = source;
+    this.length = source.length;
   }
 
   parse_next(): ParseResult | null
   {
+    if (this.i >= this.length) {
+      return { kind: ParseResultKind.DONE };
+    }
+
     if (this.source[this.i] === "/") {
-      this.try_parse_control();
+      // this.try_parse_control();
     } else {
       return this.parse_line();
     }
@@ -44,13 +60,15 @@ export class Parser
             // slice
             // parse
             // keep reading until end of line
+
+    return null;
   }
 
-  private parse_line(): ParseResult.ExpressionState
+  private parse_line(): ParseResult.Expression
   {
     let init = this.i;
 
-    while (this.source[this.i] !== "\n"); {
+    while (this.source[this.i] !== "\n" && this.i < this.length); {
       this.i++;
     }
 
@@ -59,7 +77,10 @@ export class Parser
     let line = this.source.slice(init, this.i);
 
     return {
-      latex: line,
+      kind: ParseResultKind.EXPRESSION,
+      data: {
+        latex: line,
+      },
     };
   }
 

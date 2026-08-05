@@ -1,4 +1,4 @@
-import { Parser, ParseResultType } from "./parser";
+import { Parser, ParseResultKind } from "./parser";
 
 
 /**
@@ -22,7 +22,7 @@ export function inject(
       continue;
     }
     
-    if (result.kind === ParseResultType.ExpressionState) {
+    if (result.kind === ParseResultKind.EXPRESSION) {
       // TODO
     }
   }

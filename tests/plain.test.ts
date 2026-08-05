@@ -15,7 +15,7 @@ describe("preserves plain LaTeX", () =>
     let result = parser.parse_next();
     
     assert.isNotNull(result);
-    assert.equal(result.kind, ParseResultKind.ExpressionState);
+    assert.equal(result.kind, ParseResultKind.EXPRESSION);
     assert.equal(result.data, { latex: source });
   });
 });
