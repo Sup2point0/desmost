@@ -1,31 +1,49 @@
-/**
- * An incantation that affects the entire Desmos calculator state.
- */
-export enum GlobalIncantation
+export namespace Incantation
 {
-  VIEWPORT = "viewport",
+  export enum EffectKind
+  {
+    /** An incantation that affects the entire Desmos calculator state. */
+    GLOBAL,
+
+    /** An incantation that affects only the expression immediately following it. */
+    LOCAL,
+  }
+
+  export enum DataKind
+  {
+    NONE,
+    OPTIONAL,
+    REQUIRED,
+  }
 }
 
 
 /**
- * An incantation that affects only the expression following it.
+ * An *Incantation* is like a slash command that tells <> to do something - like changing the properties of an expression, or applying some settings to the calculator as a whole.
+ * 
+ * Incantations must appear at the start of lines, prefixed by a `/`. They look like this:
+ * 
+ * ```math
+ * /viewport{ left: -1, right: 1 }
+ * /hidden :: x = 69
+ * /text :: Never gonna give you up
+ * ```
  */
-export enum LocalIncantation
+export interface Incantation
 {
-  HIDDEN = "hidden",
+  identifier: string
+
+  effect_kind: Incantation.EffectKind
+
+  data_kind: Incantation.DataKind
 }
 
 
-/**
- * An incantation, backed by its identifier (such as `viewport` or `hidden`).
- */
-export type Incantation =
-  | GlobalIncantation
-  | LocalIncantation
-;
-
-
-export const ALL_INCANTATION_IDENTIFIERS = [
-  ...Object.values(GlobalIncantation),
-  ...Object.values(LocalIncantation),
+export const INCANTATIONS: Incantation[] =
+[
+  {
+    identifier: "viewport",
+    effect_kind: Incantation.EffectKind.GLOBAL,
+    data_kind: Incantation.DataKind.REQUIRED,
+  }
 ];
