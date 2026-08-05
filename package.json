@@ -1,0 +1,31 @@
+{
+  "name": "desmos-markdown",
+  "author": "Sup#2.0",
+  "version": "0.1.0",
+  "license": "MIT",
+
+  "description": "Parse custom Desmos markup syntax in Markdown code blocks",
+  "keywords": [
+    "desmos"
+  ],
+  
+  "type": "module",
+  "main": "index.ts",
+
+  "homepage": "https://github.com/Sup2point0/desmos-markdown#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sup2point0/desmos-markdown.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Sup2point0/desmos-markdown/issues"
+  },
+
+  "scripts": {
+    "test": ""
+  },
+
+  "devDependencies": {
+    "@types/desmos": "1.11"
+  }
+}
