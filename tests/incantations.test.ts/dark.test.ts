@@ -1,0 +1,15 @@
+import { DarkModeIncantation } from "../../src/magic/global/dark-mode";
+
+import { Parser, ParseResult } from "../../src/parser";
+
+
+describe("/dark", () =>
+{
+  test("parse", () => {
+    let parser = new Parser(`/dark`);
+    let result = parser.parse_next() as ParseResult.IncantationInstance;
+
+    assert.equal(result.kind, ParseResult.Kind.INCANTATION);
+    assert.deepEqual(result.incantation, new DarkModeIncantation());
+  });
+});

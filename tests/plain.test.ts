@@ -9,13 +9,25 @@ import { ltx } from "./shared";
 describe("preserves plain LaTeX", () =>
 {
   test.for([
-    ltx `f\left(x\right)=\sin\left(x\right)`
+    ltx `f\left(x\right)=\sin\left(x\right)`,
   ])("non-empty", source => {
     let parser = new Parser(source);
     let result = parser.parse_next();
     
     assert.isNotNull(result);
     assert.equal(result.kind, ParseResult.Kind.EXPRESSION);
-    assert.equal((result as ParseResult.Expression).data, { latex: source });
+    assert.deepEqual((result as ParseResult.Expression).data, { latex: source });
+  });
+
+  test.for([
+    ltx `\n`,
+    ltx `\n`,
+  ])("empty", source => {
+    let parser = new Parser(source);
+    let result = parser.parse_next();
+    
+    assert.isNotNull(result);
+    assert.equal(result.kind, ParseResult.Kind.EXPRESSION);
+    assert.deepEqual((result as ParseResult.Expression).data, { latex: "" });  // FIXME
   });
 });

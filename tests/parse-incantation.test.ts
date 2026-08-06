@@ -1,10 +1,10 @@
 import { Parser } from "../src/parser";
-import { ViewportIncantation } from "../src/magic/incantations/viewport";
+import { ViewportIncantation } from "../src/magic/global/viewport";
 
 import { ltx } from "./shared";
 
 
-describe("parse-incantation()", () =>
+describe("try-parse-global-incantation-identifier()", () =>
 {
   test.for([
     ltx `viewport`,
