@@ -1,4 +1,4 @@
-import { Parser, ParseResultKind } from "./parser";
+import { DesmostParser, ParseResultKind } from "./parser";
 
 
 /**
@@ -12,7 +12,7 @@ export function inject(
   source: string,
 ): void
 {
-  let parser = new Parser(source);
+  let parser = new DesmostParser(source);
 
   while (true) {
     let result = parser.parse_next();

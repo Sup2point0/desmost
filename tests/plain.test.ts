@@ -1,4 +1,4 @@
-import { Parser, ParseResult } from "../src/parser";
+import { DesmostParser, ParseResult } from "../src/parser";
 
 import { ltx } from "./shared";
 
@@ -10,8 +10,9 @@ describe("preserves plain LaTeX", () =>
 {
   test.for([
     ltx `f\left(x\right)=\sin\left(x\right)`,
-  ])("non-empty", source => {
-    let parser = new Parser(source);
+  ])("non-empty", source =>
+  {
+    let parser = new DesmostParser(source);
     let result = parser.parse_next();
     
     assert.isNotNull(result);
@@ -22,8 +23,9 @@ describe("preserves plain LaTeX", () =>
   test.for([
     ltx `\n`,
     ltx `\n`,
-  ])("empty", source => {
-    let parser = new Parser(source);
+  ])("empty", source =>
+  {
+    let parser = new DesmostParser(source);
     let result = parser.parse_next();
     
     assert.isNotNull(result);
