@@ -38,17 +38,3 @@ export type ParseResult =
   | ParseResult.GlobalEffect
   | ParseResult.Expression
 ;
-
-
-/** The parser encountered a recoverable failure. */
-export class UnrecoverableFail extends Error {}
-
-/** The parser encountered an unrecoverable failure. */
-export class RecoverableFail extends Error {}
-
-
-/** Indicates that a function may throw a `RecoverableFail`. */
-export type Recoverable<Result> = Result;
-
-/** Indicates that a function may throw a `UnrecoverableFail`. */
-export type Unrecoverable<Result> = Result;
