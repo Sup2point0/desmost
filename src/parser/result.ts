@@ -7,7 +7,7 @@ export namespace ParseResult
   export enum Kind
   {
     DONE,
-    GLOBAL_EFFECT,
+    INCANTATION,
     EXPRESSION,
   }
 
@@ -17,11 +17,12 @@ export namespace ParseResult
   /** Sentinel value to signal the parser successfully reached the end of its source. */
   export const DONE: Done = { kind: Kind.DONE };
 
-  /** A global incantation effect to apply to the whole calculator. */
-  export interface GlobalEffect
+  /** A usage of an incantation that will apply an effect with `data`. */
+  export interface IncantationInstance<Effect extends Incantation.Effect = Incantation.Effect>
   {
-    kind: Kind.GLOBAL_EFFECT
-    data: Incantation
+    kind:        Kind.INCANTATION
+    incantation: Incantation<Effect>
+    data?:       any
   }
 
   /** A Desmos expression to add to the calculator. */
@@ -32,9 +33,9 @@ export namespace ParseResult
   }
 }
 
-/** The result of parsing a block of source code. */
+/** An abstract object produced by parsing a block of source code. */
 export type ParseResult =
   | ParseResult.Done
-  | ParseResult.GlobalEffect
+  | ParseResult.IncantationInstance
   | ParseResult.Expression
 ;
