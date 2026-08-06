@@ -1,45 +1,6 @@
-import { Incantation, INCANTATIONS } from "./magic";
+import { ParseResult, RecoverableFail, UnrecoverableFail } from "./result";
 
-
-export namespace ParseResult
-{
-  export enum Kind
-  {
-    DONE,
-    RECOVERABLE_FAIL,
-    EXPRESSION,
-  }
-
-  /** The parser successfully reached the end of its source. */
-  export interface Done { kind: Kind.DONE }
-
-  /** Sentinel value to signal the parser successfully reached the end of its source. */
-  export const DONE: Done = { kind: Kind.DONE };
-
-
-  /** The parser encountered a recoverable failure. */
-  export interface RecoverableFail { kind: Kind.RECOVERABLE_FAIL }
-
-  /** Sentinel value for a recoverable failed parse attempt. */
-  export const RECOVERABLE_FAIL: RecoverableFail = { kind: Kind.RECOVERABLE_FAIL };
-
-
-  export interface Expression
-  {
-    kind: Kind.EXPRESSION;
-    data: Desmos.ExpressionState;
-  }
-}
-
-export type ParseResult =
-  | ParseResult.Done
-  | ParseResult.RecoverableFail
-  | ParseResult.Expression
-;
-
-
-export class UnrecoverableFail extends Error {}
-export class RecoverableFail extends Error {}
+import { Incantation, INCANTATIONS } from "../magic";
 
 
 /**
@@ -66,7 +27,7 @@ export class Parser
       return ParseResult.DONE;
     }
 
-    if (this.current === "/") {
+    if (this.current() === "/") {
       this.try_parse_pre_sep();
     }
 
@@ -78,8 +39,8 @@ export class Parser
 
   // == PROPERTIES == //
 
-  /** The character the parser is currently pointing at. */
-  private get current(): string | UnrecoverableFail
+  /** Get the character the parser is currently pointing at, erroring if the parser has unexpectedly reached the end of the input. */
+  private current(): string | UnrecoverableFail
   {
     let char = this.source.at(this.i);
 
@@ -92,15 +53,18 @@ export class Parser
 
   private get next(): string | undefined
   {
-    return this.source[this.i + 1];
+    return this.source.at(this.i + 1);
   }
 
 
   // == CORE == //
 
-  #peek(char: string): boolean
+  /**
+   * Peek a snippet of the upcoming source text (for error messages).
+   */
+  #preview(): string
   {
-    return this.current === char;
+    return this.source.slice(this.i, this.i + 20);
   }
 
   #advance()
@@ -134,18 +98,18 @@ export class Parser
 
   #try_parse_latex_block(): ParseResult.Expression | RecoverableFail
   {
-    this.#try_parse_raw("/block");
+    this.#try_parse("/block");
     this.#parse_spaces();
     return this.#parse_latex_block();
   }
 
   #parse_latex_block(): ParseResult.Expression | RecoverableFail
   {
-    this.#try_parse_raw("{");
+    this.#try_parse("{");
     
     let init = this.i;
 
-    while (this.current !== "\n" && this.next !== "}") {
+    while (this.current() !== "\n" && this.next !== "}") {
       this.#advance();
     }
 
@@ -166,7 +130,7 @@ export class Parser
   {
     let init = this.i;
 
-    while (this.i < this.length && this.current !== "\n") {
+    while (this.i < this.length && this.current() !== "\n") {
       this.#advance();
     }
 
@@ -202,7 +166,7 @@ export class Parser
   {
     for (let incantation of INCANTATIONS) {
       try {
-        this.#try_parse_raw(incantation.identifier);
+        this.#try_parse(incantation.identifier);
       }
       catch (e) {
         if (e instanceof RecoverableFail) continue;
@@ -219,16 +183,31 @@ export class Parser
   // == GENERAL == //
 
   /**
+   * Parse `raw`.
+   */
+  #expect(raw: string, error_message?: string): true | UnrecoverableFail
+  {
+    try {
+      this.#try_parse(raw);
+    }
+    catch (e) {
+      if (e instanceof RecoverableFail) {
+        throw new UnrecoverableFail(error_message ?? `Expected: ${raw}, found: ${this.#preview()}`)
+      }
+    }
+  }
+
+  /**
    * Attempt to parse `raw`.
    * 
    * Returns `true` iff successful, otherwise backtracks and throws.
    */
-  #try_parse_raw(raw: string): true | ParseResult.RecoverableFail
+  #try_parse(raw: string): true | RecoverableFail
   {
     let init = this.i;
     let ii = this.i;
 
-    while (this.current === raw[ii]) {
+    while (this.current() === raw[ii]) {
       this.#advance();
       ii++;
 
@@ -238,24 +217,13 @@ export class Parser
     }
 
     this.i = init;
-    return ParseResult.RECOVERABLE_FAIL;
+    throw new RecoverableFail();
   }
 
   #parse_spaces()
   {
-    while (this.current === " ") {
+    while (this.current() === " ") {
       this.#advance();
     }
-  }
-
-
-  // == UTILS == //
-
-  /**
-   * Peek a snippet of the upcoming source text (for error messages).
-   */
-  preview(): string
-  {
-    return this.source.slice(this.i, this.i + 20);
   }
 }
