@@ -1,4 +1,4 @@
-import { Incantation, ALL_INCANTATION_IDENTIFIERS } from "./incantations";
+import { Incantation, INCANTATIONS } from "./magic";
 
 
 export namespace ParseResult
@@ -104,11 +104,13 @@ export class Parser
 
 
   /**
-   * Parse any incantation. Throws if no valid incantation can be parsed.
+   * Attempt to parse an identifier for any incantation.
+   * 
+   * Returns the matching incantation iff successful, otherwise backtracks and returns `FAIL`.
    */
-  try_parse_any_incantation(): Incantation | ParseResult.RecoverableFail
+  try_parse_any_incantation_identifier(): Incantation | ParseResult.RecoverableFail
   {
-    for (let incantation of ALL_INCANTATION_IDENTIFIERS) {
+    for (let incantation of INCANTATIONS) {
       let r = this.try_parse_incantation_identifier(incantation);
       if (r === ParseResult.RECOVERABLE_FAIL) continue;
       return incantation;
@@ -126,14 +128,16 @@ export class Parser
    */
   private try_parse_incantation_identifier(incantation: Incantation): true | ParseResult.RecoverableFail
   {
+    let ident = incantation.identifier;
+
     let init = this.i;
     let ii = this.i;
 
-    while (this.source[this.i] === incantation[ii]) {
+    while (this.source[this.i] === ident[ii]) {
       this.i++;
       ii++;
 
-      if (ii === incantation.length) {
+      if (ii === ident.length) {
         return true;
       }
     }

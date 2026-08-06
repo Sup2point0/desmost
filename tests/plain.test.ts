@@ -6,7 +6,6 @@ import { ltx } from "./shared";
 /**
  * Check the parser doesn't mess with LaTeX absent of incantations.
  */
-
 describe("preserves plain LaTeX", () =>
 {
   test.for([
