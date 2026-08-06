@@ -1,7 +1,12 @@
-import { ParseResult, RecoverableFail, UnrecoverableFail } from "./result";
-import type { Recoverable } from "./result";
+import { ParseResult } from "./result";
+import { RecoverableFail, UnrecoverableError } from "./errors";
+import type { Recoverable, Unrecoverable } from "./errors";
 
-import { Incantation, GLOBAL_INCANTATIONS } from "../magic";
+import {
+  Incantation, DataIncantation,
+  GLOBAL, LOCAL,
+  GLOBAL_INCANTATIONS, LOCAL_INCANTATIONS,
+} from "../magic";
 
 
 /**
@@ -38,11 +43,24 @@ export class Parser
       return ParseResult.DONE;
     }
 
+    let incantations: ParseResult.IncantationInstance[] = [];
+
     if (this.current() === "/") {
-      this.try_parse_pre_sep();
+      let result = this.parse_pre_sep();
+
+      // If not an array, that means it's a single global incantation
+      if (!Array.isArray(result)) {
+        return result;
+      }
+
+      incantations = result;
     }
 
     let expr = this.try_parse_post_sep();
+
+    for (let instance of incantations) {
+      instance.incantation.apply(expr.data, instance.data);  // TODO parse data
+    }
 
     return expr;
   }
@@ -51,12 +69,12 @@ export class Parser
   // == PROPERTIES == //
 
   /** Get the character the parser is currently pointing at, erroring if the parser has unexpectedly reached the end of the input. */
-  private current(): string | UnrecoverableFail
+  private current(): string | UnrecoverableError
   {
     let char = this.source.at(this.i);
 
     if (char == undefined) {
-      throw new UnrecoverableFail("Unexpected end of input");
+      throw new UnrecoverableError("Unexpected end of input");
     }
     
     return char;
@@ -83,7 +101,7 @@ export class Parser
     this.i++;
 
     if (this.i > this.length) {
-      throw new UnrecoverableFail("Unexpected end of input");
+      throw new UnrecoverableError("Unexpected end of input");
     }
   }
 
@@ -160,21 +178,85 @@ export class Parser
   // == PRE == //
 
 
-  try_parse_pre_sep(): null | RecoverableFail
+  /**
+   * Parse Desmost syntax before the `::` separator, which may be:
+   * 
+   * - 1 global incantation
+   * - 1+ local incantations
+   */
+  parse_pre_sep():
+    Unrecoverable<
+        ParseResult.IncantationInstance<GLOBAL>
+      | ParseResult.IncantationInstance<LOCAL>[]
+    >
   {
+    this.consume("/");
+
+    // 1 global incantation
+    try {
+      var result = this.try_parse_global_incantation();
+
+      this.consume_spaces();
+
+      try { this.consume("\n"); }
+      catch {
+        throw new UnrecoverableError.UnexpectedInput(
+          `Received excess input after global incantation /${result.incantation.identifier}`
+        );
+      }
+
+      return result;
+    }
+    catch (e) {
+      if (!(e instanceof RecoverableFail)) throw e;
+    }
+
+    // 1+ local incantations
     // TODO
-    throw new RecoverableFail();
+
+    throw new UnrecoverableError();
   }
 
+  /**
+   * Attempt to parse a global incantation invocation.
+   */
+  try_parse_global_incantation(): Recoverable<ParseResult.IncantationInstance<GLOBAL>>
+  {
+    let incantation = this.try_parse_incantation_identifier(GLOBAL_INCANTATIONS);
+    let data = undefined;
+
+    if (incantation instanceof DataIncantation) {
+      if (incantation.requires_arg) {
+        if (this.current() !== "{") {
+          throw new UnrecoverableError.MissingInput(
+            `/${incantation.identifier} requires an argument`
+          );
+        }
+
+        data = this.parse_arg();
+      }
+      else {
+        if (this.current() === "{") {
+          data = this.parse_arg()
+        }
+      }
+    }
+
+    return {
+      kind: ParseResult.Kind.INCANTATION,
+      incantation,
+      data,
+    };
+  }
 
   /**
    * Attempt to parse an incantation identifier.
-   * 
-   * Returns the successfully matched incantation if found, otherwise backtracks and throws.
    */
-  try_parse_global_incantation_identifier(): Recoverable<Incantation>
+  try_parse_incantation_identifier<
+    Effect extends Incantation.Effect
+  >(identifiers: Incantation<Effect>[]): Recoverable<Incantation<Effect>>
   {
-    for (let incantation of GLOBAL_INCANTATIONS) {
+    for (let incantation of identifiers) {
       try {
         this.try_parse(incantation.identifier);
       }
@@ -189,26 +271,35 @@ export class Parser
     throw new RecoverableFail();
   }
 
+  /**
+   * Parse an argument to an incantation, stopping when either a `::` delimiter is found, or the start of a new incantation is found.
+   */
+  parse_arg(): Unrecoverable<string>
+  {
+    this.consume("{", `Expected '{' to start incantation argument, but received: ${this.preview()}`);
+    // TODO
+  }
+
 
   // == GENERAL == //
 
   /**
-   * Parse `raw`.
+   * Consume `raw`, erroring if `raw` was not found.
    */
-  expect(raw: string, error_message?: string): Recoverable<void>
+  consume(raw: string, error_message?: string): Unrecoverable<void>
   {
     try {
       this.try_parse(raw);
     }
     catch (e) {
       if (e instanceof RecoverableFail) {
-        throw new UnrecoverableFail(error_message ?? `Expected: ${raw}, found: ${this.preview()}`)
+        throw new UnrecoverableError(error_message ?? `Expected: ${raw}, found: ${this.preview()}`)
       }
     }
   }
 
   /**
-   * Attempt to parse `raw`, backtracking and throwing if `raw` was not found.
+   * Attempt to consume `raw`, backtracking and throwing if `raw` was not found.
    */
   try_parse(raw: string): Recoverable<void>
   {
