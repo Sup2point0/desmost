@@ -12,10 +12,10 @@ interface ViewportBounds
 
 export class ViewportIncantation extends DataIncantation<GLOBAL, ViewportBounds>
 {
-  readonly identifier = "viewport"
-  readonly requires_data = true
+  override readonly identifier = "viewport"
+  override readonly requires_arg = true
 
-  parse_data(data: string): ViewportBounds
+  parse_arg(data: string): ViewportBounds
   {
     return Json5.parse(`{${data}}`);
   }

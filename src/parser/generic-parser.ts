@@ -3,7 +3,7 @@ import type { Recoverable, Unrecoverable } from "./errors";
 
 
 /**
- * Stateful lazy parser.
+ * A stateful lazy parser.
  */
 export class GenericParser
 {
@@ -70,7 +70,9 @@ export class GenericParser
     }
     catch (e) {
       if (e instanceof RecoverableFail) {
-        throw new UnrecoverableError(error_message ?? `Expected: ${raw}, found: ${this.preview()}`)
+        throw new UnrecoverableError(
+          error_message ?? `Expected: ${raw}, but received: ${this.preview()}`
+        )
       }
     }
   }

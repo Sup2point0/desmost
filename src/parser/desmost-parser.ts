@@ -12,12 +12,10 @@ import {
 
 
 /**
- * Stateful lazy parser.
+ * A stateful lazy parser for Desmost.
  */
 export class DesmostParser extends GenericParser
 {
-  // == PUBLIC == //
-
   /**
    * Parse the next semantic block of source code.
    */
@@ -197,9 +195,9 @@ export class DesmostParser extends GenericParser
    */
   try_parse_incantation_identifier<
     Effect extends Incantation.Effect
-  >(identifiers: Incantation<Effect>[]): Recoverable<Incantation<Effect>>
+  >(incantations: Incantation<Effect>[]): Recoverable<Incantation<Effect>>
   {
-    for (let incantation of identifiers) {
+    for (let incantation of incantations) {
       try {
         this.try_parse(incantation.identifier);
       }
