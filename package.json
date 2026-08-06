@@ -26,7 +26,13 @@
       "testw": "vitest"
   },
 
-  "devDependencies": {
+  "dependencies":
+  {
+    "json5": "^2.2"
+  },
+
+  "devDependencies":
+  {
     "@types/desmos": "1.11",
     "vitest": "^4.0"
   }
