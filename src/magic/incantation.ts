@@ -24,7 +24,9 @@ export abstract class Incantation<
   /**
    * Parse data provided to this incantation, throwing if an error is encountered.
    * 
-   * If parsing is successful, 
+   * If parsing is successful, the evaluated data is returned.
+   * 
+   * For instance, for `/viewport{ left: -1, right: 1 }`, this returns the POJO `{ left: -1, right: 1 }`.
    */
   abstract parse_data(data: string): DataType
 

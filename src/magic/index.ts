@@ -1,2 +1,2 @@
 export { Incantation } from "./incantation";
-export { INCANTATIONS } from "./incantations";
+export { GLOBAL_INCANTATIONS } from "./incantations";

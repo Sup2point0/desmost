@@ -1,6 +1,7 @@
 import { ParseResult, RecoverableFail, UnrecoverableFail } from "./result";
+import type { Recoverable } from "./result";
 
-import { Incantation, INCANTATIONS } from "../magic";
+import { Incantation, GLOBAL_INCANTATIONS } from "../magic";
 
 
 /**
@@ -31,9 +32,9 @@ export class Parser
       this.try_parse_pre_sep();
     }
 
-    this.#try_parse_post_sep();
+    let expr = this.#try_parse_post_sep();
 
-    // TODO
+    return expr;
   }
 
 
@@ -51,7 +52,7 @@ export class Parser
     return char;
   }
 
-  private get next(): string | undefined
+  private next(): string | undefined
   {
     return this.source.at(this.i + 1);
   }
@@ -79,13 +80,12 @@ export class Parser
 
   // == POST == //
 
-  #try_parse_post_sep(): ParseResult.Expression | RecoverableFail
+  #try_parse_post_sep(): ParseResult.Expression
   {
-    this.#parse_spaces();
+    this.#consume_spaces();
 
     try {
-      let out = this.#try_parse_latex_block();
-      return out;
+      return this.#try_parse_latex_block() as ParseResult.Expression;
     }
     catch (e) {
       if (e instanceof RecoverableFail) {
@@ -96,20 +96,20 @@ export class Parser
     }
   }
 
-  #try_parse_latex_block(): ParseResult.Expression | RecoverableFail
+  #try_parse_latex_block(): Recoverable<ParseResult.Expression>
   {
     this.#try_parse("/block");
-    this.#parse_spaces();
+    this.#consume_spaces();
     return this.#parse_latex_block();
   }
 
-  #parse_latex_block(): ParseResult.Expression | RecoverableFail
+  #parse_latex_block(): Recoverable<ParseResult.Expression>
   {
     this.#try_parse("{");
     
     let init = this.i;
 
-    while (this.current() !== "\n" && this.next !== "}") {
+    while (this.current() !== "\n" && this.next() !== "}") {
       this.#advance();
     }
 
@@ -158,13 +158,13 @@ export class Parser
 
 
   /**
-   * Attempt to parse an identifier for any incantation.
+   * Attempt to parse an incantation identifier.
    * 
-   * Returns the matching incantation iff successful, otherwise backtracks and throws.
+   * Returns the successfully matched incantation if found, otherwise backtracks and throws.
    */
-  try_parse_any_incantation_identifier(): Incantation | RecoverableFail
+  #try_parse_global_incantation_identifier(): Recoverable<Incantation>
   {
-    for (let incantation of INCANTATIONS) {
+    for (let incantation of GLOBAL_INCANTATIONS) {
       try {
         this.#try_parse(incantation.identifier);
       }
@@ -185,7 +185,7 @@ export class Parser
   /**
    * Parse `raw`.
    */
-  #expect(raw: string, error_message?: string): true | UnrecoverableFail
+  #expect(raw: string, error_message?: string): Recoverable<void>
   {
     try {
       this.#try_parse(raw);
@@ -198,11 +198,9 @@ export class Parser
   }
 
   /**
-   * Attempt to parse `raw`.
-   * 
-   * Returns `true` iff successful, otherwise backtracks and throws.
+   * Attempt to parse `raw`, backtracking and throwing if `raw` was not found.
    */
-  #try_parse(raw: string): true | RecoverableFail
+  #try_parse(raw: string): Recoverable<void>
   {
     let init = this.i;
     let ii = this.i;
@@ -212,7 +210,7 @@ export class Parser
       ii++;
 
       if (ii === raw.length) {
-        return true;
+        return;
       }
     }
 
@@ -220,7 +218,10 @@ export class Parser
     throw new RecoverableFail();
   }
 
-  #parse_spaces()
+  /**
+   * Consume 0 or more space characters.
+   */
+  #consume_spaces(): void
   {
     while (this.current() === " ") {
       this.#advance();
