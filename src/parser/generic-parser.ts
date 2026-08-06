@@ -101,6 +101,9 @@ export class GenericParser
    */
   consume_spaces(): void
   {
+    /* NOTE: Callers should be able to assume this is safe to call even when at end of input, since it should just match 0 characters */
+    if (this.i >= this.length) return;
+
     while (this.current() === " ") {
       this.advance();
     }
