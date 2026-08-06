@@ -1,5 +1,5 @@
 {
-  "name": "desmos-markdown",
+  "name": "demost",
   "author": "Sup#2.0",
   "version": "0.1.0",
   "license": "MIT",
@@ -12,13 +12,13 @@
   "type": "module",
   "main": "index.ts",
 
-  "homepage": "https://github.com/Sup2point0/desmos-markdown#readme",
+  "homepage": "https://github.com/Sup2point0/demost#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Sup2point0/desmos-markdown.git"
+    "url": "git+https://github.com/Sup2point0/demost.git"
   },
   "bugs": {
-    "url": "https://github.com/Sup2point0/desmos-markdown/issues"
+    "url": "https://github.com/Sup2point0/demost/issues"
   },
 
   "scripts": {
