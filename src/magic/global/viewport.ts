@@ -1,4 +1,6 @@
-import { Incantation, GLOBAL } from "../incantation";
+import Json5 from "JSON5";
+
+import { DataIncantation, GLOBAL } from "../incantation";
 
 
 interface ViewportBounds
@@ -8,15 +10,14 @@ interface ViewportBounds
 }
 
 
-export class ViewportIncantation extends Incantation<GLOBAL, ViewportBounds>
+export class ViewportIncantation extends DataIncantation<GLOBAL, ViewportBounds>
 {
   readonly identifier = "viewport"
-  readonly expect_data = Incantation.ExpectData.REQUIRED
+  readonly requires_data = true
 
   parse_data(data: string): ViewportBounds
   {
-    // FIXME
-    return JSON.parse(data);
+    return Json5.parse(`{${data}}`);
   }
 
   apply(target: Desmos.Calculator, data: ViewportBounds)
