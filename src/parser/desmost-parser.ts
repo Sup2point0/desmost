@@ -134,20 +134,15 @@ export class DesmostParser extends GenericParser
       | ParseResult.IncantationInstance<LOCAL>[]
     >
   {
-    this.consume("/");
-
     // 1 global incantation
     try {
       var result = this.try_parse_global_incantation();
 
       this.consume_spaces();
 
-      try { this.consume("\n"); }
-      catch {
-        throw new UnrecoverableError.UnexpectedInput(
-          `Received excess input after global incantation /${result.incantation.identifier}`
-        );
-      }
+      this.consume_end_of_block(
+        `Received excess input after global incantation /${result.incantation.identifier}`
+      );
 
       return result;
     }
@@ -166,6 +161,8 @@ export class DesmostParser extends GenericParser
    */
   try_parse_global_incantation(): Recoverable<ParseResult.IncantationInstance<GLOBAL>>
   {
+    this.consume("/");
+
     let incantation = this.try_parse_incantation_identifier(GLOBAL_INCANTATIONS);
     let data = undefined;
 

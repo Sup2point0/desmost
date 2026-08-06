@@ -108,4 +108,20 @@ export class GenericParser
       this.advance();
     }
   }
+
+  consume_end_of_block(error_message?: string): Unrecoverable<void>
+  {
+    if (this.i >= this.length) return;
+
+    try {
+      this.try_parse("\n");
+    }
+    catch (e) {
+      if (!(e instanceof RecoverableFail)) throw e;
+
+      throw new UnrecoverableError.ExcessInput(
+        error_message ?? `Expected end of block, but received: ${this.preview()}`
+      );
+    }
+  }
 }
