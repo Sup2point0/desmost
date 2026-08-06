@@ -38,7 +38,8 @@ export type ParseResult =
 ;
 
 
-export class ParseError extends Error {}
+export class UnrecoverableFail extends Error {}
+export class RecoverableFail extends Error {}
 
 
 /**
@@ -57,37 +58,116 @@ export class Parser
   }
 
 
+  // == PUBLIC == //
+
   parse_next(): ParseResult
   {
     if (this.i >= this.length) {
       return ParseResult.DONE;
     }
 
-    INCANTATION: {
-      if (this.source[this.i] !== "/") break INCANTATION;
-
-      let incantation = this.try_parse_any_incantation();
-      if (incantation === ParseResult.RECOVERABLE_FAIL) break INCANTATION;
+    if (this.current === "/") {
+      this.try_parse_pre_sep();
     }
 
-    return this.parse_line();
+    this.#try_parse_post_sep();
 
-      // check if /
-        // if so, read until we find ::
-        // if no :: found, bail and set line as LaTeX
-          // if found:
-            // slice
-            // parse
-            // keep reading until end of line
+    // TODO
   }
 
 
-  private parse_line(): ParseResult.Expression
+  // == PROPERTIES == //
+
+  /** The character the parser is currently pointing at. */
+  private get current(): string | UnrecoverableFail
+  {
+    let char = this.source.at(this.i);
+
+    if (char == undefined) {
+      throw new UnrecoverableFail("Unexpected end of input");
+    }
+    
+    return char;
+  }
+
+  private get next(): string | undefined
+  {
+    return this.source[this.i + 1];
+  }
+
+
+  // == CORE == //
+
+  #peek(char: string): boolean
+  {
+    return this.current === char;
+  }
+
+  #advance()
+  {
+    this.i++;
+
+    if (this.i > this.length) {
+      throw new UnrecoverableFail("Unexpected end of input");
+    }
+  }
+
+
+  // == POST == //
+
+  #try_parse_post_sep(): ParseResult.Expression | RecoverableFail
+  {
+    this.#parse_spaces();
+
+    try {
+      let out = this.#try_parse_latex_block();
+      return out;
+    }
+    catch (e) {
+      if (e instanceof RecoverableFail) {
+        return this.#parse_latex_line();
+      }
+
+      throw e;
+    }
+  }
+
+  #try_parse_latex_block(): ParseResult.Expression | RecoverableFail
+  {
+    this.#try_parse_raw("/block");
+    this.#parse_spaces();
+    return this.#parse_latex_block();
+  }
+
+  #parse_latex_block(): ParseResult.Expression | RecoverableFail
+  {
+    this.#try_parse_raw("{");
+    
+    let init = this.i;
+
+    while (this.current !== "\n" && this.next !== "}") {
+      this.#advance();
+    }
+
+    let block = this.source.slice(init, this.i);
+
+    return {
+      kind: ParseResult.Kind.EXPRESSION,
+      data: {
+        latex: block.trim(),
+      }
+    };
+  }
+
+  /**
+   * Parse a single line of LaTeX.
+   */
+  #parse_latex_line(): ParseResult.Expression
   {
     let init = this.i;
 
-    while (this.source[this.i] !== "\n" && this.i < this.length); {
-      this.i++;
+    while (this.i < this.length && this.current !== "\n") {
+      this.#advance();
     }
 
     this.i++;
@@ -103,47 +183,69 @@ export class Parser
   }
 
 
+  // == PRE == //
+
+
+  try_parse_pre_sep(): null | RecoverableFail
+  {
+    // TODO
+    throw new RecoverableFail();
+  }
+
+
   /**
    * Attempt to parse an identifier for any incantation.
    * 
-   * Returns the matching incantation iff successful, otherwise backtracks and returns `FAIL`.
+   * Returns the matching incantation iff successful, otherwise backtracks and throws.
    */
-  try_parse_any_incantation_identifier(): Incantation | ParseResult.RecoverableFail
+  try_parse_any_incantation_identifier(): Incantation | RecoverableFail
   {
     for (let incantation of INCANTATIONS) {
-      let r = this.try_parse_incantation_identifier(incantation);
-      if (r === ParseResult.RECOVERABLE_FAIL) continue;
+      try {
+        this.#try_parse_raw(incantation.identifier);
+      }
+      catch (e) {
+        if (e instanceof RecoverableFail) continue;
+        throw e;
+      }
+      
       return incantation;
     }
 
-    return ParseResult.RECOVERABLE_FAIL;
+    throw new RecoverableFail();
   }
 
-  /**
-   * Attempt to parse the identifier for `incantation`.
-   * 
-   * Returns `true` iff successful, otherwise backtracks and returns `FAIL`.
-   * 
-   * For instance, if `incantation` is `Incantation.VIEWPORT`, try to parse the literal `viewport`.
-   */
-  private try_parse_incantation_identifier(incantation: Incantation): true | ParseResult.RecoverableFail
-  {
-    let ident = incantation.identifier;
 
+  // == GENERAL == //
+
+  /**
+   * Attempt to parse `raw`.
+   * 
+   * Returns `true` iff successful, otherwise backtracks and throws.
+   */
+  #try_parse_raw(raw: string): true | ParseResult.RecoverableFail
+  {
     let init = this.i;
     let ii = this.i;
 
-    while (this.source[this.i] === ident[ii]) {
-      this.i++;
+    while (this.current === raw[ii]) {
+      this.#advance();
       ii++;
 
-      if (ii === ident.length) {
+      if (ii === raw.length) {
         return true;
       }
     }
 
     this.i = init;
     return ParseResult.RECOVERABLE_FAIL;
+  }
+
+  #parse_spaces()
+  {
+    while (this.current === " ") {
+      this.#advance();
+    }
   }
 
 
