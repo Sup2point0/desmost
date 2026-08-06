@@ -3,7 +3,7 @@ import { Incantation, LOCAL, IncantationError } from "../incantation";
 
 export class HideIncantation extends Incantation<LOCAL, null>
 {
-  readonly identifier = "viewport"
+  override readonly identifier = "viewport"
 
   apply(target: Desmos.ExpressionState)
   {
