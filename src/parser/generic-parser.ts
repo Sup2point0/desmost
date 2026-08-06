@@ -81,7 +81,7 @@ export class GenericParser
   try_parse(raw: string): Recoverable<void>
   {
     let init = this.i;
-    let ii = this.i;
+    let ii = 0;
 
     while (this.current() === raw[ii]) {
       this.advance();
