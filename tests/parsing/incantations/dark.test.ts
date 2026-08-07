@@ -1,6 +1,6 @@
-import { DarkModeIncantation } from "../../src/magic/global/dark-mode";
+import { DarkModeIncantation } from "../../../src/magic/global/dark-mode";
 
-import { DesmostParser, ParseResult } from "../../src/parser";
+import { DesmostParser, ParseResult } from "../../../src/parser";
 
 
 describe("/dark", () =>
