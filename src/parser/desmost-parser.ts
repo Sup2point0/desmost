@@ -21,13 +21,13 @@ export class DesmostParser extends GenericParser
    */
   parse_next(): ParseResult
   {
-    if (this.i >= this.length) {
+    if (this.out_of_bounds()) {
       return ParseResult.DONE;
     }
 
     let incantations: ParseResult.IncantationInstance[] = [];
 
-    if (this.current() === "/") {
+    if (this.current === "/") {
       let result = this.parse_pre_sep();
 
       // If not an array, that means it's a single global incantation
@@ -68,18 +68,18 @@ export class DesmostParser extends GenericParser
 
   try_parse_latex_block(): Recoverable<ParseResult.Expression>
   {
-    this.try_parse("/block");
+    this.try_consume("/block");
     this.consume_spaces();
     return this.parse_latex_block();
   }
 
   parse_latex_block(): Recoverable<ParseResult.Expression>
   {
-    this.try_parse("{");
+    this.try_consume("{");
     
     let init = this.i;
 
-    while (this.current() !== "\n" && this.next() !== "}") {
+    while (this.current !== "\n" && this.next() !== "}") {
       this.advance();
     }
 
@@ -100,7 +100,7 @@ export class DesmostParser extends GenericParser
   {
     let init = this.i;
 
-    while (this.i < this.length && this.current() !== "\n") {
+    while (!this.out_of_bounds() && this.current !== "\n") {
       this.advance();
     }
 
@@ -166,7 +166,7 @@ export class DesmostParser extends GenericParser
 
     if (incantation instanceof DataIncantation) {
       if (incantation.requires_arg) {
-        if (this.current() !== "{") {
+        if (this.current !== "{") {
           throw new UnrecoverableError.MissingInput(
             `/${incantation.identifier} requires an argument`
           );
@@ -175,7 +175,7 @@ export class DesmostParser extends GenericParser
         data = this.parse_arg();
       }
       else {
-        if (this.current() === "{") {
+        if (this.current === "{") {
           data = this.parse_arg();
         } else {
           this.consume_spaces();
@@ -193,13 +193,14 @@ export class DesmostParser extends GenericParser
   /**
    * Attempt to parse an incantation identifier.
    */
-  try_parse_incantation_identifier<
-    Effect extends Incantation.Effect
-  >(incantations: Incantation<Effect>[]): Recoverable<Incantation<Effect>>
+  try_parse_incantation_identifier<Effect extends Incantation.Effect>
+  (
+    incantations: Incantation<Effect>[]
+  ): Recoverable<Incantation<Effect>>
   {
     for (let incantation of incantations) {
       try {
-        this.try_parse(incantation.identifier);
+        this.try_consume(incantation.identifier);
       }
       catch (e) {
         if (e instanceof RecoverableFail) continue;
