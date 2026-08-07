@@ -30,19 +30,20 @@ export class GenericParser
   }
 
 
-  /** Get the character the parser is currently pointing at.
-   * 
-   * Errors if the parser has unexpectedly reached the end of the input.
+  /**
+   * Is the parser currently pointing at an invalid character?
    */
-  protected current(): Unrecoverable<string>
+  protected out_of_bounds(): boolean
   {
-    let char = this.source.at(this.i);
+    return this.i >= this.length;
+  }
 
-    if (char == undefined) {
-      throw new UnrecoverableError("Unexpected end of input");
-    }
-    
-    return char;
+  /**
+   * Get the character the parser is currently pointing at, or `undefined` if the parser is out-of-bounds.
+   */
+  protected get current(): string | undefined
+  {
+    return this.source.at(this.i);
   }
 
   /**
@@ -64,17 +65,18 @@ export class GenericParser
   /**
    * Advance to the next character, skipping ignored characters.
    * 
-   * Errors if the parser is 
+   * Errors if the parser is the out-of-bounds.
    */
   protected advance(error_msg?: string): Unrecoverable<void>
   {
-    if (this.i >= this.length) {
-      throw new UnrecoverableError(error_msg ?? "Unexpected end of input");
+    if (this.out_of_bounds()) {
+      throw new UnrecoverableError.UnexpectedEnd(error_msg ?? "Unexpected end of input");
     }
 
     this.i++;
 
-    if (IGNORED_CHARACTERS.has(this.current())) {
+    // @ts-expect-error: `this.current == undefined` is a true negative
+    if (IGNORED_CHARACTERS.has(this.current)) {
       this.advance();
     }
   }
@@ -82,10 +84,10 @@ export class GenericParser
   /**
    * Attempt to advance to the next character, skipping ignored characters.
    */
-  protected try_advance(): Recoverable<void>
+  protected try_advance(error_msg?: string): Recoverable<void>
   {
     try {
-      this.advance();
+      this.advance(error_msg);
     }
     catch {
       throw new RecoverableFail();
@@ -102,10 +104,11 @@ export class GenericParser
     }
     catch (e) {
       if (e instanceof RecoverableFail) {
-        throw new UnrecoverableError(
+        throw new UnrecoverableError.UnexpectedInput(
           error_msg ?? `Expected: ${raw}, but received: ${this.preview()}`
-        )
+        );
       }
+      throw e;
     }
   }
 
@@ -114,16 +117,17 @@ export class GenericParser
    */
   protected try_consume(raw: string): Recoverable<void>
   {
+    if (this.out_of_bounds()) throw new RecoverableFail();
+
     let init = this.i;
     let ii = 0;
 
-    while (this.current() === raw[ii]) {
-      this.try_advance(`Unexpected end of input while trying to consume `);
+    while (this.current === raw[ii]) {
+      this.try_advance(`Unexpected end of input while trying to consume: ${raw}`);
       ii++;
 
-      if (ii === raw.length) {
-        return;
-      }
+      if (ii === raw.length) return;
+      if (this.i === this.length) break;
     }
 
     this.i = init;
@@ -138,7 +142,7 @@ export class GenericParser
     /* NOTE: Callers should be able to assume this is safe to call even when at end of input, since it should just match 0 characters */
     if (this.i >= this.length) return;
 
-    while (this.current() === " ") {
+    while (this.current === " ") {
       this.advance();
     }
   }
@@ -153,7 +157,7 @@ export class GenericParser
     /* NOTE: Callers should be able to assume this is safe to call even when at end of input, since it should just match 0 characters */
     if (this.i >= this.length) return;
 
-    while (this.current() === " " || this.current() === "\n") {
+    while (this.current === " " || this.current === "\n") {
       this.advance();
     }
   }
