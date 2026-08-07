@@ -1,6 +1,6 @@
-# Desmost
-
 <div align="center">
+
+# Desmost
 
 [Docs](docs/) · Walkthrough · [Spec](docs/grammar.md) · Playground
 
@@ -33,13 +33,16 @@ In other words, it’s like HTML+CSS, but for Desmos. Write your content in LaTe
 This repository implements the Desmost ‘compiler’, which parses your source text, and injects the results into a `Desmos.Calculator` instance via the Desmos API. How you use the compiler, and render the end result, is left up to you!
 
 
+<br>
+
+
 ## Usage
 
 > [!Important]
 > This is how it *will* work, it doesn’t work yet!
 
 > [!Tip]
-> Head to [Walkthrough](docs/readme.md) for a complete walkthrough on how to use Desmost end-to-end.
+> Head to [Walkthrough](docs/readme.md) for a complete walkthrough on how to use Desmost end-to-end. (It’s not that complicated)
 
 ### Install
 ```bash
@@ -65,7 +68,12 @@ compile(calc, "/text{ sup world! }", {
 });
 ```
 
+### Render
+Up to you, in your framework of choice!
+
 ### Svelte + MDsveX
+Or, if you enjoy nice things, Desmost provides a Svelte component for mass-compling ` ```desmos ` blocks in MDsveX content:
+
 ```svelte
 <script>
   import Content from "./intro.md";
@@ -85,6 +93,9 @@ Pass in options directly to customise compilation:
   <Content />
 </Desmost>
 ```
+
+
+<br>
 
 
 ## Features
@@ -174,6 +185,9 @@ And that’s all there is to Desmost!
 - Tables
 
 
+<br>
+
+
 ## Rationale
 
 ### Made for Markdown
@@ -181,18 +195,18 @@ Desmost doesn’t have to be used for Markdown, but that’s what it was designe
 
 [^made-for-md]: I mean, if you aren’t using Desmost in Markdown, then you may as well just use the Desmos JavaScript API directly.
 
-```md
+````md
 # Mysteries of Sound
 
 Today we’re investigating the beauty of soundwaves and Fourier transforms. This is a sine wave:
 
-\```desmos
+```desmos
 y = \sin{x}
 ```
 
 And here’s a saw wave:
 
-\```desmos
+```desmos
 /viewport{ left: -2*Math.PI, right: 2*Math.PI }
 
 /slider{ min: 1, max: 40, step: 1 } :: N = 1
@@ -201,8 +215,8 @@ And here’s a saw wave:
 }
 
 /anim-mono /slider{ min: 0, max: "2\\pi" }
-\```
 ```
+````
 
 Exactly like how a `math` code block renders into LaTeX, or a `mermaid` code block renders a diagram.
 
@@ -221,3 +235,6 @@ It’s almost like you meant to type this into Desmos, but accidentally typed it
 
 ### Don’t parse LaTeX
 Desmost only handles what it needs to care about to work. You don’t need a LaTeX parser, because Desmos will already do that later down the line – parsing it ourselves would just be wasted effort!
+
+
+<br>
