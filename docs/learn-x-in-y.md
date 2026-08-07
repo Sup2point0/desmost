@@ -2,28 +2,24 @@
 
 Desmost is a simple, tiny, lightweight form of line-based LaTeX that compiles to a Desmos graphing calculator instance.
 
-Desmos specialties are accessed via ***invocations***, which begin with a `/` (mirroring LaTeX’s `\backslash` commands).
-
-Desmost works in blocks, which are usually single lines, but can be expanded with the `/block` incantation.
+Access Desmos specialties using `/incantation`s (mirroring LaTeX’s `\commands`).
 
 ```hs
--- This block will be plotted in Desmos.
+-- These block will be plotted in Desmos.
 y = x^2
+y = x^3 - 1
 
--- Any LaTeX is accepted, provided it stays on a single line.
+-- Any LaTeX is accepted.
 y = \int_{0}^{2\pi} e^x \sin{x} \ dx
 
 
 -- To change how blocks are compiled, we invoke 'incantations'.
--- Incantations start with a / spash and are separated from actual LaTeX with :: double colons
+-- Incantations start with a / slash and are separated from actual LaTeX with :: double colons
 /hide :: y = x^2 - 3x + 4
-  -- This block won't be rendered in Desmos
+  -- Won't be rendered in Desmos
 
 /anim :: p = 1
-  -- Animates the slider of a variable.
-
-/text :: Desmos(t) is awesome!
-  -- Produces a Desmos text block ("Add Note" in the GUI).
+  -- Animates the slider of a variable
 
 
 -- Some incantations can accept an argument with additional options, enclosed in {} curly braces.
@@ -35,11 +31,11 @@ y = \int_{0}^{2\pi} e^x \sin{x} \ dx
   -- Sets slider bounds of t
 
 -- Incantations and their arguments almost always have an identical interface to the actual Desmos API.
--- However, Desmost also provides a few useful pre-configured incantations, with sensible defaults!
+-- However, Desmost also provides a few useful pre-configured incantations with sensible defaults.
 y = \frac{1}{x}
 /asympt :: x = 0
 /asympt :: y = 0
-  -- These blocks are rendered as dotted lines with lower opacity!
+  -- Rendered as dotted lines with lower opacity!
 
 
 -- We can, naturally, stack multiple incantations in one block.
@@ -63,18 +59,9 @@ y = \frac{1}{x}
   :: T = 0
 
 -- The only requirement is that :: must be on the last line of the block.
--- Otherwise, Desmost will think this block's ended early.
-
-
--- To write LaTeX over multiple lines, use the /block incantation.
-/block{
-  \int
-    \frac{1}{x}
-    \left(1 + \ln{x}\right)
-  \ dx
-}
-
--- The closing } must appear on its own line.
+/anim ::
+  T = 0
+  -- Desmost will parse this as 2 separate blocks!
 
 
 -- So far, we've been using 'local' incantations.
@@ -90,25 +77,45 @@ y = \frac{1}{x}
   -- Sets the graph bounds
 
 
--- Putting it all together, here's what a full Desmost 'program' might look like:
+-- We might also want to produce blocks other than LaTeX.
+-- ofc, we achieve this through more incantations!
 
+/text{ Desmos(t) is awesome! }
+  -- Produces a text block ("Add Note" in Desmos)
+
+-- Write LaTeX over multiple lines
+/latex{
+  \int
+    \frac{1}{x}
+    \left(1 + \ln{x}\right)
+  \ dx
+}
+
+-- These are called 'block' incantations.
+-- More might be added in the future for tables, folders, etc.!
+```
+
+Putting it all together, here's what a full Desmost 'program' might look like:
+
+```hs
 /desmos{
   expressions: true,
+  settingsMenu: false,
 }
 /viewport{
   left: -8, right: 8,
 }
 
-/text :: Definite Integral Calculator
+/text{ Definite Integral Calculator }
 
-/text :: Enter your integrand here:
+/text{ Enter your integrand here: }
 /color{ BLUE } :: f(x) = 
 
-/text :: Enter your integration bounds here:
+/text{ Enter your integration bounds here: }
 a = 0
 b = 1
 
-/text :: Your answer is:
+/text{ Your answer is: }
 \int_{a}^{b} f(x) \ dx
 
 /secret
@@ -116,11 +123,11 @@ b = 1
   color: BLUE,
   opacity: 0.2,
 }
-:: /block{
-  min(0, f(x))
-  \leq y
-  \leq max(0, f(x))
-}
+  :: /latex{
+    min(0, f(x))
+    \leq y
+    \leq max(0, f(x))
+  }
 ```
 
 btw, you can see this example for yourself in [Playground](https://sup2point0.github.io/desmost/playground).
