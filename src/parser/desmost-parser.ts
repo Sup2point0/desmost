@@ -6,8 +6,8 @@ import type { Recoverable, Unrecoverable, MaybeRecoverable } from "./errors";
 
 import {
   Incantation, ArgIncantation,
-  GLOBAL, LOCAL,
-  GLOBAL_INCANTATIONS, LOCAL_INCANTATIONS,
+  GLOBAL, LOCAL, EXPR,
+  GLOBAL_INCANTATIONS, LOCAL_INCANTATIONS, EXPR_INCANTATIONS
 } from "../magic";
 
 
@@ -16,6 +16,8 @@ import {
  */
 export class DesmostParser extends GenericParser
 {
+  // == TOP-LEVEL == //
+
   /**
    * Parse the next semantic block of source code.
    */
@@ -31,12 +33,14 @@ export class DesmostParser extends GenericParser
       let r = this.parse_pre_sep();
 
       if ("global" in r) {
+        // 1 global
         return r.global;
       }
       else {
+        // 1+ locals + 1 expr
         let incantations = r.local;
 
-        let expr = this.try_parse_post_sep();
+        let expr = this.parse_post_sep();
 
         for (let instance of incantations) {
           expr.incantations.push(instance);
@@ -46,83 +50,10 @@ export class DesmostParser extends GenericParser
       }
     }
     else {
-      return this.try_parse_post_sep();
+      // 1 expr
+      return this.parse_post_sep();
     }
   }
-
-
-  // == POST == //
-
-  try_parse_post_sep(): ParseResult.Expression
-  {
-    this.consume_spaces();
-
-    if (this.current === "\n") {
-      return {
-        kind: ParseResult.Kind.EXPRESSION,
-        data: { latex: `` },
-        incantations: [],
-      };
-    }
-
-    return this.parse_latex_line();
-  }
-
-  // FIXME
-  try_parse_latex_block(): Recoverable<ParseResult.Expression>
-  {
-    this.try_consume("/block");
-    this.consume_spaces();
-    return this.parse_latex_block();
-  }
-
-  parse_latex_block(): Recoverable<ParseResult.Expression>
-  {
-    this.try_consume("{");
-    
-    let init = this.i;
-
-    while (this.current !== "\n" && this.next() !== "}") {
-      this.advance();
-    }
-
-    let block = this.source.slice(init, this.i);
-
-    return {
-      kind: ParseResult.Kind.EXPRESSION,
-      data: {
-        latex: block.trim(),
-      },
-      incantations: [],
-    };
-  }
-
-  /**
-   * Parse a single line of LaTeX.
-   */
-  parse_latex_line(): ParseResult.Expression
-  {
-    let init = this.i;
-
-    while (!this.out_of_bounds() && this.current !== "\n") {
-      this.advance();
-    }
-
-    this.i++;
-
-    let line = this.source.slice(init, this.i);
-
-    return {
-      kind: ParseResult.Kind.EXPRESSION,
-      data: {
-        latex: line,
-      },
-      incantations: [],
-    };
-  }
-
-
-  // == PRE == //
 
   /**
    * Parse Desmost syntax before the `::` separator, which may be:
@@ -164,6 +95,60 @@ export class DesmostParser extends GenericParser
     return { local: incantations };
   }
 
+  parse_post_sep(): Unrecoverable<ParseResult.Expression>
+  {
+    this.consume_spaces();
+
+    switch (this.current) {
+      // empty block
+      case "\n":
+        return {
+          kind: ParseResult.Kind.EXPRESSION,
+          data: { latex: `` },
+          incantations: [],
+        };
+
+      // expr incantation
+      case "/":
+        try {
+          return this.try_parse_expr_incantation();
+        }
+        catch (e) {
+          if (!(e instanceof RecoverableFail)) throw e;
+          // plain LaTeX (fallback)
+          return this.parse_latex_line();
+        }
+
+      // plain LaTeX
+      default:
+        return this.parse_latex_line();
+    }
+  }
+
+
+  // == LOW-LEVEL == //
+
+  /**
+   * Parse a single line of LaTeX.
+   */
+  parse_latex_line(): Unrecoverable<ParseResult.Expression>
+  {
+    let init = this.i;
+
+    while (!this.out_of_bounds() && this.current !== "\n") {
+      this.advance();
+    }
+
+    this.i++;
+
+    return {
+      kind: ParseResult.Kind.EXPRESSION,
+      data: { latex: this.source.slice(init, this.i) },
+      incantations: [],
+    };
+  }
+
+
   /**
    * Attempt to parse a global incantation invocation.
    */
@@ -175,12 +160,12 @@ export class DesmostParser extends GenericParser
   {
     this.try_consume("/");
 
-    let incantation = this.try_parse_incantation_identifier(GLOBAL_INCANTATIONS);
+    let incantation = this.try_parse_identifier(GLOBAL_INCANTATIONS);
     let data = undefined;
 
     if (incantation instanceof ArgIncantation) {
       if (this.current === "{") {
-        data = this.parse_arg(incantation.arg_type);
+        data = this.parse_incantation_arg(incantation.arg_type);
       }
       else if (incantation.requires_arg) {
         return {
@@ -213,12 +198,12 @@ export class DesmostParser extends GenericParser
   {
     this.try_consume("/");
 
-    let incantation = this.try_parse_incantation_identifier(LOCAL_INCANTATIONS);
-    let data = undefined;
+    let incantation = this.try_parse_identifier(LOCAL_INCANTATIONS);
+    let arg_raw = undefined;
 
     if (incantation instanceof ArgIncantation) {
       if (this.current === "{") {
-        data = this.parse_arg(incantation.arg_type);
+        arg_raw = this.parse_incantation_arg(incantation.arg_type);
       }
       else if (incantation.requires_arg) {
         return {
@@ -236,14 +221,32 @@ export class DesmostParser extends GenericParser
     return {
       kind: ParseResult.Kind.INCANTATION_INSTANCE,
       incantation,
-      arg_raw: data,
+      arg_raw,
+    };
+  }
+
+  try_parse_expr_incantation(): MaybeRecoverable<ParseResult.Expression>
+  {
+    this.try_consume("/");
+
+    // TODO maybe flag to user
+    let incantation = this.try_parse_identifier(EXPR_INCANTATIONS) as ArgIncantation<EXPR>;
+    let arg_raw = this.parse_incantation_arg(incantation.arg_type);
+
+    let data = {};
+    incantation.apply(data, arg_raw);
+
+    return {
+      kind: ParseResult.Kind.EXPRESSION,
+      data,
+      incantations: [],
     };
   }
 
   /**
    * Attempt to parse an incantation identifier.
    */
-  try_parse_incantation_identifier<Effect extends Incantation.Effect>
+  try_parse_identifier<Effect extends Incantation.Effect>
   (
     incantations: Incantation<Effect>[]
   ): Recoverable<Incantation<Effect>>
@@ -302,7 +305,7 @@ export class DesmostParser extends GenericParser
    * 
    * If the user truly mismatches `{}`, then, well ...parsing will fail catastrophically!
    */
-  parse_arg(
+  parse_incantation_arg(
     /**
      * The type of argument to parse.
      * 
