@@ -1,11 +1,14 @@
-// import { Incantation, GLOBAL, LOCAL } from "../incantation";
+// import { Incantation, ArgIncantation, GLOBAL, LOCAL } from "../incantation";
 
 
-// export class ?Incantation extends Incantation<?>
+// export class ?Incantation
+//   extends ArgIncantation<?, ?>
 // {
-//   override readonly identifier = "?"
+//   override readonly identifier   = "?"
+//   override readonly requires_arg = ?
+//   override readonly arg_type     = Incantation.ArgType.?
 
-//   apply(target: ?, data: ?)
+//   evaluate_arg(target: ?, data: ?)
 //   {
 //     // TODO
 //   }

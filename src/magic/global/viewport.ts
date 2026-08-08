@@ -13,14 +13,9 @@ interface ViewportBounds
 export class ViewportIncantation
   extends ArgIncantation<GLOBAL, ViewportBounds>
 {
-  override readonly identifier = "viewport"
+  override readonly identifier   = "viewport"
   override readonly requires_arg = true
-  override readonly arg_type = Incantation.ArgType.OBJECT
-
-  evaluate_arg(data: string): ViewportBounds
-  {
-    return Json5.parse(`{${data}}`);
-  }
+  override readonly arg_type     = Incantation.ArgType.OBJECT
 
   apply(target: Desmos.Calculator, data: ViewportBounds)
   {

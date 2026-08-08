@@ -1,11 +1,13 @@
 import { Incantation, GLOBAL } from "../incantation";
 
-import { DarkModeIncantation } from "./dark-mode";
+import { DesmosIncantation } from "./desmos";
 import { ViewportIncantation } from "./viewport";
+import { DarkModeIncantation } from "./dark-mode";
 
 
 export const GLOBAL_INCANTATIONS: Incantation<GLOBAL>[] =
 [
-  new DarkModeIncantation(),
+  new DesmosIncantation(),
   new ViewportIncantation(),
+  new DarkModeIncantation(),
 ];

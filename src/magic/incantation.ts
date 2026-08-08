@@ -1,3 +1,5 @@
+import Json5 from "JSON5";
+
 import { Unrecoverable } from "../parser";
 
 
@@ -45,9 +47,14 @@ export abstract class ArgIncantation<
   /**
    * Evaluate the argument provided to this incantation, throwing if an error is encountered.
    * 
+   * Defaults to parsing a JavaScript object.
+   * 
    * For instance, for `/viewport{ left: -1, right: 1 }`, this returns the POJO `{ left: -1, right: 1 }`.
    */
-  abstract evaluate_arg(data: string): Unrecoverable<Data>
+  evaluate_arg(data: string): Unrecoverable<Data>
+  {
+    return Json5.parse(`{${data}}`);
+  }
 }
 
 
