@@ -119,7 +119,7 @@ export class GenericParser
     }
 
     throw new UnrecoverableError.UnexpectedInput(
-      error_msg ?? `Expected: ${raw}, but received: ${this.preview()}`
+      error_msg ?? `Expected: ${raw}, but found: ${this.preview()}`
     );
   }
 
@@ -186,7 +186,7 @@ export class GenericParser
       if (!(e instanceof RecoverableFail)) throw e;
 
       throw new UnrecoverableError.ExcessInput(
-        error_msg ?? `Expected end of block, but received: ${this.preview()}`
+        error_msg ?? `Expected end of block, but found: ${this.preview()}`
       );
     }
   }

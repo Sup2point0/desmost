@@ -140,9 +140,9 @@ export class DesmostParser extends GenericParser
    */
   parse_sep(): Unrecoverable<void>
   {
-    this.consume_spaces();
+    this.consume_whitespace();
     this.consume("::",
-      `Expected '::' separator between local incantations and expression`
+      `Expected '::' separator between local incantations and expression, but found: ${this.preview()}`
     );
   }
 
@@ -382,7 +382,7 @@ export class DesmostParser extends GenericParser
     let init = this.i;
 
     this.consume("{",
-      `Expected '{' to start incantation argument, but received: ${this.preview()}`
+      `Expected '{' to start incantation argument, but found: ${this.preview()}`
     );
 
     enum Ctx {
