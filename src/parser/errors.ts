@@ -41,10 +41,10 @@ export class RecoverableFail {}
 
 
 /** Indicates that a function may throw a `RecoverableFail`. */
-export type Recoverable<Result> = Result | Result & { readonly __brand: unique symbol };
+export type Recoverable<Result> = Result | Result & { readonly __brand?: unique symbol };
 
 /** Indicates that a function may throw an `UnrecoverableError`. */
-export type Unrecoverable<Result> = Result | Result & { readonly __brand: unique symbol };;
+export type Unrecoverable<Result> = Result | Result & { readonly __brand?: unique symbol };;
 
 /**
  * Indicates that a function may throw either a `RecoverableFail` *or* an `UnrecoverableError`.
