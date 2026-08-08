@@ -85,17 +85,21 @@ export class DesmostParser extends GenericParser
       if (!(e instanceof RecoverableFail)) throw e;
     }
 
-    let incantations: ParseResult.IncantationInstance<LOCAL>[] = [];
+    let incantations = [];
 
     // 1+ local incantations
     while (this.current === "/") {
       try {
-        this.try_parse_local_incantation();
+        incantations.push(this.try_parse_local_incantation());
       }
       catch (e) {
         if (!(e instanceof RecoverableFail)) throw e;
         break;
       }
+    }
+
+    if (incantations.length > 0) {
+      this.parse_sep();
     }
 
     return { local: incantations };
@@ -129,6 +133,17 @@ export class DesmostParser extends GenericParser
       default:
         return this.parse_latex_line();
     }
+  }
+
+  /**
+   * Parse the Desmost `::` separator.
+   */
+  parse_sep(): Unrecoverable<void>
+  {
+    this.consume_spaces();
+    this.consume("::",
+      `Expected '::' separator between local incantations and expression`
+    );
   }
 
 
@@ -252,7 +267,8 @@ export class DesmostParser extends GenericParser
   }
 
   try_parse_expr_incantation(): MaybeRecoverable<ParseResult.Expression>
-  {  
+  {
+    // TODO refactor with `backtrack()` helper
     let init = this.i;
 
     this.try_consume("/");
