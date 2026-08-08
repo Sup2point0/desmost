@@ -11,20 +11,23 @@ export namespace ParseResult
     EXPRESSION,
   }
 
+
   /** The parser successfully reached the end of its source. */
   export interface Done { kind: Kind.DONE }
 
   /** Sentinel value to signal the parser successfully reached the end of its source. */
   export const DONE: Done = { kind: Kind.DONE };
 
+
   /** A pending incantation usage that requires parsing of `data`, and applying its effect. */
   export interface IncantationInstance<Effect extends Incantation.Effect = Incantation.Effect>
   {
     kind:        Kind.INCANTATION
     incantation: Incantation<Effect>
-    data?:       any
+    arg_raw?:    string
   }
 
+  
   /** A Desmos expression to add to the calculator. */
   export interface Expression
   {

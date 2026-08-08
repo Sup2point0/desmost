@@ -119,7 +119,6 @@ export class DesmostParser extends GenericParser
 
   // == PRE == //
 
-
   /**
    * Parse Desmost syntax before the `::` separator, which may be:
    * 
@@ -128,8 +127,8 @@ export class DesmostParser extends GenericParser
    */
   parse_pre_sep():
     Unrecoverable<
-        ParseResult.IncantationInstance<GLOBAL>
-      | ParseResult.IncantationInstance<LOCAL>[]
+    | ParseResult.IncantationInstance<GLOBAL>
+    | ParseResult.IncantationInstance<LOCAL>[]
     >
   {
     // 1 global incantation
@@ -186,7 +185,7 @@ export class DesmostParser extends GenericParser
     return {
       kind: ParseResult.Kind.INCANTATION,
       incantation,
-      data,
+      arg_raw: data,
     };
   }
 
@@ -214,16 +213,124 @@ export class DesmostParser extends GenericParser
   }
 
   /**
-   * Parse an argument to an incantation.
+   * Parse an argument to an incantation, enclosed in `{}`.
    * 
-   * Stops when either a `::` delimiter or the start of a new incantation is found, and backtracks to the `::` or `/`.
+   * ```ts
+   * /incantation{ arg }
+   *             ^^^^^^^
+   * ```
+   * 
+   * ## Notes
+   * 
+   * We don't really care for what type the argument is, we just want to find the closing `}`. However, the argument might be *meant* to contain a `}`. We need a way to accurately identify the true closing brace:
+   * 
+   * ```ts
+   * /incantation{ field: { value: 1 } }
+   *                                 ^ ^
+   * ```
+   * 
+   * A well-formed argument always has matching pairs of `{}`, so we'll keep a stack. It starts with the opening `{`. When the stack is depleted, we must've reached the end of the argument.
+   * 
+   * However, there's still more edge cases:
+   * 
+   * ```ts
+   * /text{ "This }s weird" }
+   *              ^
+   * ```
+   * 
+   * `{` and `}` can appear in strings, and they won't necessarily be matched, so we'll ignore them by also tracking string contexts.
+   * 
+   * ```ts
+   * /latex{ \{ x, y ) }
+   *          ^
+   * ```
+   * 
+   * `{` and `}` in LaTeX can be escaped with `\{` or `\}`, and these won't necessarily be matched, so we'll ignore them by also tracking backslash escapes.
+   * 
+   * If the user truly mismatches `{}`, then, well ...parsing will fail catastrophically!
    */
   parse_arg(): Unrecoverable<string>
   {
-    this.consume("{", `Expected '{' to start incantation argument, but received: ${this.preview()}`);
-    // TODO difficult
+    let init = this.i;
+    let errors: string[] = [];
 
-    return "implementing!"
+    this.consume("{",
+      `Expected '{' to start incantation argument, but received: ${this.preview()}`
+    );
+
+    enum Ctx {
+      BLOCK           = Char.L_BRACE,
+      STRING_SINGLE   = Char.QUOTE_SINGLE,
+      STRING_DOUBLE   = Char.QUOTE_DOUBLE,
+      STRING_TEMPLATE = Char.BACKTICK,
+      ESCAPE          = Char.BACKSLASH,
+    }
+
+    let stack: Ctx[] = [Ctx.BLOCK];
+
+    function try_pop(ctx: Ctx, options?: { force: boolean }): boolean
+    {
+      if (stack.at(-1) === ctx) {
+        stack.pop();
+        return true;
+      }
+      else if (options?.force) {
+        if (stack.includes(ctx)) {
+          while (stack.at(-1) !== ctx) {
+            errors.push(`Unterminated ${stack.at(-1)}`);
+            stack.pop();
+          }
+        }
+      }
+
+      return false;
+    }
+
+    while (stack.length > 0) {
+      let top = stack.at(-1)!;
+
+      if (top === Ctx.ESCAPE) {
+        stack.pop();
+
+        this.advance(
+          `Unexpected end of input while parsing incantation argument, stack: ${JSON.stringify(stack)}`
+        );
+      }
+
+      switch (this.current) {
+        /* NOTE: *Currently* {} should be ignored in all contexts except `Ctx.BLOCK`. This might change if more contexts are added in future */
+        case Char.L_BRACE:
+          if (top !== Ctx.BLOCK) break;
+          stack.push(Ctx.BLOCK);
+          break;
+        case Char.R_BRACE:
+          if (top !== Ctx.BLOCK) break;
+          try_pop(Ctx.BLOCK, { force: true });
+          break;
+          
+        case Ctx.STRING_SINGLE: try_pop(Ctx.STRING_SINGLE) || stack.push(Ctx.STRING_SINGLE); break;
+        case Ctx.STRING_SINGLE: try_pop(Ctx.STRING_DOUBLE) || stack.push(Ctx.STRING_DOUBLE); break;
+        case Ctx.STRING_SINGLE: try_pop(Ctx.STRING_TEMPLATE) || stack.push(Ctx.STRING_TEMPLATE); break;
+
+        case Ctx.ESCAPE: stack.push(Ctx.ESCAPE); break;
+      }
+
+      this.advance();
+    }
+    
+    /* NOTE: Cut in by 1 on both sides to exclude {} braces */
+    return this.source.slice(init + 1, this.i - 1).trim();
   }
 
+}
+
+
+enum Char
+{
+  L_BRACE      = "{",
+  R_BRACE      = "}",
+  QUOTE_SINGLE = `'`,
+  QUOTE_DOUBLE = `"`,
+  BACKTICK     = "`",
+  BACKSLASH    = "\\",
 }

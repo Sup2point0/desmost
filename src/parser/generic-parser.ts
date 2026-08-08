@@ -8,7 +8,9 @@ const IGNORED_CHARACTERS = new Set([
 
 
 /**
- * A stateful lazy parser.
+ * A stateful lazy parser, providing core methods for parsing.
+ * 
+ * Many methods come in `<verb>` and `try_<verb>` pairs. On parsing failure, the former throws an `UnrecoverableError`, but the latter instead backtracks and only throws a `RecoverableFail`.
  */
 export class GenericParser
 {
@@ -65,7 +67,7 @@ export class GenericParser
   /**
    * Advance to the next character, skipping ignored characters.
    * 
-   * Errors if the parser is the out-of-bounds.
+   * Errors if the parser is the out-of-bounds *before* advancing.
    */
   protected advance(error_msg?: string): Unrecoverable<void>
   {
