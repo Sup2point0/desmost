@@ -2,10 +2,10 @@ import { GenericParser } from "./generic-parser";
 
 import { ParseResult } from "./result";
 import { RecoverableFail, UnrecoverableError } from "./errors";
-import type { Recoverable, Unrecoverable } from "./errors";
+import type { Recoverable, Unrecoverable, MaybeRecoverable } from "./errors";
 
 import {
-  Incantation, DataIncantation,
+  Incantation, ArgIncantation,
   GLOBAL, LOCAL,
   GLOBAL_INCANTATIONS, LOCAL_INCANTATIONS,
 } from "../magic";
@@ -25,26 +25,29 @@ export class DesmostParser extends GenericParser
       return ParseResult.DONE;
     }
 
-    let incantations: ParseResult.IncantationInstance[] = [];
+    this.consume_spaces();
 
     if (this.current === "/") {
-      let result = this.parse_pre_sep();
+      let r = this.parse_pre_sep();
 
-      // If not an array, that means it's a single global incantation
-      if (!Array.isArray(result)) {
-        return result;
+      if ("global" in r) {
+        return r.global;
       }
+      else {
+        let incantations = r.local;
 
-      incantations = result;
+        let expr = this.try_parse_post_sep();
+
+        for (let instance of incantations) {
+          expr.incantations.push(instance);
+        }
+
+        return expr;
+      }
     }
-
-    let expr = this.try_parse_post_sep();
-
-    for (let instance of incantations) {
-      instance.incantation.apply(expr.data, instance.data);  // TODO parse data
+    else {
+      return this.try_parse_post_sep();
     }
-
-    return expr;
   }
 
 
@@ -54,18 +57,18 @@ export class DesmostParser extends GenericParser
   {
     this.consume_spaces();
 
-    try {
-      return this.try_parse_latex_block() as ParseResult.Expression;
+    if (this.current === "\n") {
+      return {
+        kind: ParseResult.Kind.EXPRESSION,
+        data: { latex: `` },
+        incantations: [],
+      };
     }
-    catch (e) {
-      if (e instanceof RecoverableFail) {
-        return this.parse_latex_line();
-      }
 
-      throw e;
-    }
+    return this.parse_latex_line();
   }
 
+  // FIXME
   try_parse_latex_block(): Recoverable<ParseResult.Expression>
   {
     this.try_consume("/block");
@@ -89,7 +92,8 @@ export class DesmostParser extends GenericParser
       kind: ParseResult.Kind.EXPRESSION,
       data: {
         latex: block.trim(),
-      }
+      },
+      incantations: [],
     };
   }
 
@@ -113,6 +117,7 @@ export class DesmostParser extends GenericParser
       data: {
         latex: line,
       },
+      incantations: [],
     };
   }
 
@@ -126,64 +131,110 @@ export class DesmostParser extends GenericParser
    * - 1+ local incantations
    */
   parse_pre_sep():
-    Unrecoverable<
-    | ParseResult.IncantationInstance<GLOBAL>
-    | ParseResult.IncantationInstance<LOCAL>[]
+    MaybeRecoverable<
+      | { global: ParseResult.IncantationInstance<GLOBAL>
+                | ParseResult.InvalidIncantation;
+      }
+      | { local: Array<ParseResult.IncantationInstance<LOCAL>
+                      | ParseResult.InvalidIncantation>;
+      }
     >
   {
     // 1 global incantation
     try {
-      var result = this.try_parse_global_incantation();
-
-      this.consume_spaces();
+      let r = this.try_parse_global_incantation();
 
       this.consume_end_of_block(
-        `Received excess input after global incantation /${result.incantation.identifier}`
+        `Received excess input after global incantation /${r.incantation.identifier}`
       );
 
-      return result;
+      return { global: r };
     }
     catch (e) {
       if (!(e instanceof RecoverableFail)) throw e;
     }
 
-    // 1+ local incantations
-    // TODO
+    let incantations: ParseResult.IncantationInstance<LOCAL>[] = [];
 
-    throw new UnrecoverableError();
+    // 1+ local incantations
+    while (this.current === "/") {
+      this.try_parse_local_incantation();
+    }
+
+    return { local: incantations };
   }
 
   /**
    * Attempt to parse a global incantation invocation.
    */
-  try_parse_global_incantation(): Recoverable<ParseResult.IncantationInstance<GLOBAL>>
+  try_parse_global_incantation():
+    Recoverable<
+    | ParseResult.IncantationInstance<GLOBAL>
+    | ParseResult.InvalidIncantation
+    >
   {
-    this.consume("/");
+    this.try_consume("/");
 
     let incantation = this.try_parse_incantation_identifier(GLOBAL_INCANTATIONS);
     let data = undefined;
 
-    if (incantation instanceof DataIncantation) {
-      if (incantation.requires_arg) {
-        if (this.current !== "{") {
-          throw new UnrecoverableError.MissingInput(
-            `/${incantation.identifier} requires an argument`
-          );
-        }
-
-        data = this.parse_arg();
+    if (incantation instanceof ArgIncantation) {
+      if (this.current === "{") {
+        data = this.parse_arg(incantation.arg_type);
       }
-      else {
-        if (this.current === "{") {
-          data = this.parse_arg();
-        } else {
-          this.consume_spaces();
-        }
+      else if (incantation.requires_arg) {
+        return {
+          kind: ParseResult.Kind.INVALID_INCANTATION,
+          incantation,
+          error: new UnrecoverableError.MissingInput(
+            `No argument provided for /${incantation.identifier}, which requires an argument of type: ${incantation.arg_type}`
+          )
+        };
       }
     }
 
+    this.consume_spaces();
+
     return {
-      kind: ParseResult.Kind.INCANTATION,
+      kind: ParseResult.Kind.INCANTATION_INSTANCE,
+      incantation,
+      arg_raw: data,
+    };
+  }
+
+  /**
+   * Attempt to parse a local incantation invocation.
+   */
+  try_parse_local_incantation():
+    Recoverable<
+    | ParseResult.IncantationInstance<LOCAL>
+    | ParseResult.InvalidIncantation
+    >
+  {
+    this.try_consume("/");
+
+    let incantation = this.try_parse_incantation_identifier(LOCAL_INCANTATIONS);
+    let data = undefined;
+
+    if (incantation instanceof ArgIncantation) {
+      if (this.current === "{") {
+        data = this.parse_arg(incantation.arg_type);
+      }
+      else if (incantation.requires_arg) {
+        return {
+          kind: ParseResult.Kind.INVALID_INCANTATION,
+          incantation,
+          error: new UnrecoverableError.MissingInput(
+            `No argument provided for /${incantation.identifier}, which requires an argument of type: ${incantation.arg_type}`
+          )
+        };
+      }
+    }
+
+    this.consume_whitespace();
+
+    return {
+      kind: ParseResult.Kind.INCANTATION_INSTANCE,
       incantation,
       arg_raw: data,
     };

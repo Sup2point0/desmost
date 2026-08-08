@@ -8,10 +8,10 @@ export namespace ParseResult
   /** What kind of parse result this is. */
   export enum Kind
   {
-    DONE,
-    EXPRESSION,
-    INCANTATION_INSTANCE,
-    INVALID_INCANTATION,
+    DONE = "Done",
+    EXPRESSION = "Expression",
+    INCANTATION_INSTANCE = "IncantationInstance",
+    INVALID_INCANTATION = "InvalidIncantation",
   }
 
 
@@ -27,15 +27,19 @@ export namespace ParseResult
   {
     kind: Kind.EXPRESSION
     data: Desmos.ExpressionState
+    incantations: Array<
+      | IncantationInstance<Incantation.Effect.LOCAL>
+      | InvalidIncantation
+      >
   }
 
 
   /** A pending incantation usage that requires parsing of `data`, and applying its effect. */
   export interface IncantationInstance<Effect extends Incantation.Effect = Incantation.Effect>
   {
-    kind:        Kind.INCANTATION_INSTANCE
+    kind: Kind.INCANTATION_INSTANCE
     incantation: Incantation<Effect>
-    arg_raw?:    string
+    arg_raw?: string
   }
 
   /**
@@ -45,10 +49,10 @@ export namespace ParseResult
    */
   export interface InvalidIncantation
   {
-    kind:        Kind.INVALID_INCANTATION
+    kind: Kind.INVALID_INCANTATION
     incantation: Incantation
-    error:       UnrecoverableError
-    arg_raw?:    string
+    error: UnrecoverableError
+    arg_raw?: string
   }
 }
 

@@ -168,6 +168,8 @@ export class GenericParser
   {
     if (this.i >= this.length) return;
 
+    this.consume_spaces();
+
     try {
       this.try_consume("\n");
     }
