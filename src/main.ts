@@ -1,3 +1,4 @@
+import { DesmostOptions } from "./options";
 import { DesmostParser, ParseResult } from "./parser";
 
 
@@ -47,12 +48,4 @@ export function compile(
         break;
     }
   }
-}
-
-
-/** Options to customise Desmost compilation. */
-interface DesmostOptions
-{
-  /** How should errors be handled? */
-  errors: "show" | "show-at-end" | "hide";
 }
