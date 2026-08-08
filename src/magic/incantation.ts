@@ -19,8 +19,11 @@ export abstract class Incantation<
   Data = any,
 >
 {
-  /** The raw text sequence that matches this identifier, such as `viewport` or `hidden`. */
+  /** The raw text sequence that matches this incantation, such as `viewport` or `hidden`. */
   abstract readonly identifier: string
+
+  /** An alternative `.identifier`, strictly for localisation purposes only. */
+  readonly alias?: string
 
 
   /** Apply this incantation's effect to `target`, using the provided `data` if required. */
@@ -47,16 +50,19 @@ export abstract class ArgIncantation<
   /**
    * Evaluate the argument provided to this incantation, throwing if an error is encountered.
    * 
-   * Defaults to parsing a JavaScript object.
-   * 
    * For instance, for `/viewport{ left: -1, right: 1 }`, this returns the POJO `{ left: -1, right: 1 }`.
+   * 
+   * ## Notes
+   * 
+   * Child incantation classes should override this method, though the defaults should cover most cases (except `ArgType.ENUM`).
    */
-  evaluate_arg(data: string): Unrecoverable<Data>
+  evaluate_arg(raw: string): Unrecoverable<Data>
   {
     switch (this.arg_type) {
-      case Incantation.ArgType.STRING: return data as Data;
-      case Incantation.ArgType.LATEX:  return data as Data;
-      case Incantation.ArgType.OBJECT: return Json5.parse(`{${data}}`);
+      case Incantation.ArgType.STRING: return raw as Data;
+      case Incantation.ArgType.LATEX:  return raw as Data;
+      case Incantation.ArgType.ENUM:   return raw as Data;
+      case Incantation.ArgType.OBJECT: return Json5.parse(`{${raw}}`);
     }
   }
 }
@@ -85,6 +91,9 @@ export namespace Incantation
 
     /** LaTeX, which should have balanced `{}` braces. */
     LATEX = "LaTeX",
+
+    /** Specific value from an allowed set of values, which will map to an enum value in the Desmos API. */
+    ENUM = "Enum",
 
     /** JavaScript object fields, where characters like `{}` and `"` all have semantic meaning, and must be balanced. */
     OBJECT = "Object",

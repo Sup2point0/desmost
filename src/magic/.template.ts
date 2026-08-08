@@ -13,7 +13,7 @@
 //     // TODO
 //   }
 
-//   override evaluate_arg(data: ?): ?
+//   override evaluate_arg(raw: ?): ?
 //   {
 //     // TODO
 //   }
