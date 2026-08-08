@@ -4,7 +4,7 @@
 // export class ?Incantation
 //   extends ArgIncantation<?, ?>
 // {
-//   override readonly identifier   = "?"
+//   override readonly identifier   = ?
 //   override readonly requires_arg = ?
 //   override readonly arg_type     = Incantation.ArgType.?
 

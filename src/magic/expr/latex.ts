@@ -4,7 +4,7 @@ import { Incantation, ArgIncantation, EXPR } from "../incantation";
 export class LatexIncantation
   extends ArgIncantation<EXPR, string>
 {
-  override readonly identifier   = "?"
+  override readonly identifier   = "latex"
   override readonly requires_arg = true
   override readonly arg_type     = Incantation.ArgType.LATEX
 
