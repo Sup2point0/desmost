@@ -41,7 +41,14 @@ export class RecoverableFail {}
 
 
 /** Indicates that a function may throw a `RecoverableFail`. */
-export type Recoverable<Result> = Result;
+export type Recoverable<Result> = Result | Result & { readonly __brand: unique symbol };
 
-/** Indicates that a function may throw a `UnrecoverableError`. */
-export type Unrecoverable<Result> = Result;
+/** Indicates that a function may throw an `UnrecoverableError`. */
+export type Unrecoverable<Result> = Result | Result & { readonly __brand: unique symbol };;
+
+/**
+ * Indicates that a function may throw either a `RecoverableFail` *or* an `UnrecoverableError`.
+ * 
+ * This is used in potentially ambiguous cases. For instance, the user might have invoked an unknown incantation, in which case we might want to `RecoverableFail` and fallback to parsing it as LaTeX; on the other hand, if they invoked a valid incantation, but did not supply the required argument, that's a definite `UnrecoverableError`.
+ */
+export type MaybeRecoverable<Result> = Recoverable<Result> | Unrecoverable<Result>;
