@@ -18,7 +18,7 @@ export function assert_incantation(result: ParseResult): asserts result is Parse
 }
 
 
-export function expect_blank_line(parser: DesmostParser)
+export function assert_parse_blank_line(parser: DesmostParser)
 {
   let r = parser.parse_next();
   assert_expression(r);

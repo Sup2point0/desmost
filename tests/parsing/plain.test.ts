@@ -13,11 +13,11 @@ describe("preserves plain LaTeX", () =>
   ])("non-empty", source =>
   {
     let parser = new DesmostParser(source);
-    let result = parser.parse_next();
+    let r = parser.parse_next();
     
-    assert.isNotNull(result);
-    assert.equal(result.kind, ParseResult.Kind.EXPRESSION);
-    assert.deepEqual((result as ParseResult.Expression).data, { latex: source });
+    assert.isNotNull(r);
+    assert.equal(r.kind, ParseResult.Kind.EXPRESSION);
+    assert.deepEqual((r as ParseResult.Expression).data, { latex: source });
   });
 
   test.for([
@@ -26,7 +26,7 @@ describe("preserves plain LaTeX", () =>
   ])("empty", source =>
   {
     let parser = new DesmostParser(source);
-    let result = parser.parse_next();
+    let r = parser.parse_next();
     
     // FIXME
     // assert.isNotNull(result);

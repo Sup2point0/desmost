@@ -1,51 +1,49 @@
 import { DesmostParser, ParseResult } from "../../src/parser";
-import { ArgIncantation, GLOBAL_INCANTATIONS } from "../../src/magic";
-import { ViewportIncantation } from "../../src/magic/global/viewport";
+import {
+  ArgIncantation,
+  GLOBAL_INCANTATIONS, LOCAL_INCANTATIONS, EXPR_INCANTATIONS,
+} from "../../src/magic";
 
-import { ltx } from "../shared";
 
 
 describe("try-parse-global-incantation()", () =>
 {
-  describe("without-data", () =>
+  test.each(GLOBAL_INCANTATIONS)
+  (`no arg`, incantation =>
   {
-    test.for(GLOBAL_INCANTATIONS)(`${GLOBAL_INCANTATIONS.length} cases`, incantation =>
-    {
-      if (incantation instanceof ArgIncantation) return;
-      
-      let parser = new DesmostParser(`/${incantation.identifier}`);
-      let result = parser.try_parse_global_incantation();
-      
-      assert.equal(result.kind, ParseResult.Kind.INCANTATION_INSTANCE);
-      assert.equal(result.incantation, incantation);
-    });
+    if (incantation instanceof ArgIncantation) return;
+    
+    let parser = new DesmostParser(`/${incantation.identifier}`);
+    let r = parser.try_parse_global_incantation();
+    
+    assert.equal(r.kind, ParseResult.Kind.INCANTATION_INSTANCE);
+    assert.equal(r.incantation, incantation);
   });
 });
 
-describe("try-parse-global-incantation-identifier()", () =>
+describe("try-parse-local-incantation()", () =>
 {
-  test.for([
-    ltx `viewport`,
-    ltx `viewport{}`,
-    ltx `viewport{ left: -1, right: 1 }`,
-  ])("cases", source =>
+  test.each(LOCAL_INCANTATIONS)
+  (`no arg`, incantation =>
   {
-    let parser = new DesmostParser(source);
-    let incantation = parser.try_parse_incantation_identifier(GLOBAL_INCANTATIONS);
-    assert.isTrue(incantation instanceof ViewportIncantation);
+    if (incantation instanceof ArgIncantation) return;
+    
+    let parser = new DesmostParser(`/${incantation.identifier}`);
+    let r = parser.try_parse_local_incantation();
+    
+    assert.equal(r.kind, ParseResult.Kind.INCANTATION_INSTANCE);
+    assert.equal(r.incantation, incantation);
   });
 });
 
-// describe("try-parse-local-incantation-identifier()", () =>
-// {
-//   test.for([
-//     ltx `slider`,
-//     ltx `slider{}`,
-//     ltx `slider{ min: 0, max: 1 }`,
-//   ])("cases", source =>
-//   {
-//     let parser = new DesmostParser(source);
-//     let incantation = parser.try_parse_incantation_identifier(LOCAL_INCANTATIONS);
-//     assert.isTrue(incantation instanceof SliderIncantation);
-//   });
-// });
+describe("try-parse-expr-incantation()", () =>
+{
+  test.each(EXPR_INCANTATIONS)
+  (`{ sup }`, incantation =>
+  {
+    let parser = new DesmostParser(`/${incantation.identifier}{ sup }`);
+    let r = parser.try_parse_expr_incantation();
+    
+    assert.equal(r.kind, ParseResult.Kind.EXPRESSION);
+  });
+});

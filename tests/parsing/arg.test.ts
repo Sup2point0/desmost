@@ -19,7 +19,7 @@ function run_test(
   expected ??= "<NO EXPECTED CASE PROVIDED>";
 
   let parser = new DesmostParser(src);
-  let r = parser.parse_arg(arg_type);
+  let r = parser.parse_incantation_arg(arg_type);
   assert.equal(r.trim(), expected);
   assert.equal(r, expected);
 }
@@ -32,7 +32,7 @@ describe("parse-arg()", () =>
     test.each(ARG_TYPES)
     ("empty", arg_type => {
       let parser = new DesmostParser(`{}`);
-      let r = parser.parse_arg(arg_type);
+      let r = parser.parse_incantation_arg(arg_type);
       assert.equal(r, "");
     });
 
