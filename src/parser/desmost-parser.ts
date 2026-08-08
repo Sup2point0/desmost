@@ -89,7 +89,13 @@ export class DesmostParser extends GenericParser
 
     // 1+ local incantations
     while (this.current === "/") {
-      this.try_parse_local_incantation();
+      try {
+        this.try_parse_local_incantation();
+      }
+      catch (e) {
+        if (!(e instanceof RecoverableFail)) throw e;
+        break;
+      }
     }
 
     return { local: incantations };
@@ -158,9 +164,20 @@ export class DesmostParser extends GenericParser
     | ParseResult.InvalidIncantation
     >
   {
+    let init = this.i;
+
     this.try_consume("/");
 
-    let incantation = this.try_parse_identifier(GLOBAL_INCANTATIONS);
+    try {
+      var incantation = this.try_parse_identifier(GLOBAL_INCANTATIONS);
+    }
+    catch (e) {
+      if (e instanceof RecoverableFail) {
+        this.i = init;
+      }
+      throw e;
+    }
+
     let data = undefined;
 
     if (incantation instanceof ArgIncantation) {
@@ -196,9 +213,20 @@ export class DesmostParser extends GenericParser
     | ParseResult.InvalidIncantation
     >
   {
+    let init = this.i;
+
     this.try_consume("/");
 
-    let incantation = this.try_parse_identifier(LOCAL_INCANTATIONS);
+    try {
+      var incantation = this.try_parse_identifier(LOCAL_INCANTATIONS);
+    }
+    catch (e) {
+      if (e instanceof RecoverableFail) {
+        this.i = init;
+      }
+      throw e;
+    }
+
     let arg_raw = undefined;
 
     if (incantation instanceof ArgIncantation) {
@@ -226,11 +254,22 @@ export class DesmostParser extends GenericParser
   }
 
   try_parse_expr_incantation(): MaybeRecoverable<ParseResult.Expression>
-  {
+  {  
+    let init = this.i;
+
     this.try_consume("/");
 
-    // TODO maybe flag to user
-    let incantation = this.try_parse_identifier(EXPR_INCANTATIONS) as ArgIncantation<EXPR>;
+    try {
+      var incantation = this.try_parse_identifier(EXPR_INCANTATIONS) as ArgIncantation<EXPR>;
+    }
+    catch (e) {
+      if (e instanceof RecoverableFail) {
+        // TODO maybe flag to user
+        this.i = init;
+      }
+      throw e;
+    }
+
     let arg_raw = this.parse_incantation_arg(incantation.arg_type);
 
     let data = {};
