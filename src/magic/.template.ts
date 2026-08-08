@@ -1,4 +1,4 @@
-// import { Incantation, ArgIncantation, GLOBAL, LOCAL } from "../incantation";
+// import { Incantation, ArgIncantation, GLOBAL, LOCAL, EXPR } from "../incantation";
 
 
 // export class ?Incantation
@@ -8,7 +8,12 @@
 //   override readonly requires_arg = ?
 //   override readonly arg_type     = Incantation.ArgType.?
 
-//   evaluate_arg(target: ?, data: ?)
+//   override apply(target: ?, data: ?)
+//   {
+//     // TODO
+//   }
+
+//   override evaluate_arg(data: ?): ?
 //   {
 //     // TODO
 //   }

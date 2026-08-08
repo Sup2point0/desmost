@@ -53,7 +53,11 @@ export abstract class ArgIncantation<
    */
   evaluate_arg(data: string): Unrecoverable<Data>
   {
-    return Json5.parse(`{${data}}`);
+    switch (this.arg_type) {
+      case Incantation.ArgType.STRING: return data as Data;
+      case Incantation.ArgType.LATEX:  return data as Data;
+      case Incantation.ArgType.OBJECT: return Json5.parse(`{${data}}`);
+    }
   }
 }
 

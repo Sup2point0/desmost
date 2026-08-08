@@ -10,6 +10,7 @@ export class LatexIncantation
 
   apply(target: Desmos.ExpressionState, data: string): void
   {
+    target.type = "expression";
     // @ts-expect-error: outdated types
     target.latex = data;
   }
