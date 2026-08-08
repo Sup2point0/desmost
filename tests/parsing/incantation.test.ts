@@ -16,7 +16,7 @@ describe("try-parse-global-incantation()", () =>
     let parser = new DesmostParser(`/${incantation.identifier}`);
     let r = parser.try_parse_global_incantation();
     
-    assert.equal(r.kind, ParseResult.Kind.INCANTATION_INSTANCE);
+    assert.equal(r.kind, ParseResult.Kind.INCANTATION_INVOCATION);
     assert.equal(r.incantation, incantation);
   });
 });
@@ -31,7 +31,7 @@ describe("try-parse-local-incantation()", () =>
     let parser = new DesmostParser(`/${incantation.identifier}`);
     let r = parser.try_parse_local_incantation();
     
-    assert.equal(r.kind, ParseResult.Kind.INCANTATION_INSTANCE);
+    assert.equal(r.kind, ParseResult.Kind.INCANTATION_INVOCATION);
     assert.equal(r.incantation, incantation);
   });
 });

@@ -26,8 +26,8 @@ describe("/colour", () =>
     assert.equal(r.data.latex, `y = x^2`);
     assert.equal(r.incantations.length, 1);
     
-    let use = r.incantations[0];
-    assert.deepEqual(use.incantation, new ColourIncantation());
-    assert.equal(use.arg_raw, col)
+    let invocation = r.incantations[0];
+    assert.deepEqual(invocation.incantation, new ColourIncantation());
+    assert.equal(invocation.arg_raw, col)
   });
 });

@@ -8,11 +8,11 @@ export function assert_is_expression(result: ParseResult): asserts result is Par
   assert.equal(result.kind, ParseResult.Kind.EXPRESSION);
 }
 
-export function assert_is_incantation(result: ParseResult): asserts result is ParseResult.IncantationInstance
+export function assert_is_incantation(result: ParseResult): asserts result is ParseResult.IncantationInvocation
 {
   assert.equal(
     result.kind,
-    ParseResult.Kind.INCANTATION_INSTANCE,
+    ParseResult.Kind.INCANTATION_INVOCATION,
     `received: ${util.inspect(result)}`
   );
 }

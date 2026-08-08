@@ -10,9 +10,9 @@ import { assert_is_expression } from "./shared";
 test("/dark", () =>
 {
   let parser = new DesmostParser(`/dark`);
-  let r = parser.parse_next() as ParseResult.IncantationInstance;
+  let r = parser.parse_next() as ParseResult.IncantationInvocation;
 
-  assert.equal(r.kind, ParseResult.Kind.INCANTATION_INSTANCE);
+  assert.equal(r.kind, ParseResult.Kind.INCANTATION_INVOCATION);
   assert.deepEqual(r.incantation, new DarkModeIncantation());
 });
 
@@ -20,9 +20,9 @@ test("/dark", () =>
 test("/viewport", () =>
 {
   let parser = new DesmostParser(`/viewport{ left: -1, right: 1 }`);
-  let r = parser.parse_next() as ParseResult.IncantationInstance;
+  let r = parser.parse_next() as ParseResult.IncantationInvocation;
 
-  assert.equal(r.kind, ParseResult.Kind.INCANTATION_INSTANCE);
+  assert.equal(r.kind, ParseResult.Kind.INCANTATION_INVOCATION);
   assert.deepEqual(r.incantation, new ViewportIncantation());
   assert.deepEqual(r.arg_raw, "left: -1, right: 1");
 });

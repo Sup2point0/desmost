@@ -63,10 +63,10 @@ export class DesmostParser extends GenericParser
    */
   parse_pre_sep():
     MaybeRecoverable<
-      | { global: ParseResult.IncantationInstance<GLOBAL>
+      | { global: ParseResult.IncantationInvocation<GLOBAL>
                 | ParseResult.InvalidIncantation;
       }
-      | { local: Array<ParseResult.IncantationInstance<LOCAL>
+      | { local: Array<ParseResult.IncantationInvocation<LOCAL>
                       | ParseResult.InvalidIncantation>;
       }
     >
@@ -173,7 +173,8 @@ export class DesmostParser extends GenericParser
    */
   try_parse_global_incantation():
     Recoverable<
-    | ParseResult.IncantationInstance<GLOBAL>
+    | ParseResult.IncantationInvocation<GLOBAL>
+    | ParseResult.ArgIncantationInvocation<GLOBAL>
     | ParseResult.InvalidIncantation
     >
   {
@@ -211,7 +212,7 @@ export class DesmostParser extends GenericParser
     this.consume_spaces();
 
     return {
-      kind: ParseResult.Kind.INCANTATION_INSTANCE,
+      kind: ParseResult.Kind.INCANTATION_INVOCATION,
       incantation,
       arg_raw: data,
     };
@@ -222,7 +223,8 @@ export class DesmostParser extends GenericParser
    */
   try_parse_local_incantation():
     Recoverable<
-    | ParseResult.IncantationInstance<LOCAL>
+    | ParseResult.IncantationInvocation<LOCAL>
+    | ParseResult.ArgIncantationInvocation<LOCAL>
     | ParseResult.InvalidIncantation
     >
   {
@@ -260,7 +262,7 @@ export class DesmostParser extends GenericParser
     this.consume_whitespace();
 
     return {
-      kind: ParseResult.Kind.INCANTATION_INSTANCE,
+      kind: ParseResult.Kind.INCANTATION_INVOCATION,
       incantation,
       arg_raw,
     };

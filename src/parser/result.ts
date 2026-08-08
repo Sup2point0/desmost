@@ -1,6 +1,6 @@
 import { UnrecoverableError } from "./errors";
 
-import { Incantation } from "../magic";
+import { Incantation, ArgIncantation } from "../magic";
 
 
 export namespace ParseResult
@@ -10,8 +10,8 @@ export namespace ParseResult
   {
     DONE = "Done",
     EXPRESSION = "Expression",
-    INCANTATION_INSTANCE = "IncantationInstance",
-    INVALID_INCANTATION = "InvalidIncantation",
+    INCANTATION_INVOCATION = "Incantation-Invocation",
+    INVALID_INCANTATION = "Invalid-Incantation",
   }
 
 
@@ -28,22 +28,31 @@ export namespace ParseResult
     kind: Kind.EXPRESSION
     data: Desmos.ExpressionState
     incantations: Array<
-      | IncantationInstance<Incantation.Effect.LOCAL>
+      | IncantationInvocation<Incantation.Effect.LOCAL>
+      | ArgIncantationInvocation<Incantation.Effect.LOCAL>
       | InvalidIncantation
       >
   }
 
 
-  /** A pending incantation usage that requires parsing of `data`, and applying its effect. */
-  export interface IncantationInstance<Effect extends Incantation.Effect = Incantation.Effect>
+  /** A pending incantation invocation that requires applying its effect. */
+  export interface IncantationInvocation<Effect extends Incantation.Effect = Incantation.Effect>
   {
-    kind: Kind.INCANTATION_INSTANCE
+    kind: Kind.INCANTATION_INVOCATION
     incantation: Incantation<Effect>
-    arg_raw?: string
+    
+  }
+
+  /** A pending incantation invocation that requires evaluating its argument, then applying its effect. */
+  export interface ArgIncantationInvocation<Effect extends Incantation.Effect = Incantation.Effect>
+    extends IncantationInvocation<Effect>
+  {
+    incantation: ArgIncantation<Effect>
+    arg_raw: string
   }
 
   /**
-   * An invalid invantation usage that raised an error when parsed.
+   * An invalid invantation invocation that raised an error when parsed.
    * 
    * This will be propogated to the user as an extra Desmos text expression (unless they have `errors: false` configured).
    */
@@ -51,8 +60,8 @@ export namespace ParseResult
   {
     kind: Kind.INVALID_INCANTATION
     incantation: Incantation
-    error: UnrecoverableError
     arg_raw?: string
+    error: UnrecoverableError
   }
 }
 
@@ -60,6 +69,7 @@ export namespace ParseResult
 export type ParseResult =
   | ParseResult.Done
   | ParseResult.Expression
-  | ParseResult.IncantationInstance
+  | ParseResult.IncantationInvocation
+  | ParseResult.ArgIncantationInvocation
   | ParseResult.InvalidIncantation
 ;
