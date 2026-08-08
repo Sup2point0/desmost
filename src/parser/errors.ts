@@ -1,7 +1,10 @@
-/** The parser encountered a fatal unrecoverable error, which will reach the end user. */
+/**
+ * The parser encountered a fatal unrecoverable error, which will reach the end user.
+ * 
+ * It's not *literally* unrecoverable in the sense that it will crash the compiler completely, but it means there are no further fallbacks to try.
+ */
 export class UnrecoverableError extends Error {}
 
-/** The parser encountered a fatal unrecoverable error, which will reach the end user. */
 export namespace UnrecoverableError
 {
   /** The parser unexpectedly reached the end of its entire input source code. */

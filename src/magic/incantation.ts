@@ -70,7 +70,7 @@ export namespace Incantation
     LOCAL,
     
     /** An incantation that produces an expression, like `/latex` or `/text`. */
-    EXPRESSION,
+    EXPR,
   }
 
   /** The type of argument an incantation accepts, which affects how it is parsed. */
@@ -90,14 +90,20 @@ export namespace Incantation
 
 // == ERRORS == //
 
+// FIXME not needed, use unified Recoverable/Unrecoverable
+
 /** Desmost failed to apply an incantation. */
 export class IncantationError extends Error {}
 
 
 // == ALIASES == //
 
-/** An incantation that affects the entire Desmos calculator state. */
+/** An incantation that affects the entire Desmos calculator state, like `/desmos` or `/viewport`. */
 export type GLOBAL = Incantation.Effect.GLOBAL;
 
-/** An incantation that affects only the expression immediately following it. */
+/** An incantation that affects only the expression immediately following it, like `/hide` or `/slider`. */
 export type LOCAL = Incantation.Effect.LOCAL;
+
+/** An incantation that produces an expression, like `/latex` or `/text`. */
+export type EXPR = Incantation.Effect.EXPR;
+
