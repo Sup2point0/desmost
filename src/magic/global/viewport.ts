@@ -1,6 +1,6 @@
 import Json5 from "JSON5";
 
-import { DataIncantation, GLOBAL } from "../incantation";
+import { Incantation, ArgIncantation, GLOBAL } from "../incantation";
 
 
 interface ViewportBounds
@@ -10,12 +10,14 @@ interface ViewportBounds
 }
 
 
-export class ViewportIncantation extends DataIncantation<GLOBAL, ViewportBounds>
+export class ViewportIncantation
+  extends ArgIncantation<GLOBAL, ViewportBounds>
 {
   override readonly identifier = "viewport"
   override readonly requires_arg = true
+  override readonly arg_type = Incantation.ArgType.OBJECT
 
-  parse_arg(data: string): ViewportBounds
+  evaluate_arg(data: string): ViewportBounds
   {
     return Json5.parse(`{${data}}`);
   }

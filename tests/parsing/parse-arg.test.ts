@@ -1,12 +1,25 @@
 import { DesmostParser } from "../../src/parser";
+import { Incantation } from "../../src/magic";
+
+import { matrix } from "../shared";
 
 
-function run_test([src, expected]: string[])
+const ARG_TYPES = [
+  Incantation.ArgType.STRING,
+  Incantation.ArgType.LATEX,
+  Incantation.ArgType.OBJECT,
+];
+
+
+function run_test(
+  arg_type: Incantation.ArgType,
+  [src, expected]: string[],
+)
 {
   expected ??= "<NO EXPECTED CASE PROVIDED>";
-  
+
   let parser = new DesmostParser(src);
-  let r = parser.parse_arg();
+  let r = parser.parse_arg(arg_type);
   assert.equal(r.trim(), expected);
   assert.equal(r, expected);
 }
@@ -16,42 +29,59 @@ describe("parse-arg()", () =>
 {
   describe("omitted", () =>
   {
-    test("empty", () => {
+    test.each(ARG_TYPES)
+    ("empty", arg_type => {
       let parser = new DesmostParser(`{}`);
-      let r = parser.parse_arg();
+      let r = parser.parse_arg(arg_type);
       assert.equal(r, "");
     });
 
-    test.for([
-      `{ }`,
-      `{  }`,
-      `{\n}`,
-      `{ \n}`,
-      `{\n }`,
-      `{ \n }`,
-      `{\n\n}`,
-      `{ \n \n }`,
-      `{ \n \r\n }`,
-    ])
-    ("whitespace", src => run_test([src, ""]));
+    test.each(matrix(
+      ARG_TYPES,
+      [
+        `{ }`,
+        `{  }`,
+        `{\n}`,
+        `{ \n}`,
+        `{\n }`,
+        `{ \n }`,
+        `{\n\n}`,
+        `{ \n \n }`,
+        `{ \n \r\n }`,
+      ].map(src => [src, ""])
+    ))
+    ("whitespace", run_test);
   });
 
   describe("string", () =>
   {
-    test.for([
-      `{sup}`,
-      `{sup }`,
-      `{ sup}`,
-      `{ sup }`,
-      `{\nsup\n}`,
-      `{\n  sup\n}`,
-    ])
-    (`"sup"`, src => run_test([src, "sup"]));
+    test.each(matrix(
+      [
+        Incantation.ArgType.STRING,
+        Incantation.ArgType.LATEX,
+      ], [
+        `{sup}`,
+        `{sup }`,
+        `{ sup}`,
+        `{ sup }`,
+        `{\nsup\n}`,
+        `{\n  sup\n}`,
+      ].map(src => [src, "sup"])
+    ))
+    (`"sup"`, run_test);
+    
+    test.each(matrix([
+      Incantation.ArgType.STRING,
+      Incantation.ArgType.LATEX,
+    ], [
+      [`{ don't track }`, `don't track`],
+    ]))
+    (`with quotes`, run_test);
   });
 
   describe("object", () =>
   {
-    test.for([
+    test.each(matrix([Incantation.ArgType.OBJECT], [
       [`{x: 1}`,           `x: 1`],
       [`{x: 1 }`,          `x: 1`],
       [`{ x: 1}`,          `x: 1`],
@@ -59,20 +89,26 @@ describe("parse-arg()", () =>
       [`{ x: 1, y: 2 }`,   `x: 1, y: 2`],
       [`{ sup: 2.0 }`,     `sup: 2.0`],
       [`{ sup: "world" }`, `sup: "world"`],
-    ])
+    ]))
     ("flat", run_test);
 
-    test.for([
+    test.each(matrix([Incantation.ArgType.OBJECT], [
       [`{obj:{x:1}}`,       `obj:{x:1}`],
       [`{ obj: { x: 1 }}`,  `obj: { x: 1 }`],
       [`{ obj: { x: 1 } }`, `obj: { x: 1 }`],
-    ])
+    ]))
     ("nested", run_test);
 
-    test.for([
+    test.each(matrix([Incantation.ArgType.OBJECT], [
+      [`{ diabolical: '{error' }`, `diabolical: '{error'`],
+      [`{ diabolical: "{error" }`, `diabolical: "{error"`],
+    ]))
+    ("with { in string", run_test);
+
+    test.each(matrix([Incantation.ArgType.OBJECT], [
       [`{ diabolical: 'error}' }`, `diabolical: 'error}'`],
       [`{ diabolical: "error}" }`, `diabolical: "error}"`],
-    ])
+    ]))
     ("with } in string", run_test);
   });
 });

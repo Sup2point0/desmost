@@ -29,24 +29,25 @@ export abstract class Incantation<
 }
 
 
-export abstract class DataIncantation<
+export abstract class ArgIncantation<
   Effect extends Incantation.Effect = Incantation.Effect,
   Data = any,
 >
   extends Incantation<Effect, Data>
 {
   /** Does this incantation always require an argument to be passed? */
-  requires_arg: boolean = true
+  readonly requires_arg: boolean = true
+
+  /** What type of argument does this incantation accept? */
+  abstract readonly arg_type: Incantation.ArgType
 
 
   /**
-   * Parse the argument provided to this incantation, throwing if an error is encountered.
-   * 
-   * If parsing is successful, the evaluated data is returned.
+   * Evaluate the argument provided to this incantation, throwing if an error is encountered.
    * 
    * For instance, for `/viewport{ left: -1, right: 1 }`, this returns the POJO `{ left: -1, right: 1 }`.
    */
-  abstract parse_arg(data: string): Unrecoverable<Data>
+  abstract evaluate_arg(data: string): Unrecoverable<Data>
 }
 
 
@@ -55,11 +56,27 @@ export namespace Incantation
   /** The kind of effect an incantation produces - it either modifies only one block, or modifies the calculator as a whole. */
   export enum Effect
   {
-    /** An incantation that affects the entire Desmos calculator state. */
+    /** An incantation that affects the entire Desmos calculator state, like `/desmos` or `/viewport`. */
     GLOBAL,
 
-    /** An incantation that affects only the expression immediately following it. */
+    /** An incantation that affects only the expression immediately following it, like `/hide` or `/slider`. */
     LOCAL,
+    
+    /** An incantation that produces an expression, like `/latex` or `/text`. */
+    EXPRESSION,
+  }
+
+  /** The type of argument an incantation accepts, which affects how it is parsed. */
+  export enum ArgType
+  {
+    /** Any arbitrary user text content, where characters like `"` and `'` don't have semantic meaning and can be ignored. */
+    STRING,
+
+    /** LaTeX, which should have balanced `{}` braces. */
+    LATEX,
+
+    /** JavaScript object fields, where characters like `{}` and `"` all have semantic meaning, and must be balanced. */
+    OBJECT,
   }
 }
 

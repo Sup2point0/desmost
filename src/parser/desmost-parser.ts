@@ -222,7 +222,9 @@ export class DesmostParser extends GenericParser
    * 
    * ## Notes
    * 
-   * We don't really care for what type the argument is, we just want to find the closing `}`. However, the argument might be *meant* to contain a `}`. We need a way to accurately identify the true closing brace:
+   * We don't actually care for what type the argument is since we won't be evaluating it, we just want to find the closing `}`.
+   * 
+   * However, the argument itself might be *meant* to contain a `}`. So we need a way to accurately identify the actual closing brace:
    * 
    * ```ts
    * /incantation{ field: { value: 1 } }
@@ -234,7 +236,7 @@ export class DesmostParser extends GenericParser
    * However, there's still more edge cases:
    * 
    * ```ts
-   * /text{ "This }s weird" }
+   * /label{ text: "This }s weird" }
    *              ^
    * ```
    * 
@@ -249,25 +251,39 @@ export class DesmostParser extends GenericParser
    * 
    * If the user truly mismatches `{}`, then, well ...parsing will fail catastrophically!
    */
-  parse_arg(): Unrecoverable<string>
+  parse_arg(
+    /**
+     * The type of argument to parse.
+     * 
+     * Parsing strategy varies for different types:
+     * 
+     * - String / LaTeX: Track only balanced `{}` and escaped `\{\}`.
+     * - JavaScript object: The above, plus balanced string quotes.
+     */
+    arg_type: Incantation.ArgType,
+  ): Unrecoverable<string>
   {
     let init = this.i;
-    let errors: string[] = [];
 
     this.consume("{",
       `Expected '{' to start incantation argument, but received: ${this.preview()}`
     );
 
     enum Ctx {
-      BLOCK           = Char.L_BRACE,
-      STRING_SINGLE   = Char.QUOTE_SINGLE,
-      STRING_DOUBLE   = Char.QUOTE_DOUBLE,
-      STRING_TEMPLATE = Char.BACKTICK,
-      ESCAPE          = Char.BACKSLASH,
+      BLOCK  = Char.L_BRACE,
+      STR_1  = Char.QUOTE_SINGLE,
+      STR_2  = Char.QUOTE_DOUBLE,
+      STR_F  = Char.BACKTICK,
+      ESCAPE = Char.BACKSLASH,
     }
 
     let stack: Ctx[] = [Ctx.BLOCK];
 
+    /**
+     * Pop `ctx` if it is the currently active context, returning `true` if successful.
+     * 
+     * If `{ force: true }`, backtrack the stack and report errors for unterminated contexts.
+    */
     function try_pop(ctx: Ctx, options?: { force: boolean }): boolean
     {
       if (stack.at(-1) === ctx) {
@@ -276,10 +292,12 @@ export class DesmostParser extends GenericParser
       }
       else if (options?.force) {
         if (stack.includes(ctx)) {
+          /* NOTE: We could report errors for unterminated contexts, but we'll leave that for the actual evaluation - in case we get something wrong ;) */
           while (stack.at(-1) !== ctx) {
-            errors.push(`Unterminated ${stack.at(-1)}`);
             stack.pop();
           }
+
+          return true;
         }
       }
 
@@ -289,35 +307,36 @@ export class DesmostParser extends GenericParser
     while (stack.length > 0) {
       let top = stack.at(-1)!;
 
-      if (top === Ctx.ESCAPE) {
-        stack.pop();
-
+      if (try_pop(Ctx.ESCAPE)) {
         this.advance(
           `Unexpected end of input while parsing incantation argument, stack: ${JSON.stringify(stack)}`
         );
       }
 
       switch (this.current) {
-        /* NOTE: *Currently* {} should be ignored in all contexts except `Ctx.BLOCK`. This might change if more contexts are added in future */
+        case Ctx.ESCAPE: stack.push(Ctx.ESCAPE); break;
+
+        /* NOTE: *Currently* `{}` should be ignored in all contexts except `Ctx.BLOCK`. This might change if more contexts are added in future! */
         case Char.L_BRACE:
           if (top !== Ctx.BLOCK) break;
-          stack.push(Ctx.BLOCK);
-          break;
+          stack.push(Ctx.BLOCK); break;
+
         case Char.R_BRACE:
           if (top !== Ctx.BLOCK) break;
-          try_pop(Ctx.BLOCK, { force: true });
-          break;
-          
-        case Ctx.STRING_SINGLE: try_pop(Ctx.STRING_SINGLE) || stack.push(Ctx.STRING_SINGLE); break;
-        case Ctx.STRING_SINGLE: try_pop(Ctx.STRING_DOUBLE) || stack.push(Ctx.STRING_DOUBLE); break;
-        case Ctx.STRING_SINGLE: try_pop(Ctx.STRING_TEMPLATE) || stack.push(Ctx.STRING_TEMPLATE); break;
+          try_pop(Ctx.BLOCK, { force: true }); break;
+      }
 
-        case Ctx.ESCAPE: stack.push(Ctx.ESCAPE); break;
+      if (arg_type === Incantation.ArgType.OBJECT) {
+        switch (this.current) {
+          case Ctx.STR_1: try_pop(Ctx.STR_1) || stack.push(Ctx.STR_1); break;
+          case Ctx.STR_2: try_pop(Ctx.STR_2) || stack.push(Ctx.STR_2); break;
+          case Ctx.STR_F: try_pop(Ctx.STR_F) || stack.push(Ctx.STR_F); break;
+        }
       }
 
       this.advance();
     }
-    
+
     /* NOTE: Cut in by 1 on both sides to exclude {} braces */
     return this.source.slice(init + 1, this.i - 1).trim();
   }
