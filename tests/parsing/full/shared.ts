@@ -8,7 +8,7 @@ export function assert_expression(result: ParseResult): asserts result is ParseR
 
 export function assert_incantation(result: ParseResult): asserts result is ParseResult.IncantationInstance
 {
-  assert.equal(result.kind, ParseResult.Kind.INCANTATION);
+  assert.equal(result.kind, ParseResult.Kind.INCANTATION_INSTANCE);
 }
 
 

@@ -1,9 +1,26 @@
-import { DesmostParser } from "../../src/parser";
-import { GLOBAL_INCANTATIONS, LOCAL_INCANTATIONS } from "../../src/magic";
+import { DesmostParser, ParseResult } from "../../src/parser";
+import { ArgIncantation, GLOBAL_INCANTATIONS } from "../../src/magic";
 import { ViewportIncantation } from "../../src/magic/global/viewport";
 
 import { ltx } from "../shared";
 
+
+describe("try-parse-global-incantation()", () =>
+{
+  describe("without-data", () =>
+  {
+    test.for(GLOBAL_INCANTATIONS)(`${GLOBAL_INCANTATIONS.length} cases`, incantation =>
+    {
+      if (incantation instanceof ArgIncantation) return;
+      
+      let parser = new DesmostParser(`/${incantation.identifier}`);
+      let result = parser.try_parse_global_incantation();
+      
+      assert.equal(result.kind, ParseResult.Kind.INCANTATION_INSTANCE);
+      assert.equal(result.incantation, incantation);
+    });
+  });
+});
 
 describe("try-parse-global-incantation-identifier()", () =>
 {
