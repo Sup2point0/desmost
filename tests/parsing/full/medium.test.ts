@@ -3,9 +3,7 @@ import { DesmostParser, ParseResult } from "../../../src/parser";
 import { DesmosIncantation } from "../../../src/magic/global/desmos";
 
 import { ltx } from "../../shared";
-import { assert_expression, assert_incantation, assert_parse_blank_line } from "./shared";
-
-import util from "node:util";
+import { assert_is_expression, assert_is_incantation, assert_parses_blank_line } from "../shared";
 
 
 // example from /docs/learn-x-in-y.md
@@ -21,7 +19,7 @@ const SOURCE = ltx `
 /text{ Definite Integral Calculator }
 
 /text{ Enter your integrand here: }
-/color{ BLUE } :: f(x) = 
+/colour{ BLUE } :: f(x) =
 
 /text{ Enter your integration bounds here: }
 a = 0
@@ -31,10 +29,9 @@ b = 1
 \int_{a}^{b} f(x) \ dx
 
 /secret
-/fill{
-  color: BLUE,
-  opacity: 0.2,
-}
+/colour { BLUE }
+/no-line
+/fill{ opacity: 0.2 }
   :: /latex{
     min(0, f(x))
     \leq y
@@ -49,12 +46,11 @@ b = 1
 test("medium", () =>
 {
   let parser = new DesmostParser(SOURCE);
-
   let r: ParseResult;
   
   // desmos
   r = parser.parse_next();
-  assert_incantation(r);
+  assert_is_incantation(r);
   assert.deepEqual(r.incantation, new DesmosIncantation());
   assert.isDefined(r.arg_raw);
   assert.include(r.arg_raw, "expressions: true,");
@@ -62,18 +58,36 @@ test("medium", () =>
   
   // viewport
   r = parser.parse_next();
-  assert_incantation(r);
+  assert_is_incantation(r);
   assert.equal(r.incantation.identifier, "viewport");
   assert.isDefined(r.arg_raw);
   assert.include(r.arg_raw, "left: -8,");
   assert.include(r.arg_raw, "right: 8,");
   
-  assert_parse_blank_line(parser);
+  assert_parses_blank_line(parser);
 
-  // /text :: Definite Integral Calculator
+  // /text{ Definite Integral Calculator }
   r = parser.parse_next();
-  assert_expression(r);
-  assert.equal(r.data.type, "text", util.inspect(r.data));
+  assert_is_expression(r);
+  assert.equal(r.data.type, "text");
+  // @ts-expect-error: outdated types
   assert.equal(r.data.text, "Definite Integral Calculator");
   assert.deepEqual(r.incantations, []);
+
+  assert_parses_blank_line(parser);
+
+  // /text{ Enter your integrand here: }
+  r = parser.parse_next();
+  assert_is_expression(r);
+  assert.equal(r.data.type, "text");
+  // @ts-expect-error: outdated types
+  assert.equal(r.data.text, "Enter your integrand here:");
+  assert.deepEqual(r.incantations, []);
+
+  // /colour{ BLUE } :: f(x) =
+  r = parser.parse_next();
+  assert_is_expression(r);
+  // @ts-expect-error: outdated types
+  assert.equal(r.data.latex, `f(x) =`);
+  assert.equal(r.incantations.length, 1);
 });

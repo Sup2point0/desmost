@@ -1,7 +1,10 @@
 import { DarkModeIncantation } from "../../src/magic/global/dark-mode";
 import { ViewportIncantation } from "../../src/magic/global/viewport";
+import { LatexIncantation } from "../../src/magic/expr/latex";
+import { TextIncantation } from "../../src/magic/expr/text";
 
 import { DesmostParser, ParseResult } from "../../src/parser";
+import { assert_is_expression } from "./shared";
 
 
 test("/dark", () =>
@@ -22,4 +25,21 @@ test("/viewport", () =>
   assert.equal(r.kind, ParseResult.Kind.INCANTATION_INSTANCE);
   assert.deepEqual(r.incantation, new ViewportIncantation());
   assert.deepEqual(r.arg_raw, "left: -1, right: 1");
+});
+
+
+describe("/latex", () =>
+{
+  test("easy", () =>
+  {
+    let parser = new DesmostParser(`/latex{ y = x^2 }`);
+    let r = parser.parse_next() as ParseResult.Expression;
+
+    assert_is_expression(r);
+    // @ts-expect-error: outdated types
+    assert.isNotEmpty(r.data.latex);
+    // @ts-expect-error: outdated types
+    assert.equal(r.data.latex, "y = x^2")
+    assert.deepEqual(r.incantations, []);
+  });
 });
