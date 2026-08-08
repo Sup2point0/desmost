@@ -145,8 +145,6 @@ export class DesmostParser extends GenericParser
       this.advance();
     }
 
-    this.i++;
-
     return {
       kind: ParseResult.Kind.EXPRESSION,
       data: { latex: this.source.slice(init, this.i) },
