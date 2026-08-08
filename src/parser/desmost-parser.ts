@@ -305,15 +305,24 @@ export class DesmostParser extends GenericParser
   ): Recoverable<Incantation<Effect>>
   {
     for (let incantation of incantations) {
+      // yeah the duplication here is a little meh, unfortunately needing `return` means we can't extract it into a helper
       try {
         this.try_consume(incantation.identifier);
+        return incantation;
       }
       catch (e) {
-        if (e instanceof RecoverableFail) continue;
-        throw e;
+        if (!(e instanceof RecoverableFail)) throw e;
       }
-      
-      return incantation;
+
+      if (incantation.alias != undefined) {
+        try {
+          this.try_consume(incantation.alias);
+          return incantation;
+        }
+        catch (e) {
+          if (!(e instanceof RecoverableFail)) throw e;
+        }
+      }
     }
 
     throw new RecoverableFail();
