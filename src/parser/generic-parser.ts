@@ -59,9 +59,9 @@ export class GenericParser
   /**
    * Peek a snippet of the upcoming source text (for error messages).
    */
-  protected preview(): string
+  preview(): string
   {
-    return this.source.slice(this.i, this.i + 20);
+    return this.source.slice(this.i, this.i + 20) + "...";
   }
 
   /**

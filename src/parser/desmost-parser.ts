@@ -36,23 +36,23 @@ export class DesmostParser extends GenericParser
         // 1 global
         return r.global;
       }
-      else {
-        // 1+ locals + 1 expr
-        let incantations = r.local;
 
-        let expr = this.parse_post_sep();
+      // 1+ locals + 1 expr
+      let incantations = r.local;
 
-        for (let instance of incantations) {
-          expr.incantations.push(instance);
-        }
+      var expr = this.parse_post_sep();
 
-        return expr;
+      for (let instance of incantations) {
+        expr.incantations.push(instance);
       }
     }
     else {
       // 1 expr
-      return this.parse_post_sep();
+      var expr = this.parse_post_sep();
     }
+
+    this.consume_end_of_block();
+    return expr;
   }
 
   /**
