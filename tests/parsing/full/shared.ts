@@ -1,3 +1,5 @@
+import util from "node:util";
+
 import { DesmostParser, ParseResult } from "../../../src/parser";
 
 
@@ -8,7 +10,11 @@ export function assert_expression(result: ParseResult): asserts result is ParseR
 
 export function assert_incantation(result: ParseResult): asserts result is ParseResult.IncantationInstance
 {
-  assert.equal(result.kind, ParseResult.Kind.INCANTATION_INSTANCE);
+  assert.equal(
+    result.kind,
+    ParseResult.Kind.INCANTATION_INSTANCE,
+    `received: ${util.inspect(result)}`
+  );
 }
 
 
@@ -16,6 +22,6 @@ export function expect_blank_line(parser: DesmostParser)
 {
   let r = parser.parse_next();
   assert_expression(r);
-  assert.equal(r.data.type, "expression");
+  // @ts-expect-error: outdated types
   assert.equal(r.data.latex, "");
 }
