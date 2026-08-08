@@ -70,13 +70,13 @@ export namespace Incantation
   export enum ArgType
   {
     /** Any arbitrary user text content, where characters like `"` and `'` don't have semantic meaning and can be ignored. */
-    STRING,
+    STRING = "String",
 
     /** LaTeX, which should have balanced `{}` braces. */
-    LATEX,
+    LATEX = "LaTeX",
 
     /** JavaScript object fields, where characters like `{}` and `"` all have semantic meaning, and must be balanced. */
-    OBJECT,
+    OBJECT = "Object",
   }
 }
 
