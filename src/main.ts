@@ -1,5 +1,6 @@
-import { DesmostOptions } from "./options";
+import { DesmostOptions, set_default_options } from "./options";
 import { DesmostParser, ParseResult } from "./parser";
+import { evaluate_global_incantation, evaluate_expr, evaluate_global_incantation_error } from "./evaluate";
 
 
 /**
@@ -14,37 +15,31 @@ export function compile(
   /** The Desmost source code. */
   source: string,
 
-  options: DesmostOptions,
+  options?: DesmostOptions,
 ): void
 {
+  options = set_default_options(options);
+
   let parser = new DesmostParser(source);
 
   while (true) {
-    let block = parser.parse_next();
+    let r = parser.parse_next();
 
-    if (block === ParseResult.DONE) {
+    if (r === ParseResult.DONE) {
       break;
     }
     
-    switch (block.kind) {
-      // global incantation
+    switch (r.kind) {
       case ParseResult.Kind.INCANTATION_INVOCATION:
-        let data = undefined;
-
-        if ("arg_raw" in block) {
-          data = block.incantation.evaluate_arg(block.arg_raw);
-        }
-
-        block.incantation.apply(desmos, data);
+        evaluate_global_incantation(r, desmos, options);
         break;
 
-      // global incantation (error)
       case ParseResult.Kind.INVALID_INCANTATION:
-        // TODO
+        evaluate_global_incantation_error(r, desmos, options);
         break;
 
-      // expression
       case ParseResult.Kind.EXPRESSION:
+        evaluate_expr(r, desmos, options);
         break;
     }
   }

@@ -19,15 +19,15 @@ export class DesmostParser extends GenericParser
   // == TOP-LEVEL == //
 
   /**
-   * Parse the next semantic block of source code.
+   * Parse the next semantic block of source code, which may return one result or multiple results.
    */
   parse_next(): ParseResult
   {
+    this.consume_spaces();
+
     if (this.out_of_bounds()) {
       return ParseResult.DONE;
     }
-
-    this.consume_spaces();
 
     if (this.current === "/") {
       let r = this.parse_pre_sep();
@@ -40,19 +40,20 @@ export class DesmostParser extends GenericParser
       // 1+ locals + 1 expr
       let incantations = r.local;
 
-      var expr = this.parse_post_sep();
+      let expr = this.parse_post_sep();
 
-      for (let instance of incantations) {
-        expr.incantations.push(instance);
+      for (let invocation of incantations) {
+        expr.incantations.push(invocation);
       }
+
+      return expr;
     }
     else {
       // 1 expr
-      var expr = this.parse_post_sep();
+      let expr = this.parse_post_sep();
+      this.consume_end_of_block();
+      return expr;
     }
-
-    this.consume_end_of_block();
-    return expr;
   }
 
   /**

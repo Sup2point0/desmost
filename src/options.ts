@@ -1,18 +1,36 @@
 /** Options to customise Desmost compilation. */
 export interface DesmostOptions
 {
-  /** Should errors be surfaced at all?
-   * 
-   * Defaults to `true`.
-   */
   show_errors?: boolean;
+
+  /**
+   * How should errors be *surfaced*?
+   * 
+   * Errors will always be logged to console for the developer; this setting affects how they visually reach the end user.
+   * 
+   * - `warn` (default): Blocks that result in errors will become Desmos text expressions containing the error message, leaving other expressions unaffected.
+   * - `crash`: The entire compilation to Desmos will terminate with a single error message. This means you don't get any output at all, but errors are also immediately obvious.
+   * - `hide`: Silently fail on the frontend (if you wish to give the illusion that everything is fine).
+   */
+  errors?: "warn" | "crash" | "hide";
 
   /**
    * Where should errors be placed?
    * 
-   * - `inline`: Alongside or in place of the expression that produced it
-   * - `end`: All aggregated at the end of the Desmos expressions list
-   * - `start`: All aggregated at the start of the Desmos expressions list
+   * - `inline` (default): Alongside or in place of the expression that produced it.
+   * - `end`: All aggregated at the end of the Desmos expressions list.
+   * - `start`: All aggregated at the start of the Desmos expressions list.
    */
   place_errors?: "inline" | "end" | "start";
+}
+
+
+export function set_default_options(options: Partial<DesmostOptions> | undefined): DesmostOptions
+{
+  options ??= {};
+  
+  options.errors ??= "warn";
+  options.place_errors ??= "inline";
+
+  return options;
 }
