@@ -6,15 +6,28 @@ import { evaluate_global_incantation, evaluate_expr, evaluate_global_incantation
 /**
  * Compile Desmost into Desmos.
  * 
- * This calls the Desmost compiler: parsing `source`, and injecting the results into an existing `desmos` instance.
+ * This calls the Desmost compiler: parsing and evaluating `source`, then injecting the results into an existing `desmos` instance. Pass in `options` to customise compilation.
+ * 
+ * ## Example
+ * 
+ * ```ts
+ * let calc = Desmos.GraphingCalculator();
+ * 
+ * compile(calc, `/text{ sup world! }`);
+ * 
+ * compile(calc, `/slider{ error! } :: t = 0`, {
+ *   errors: "crash",
+ * });
+ * ```
  */
 export function compile(
-  /** The Desmos calculator instance to modify. */
+  /** The Desmos calculator instance to compile into. */
   desmos: Desmos.Calculator,
 
-  /** The Desmost source code. */
+  /** The Desmost source code to compile. */
   source: string,
 
+  /** Compilation options. */
   options?: DesmostOptions,
 ): void
 {

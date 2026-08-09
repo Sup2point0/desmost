@@ -41,6 +41,29 @@ export function evaluate_expr(
 ): void
 {
   for (let invocation of expr.incantations) {
-    desmos.setExpression(expr.data);
+    if (invocation.kind === ParseResult.Kind.INVALID_INCANTATION) {
+      evaluate_expr_error(invocation, desmos, options);
+      continue;
+    }
+
+    let data = undefined;
+
+    if ("arg_raw" in invocation) {
+      data = invocation.incantation.evaluate_arg(invocation.arg_raw);
+    }
+
+    invocation.incantation.apply(expr.data, data);
   }
+  
+  desmos.setExpression(expr.data);
+}
+
+
+function evaluate_expr_error(
+  error: ParseResult.InvalidIncantation,
+  desmos: Desmos.Calculator,
+  options: DesmostOptions,
+)
+{
+  // TODO
 }
