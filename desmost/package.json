@@ -1,24 +1,24 @@
 {
-  "name": "demost",
+  "name": "desmost",
   "author": "Sup#2.0",
   "version": "0.1.0",
   "license": "MIT",
 
-  "description": "Parse custom Desmos markup syntax in Markdown code blocks",
+  "description": "A tiny DSL for compiling LaTeX to Desmos",
   "keywords": [
-    "desmos"
+    "desmos", "latex", "desmost"
   ],
   
   "type": "module",
   "main": "index.ts",
 
-  "homepage": "https://github.com/Sup2point0/demost#readme",
+  "homepage": "https://github.com/Sup2point0/desmost#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Sup2point0/demost.git"
+    "url": "git+https://github.com/Sup2point0/desmost.git"
   },
   "bugs": {
-    "url": "https://github.com/Sup2point0/demost/issues"
+    "url": "https://github.com/Sup2point0/desmost/issues"
   },
 
   "scripts": {
