@@ -35,6 +35,7 @@
   {
     "@types/desmos": "1.11",
     "@types/node": "^26.0",
+    "typescript": "^7.0",
     "vitest": "^4.0"
   }
 }

@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "noImplicitOverride": true,
+    "strict": true,
     "types": ["desmos", "node", "vitest/globals"]
   }
 }
