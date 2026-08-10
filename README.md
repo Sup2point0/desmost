@@ -2,17 +2,23 @@
 
 # Desmost
 
-[Docs](docs/) · [Walkthrough](docs/readme.md) · [Learn X in Y](docs/learn-x-in-y.md) · [Spec](docs/grammar.md) · [Playground](https://sup2point0.github.io/desmost)
+[Docs](docs/) · [Walkthrough](docs/readme.md) · [Learn X in Y](docs/writing/learn-x-in-y.md) · [Spec](docs/spec/) · [Playground](https://sup2point0.github.io/desmost)
 
 </div>
 
 > [!Warning]
 > I’ve only just started developing this project, so it’s not quite presentable yet!
 
-***Desmost*** compiles LaTeX into Desmos. You write this:
+***Desmost*** compiles LaTeX into Desmos.
 
-```hs
-/viewport{ left: -5, right: 5 }
+<table>
+  <tr>
+    <th> You write this: </th>
+    <th> and Desmost gives you this: </th>
+  </tr>
+  <tr>
+    <td>
+      <pre><code lang="hs">/viewport{ left: -5, right: 5 }
 
 A = 1
 y = A \sin(x - t)
@@ -21,12 +27,18 @@ y = A \sin(x - t)
   :: (0, 2)
 
 /anim /slider{ min: -1, max: 1 }
-  :: t = 0
-```
-
-and Desmost gives you this:
-
-![“Desmos(t) is awesome!”, but in a fully-fledged Desmos graphing calculator embed](.assets/)
+  :: t = 0</code></pre>
+    </td>
+    <td>
+      <a href="https://sup2point0.github.io/desmost">
+        <img
+          src=".assets/"
+          alt="“Desmos(t) is awesome!”, but in a fully-fledged Desmos graphing calculator embed"
+        />
+      </a>
+    </td>
+  </tr>
+</table>
 
 In other words, it’s like HTML+CSS, but for Desmos. Write your content in LaTeX (alongside your Markdown!), and Desmost will produce the Desmos calculator for you.
 
@@ -94,7 +106,7 @@ Or, if you enjoy nice things, Desmost provides a [Svelte](https://svelte.dev) co
 Pass in options directly to customise compilation:
 
 ```svelte
-<Desmost height="90vh" errors="fail">
+<Desmost height="90vh" errors="crash">
   <Content />
 </Desmost>
 ```
@@ -122,7 +134,7 @@ y = ax^2 + bx + c
 ### Intuitive
 But let’s say you want to animate the slider for one of those variables in Desmos.
 
-All you need to do is add `/anim` in front of that line:
+All you need to do is add `/anim` in front of that line, with a `::` delimiter:
 
 ```hs
 /anim :: a = 2
@@ -132,10 +144,9 @@ c = 5
 y = ax^2 + bx + c
 ```
 
-Easy, innit? These are called ***incantations***, and it’s the only syntax there is in Desmost (told you it was a tiny DSL).
+These are called ***incantations***, and it’s the only syntax there is in Desmost.[^tiny]
 
-> [!Tip]
-> `::` is the delimiter for separating Desmost incantations from actual LaTeX.
+[^tiny]: Told you it was a tiny DSL :D
 
 When Desmost compiles this into Desmos, it’ll see `/anim` and know to set `playing: true` for that particular Desmos expression.
 
@@ -149,6 +160,9 @@ c = 5
 
 y = ax^2 + bx + c
 ```
+
+> [!Tip]
+> Look familiar? Desmost’s incantation syntax mirrors LaTeX’s `\backslash{}` commands!
 
 ### Readable
 This line is getting a little long, though. We can break it up over multiple lines:[^multi-line]
@@ -174,7 +188,7 @@ I = \int \frac{1 + x + x^2}{1 + x} \ dx
 
 We’ve got an incantation for that – `/latex`:
 
-```
+```hs
 /latex{
   I = \int \frac
       {1 + x + x^2}
@@ -185,7 +199,7 @@ We’ve got an incantation for that – `/latex`:
 
 And that’s all there is to Desmost!
 
-All other functionality you might need is accessed through more incantations.
+All other functionality you might need is accessed through more incantations. For a complete list of all the available incantations, visit [Incantations Reference](docs/incantations.md).
 
 
 <br>
@@ -232,9 +246,12 @@ q = 3
 p + q
 ```
 
-It’s almost like you meant to type this into Desmos, but accidentally typed it into Notepad instead.
+It’s like you *meant* to type this into Desmos, but accidentally typed it into your IDE instead.
+
+Since the intention is to use Desmost alongside Markdown, we want to keep it clean and readable so that it doesn’t completely dominate other Markdown.
 
 ### Mirror the Desmos API
+All object arguments to incantations such as `/viewport{}` and `/slider{}` are identical to the Desmos API. This means fewer unnecessary abstractions for you to remember.
 
 ### Don’t parse LaTeX
 Desmost only handles what it needs to care about to work. You don’t need a LaTeX parser, because Desmos will already do that later down the line – parsing it ourselves would just be wasted effort!

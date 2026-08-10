@@ -1,5 +1,8 @@
 # Learn X in Y Minutes, where X = Desmost
 
+> [!Note]
+> This is a lightning-quick, bare-necessities tour of Desmost syntax.
+
 Desmost is a simple, tiny, lightweight form of line-based LaTeX that compiles to a Desmos graphing calculator instance.
 
 Access Desmos specialties using `/incantation`s (mirroring LaTeX’s `\commands`).
@@ -109,7 +112,7 @@ Putting it all together, here's what a full Desmost 'program' might look like:
 /text{ Definite Integral Calculator }
 
 /text{ Enter your integrand here: }
-/color{ BLUE } :: f(x) = 
+/colour{ BLUE } :: f(x) = 
 
 /text{ Enter your integration bounds here: }
 a = 0
@@ -134,4 +137,4 @@ btw, you can see this example for yourself in [Playground](https://sup2point0.gi
 
 And that's all there is to Desmost!
 
-For a complete list of all the available incantations, head to [Incantations Reference](incantations.md).
+For a complete list of all the available incantations, head to [Incantations Reference](../incantations.md).
