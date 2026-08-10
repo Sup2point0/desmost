@@ -1,4 +1,4 @@
-import { DesmostParser, ParseResult } from "../../src/parser";
+import { DesmostParser } from "../../src/parser";
 
 import { ltx } from "../shared";
 import { assert_is_expression } from "./shared";

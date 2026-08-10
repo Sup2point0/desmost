@@ -35,14 +35,14 @@ export function compile(
 
   let parser = new DesmostParser(source);
 
+  DONE:
   while (true) {
     let r = parser.parse_next();
-
-    if (r === ParseResult.DONE) {
-      break;
-    }
     
     switch (r.kind) {
+      case ParseResult.Kind.DONE:
+        break DONE;
+
       case ParseResult.Kind.INCANTATION_INVOCATION:
         evaluate_global_incantation(r, desmos, options);
         break;

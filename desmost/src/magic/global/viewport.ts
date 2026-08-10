@@ -1,5 +1,3 @@
-import Json5 from "JSON5";
-
 import { Incantation, ArgIncantation, type GLOBAL } from "../incantation";
 
 
