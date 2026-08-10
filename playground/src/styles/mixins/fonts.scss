@@ -1,0 +1,10 @@
+@font-face {
+  font-family: 'Monaspace Neon';
+  src:
+    url('/fonts/monaspace-neon.ttf') format('truetype'),
+}
+
+
+@mixin font-code {
+  font-family: 'Monaspace Neon', monospace;
+}

@@ -37,6 +37,7 @@ const config = {
       scss: {
         includePaths: ["src/styles"],
         prependData: `
+          @use 'mixins/colours' as *;
           @use 'mixins/fonts' as *;
         `,
       }
