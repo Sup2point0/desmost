@@ -12,13 +12,14 @@
 ***Desmost*** compiles LaTeX into Desmos.
 
 <table>
+  <tr></tr>
   <tr>
     <th> You write this: </th>
     <th> and Desmost gives you this: </th>
   </tr>
   <tr>
     <td>
-      <pre><code lang="hs">/viewport{ left: -5, right: 5 }
+      <pre lang="hs"><code>/viewport{ left: -5, right: 5 }
 
 A = 1
 y = A \sin(x - t)
