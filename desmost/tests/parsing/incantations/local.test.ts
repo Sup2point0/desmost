@@ -1,4 +1,4 @@
-import { DesmostParser, ParseResult } from "../../../src/parser";
+import { DesmostParser, Ast } from "../../../src/parser";
 
 import { ColourIncantation } from "../../../src/magic/local/colour";
 
@@ -17,7 +17,7 @@ describe("/colour", () =>
   ])
   ("plain", col => {
     let parser = new DesmostParser(`/colour{ ${col} } :: y = x^2`);
-    let r = parser.parse_next() as ParseResult.Expression;
+    let r = parser.parse_next() as Ast.Expression;
 
     assert_is_expression(r);
     // @ts-expect-error: outdated types

@@ -2,13 +2,6 @@ import { UnrecoverableError } from "../errors";
 import { Incantation, ArgIncantation } from "../magic";
 
 
-/** Sentinel value to signal the parser successfully reached the end of its source. */
-export const DONE = Symbol("Done");
-
-/** The parser successfully reached the end of its source. */
-export type Done = typeof DONE;
-
-
 export namespace Ast
 {
   /** What kind of parse result this is. */

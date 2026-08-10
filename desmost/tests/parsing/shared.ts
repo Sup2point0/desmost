@@ -1,18 +1,18 @@
 import util from "node:util";
 
-import { DesmostParser, ParseResult } from "../../src/parser";
+import { DesmostParser, Ast } from "../../src/parser";
 
 
-export function assert_is_expression(result: ParseResult): asserts result is ParseResult.Expression
+export function assert_is_expression(result: Ast): asserts result is Ast.Expression
 {
-  assert.equal(result.kind, ParseResult.Kind.EXPRESSION);
+  assert.equal(result.kind, Ast.Kind.EXPRESSION);
 }
 
-export function assert_is_incantation(result: ParseResult): asserts result is ParseResult.IncantationInvocation
+export function assert_is_incantation(result: Ast): asserts result is Ast.IncantationInvocation
 {
   assert.equal(
     result.kind,
-    ParseResult.Kind.INCANTATION_INVOCATION,
+    Ast.Kind.INCANTATION_INVOCATION,
     `received: ${util.inspect(result)}`
   );
 }

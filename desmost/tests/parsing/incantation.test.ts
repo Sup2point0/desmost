@@ -1,4 +1,4 @@
-import { DesmostParser, ParseResult } from "../../src/parser";
+import { DesmostParser, Ast } from "../../src/parser";
 import {
   ArgIncantation,
   GLOBAL_INCANTATIONS, LOCAL_INCANTATIONS, EXPR_INCANTATIONS,
@@ -16,7 +16,7 @@ describe("try-parse-global-incantation()", () =>
     let parser = new DesmostParser(`/${incantation.identifier}`);
     let r = parser.try_parse_global_incantation();
     
-    assert.equal(r.kind, ParseResult.Kind.INCANTATION_INVOCATION);
+    assert.equal(r.kind, Ast.Kind.INCANTATION_INVOCATION);
     assert.equal(r.incantation, incantation);
   });
 });
@@ -31,7 +31,7 @@ describe("try-parse-local-incantation()", () =>
     let parser = new DesmostParser(`/${incantation.identifier}`);
     let r = parser.try_parse_local_incantation();
     
-    assert.equal(r.kind, ParseResult.Kind.INCANTATION_INVOCATION);
+    assert.equal(r.kind, Ast.Kind.INCANTATION_INVOCATION);
     assert.equal(r.incantation, incantation);
   });
 });
@@ -44,6 +44,6 @@ describe("try-parse-expr-incantation()", () =>
     let parser = new DesmostParser(`/${incantation.identifier}{ sup }`);
     let r = parser.try_parse_expr_incantation();
     
-    assert.equal(r.kind, ParseResult.Kind.EXPRESSION);
+    assert.equal(r.kind, Ast.Kind.EXPRESSION);
   });
 });

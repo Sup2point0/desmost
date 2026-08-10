@@ -1,4 +1,4 @@
-import { DesmostParser, ParseResult } from "../../src/parser";
+import { DesmostParser, Ast } from "../../src/parser";
 
 import { ltx } from "../shared";
 
@@ -16,8 +16,8 @@ describe("preserves plain LaTeX", () =>
     let r = parser.parse_next();
     
     assert.isNotNull(r);
-    assert.equal(r.kind, ParseResult.Kind.EXPRESSION);
-    assert.deepEqual((r as ParseResult.Expression).data, { latex: source });
+    assert.equal(r.kind, Ast.Kind.EXPRESSION);
+    assert.deepEqual((r as Ast.Expression).data, { latex: source });
   });
 
   test.for([

@@ -1,12 +1,12 @@
 import type { DesmostOptions } from "./options";
-import { ParseResult } from "./parser";
+import { Ast } from "./parser";
 
 
 /**
  * Evaluate arguments (if any) to a global incantation `invocation`, then apply the incantation to `desmos`.
  */
 export function evaluate_global_incantation(
-  invocation: ParseResult.IncantationInvocation | ParseResult.ArgIncantationInvocation,
+  invocation: Ast.IncantationInvocation | Ast.ArgIncantationInvocation,
   desmos: Desmos.Calculator,
   options: DesmostOptions,
 ): void
@@ -22,7 +22,7 @@ export function evaluate_global_incantation(
 
 
 export function evaluate_global_incantation_error(
-  error: ParseResult.InvalidIncantation,
+  error: Ast.InvalidIncantation,
   desmos: Desmos.Calculator,
   options: DesmostOptions,
 ): void
@@ -35,13 +35,13 @@ export function evaluate_global_incantation_error(
  * Evaluate arguments (if any) to local incantation invocations on `expr`, then add `expr` to `desmos`.
  */
 export function evaluate_expr(
-  expr: ParseResult.Expression,
+  expr: Ast.Expression,
   desmos: Desmos.Calculator,
   options: DesmostOptions,
 ): void
 {
   for (let invocation of expr.incantations) {
-    if (invocation.kind === ParseResult.Kind.INVALID_INCANTATION) {
+    if (invocation.kind === Ast.Kind.INVALID_INCANTATION) {
       evaluate_expr_error(invocation, desmos, options);
       continue;
     }
@@ -60,7 +60,7 @@ export function evaluate_expr(
 
 
 function evaluate_expr_error(
-  error: ParseResult.InvalidIncantation,
+  error: Ast.InvalidIncantation,
   desmos: Desmos.Calculator,
   options: DesmostOptions,
 )

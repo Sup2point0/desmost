@@ -1,4 +1,4 @@
-import { DesmostParser, ParseResult } from "../../../src/parser";
+import { DesmostParser, Ast } from "../../../src/parser";
 
 import { DesmosIncantation } from "../../../src/magic/global/desmos";
 import { ColourIncantation } from "../../../src/magic/local/colour";
@@ -50,7 +50,7 @@ b = 1
 test("medium", () =>
 {
   let parser = new DesmostParser(SOURCE);
-  let r: ParseResult;
+  let r: Ast;
   
   // desmos
   r = parser.parse_next();
@@ -152,10 +152,10 @@ test("medium", () =>
   assert.deepEqual(r.incantations[1].incantation, new ColourIncantation());
   assert.deepEqual(r.incantations[2].incantation, new NoLineIncantation());
   assert.deepEqual(r.incantations[3].incantation, new FillIncantation());
-  assert.equal(r.incantations[0].kind, ParseResult.Kind.INCANTATION_INVOCATION);
-  assert.equal(r.incantations[1].kind, ParseResult.Kind.INCANTATION_INVOCATION);
-  assert.equal(r.incantations[2].kind, ParseResult.Kind.INCANTATION_INVOCATION);
-  assert.equal(r.incantations[3].kind, ParseResult.Kind.INCANTATION_INVOCATION);
+  assert.equal(r.incantations[0].kind, Ast.Kind.INCANTATION_INVOCATION);
+  assert.equal(r.incantations[1].kind, Ast.Kind.INCANTATION_INVOCATION);
+  assert.equal(r.incantations[2].kind, Ast.Kind.INCANTATION_INVOCATION);
+  assert.equal(r.incantations[3].kind, Ast.Kind.INCANTATION_INVOCATION);
   assert.equal(r.incantations[1].arg_raw, "BLUE");
   assert.equal(r.incantations[3].arg_raw, "opacity: 0.2");
 });

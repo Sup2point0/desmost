@@ -1,5 +1,5 @@
 import { GenericParser } from "./generic-parser";
-import { Ast, DONE, type Done } from "./result";
+import { Ast } from "./result";
 
 import { RecoverableFail, UnrecoverableError } from "../errors";
 import type { Recoverable, Unrecoverable, MaybeRecoverable } from "../errors";
@@ -19,14 +19,14 @@ export class DesmostParser extends GenericParser
   // == TOP-LEVEL == //
 
   /**
-   * Parse the next semantic block of source code, which may return one result or multiple results.
+   * Parse the next semantic block of source code, producing an `Ast` object, or `null` if the parser has successfully reached the end of the source code.
    */
-  public parse_next(): Ast | Done
+  public parse_next(): Ast | null
   {
     this.consume_spaces();
 
     if (this.out_of_bounds()) {
-      return DONE;
+      return null;
     }
 
     if (this.current === "/") {
@@ -62,7 +62,7 @@ export class DesmostParser extends GenericParser
    * - 1+ local incantations
    */
   parse_pre_sep():
-    MaybeRecoverable<
+    Unrecoverable<
       | { global: Ast.IncantationInvocation<GLOBAL>
                 | Ast.InvalidIncantation;
       }
