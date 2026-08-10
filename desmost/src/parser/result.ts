@@ -1,5 +1,4 @@
-import { UnrecoverableError } from "./errors";
-
+import { UnrecoverableError } from "../errors";
 import { Incantation, ArgIncantation } from "../magic";
 
 

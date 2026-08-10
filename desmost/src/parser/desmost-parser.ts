@@ -1,8 +1,8 @@
 import { GenericParser } from "./generic-parser";
-
 import { ParseResult } from "./result";
-import { RecoverableFail, UnrecoverableError } from "./errors";
-import type { Recoverable, Unrecoverable, MaybeRecoverable } from "./errors";
+
+import { RecoverableFail, UnrecoverableError } from "../errors";
+import type { Recoverable, Unrecoverable, MaybeRecoverable } from "../errors";
 
 import {
   Incantation, ArgIncantation,

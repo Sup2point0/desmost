@@ -1,5 +1,5 @@
-import { RecoverableFail, UnrecoverableError } from "./errors";
-import type { Recoverable, Unrecoverable } from "./errors";
+import { RecoverableFail, UnrecoverableError } from "../errors";
+import type { Recoverable, Unrecoverable } from "../errors";
 
 
 const IGNORED_CHARACTERS = new Set([
