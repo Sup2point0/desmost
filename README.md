@@ -19,14 +19,15 @@
   </tr>
   <tr>
     <td>
-      <pre lang="hs"><code>/viewport{ left: -5, right: 5 }
-
+      <pre lang="hs"><code>
+/viewport{ left: -5, right: 5 }
+<br>
 A = 1
 y = A \sin(x - t)
-
+<br>
 /label{ text: "Desmos(t) is awesome!" }
   :: (0, 2)
-
+<br>
 /anim /slider{ min: -1, max: 1 }
   :: t = 0</code></pre>
     </td>
