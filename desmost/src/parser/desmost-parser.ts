@@ -40,20 +40,19 @@ export class DesmostParser extends GenericParser
       // 1+ locals + 1 expr
       let incantations = r.local;
 
-      let expr = this.parse_post_sep();
+      var expr = this.parse_post_sep();
 
       for (let invocation of incantations) {
         expr.incantations.push(invocation);
       }
-
-      return expr;
     }
     else {
       // 1 expr
-      let expr = this.parse_post_sep();
-      this.consume_end_of_block();
-      return expr;
+      var expr = this.parse_post_sep();
     }
+
+    this.consume_end_of_block();
+    return expr;
   }
 
   /**
