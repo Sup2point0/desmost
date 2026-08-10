@@ -1,5 +1,5 @@
 import { GenericParser } from "./generic-parser";
-import { ParseResult } from "./result";
+import { Ast, DONE, type Done } from "./result";
 
 import { RecoverableFail, UnrecoverableError } from "../errors";
 import type { Recoverable, Unrecoverable, MaybeRecoverable } from "../errors";
@@ -21,12 +21,12 @@ export class DesmostParser extends GenericParser
   /**
    * Parse the next semantic block of source code, which may return one result or multiple results.
    */
-  public parse_next(): ParseResult
+  public parse_next(): Ast | Done
   {
     this.consume_spaces();
 
     if (this.out_of_bounds()) {
-      return ParseResult.DONE;
+      return DONE;
     }
 
     if (this.current === "/") {
@@ -63,11 +63,11 @@ export class DesmostParser extends GenericParser
    */
   parse_pre_sep():
     MaybeRecoverable<
-      | { global: ParseResult.IncantationInvocation<GLOBAL>
-                | ParseResult.InvalidIncantation;
+      | { global: Ast.IncantationInvocation<GLOBAL>
+                | Ast.InvalidIncantation;
       }
-      | { local: Array<ParseResult.IncantationInvocation<LOCAL>
-                      | ParseResult.InvalidIncantation>;
+      | { local: Array<Ast.IncantationInvocation<LOCAL>
+                      | Ast.InvalidIncantation>;
       }
     >
   {
@@ -105,7 +105,7 @@ export class DesmostParser extends GenericParser
     return { local: incantations };
   }
 
-  parse_post_sep(): Unrecoverable<ParseResult.Expression>
+  parse_post_sep(): Unrecoverable<Ast.Expression>
   {
     this.consume_spaces();
 
@@ -113,7 +113,7 @@ export class DesmostParser extends GenericParser
       // empty block
       case "\n":
         return {
-          kind: ParseResult.Kind.EXPRESSION,
+          kind: Ast.Kind.EXPRESSION,
           data: { latex: `` },
           incantations: [],
         };
@@ -152,7 +152,7 @@ export class DesmostParser extends GenericParser
   /**
    * Parse a single line of LaTeX.
    */
-  parse_latex_line(): Unrecoverable<ParseResult.Expression>
+  parse_latex_line(): Unrecoverable<Ast.Expression>
   {
     let init = this.i;
 
@@ -161,7 +161,7 @@ export class DesmostParser extends GenericParser
     }
 
     return {
-      kind: ParseResult.Kind.EXPRESSION,
+      kind: Ast.Kind.EXPRESSION,
       data: { latex: this.source.slice(init, this.i) },
       incantations: [],
     };
@@ -173,9 +173,9 @@ export class DesmostParser extends GenericParser
    */
   try_parse_global_incantation():
     Recoverable<
-    | ParseResult.IncantationInvocation<GLOBAL>
-    | ParseResult.ArgIncantationInvocation<GLOBAL>
-    | ParseResult.InvalidIncantation
+    | Ast.IncantationInvocation<GLOBAL>
+    | Ast.ArgIncantationInvocation<GLOBAL>
+    | Ast.InvalidIncantation
     >
   {
     let init = this.i;
@@ -200,7 +200,7 @@ export class DesmostParser extends GenericParser
       }
       else if (incantation.requires_arg) {
         return {
-          kind: ParseResult.Kind.INVALID_INCANTATION,
+          kind: Ast.Kind.INVALID_INCANTATION,
           incantation,
           error: new UnrecoverableError.MissingInput(
             `No argument provided for /${incantation.identifier}, which requires an argument of type: ${incantation.arg_type}`
@@ -212,7 +212,7 @@ export class DesmostParser extends GenericParser
     this.consume_spaces();
 
     return {
-      kind: ParseResult.Kind.INCANTATION_INVOCATION,
+      kind: Ast.Kind.INCANTATION_INVOCATION,
       incantation,
       arg_raw: data,
     };
@@ -223,9 +223,9 @@ export class DesmostParser extends GenericParser
    */
   try_parse_local_incantation():
     Recoverable<
-    | ParseResult.IncantationInvocation<LOCAL>
-    | ParseResult.ArgIncantationInvocation<LOCAL>
-    | ParseResult.InvalidIncantation
+    | Ast.IncantationInvocation<LOCAL>
+    | Ast.ArgIncantationInvocation<LOCAL>
+    | Ast.InvalidIncantation
     >
   {
     let init = this.i;
@@ -250,7 +250,7 @@ export class DesmostParser extends GenericParser
       }
       else if (incantation.requires_arg) {
         return {
-          kind: ParseResult.Kind.INVALID_INCANTATION,
+          kind: Ast.Kind.INVALID_INCANTATION,
           incantation,
           error: new UnrecoverableError.MissingInput(
             `No argument provided for /${incantation.identifier}, which requires an argument of type: ${incantation.arg_type}`
@@ -262,13 +262,13 @@ export class DesmostParser extends GenericParser
     this.consume_whitespace();
 
     return {
-      kind: ParseResult.Kind.INCANTATION_INVOCATION,
+      kind: Ast.Kind.INCANTATION_INVOCATION,
       incantation,
       arg_raw,
     };
   }
 
-  try_parse_expr_incantation(): MaybeRecoverable<ParseResult.Expression>
+  try_parse_expr_incantation(): MaybeRecoverable<Ast.Expression>
   {
     // TODO refactor with `backtrack()` helper
     let init = this.i;
@@ -292,7 +292,7 @@ export class DesmostParser extends GenericParser
     incantation.apply(data, arg_raw);
 
     return {
-      kind: ParseResult.Kind.EXPRESSION,
+      kind: Ast.Kind.EXPRESSION,
       data,
       incantations: [],
     };
@@ -301,8 +301,7 @@ export class DesmostParser extends GenericParser
   /**
    * Attempt to parse an incantation identifier.
    */
-  try_parse_identifier<Effect extends Incantation.Effect>
-  (
+  try_parse_identifier<Effect extends Incantation.Effect>(
     incantations: Incantation<Effect>[]
   ): Recoverable<Incantation<Effect>>
   {

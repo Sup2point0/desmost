@@ -2,23 +2,22 @@ import { UnrecoverableError } from "../errors";
 import { Incantation, ArgIncantation } from "../magic";
 
 
-export namespace ParseResult
+/** Sentinel value to signal the parser successfully reached the end of its source. */
+export const DONE = Symbol("Done");
+
+/** The parser successfully reached the end of its source. */
+export type Done = typeof DONE;
+
+
+export namespace Ast
 {
   /** What kind of parse result this is. */
   export enum Kind
   {
-    DONE = "Done",
-    EXPRESSION = "Expression",
+    EXPRESSION             = "Expression",
     INCANTATION_INVOCATION = "Incantation-Invocation",
-    INVALID_INCANTATION = "Invalid-Incantation",
+    INVALID_INCANTATION    = "Invalid-Incantation",
   }
-
-
-  /** The parser successfully reached the end of its source. */
-  export interface Done { kind: Kind.DONE }
-
-  /** Sentinel value to signal the parser successfully reached the end of its source. */
-  export const DONE: Done = { kind: Kind.DONE };
 
   
   /** A Desmos expression to add to the calculator. */
@@ -65,10 +64,9 @@ export namespace ParseResult
 }
 
 /** An abstract object produced by parsing a block of source code. */
-export type ParseResult =
-  | ParseResult.Done
-  | ParseResult.Expression
-  | ParseResult.IncantationInvocation
-  | ParseResult.ArgIncantationInvocation
-  | ParseResult.InvalidIncantation
+export type Ast =
+  | Ast.Expression
+  | Ast.IncantationInvocation
+  | Ast.ArgIncantationInvocation
+  | Ast.InvalidIncantation
 ;

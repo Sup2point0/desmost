@@ -5,4 +5,4 @@
  */
 
 export { DesmostParser } from "./desmost-parser";
-export { ParseResult } from "./result";
+export { Ast as ParseResult } from "./result";
