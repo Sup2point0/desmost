@@ -2,12 +2,12 @@
 
 # Desmost
 
-[Docs](docs/) · Walkthrough · [Spec](docs/grammar.md) · Playground
+[Docs](docs/) · [Walkthrough](docs/readme.md) · [Learn X in Y](docs/learn-x-in-y.md) · [Spec](docs/grammar.md) · [Playground](https://sup2point0.github.io/desmost)
 
 </div>
 
 > [!Warning]
-> I’ve only just started developing this project, it’s not quite presentable yet!
+> I’ve only just started developing this project, so it’s not quite presentable yet!
 
 ***Desmost*** compiles LaTeX into Desmos. You write this:
 
@@ -20,7 +20,7 @@ y = A \sin(x - t)
 /label{ text: "Desmos(t) is awesome!" }
   :: (0, 2)
 
-/animate /slider{ min: -1, max: 1 }
+/anim /slider{ min: -1, max: 1 }
   :: t = 0
 ```
 
@@ -30,7 +30,16 @@ and Desmost gives you this:
 
 In other words, it’s like HTML+CSS, but for Desmos. Write your content in LaTeX (alongside your Markdown!), and Desmost will produce the Desmos calculator for you.
 
-This repository implements the Desmost ‘compiler’, which parses your source text, and injects the results into a `Desmos.Calculator` instance via the Desmos API. How you use the compiler, and render the end result, is left up to you!
+
+<br>
+
+
+## Directory
+
+| Folder | Description |
+| :----- | :---------- |
+| [`desmost/`](desmost/) | The Desmost compiler, which parses and evaluates your source code, then injects the results into a `Desmos.Calculator` instance via the Desmos API. How you use the compiler and render the end result, is left up to you! |
+| [`playground/`](playground/) | The Desmost site, with the interactive live-compile playground. |
 
 
 <br>
@@ -38,15 +47,12 @@ This repository implements the Desmost ‘compiler’, which parses your source 
 
 ## Usage
 
-> [!Important]
-> This is how it *will* work, it doesn’t work yet!
-
 > [!Tip]
-> Head to [Walkthrough](docs/readme.md) for a complete walkthrough on how to use Desmost end-to-end. (It’s not that complicated)
+> For an exhaustive walkthrough on how to use Desmost end-to-end, head to [Walkthrough](docs/readme.md).
 
 ### Install
 ```bash
-npm install --save desmost
+npm install desmost
 ```
 
 ### Write
@@ -64,15 +70,14 @@ Pass in options to customise the compilation:
 
 ```ts
 compile(calc, "/text{ sup world! }", {
-  errors: "hide",
+  errors: "crash",
 });
 ```
 
 ### Render
 Up to you, in your framework of choice!
 
-### Svelte + MDsveX
-Or, if you enjoy nice things, Desmost provides a Svelte component for mass-compling ` ```desmos ` blocks in MDsveX content:
+Or, if you enjoy nice things, Desmost provides a [Svelte](https://svelte.dev) component for mass-compiling ` ```desmos ` blocks in [MDsveX](https://github.com/pngwn/mdsvex) content:
 
 ```svelte
 <script>
@@ -117,10 +122,10 @@ y = ax^2 + bx + c
 ### Intuitive
 But let’s say you want to animate the slider for one of those variables in Desmos.
 
-All you need to do is add `/animate` in front of that line:
+All you need to do is add `/anim` in front of that line:
 
 ```hs
-/animate :: a = 2
+/anim :: a = 2
 b = 3
 c = 5
 
@@ -132,13 +137,13 @@ Easy, innit? These are called ***incantations***, and it’s the only syntax the
 > [!Tip]
 > `::` is the delimiter for separating Desmost incantations from actual LaTeX.
 
-When Desmost compiles this into Desmos, it’ll see `/animate` and know to set `playing: true` for that particular Desmos expression.
+When Desmost compiles this into Desmos, it’ll see `/anim` and know to set `playing: true` for that particular Desmos expression.
 
 ### Scalable
 Suppose you also want to customise the slider bounds. Just add another incantation, this time with an argument:
 
 ```hs
-/animate /slider{ min: 0, max: 10 } :: a = 2
+/anim /slider{ min: 0, max: 10 } :: a = 2
 b = 3
 c = 5
 
@@ -146,10 +151,12 @@ y = ax^2 + bx + c
 ```
 
 ### Readable
-This line is getting a little long, though. We can break it up over multiple lines, provided we keep the `::` on the last line:
+This line is getting a little long, though. We can break it up over multiple lines:[^multi-line]
+
+[^multi-line]: Caveat – the `::` must be on the last line of the block, since any content on a new line from `::` is parsed as the start of a new block. See [Docs / Writing / Common Pitfalls](docs/writing/common-pitfalls.md).
 
 ```hs
-/animate
+/anim
 /slider{ min: 0, max: 10 }
   :: a = 2
 b = 3
@@ -178,11 +185,7 @@ We’ve got an incantation for that – `/latex`:
 
 And that’s all there is to Desmost!
 
-### Future
-- Reversed Syntax
-- Desmos -> Desmost
-- Folders
-- Tables
+All other functionality you might need is accessed through more incantations.
 
 
 <br>
