@@ -1,1 +1,1 @@
-export { compile } from "./compiler";
+export { compile, type DesmostOptions } from "./compiler";

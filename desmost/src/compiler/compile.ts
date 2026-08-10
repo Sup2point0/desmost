@@ -1,5 +1,5 @@
 import { type DesmostOptions, set_default_options } from "./options";
-import { DesmostParser, Ast } from "./parser";
+import { DesmostParser, Ast } from "../parser";
 import { evaluate_global_incantation, evaluate_expr, evaluate_global_incantation_error } from "./evaluate";
 
 
@@ -34,23 +34,33 @@ export function compile(
   options = set_default_options(options);
 
   let parser = new DesmostParser(source);
+  
+  let deferred_exprs: Desmos.ExpressionState[] = [];
 
   while (true) {
     let r = parser.parse_next();
     if (r === null) break;
+
+    let deferred: Ast.Expression | void;
     
     switch (r.kind) {
       case Ast.Kind.INCANTATION_INVOCATION:
-        evaluate_global_incantation(r, desmos, options);
+        deferred = evaluate_global_incantation(r, desmos, options);
         break;
 
       case Ast.Kind.INVALID_INCANTATION:
-        evaluate_global_incantation_error(r, desmos, options);
+        deferred = evaluate_global_incantation_error(r, desmos, options);
         break;
 
       case Ast.Kind.EXPRESSION:
-        evaluate_expr(r, desmos, options);
+        deferred = evaluate_expr(r, desmos, options);
         break;
     }
+
+    if (deferred !== undefined) {
+      deferred_exprs.push(deferred.data);
+    }
   }
+
+  desmos.setExpressions(deferred_exprs);
 }

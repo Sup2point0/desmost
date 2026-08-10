@@ -1,5 +1,5 @@
 import type { DesmostOptions } from "./options";
-import { Ast } from "./parser";
+import { Ast } from "../parser";
 
 
 /**
@@ -9,7 +9,7 @@ export function evaluate_global_incantation(
   invocation: Ast.IncantationInvocation | Ast.ArgIncantationInvocation,
   desmos: Desmos.Calculator,
   options: DesmostOptions,
-): void
+): Ast.Expression | void
 {
   let data = undefined;
 
@@ -25,7 +25,7 @@ export function evaluate_global_incantation_error(
   error: Ast.InvalidIncantation,
   desmos: Desmos.Calculator,
   options: DesmostOptions,
-): void
+): Ast.Expression | void
 {
   // TODO
 }
@@ -38,7 +38,7 @@ export function evaluate_expr(
   expr: Ast.Expression,
   desmos: Desmos.Calculator,
   options: DesmostOptions,
-): void
+): Ast.Expression | void
 {
   for (let invocation of expr.incantations) {
     if (invocation.kind === Ast.Kind.INVALID_INCANTATION) {
@@ -63,7 +63,7 @@ function evaluate_expr_error(
   error: Ast.InvalidIncantation,
   desmos: Desmos.Calculator,
   options: DesmostOptions,
-)
+): Ast.Expression | void
 {
   switch (options.errors) {}
 }
