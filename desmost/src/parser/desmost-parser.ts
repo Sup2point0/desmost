@@ -21,7 +21,7 @@ export class DesmostParser extends GenericParser
   /**
    * Parse the next semantic block of source code, which may return one result or multiple results.
    */
-  parse_next(): ParseResult
+  public parse_next(): ParseResult
   {
     this.consume_spaces();
 

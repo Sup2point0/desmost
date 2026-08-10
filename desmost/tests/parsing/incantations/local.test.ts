@@ -1,7 +1,5 @@
 import { DesmostParser, ParseResult } from "../../../src/parser";
 
-import { DesmosColour } from "../../../src/desmos";
-
 import { ColourIncantation } from "../../../src/magic/local/colour";
 
 import { assert_is_expression } from "../shared";

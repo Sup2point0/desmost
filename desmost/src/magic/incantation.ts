@@ -20,14 +20,14 @@ export abstract class Incantation<
 >
 {
   /** The raw text sequence that matches this incantation, such as `viewport` or `hidden`. */
-  abstract readonly identifier: string
+  public abstract readonly identifier: string
 
   /** An alternative `.identifier`, strictly for localisation purposes only. */
-  readonly alias?: string
+  public readonly alias?: string
 
 
   /** Apply this incantation's effect to `target`, using the provided `data` if required. */
-  abstract apply(
+  public abstract apply(
     target: Effect extends GLOBAL ? Desmos.Calculator : Desmos.ExpressionState,
     data?: Data,
   ): void
@@ -41,10 +41,10 @@ export abstract class ArgIncantation<
   extends Incantation<Effect, Data>
 {
   /** Does this incantation always require an argument to be passed? */
-  readonly requires_arg: boolean = true
+  public readonly requires_arg: boolean = true
 
   /** What type of argument does this incantation accept? */
-  abstract readonly arg_type: Incantation.ArgType
+  public abstract readonly arg_type: Incantation.ArgType
 
 
   /**
@@ -56,7 +56,7 @@ export abstract class ArgIncantation<
    * 
    * Child incantation classes should override this method, though the defaults should cover most cases (except `ArgType.ENUM`).
    */
-  evaluate_arg(raw: string): Unrecoverable<Data>
+  public evaluate_arg(raw: string): Unrecoverable<Data>
   {
     switch (this.arg_type) {
       case Incantation.ArgType.STRING: return raw as Data;

@@ -28,7 +28,7 @@ export namespace UnrecoverableError
      * 
      * For instance, for an invalid `/slider{ bogus } :: t = 0`, we can skip trying to apply `/slider` and keep `t = 0`. But for `/latex{ what }`, without `/latex` we can't produce an expression, so we can't skip.
     */
-    skip_and_surface: boolean;
+    public skip_and_surface: boolean;
 
     constructor(message?: string, options?: { skip_and_surface: boolean })
     {

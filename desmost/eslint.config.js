@@ -28,15 +28,19 @@ export default defineConfig(
       "no-regex-spaces": "off",
       "no-sequences": "error",
       "no-undef": "off",
+      "no-unexpected-multiline": "warn",
       "no-unmodified-loop-condition": "error",
       "no-unneeded-ternary": "error",
       "no-unreachable-loop": "error",
       "no-unused-labels": "off",
       "no-var": "off",
-      "no-unexpected-multiline": "warn",
       "object-shorthand": "warn",
       "prefer-const": "off",
-      "@typescript-eslint/explicit-member-accessibility": "error",
+      "@typescript-eslint/explicit-member-accessibility": ["warn", {
+        overrides: {
+          constructors: "no-public",
+        },
+      }],
       "@typescript-eslint/no-confusing-void-expression": "error",
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-floating-promises": "error",
@@ -51,6 +55,12 @@ export default defineConfig(
         "error",
         { argsIgnorePattern: "(^_|^params$)", varsIgnorePattern: "^_" }
       ],
+    },
+  },
+  {
+    files: ["src/magic/*/*.ts"],
+    rules: {
+      "@typescript-eslint/explicit-member-accessibility": "off",
     },
   },
 );
