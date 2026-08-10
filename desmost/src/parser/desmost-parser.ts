@@ -1,5 +1,5 @@
 import { GenericParser } from "./generic-parser";
-import { Ast } from "./result";
+import { Ast } from "./ast";
 
 import { RecoverableFail, UnrecoverableError } from "../errors";
 import type { Recoverable, Unrecoverable, MaybeRecoverable } from "../errors";
