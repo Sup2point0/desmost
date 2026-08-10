@@ -1,5 +1,5 @@
 /**
- * The parser encountered a fatal unrecoverable error, which will reach the end user.
+ * The compiler encountered a fatal unrecoverable error, which will reach the end user.
  * 
  * It's not *literally* unrecoverable in the sense that it will crash the compiler completely, but it means there are no further fallbacks to try.
  */
@@ -39,7 +39,7 @@ export namespace UnrecoverableError
 }
 
 
-/** The parser encountered a non-fatal recoverable failure (usually during speculative parsing), which only results in internal backtracking. */
+/** The compiler encountered a non-fatal recoverable failure (usually during speculative parsing), which only results in internal backtracking. */
 export class RecoverableFail {}
 
 

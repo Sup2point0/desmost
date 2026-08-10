@@ -8,11 +8,11 @@ export interface DesmostOptions
    * 
    * Errors will always be logged to console for the developer; this setting affects how they visually reach the end user.
    * 
-   * - `warn` (default): Blocks that result in errors will become Desmos text expressions containing the error message, leaving other expressions unaffected.
+   * - `surface` (default): Blocks that result in errors will become Desmos text expressions containing the error message, leaving other expressions unaffected.
    * - `crash`: The entire compilation to Desmos will terminate with a single error message. This means you don't get any output at all, but errors are also immediately obvious.
-   * - `hide`: Silently fail on the frontend (if you wish to give the illusion that everything is fine).
+   * - `suppress`: Silently fail on the frontend (if you wish to give the illusion that everything is fine).
    */
-  errors?: "warn" | "crash" | "hide";
+  errors?: "surface" | "crash" | "suppress";
 
   /**
    * Where should errors be placed?
@@ -29,7 +29,7 @@ export function set_default_options(options: Partial<DesmostOptions> | undefined
 {
   options ??= {};
   
-  options.errors ??= "warn";
+  options.errors ??= "surface";
   options.place_errors ??= "inline";
 
   return options;
