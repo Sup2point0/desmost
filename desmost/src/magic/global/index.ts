@@ -1,4 +1,4 @@
-import { Incantation, GLOBAL } from "../incantation";
+import { Incantation, type GLOBAL } from "../incantation";
 
 import { DesmosIncantation } from "./desmos";
 import { ViewportIncantation } from "./viewport";

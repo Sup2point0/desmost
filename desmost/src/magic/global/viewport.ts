@@ -1,6 +1,6 @@
 import Json5 from "JSON5";
 
-import { Incantation, ArgIncantation, GLOBAL } from "../incantation";
+import { Incantation, ArgIncantation, type GLOBAL } from "../incantation";
 
 
 interface ViewportBounds

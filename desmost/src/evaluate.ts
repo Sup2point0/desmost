@@ -1,4 +1,4 @@
-import { DesmostOptions } from "./options";
+import type { DesmostOptions } from "./options";
 import { ParseResult } from "./parser";
 
 
@@ -65,5 +65,5 @@ function evaluate_expr_error(
   options: DesmostOptions,
 )
 {
-  // TODO
+  switch (options.errors) {}
 }

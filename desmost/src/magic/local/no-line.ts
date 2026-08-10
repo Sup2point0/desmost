@@ -1,4 +1,4 @@
-import { Incantation, LOCAL } from "../incantation";
+import { Incantation, type LOCAL } from "../incantation";
 
 
 export class NoLineIncantation

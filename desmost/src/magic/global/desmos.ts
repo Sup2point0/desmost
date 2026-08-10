@@ -1,4 +1,4 @@
-import { Incantation, ArgIncantation, GLOBAL } from "../incantation";
+import { Incantation, ArgIncantation, type GLOBAL } from "../incantation";
 
 
 export class DesmosIncantation

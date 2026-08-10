@@ -1,6 +1,6 @@
 import Json5 from "JSON5";
 
-import { Unrecoverable } from "../parser";
+import type { Unrecoverable } from "../errors";
 
 
 /**

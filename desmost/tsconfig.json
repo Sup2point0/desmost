@@ -2,6 +2,7 @@
   "compilerOptions": {
     "noImplicitOverride": true,
     "strict": true,
-    "types": ["desmos", "node", "vitest/globals"]
+    "types": ["desmos", "node", "vitest/globals"],
+    "verbatimModuleSyntax": true
   }
 }

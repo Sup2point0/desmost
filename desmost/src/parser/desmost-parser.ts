@@ -6,9 +6,9 @@ import type { Recoverable, Unrecoverable, MaybeRecoverable } from "./errors";
 
 import {
   Incantation, ArgIncantation,
-  GLOBAL, LOCAL, EXPR,
   GLOBAL_INCANTATIONS, LOCAL_INCANTATIONS, EXPR_INCANTATIONS
 } from "../magic";
+import type { GLOBAL, LOCAL, EXPR } from "../magic";
 
 
 /**

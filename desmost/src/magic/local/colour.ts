@@ -1,5 +1,5 @@
-import { Incantation, ArgIncantation, GLOBAL, LOCAL, EXPR } from "../incantation";
-import { UnrecoverableError } from "../../parser";
+import { Incantation, ArgIncantation, type LOCAL } from "../incantation";
+import { UnrecoverableError } from "../../errors";
 
 import { DesmosColour } from "../../desmos";
 

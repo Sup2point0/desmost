@@ -1,4 +1,4 @@
-import { ArgIncantation, EXPR } from "../incantation";
+import { ArgIncantation, type EXPR } from "../incantation";
 
 import { LatexIncantation } from "./latex";
 import { TextIncantation } from "./text";

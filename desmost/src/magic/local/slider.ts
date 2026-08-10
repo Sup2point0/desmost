@@ -1,4 +1,4 @@
-import { Incantation, ArgIncantation, LOCAL } from "../incantation";
+import { Incantation, ArgIncantation, type LOCAL } from "../incantation";
 
 
 interface SliderBounds

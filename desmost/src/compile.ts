@@ -1,4 +1,4 @@
-import { DesmostOptions, set_default_options } from "./options";
+import { type DesmostOptions, set_default_options } from "./options";
 import { DesmostParser, ParseResult } from "./parser";
 import { evaluate_global_incantation, evaluate_expr, evaluate_global_incantation_error } from "./evaluate";
 

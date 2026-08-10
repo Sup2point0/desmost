@@ -1,4 +1,4 @@
-import { Incantation, ArgIncantation, EXPR } from "../incantation";
+import { Incantation, ArgIncantation, type EXPR } from "../incantation";
 
 
 export class LatexIncantation

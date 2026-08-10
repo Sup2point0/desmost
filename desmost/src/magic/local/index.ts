@@ -1,4 +1,4 @@
-import { Incantation, LOCAL } from "../incantation";
+import { Incantation, type LOCAL } from "../incantation";
 
 import { ColourIncantation } from "./colour";
 import { FillIncantation } from "./fill";

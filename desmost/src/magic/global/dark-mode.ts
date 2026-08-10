@@ -1,4 +1,4 @@
-import { Incantation, GLOBAL } from "../incantation";
+import { Incantation, type GLOBAL } from "../incantation";
 
 
 export class DarkModeIncantation extends Incantation<GLOBAL>
