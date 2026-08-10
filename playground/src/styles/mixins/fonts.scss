@@ -1,9 +1,21 @@
+// sourced from: <https://github.com/KaTeX/KaTeX/blob/main/fonts/KaTeX_Main-Regular.ttf>
+@font-face {
+  font-family: 'KaTeX';
+  src:
+    url('/fonts/katex-main.ttf') format('truetype'),
+}
+
+// sourced from: <https://github.com/githubnext/monaspace/blob/main/fonts/Variable%20Fonts/Monaspace%20Neon/Monaspace%20Neon%20Var.ttf>
 @font-face {
   font-family: 'Monaspace Neon';
   src:
     url('/fonts/monaspace-neon.ttf') format('truetype'),
 }
 
+
+@mixin font-ui {
+  font-family: 'KaTeX', serif;
+}
 
 @mixin font-code {
   font-family: 'Monaspace Neon', monospace;

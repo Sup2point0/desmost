@@ -15,18 +15,28 @@
 
 <style lang="scss">
 
+$pad-vert: 0.25rem;
+$font-size: 1.5rem;
+
 nav {
-  padding: 0 1rem;
+  z-index: 1;
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
   align-items: stretch;
-  background: white;
+
+  @include font-ui;
+  background: $col-deut;
   box-shadow: 0 2px 4px rgb(black, 20%);
 }
 
 .left {
+  padding: $pad-vert 1.5rem;
+  background: rgb(black, 20%);
+
   h1 {
+    color: white;
+    font-size: $font-size;
     font-weight: normal;
   }
 }
@@ -38,13 +48,18 @@ nav {
   align-items: stretch;
 
   a {
-    padding: 0 0.5em;
-    color: black;
-    font-size: 150%;
+    padding: $pad-vert 0.5em;
+    font-size: $font-size;
+    color: white;
+    text-decoration: none;
 
     &:hover, &:focus-visible {
       cursor: pointer;
-      background: rgb(black, 4%);
+      background: rgb(black, 10%);
+    }
+
+    &:active {
+      background: rgb(black, 25%);
     }
   }
 }

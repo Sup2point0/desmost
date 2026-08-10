@@ -9,23 +9,29 @@ import Nav from "#parts/nav.svelte";
 import { onMount } from "svelte";
 
 
-let source = $state(String.raw `
-
+const WELCOME = String.raw `
 /text{ Welcome to Desmost! }
 f\left( x \right) = x^2
+`;
 
-  `.trim());
+let source = $state(WELCOME.trim());
 
 let el_desmos: HTMLElement;
-let desmos: Desmos.Calculator;
+let desmos: Desmos.Calculator | null;
 
 onMount(() => {
+  if (typeof Desmos === "undefined") {
+    desmos = null;
+    return;
+  }
+
   desmos = Desmos.GraphingCalculator(el_desmos, {
     border: false,
   });
 });
 
 $effect(() => {
+  if (desmos == null) return;
   desmos.setBlank();
   compile(desmos, source);
 });
@@ -38,7 +44,12 @@ $effect(() => {
 
   <main>
     <textarea bind:value={source}></textarea>
-    <div bind:this={el_desmos}></div>
+
+    <div bind:this={el_desmos}>
+      {#if desmos === null}
+        <p> Oops, failed to load Desmos! Try checking your internet connection and reloading the page? </p>
+      {/if}
+    </div>
   </main>
 </div>
 
@@ -58,8 +69,8 @@ main {
 }
 
 textarea {
+  flex: 3;
   resize: none;
-  flex: 1;
   padding: 1rem;
   @include font-code;
   font-size: 120%;
@@ -79,7 +90,7 @@ textarea {
 }
 
 div {
-  flex: 1;
+  flex: 4;
 }
 
 </style>
