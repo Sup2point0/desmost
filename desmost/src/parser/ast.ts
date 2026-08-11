@@ -30,6 +30,7 @@ export namespace Ast
     | {
       kind: Kind.INCANTATION_INVOCATION
       incantation: Incantation<Effect>
+      arg_raw: undefined
     }
     | {
       kind: Kind.INCANTATION_INVOCATION
