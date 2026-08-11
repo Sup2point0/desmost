@@ -61,8 +61,8 @@ In other words, it’s like HTML+CSS, but for Desmos. Write your content in LaTe
 
 ## Usage
 
-> [!Tip]
-> For an exhaustive walkthrough on how to use Desmost end-to-end, head to [Walkthrough](docs/readme.md).
+> [!Important]
+> Desmost only works **in the browser**. This is because the Desmos API (currently) can only be included via `<script>`.
 
 ### Install
 ```bash
@@ -148,7 +148,7 @@ y = ax^2 + bx + c
 
 These are called ***incantations***, and it’s the only syntax there is in Desmost.[^tiny]
 
-[^tiny]: Told you it was a tiny DSL :D
+[^tiny]: Told you it was a tiny DSL!
 
 When Desmost compiles this into Desmos, it’ll see `/anim` and know to set `playing: true` for that particular Desmos expression.
 
@@ -167,9 +167,7 @@ y = ax^2 + bx + c
 > Look familiar? Desmost’s incantation syntax mirrors LaTeX’s `\backslash{}` commands!
 
 ### Readable
-This line is getting a little long, though. We can break it up over multiple lines:[^multi-line]
-
-[^multi-line]: Caveat – the `::` must be on the last line of the block, since any content on a new line from `::` is parsed as the start of a new block. See [Docs / Writing / Common Pitfalls](docs/writing/common-pitfalls.md).
+This line is getting a little long, though. We can break it up over multiple lines:
 
 ```hs
 /anim
@@ -257,6 +255,18 @@ All object arguments to incantations such as `/viewport{}` and `/slider{}` are i
 
 ### Don’t parse LaTeX
 Desmost only handles what it needs to care about to work. You don’t need a LaTeX parser, because Desmos will already do that later down the line – parsing it ourselves would just be wasted effort!
+
+
+<br>
+
+
+## Generative AI
+
+<a href="https://brainmade.org">
+  <img align="right" height="40" src=".assets/brainmade-black.svg" />
+</a>
+
+Every bug, typo and inefficiency was lovingly crafted by hand :D
 
 
 <br>
