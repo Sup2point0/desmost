@@ -27,8 +27,8 @@ export class GenericParser
   /** Create a parser for parsing `source`. */
   constructor(source: string)
   {
-    this.source = source + "\n";
-    this.length = this.source.length;
+    this.source = source;
+    this.length = source.length;
   }
 
 

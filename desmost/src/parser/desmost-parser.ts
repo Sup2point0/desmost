@@ -10,12 +10,20 @@ import {
 } from "../magic";
 import type { GLOBAL, LOCAL, EXPR } from "../magic";
 
+import type { DesmostOptions } from "../compiler";
+
 
 /**
  * A stateful lazy parser for Desmost.
  */
 export class DesmostParser extends GenericParser
 {
+  constructor(source: string, options?: DesmostOptions)
+  {
+    super(options?.clean_trailing_blanks ? source : (source + "\n"));
+  }
+
+
   // == TOP-LEVEL == //
 
   /**

@@ -20,6 +20,13 @@ export interface DesmostOptions
    * - `start`: All aggregated at the start of the Desmos expressions list.
    */
   place_errors?: "inline" | "end" | "start";
+
+  /**
+   * Should trailing blank lines be ignored, instead of kept as blank expressions?
+   * 
+   * Defaults to `false`, meaning blank lines *are* kept.
+   */
+  clean_trailing_blanks?: boolean;
 }
 
 
@@ -32,6 +39,7 @@ export function set_default_options(options: Partial<DesmostOptions> | undefined
   
   options.errors ??= "surface";
   options.place_errors ??= "inline";
+  options.clean_trailing_blanks ??= false;
 
   return options as Required<DesmostOptions>;
 }
