@@ -1,4 +1,4 @@
-import { defineConfig } from "oxlint";
+import { defineConfig, type DummyRuleMap } from "oxlint";
 
 
 export default defineConfig({
@@ -20,31 +20,35 @@ export default defineConfig({
     "*.test.ts",
     "**/node_modules/",
   ],
-  rules: {
-    "block-scoped-var": "off",
-    "no-array-constructor": "error",
-    "no-case-declarations": "error",
-    "no-empty": "error",
-    "no-fallthrough": "error",
-    "no-implicit-coercion": "error",
-    "no-lonely-if": "error",
-    "no-prototype-builtins": "error",
-    "no-redeclare": "error",
-    "no-regex-spaces": "off",
-    "no-sequences": "error",
-    "no-undef": "off",
+  rules: set_rules({
+    "array-callback-return": true,
+    "block-scoped-var": false,
+    "default-case-last": true,
+    "no-array-constructor": true,
+    "no-case-declarations": true,
+    "no-empty": true,
+    "no-fallthrough": true,
+    "no-implicit-coercion": true,
+    "no-lonely-if": true,
+    "no-prototype-builtins": true,
+    "no-redeclare": true,
+    "no-regex-spaces": false,
+    "no-return-assign": true,
+    "no-sequences": true,
+    "no-undef": false,
     "no-unexpected-multiline": "warn",
-    "no-unmodified-loop-condition": "error",
-    "no-unneeded-ternary": "error",
-    "no-unreachable-loop": "error",
-    "no-unused-expressions": "off",
-    "no-unused-labels": "off",
+    "no-unmodified-loop-condition": true,
+    "no-unneeded-ternary": true,
+    "no-unreachable-loop": true,
+    "no-unused-expressions": false,
+    "no-unused-labels": false,
     "no-unused-vars": ["error", { argsIgnorePattern: "(^_|^params$)", varsIgnorePattern: "^_" }],
-    "no-useless-assignment": "error",
-    "no-var": "off",
+    "no-useless-assignment": true,
+    "no-var": false,
     "object-shorthand": "warn",
-    "prefer-const": "off",
-    "typescript/ban-ts-comment": "error",
+    "prefer-const": false,
+
+    "typescript/ban-ts-comment": true,
     "typescript/explicit-member-accessibility": ["warn", {
       overrides: { constructors: "no-public" },
       ignoredMethodNames: [
@@ -53,29 +57,52 @@ export default defineConfig({
         "try_parse_identifier", "parse_incantation_arg",
       ],
     }],
-    "typescript/no-confusing-void-expression": "error",
-    "typescript/no-empty-object-type": "error",
-    "typescript/no-explicit-any": "off",
-    "typescript/no-extraneous-class": "off",
-    "typescript/no-require-imports": "error",
-    "typescript/no-unsafe-function-type": "error",
-    "typescript/no-floating-promises": "error",
-    "typescript/no-namespace": "off",
-    "typescript/no-unnecessary-condition": "error",
-    "typescript/no-unnecessary-type-assertion": "error",
-    "typescript/no-unsafe-type-assertion": "off",
-    "typescript/prefer-nullish-coalescing": "error",
-    "typescript/strict-boolean-expressions": "error",
-    "typescript/switch-exhaustiveness-check": "off"  // TEMP
-  },
+    "typescript/explicit-module-boundary-types": true,
+    "typescript/no-confusing-void-expression": true,
+    "typescript/no-empty-object-type": true,
+    "typescript/no-explicit-any": false,
+    "typescript/no-extraneous-class": false,
+    "typescript/no-floating-promises": true,
+    "typescript/no-import-type-side-effects": true,
+    "typescript/no-mixed-enums": true,
+    "typescript/no-namespace": false,
+    "typescript/no-require-imports": true,
+    "typescript/no-unnecessary-condition": true,
+    "typescript/no-unnecessary-type-assertion": true,
+    "typescript/no-unsafe-call": true,
+    "typescript/no-unsafe-function-type": true,
+    "typescript/no-unsafe-return": true,
+    "typescript/no-unsafe-type-assertion": false,
+    "typescript/prefer-nullish-coalescing": true,
+    "typescript/strict-boolean-expressions": true,
+    "typescript/switch-exhaustiveness-check": false  // TEMP
+  }),
   overrides: [
     {
       files: [
         "src/magic/*/*.ts"
       ],
-      rules: {
-        "typescript/explicit-member-accessibility": "off"
-      }
-    }
+      rules: set_rules({
+        "typescript/explicit-member-accessibility": false,
+        "typescript/explicit-module-boundary-types": false,
+      }),
+    },
   ],
-})
+});
+
+
+function set_rules(
+  rules: {
+    [K in keyof DummyRuleMap]?: boolean | DummyRuleMap[K];
+  }
+): DummyRuleMap
+{
+  for (let [key, value] of Object.entries(rules)) {
+    switch (value) {
+      case true:  rules[key] = "error"; break;
+      case false: rules[key] = "off";   break;
+    }
+  }
+
+  return rules as DummyRuleMap;
+}
