@@ -9,7 +9,7 @@ import { UnrecoverableError, type Unrecoverable } from "../errors";
 export function evaluate_global_incantation(
   invocation: Ast.IncantationInvocation | Ast.ArgIncantationInvocation,
   desmos: Desmos.Calculator,
-  options: DesmostOptions,
+  options: Required<DesmostOptions>,
 ): Unrecoverable<void | string>
 {
   let data = undefined;
@@ -25,7 +25,7 @@ export function evaluate_global_incantation(
 export function evaluate_global_incantation_error(
   error: Ast.InvalidIncantation,
   desmos: Desmos.Calculator,
-  options: DesmostOptions,
+  options: Required<DesmostOptions>,
 ): Unrecoverable<void | string>
 {
   let text = `Error: ${error.error.message}`
@@ -58,7 +58,7 @@ export function evaluate_global_incantation_error(
 export function evaluate_expr(
   expr: Ast.Expression,
   desmos: Desmos.Calculator,
-  options: DesmostOptions,
+  options: Required<DesmostOptions>,
 ): Unrecoverable<void | string>
 {
   let errors = [];
@@ -91,7 +91,7 @@ export function evaluate_expr(
 function evaluate_expr_error(
   error: Ast.InvalidIncantation,
   desmos: Desmos.Calculator,
-  options: DesmostOptions,
+  options: Required<DesmostOptions>,
 ): Unrecoverable<void | string>
 {
   let text = `[Invalid incantation] ${error.error.message}`;

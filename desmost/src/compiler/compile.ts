@@ -33,8 +33,7 @@ export function compile(
   options?: DesmostOptions,
 ): void
 {
-  options = set_default_options(options);
-
+  let opts = set_default_options(options);
   let parser = new DesmostParser(source);
   
   /* If the user sets `options.place_errors: "start"`, we need a target to retroactively inject errors into. */
@@ -50,15 +49,15 @@ export function compile(
       
       switch (r.kind) {
         case Ast.Kind.INCANTATION_INVOCATION:
-          defer = evaluate_global_incantation(r, desmos, options);
+          defer = evaluate_global_incantation(r, desmos, opts);
           break;
 
         case Ast.Kind.INVALID_INCANTATION:
-          defer = evaluate_global_incantation_error(r, desmos, options);
+          defer = evaluate_global_incantation_error(r, desmos, opts);
           break;
 
         case Ast.Kind.EXPRESSION:
-          defer = evaluate_expr(r, desmos, options);
+          defer = evaluate_expr(r, desmos, opts);
           break;
       }
 
@@ -75,18 +74,20 @@ export function compile(
     }
   }
 
-  if (errors.length === 0) return;
-  
-  let expr: Desmos.ExpressionState = {
-    type: "text",
-    text: errors.join("\n\n"),
-  };
+  if (errors.length > 0) {
+    let expr: Desmos.ExpressionState = {
+      type: "text",
+      text: errors.join("\n\n"),
+    };
 
-  switch (options.place_errors) {
-    case "start":
-      desmos.setExpression({ ...expr, id: "deferred-start" });
-
-    default:
-      desmos.setExpression(expr);
+    switch (opts.place_errors) {
+      case "start":
+        desmos.setExpression({ ...expr, id: "deferred-start" });
+        break;
+      case "end":
+      case "inline":
+        desmos.setExpression(expr);
+        break;
+    }
   }
 }

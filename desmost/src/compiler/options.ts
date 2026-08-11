@@ -23,12 +23,15 @@ export interface DesmostOptions
 }
 
 
-export function set_default_options(options: Partial<DesmostOptions> | undefined): DesmostOptions
+/**
+ * Fill in `options` with Desmost's defaults to produce a complete `DesmostOptions` config.
+ */
+export function set_default_options(options: Partial<DesmostOptions> | undefined): Required<DesmostOptions>
 {
   options ??= {};
   
   options.errors ??= "surface";
   options.place_errors ??= "inline";
 
-  return options;
+  return options as Required<DesmostOptions>;
 }
