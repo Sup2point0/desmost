@@ -422,13 +422,13 @@ export class DesmostParser extends GenericParser
     }
 
     while (stack.length > 0) {
-      let top = stack.at(-1)!;
-
       if (try_pop(Ctx.ESCAPE)) {
         this.advance(
           `Unexpected end of input while parsing incantation argument, stack: ${JSON.stringify(stack)}`
         );
       }
+      
+      let top = stack.at(-1)!;
 
       switch (this.current) {
         case Ctx.ESCAPE: stack.push(Ctx.ESCAPE); break;
