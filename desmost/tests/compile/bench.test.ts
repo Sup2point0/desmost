@@ -1,3 +1,11 @@
+/**
+ * Very rudimentary performance tests for Desmost.
+ * 
+ * Obviously regressions are unwanted, but we're not too fussed about performance, since input is expected to remain very small.
+ * 
+ * Of course, these tests are unreliable and can be flaky; we just want a sanity check that it isn't horrifically slow!
+ */
+
 import { MEDIUM } from "../cases/medium";
 
 import { compile } from "../../src";

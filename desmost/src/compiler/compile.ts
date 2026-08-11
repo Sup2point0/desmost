@@ -103,7 +103,7 @@ export function compile(
 
   if (opts.debug) {
     return {
-      time_delta: performance.now() - t_init,
+      duration: performance.now() - t_init,
       ast,
     };
   }
@@ -112,6 +112,6 @@ export function compile(
 
 interface DesmostDebug
 {
-  time_delta: number;
+  duration: number;
   ast: Ast[];
 }

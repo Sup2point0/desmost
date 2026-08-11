@@ -22,11 +22,25 @@ export interface DesmostOptions
   place_errors?: "inline" | "end" | "start"
 
   /**
-   * Should trailing blank lines be ignored, instead of kept as blank expressions?
+   * Should comments be ignored, instead of turned into text expressions?
    * 
-   * Defaults to `false`, meaning blank lines *are* kept.
+   * Defaults to `false`, meaning comments are kept.
    */
-  clean_trailing_blanks?: boolean
+  ignore_comments?: boolean
+
+  /**
+   * Should all line breaks be ignored, instead of kept as blank expressions.
+   * 
+   * Defaults to `false`, meaning all blank lines are kept.
+   */
+  ignore_line_breaks?: boolean
+
+  /**
+   * Should trailing blank lines at the end of the source be ignored, instead of kept as blank expressions?
+   * 
+   * Defaults to `false`, meaning trailing blank lines are kept.
+   */
+  ignore_trailing_blanks?: boolean
 
   /**
    * Return debug diagnostics? This includes the unevaluated AST, and performance diagnostics.
@@ -46,7 +60,10 @@ export function set_default_options(options: Partial<DesmostOptions> | undefined
   
   options.errors ??= "surface";
   options.place_errors ??= "inline";
-  options.clean_trailing_blanks ??= false;
+  
+  options.ignore_comments ??= false;
+  options.ignore_line_breaks ??= false;
+  options.ignore_trailing_blanks ??= false;
 
   options.debug ??= false;
 

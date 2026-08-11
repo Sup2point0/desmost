@@ -20,7 +20,7 @@ export class DesmostParser extends GenericParser
 {
   constructor(source: string, options?: DesmostOptions)
   {
-    super(options?.clean_trailing_blanks ? source : (source + "\n"));
+    super(options?.ignore_trailing_blanks ? source : (source + "\n"));
   }
 
 
@@ -113,6 +113,23 @@ export class DesmostParser extends GenericParser
     return { local: incantations };
   }
 
+  /**
+   * Parse the Desmost `::` separator.
+   */
+  parse_sep(): Unrecoverable<void>
+  {
+    this.consume_whitespace();
+    this.consume("::",
+      `Expected '::' separator between local incantations and expression, but found: ${this.preview()}`
+    );
+  }
+
+  /**
+   * Parse Desmost syntax after the `::` separator, which may be:
+   * 
+   * - 1 line of LaTeX
+   * - 1 expression incantation
+   */
   parse_post_sep(): Unrecoverable<Ast.Expression>
   {
     this.consume_spaces();
