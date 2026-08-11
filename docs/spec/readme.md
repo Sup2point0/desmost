@@ -8,10 +8,10 @@ Desmost is a tiny DSL, so we’ll keep this short and sweet!
 Desmost works in blocks. A block may contain one of the following:
 
 - 1 line of plain LaTeX
-- Possibly multi-line content inside `/latex{}` or `/text{}`
+- 1 expression incantation
 - 1+ local incantations, followed by `::` and one of the above
 - 1 global incantation
-- Empty
+- Line break
 
 Each block must start on a new line to a preceding block (if any).
 
@@ -27,10 +27,10 @@ Body    := (Block) (NEWLINE Block)*
 
 Block   := ""
          | Expression
-         | (LocalIncantation NEWLINE?)+ "::" Latex
+         | (LocalIncantation (NEWLINE)*)+ "::" Expression
          | GlobalIncantation
 
-Expression := latex
+Expression := <latex>
             | ExpressionIncantation
 
 LocalIncantation      := "/" <local-identifier>  (Arg)?
