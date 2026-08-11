@@ -2,7 +2,7 @@ import { Incantation, ArgIncantation, type EXPR } from "../incantation";
 
 
 export class LatexIncantation
-  extends ArgIncantation<EXPR, string>
+  extends ArgIncantation<EXPR>
 {
   override readonly identifier   = "latex"
   override readonly requires_arg = true

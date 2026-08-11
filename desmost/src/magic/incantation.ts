@@ -16,7 +16,6 @@ import type { Unrecoverable } from "../errors";
  */
 export abstract class Incantation<
   Effect extends Incantation.Effect = Incantation.Effect,
-  Data = any,
 >
 {
   /** The raw text sequence that matches this incantation, such as `viewport` or `hidden`. */
@@ -29,16 +28,15 @@ export abstract class Incantation<
   /** Apply this incantation's effect to `target`, using the provided `data` if required. */
   public abstract apply(
     target: Effect extends GLOBAL ? Desmos.Calculator : Desmos.ExpressionState,
-    data?: Data,
+    data?: unknown,
   ): void
 }
 
 
 export abstract class ArgIncantation<
-  Effect extends Incantation.Effect = Incantation.Effect,
-  Data = any,  // FIXME reconsider if necessary
+  Effect extends Incantation.Effect = Incantation.Effect
 >
-  extends Incantation<Effect, Data>
+  extends Incantation<Effect>
 {
   /** Does this incantation always require an argument to be passed? */
   public readonly requires_arg: boolean = true
@@ -56,12 +54,12 @@ export abstract class ArgIncantation<
    * 
    * Child incantation classes should override this method, though the defaults should cover most cases (except `ArgType.ENUM`).
    */
-  public evaluate_arg(raw: string): Unrecoverable<Data>
+  public evaluate_arg(raw: string): Unrecoverable<unknown>
   {
     switch (this.arg_type) {
-      case Incantation.ArgType.STRING: return raw as Data;
-      case Incantation.ArgType.LATEX:  return raw as Data;
-      case Incantation.ArgType.ENUM:   return raw as Data;
+      case Incantation.ArgType.STRING: return raw;
+      case Incantation.ArgType.LATEX:  return raw;
+      case Incantation.ArgType.ENUM:   return raw;
       case Incantation.ArgType.OBJECT: return Json5.parse(`{${raw}}`);
     }
   }

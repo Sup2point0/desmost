@@ -2,7 +2,7 @@ import { Incantation, ArgIncantation, type EXPR } from "../incantation";
 
 
 export class TextIncantation
-  extends ArgIncantation<EXPR, string>
+  extends ArgIncantation<EXPR>
 {
   override readonly identifier   = "text"
   override readonly requires_arg = true

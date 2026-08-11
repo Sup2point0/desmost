@@ -1,8 +1,7 @@
 // import { Incantation, ArgIncantation, GLOBAL, LOCAL, EXPR } from "../incantation";
 
 
-// export class ?Incantation
-//   extends ArgIncantation<?, ?>
+// export class ?Incantation extends ArgIncantation<?>
 // {
 //   override readonly identifier   = ?
 //   override readonly requires_arg = ?

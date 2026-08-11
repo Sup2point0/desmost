@@ -8,8 +8,7 @@ interface ViewportBounds
 }
 
 
-export class ViewportIncantation
-  extends ArgIncantation<GLOBAL, ViewportBounds>
+export class ViewportIncantation extends ArgIncantation<GLOBAL>
 {
   override readonly identifier   = "viewport"
   override readonly requires_arg = true

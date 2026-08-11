@@ -7,8 +7,7 @@ interface FillOptions
 }
 
 
-export class FillIncantation
-  extends ArgIncantation<LOCAL, FillOptions>
+export class FillIncantation extends ArgIncantation<LOCAL>
 {
   override readonly identifier   = "fill"
   override readonly requires_arg = true

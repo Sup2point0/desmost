@@ -4,8 +4,7 @@ import { UnrecoverableError } from "../../errors";
 import { DesmosColour } from "../../desmos";
 
 
-export class ColourIncantation
-  extends ArgIncantation<LOCAL, DesmosColour>
+export class ColourIncantation extends ArgIncantation<LOCAL>
 {
   override readonly identifier   = "color"
   override readonly alias        = "colour"

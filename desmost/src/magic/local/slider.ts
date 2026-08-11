@@ -9,8 +9,7 @@ interface SliderBounds
 }
 
 
-export class SliderIncantation
-  extends ArgIncantation<LOCAL, SliderBounds>
+export class SliderIncantation extends ArgIncantation<LOCAL>
 {
   override readonly identifier   = "slider"
   override readonly requires_arg = true
