@@ -25,7 +25,7 @@
     "test":    "vitest run",
       "testw": "vitest",
 
-    "check":   "npx eslint ."
+    "check":   "npx oxlint src"
   },
 
   "dependencies":
