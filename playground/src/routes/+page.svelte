@@ -6,7 +6,7 @@ import { compile } from "../../../desmost/src";
 
 import Nav from "#parts/nav.svelte";
 
-import { onMount } from "svelte";
+import { onMount, untrack } from "svelte";
 
 
 const WELCOME = String.raw `
@@ -19,6 +19,9 @@ let source = $state(WELCOME.trim());
 let el_desmos: HTMLElement;
 let desmos: Desmos.Calculator | null;
 
+let ast = $state([]);
+let exprs = $state([]);
+
 onMount(() => {
   if (typeof Desmos === "undefined") {
     desmos = null;
@@ -30,11 +33,39 @@ onMount(() => {
   });
 });
 
+
 $effect(() => {
-  if (desmos == null) return;
-  desmos.setBlank();
-  compile(desmos, source);
+  let src = source;
+
+  let timeout = setTimeout(() => {
+    if (desmos == null) return;
+    desmos.setBlank();
+
+    compile._internal = {
+      ast: [],
+    };
+    compile(desmos, src);
+
+    untrack(() => {
+      // @ts-ignore: internal
+      ast = compile._internal.ast;
+
+      exprs = desmos!.getExpressions();
+    });
+  });
+
+  return () => clearTimeout(timeout);
 });
+
+function debounce(timeout: number, callback: () => void)
+{
+  let debounce = 0;
+
+  return () => {
+    clearTimeout(debounce);
+    debounce = setTimeout(callback, timeout);
+  };
+}
 
 </script>
 
@@ -45,10 +76,22 @@ $effect(() => {
   <main>
     <textarea bind:value={source}></textarea>
 
-    <div bind:this={el_desmos}>
+    <div id="desmos" bind:this={el_desmos}>
       {#if desmos === null}
         <p> Oops, failed to load Desmos! Try checking your internet connection and reloading the page? </p>
       {/if}
+    </div>
+
+    <div class="ast">
+      <pre lang="js"><code>{@html
+        JSON.stringify(ast, undefined, "&emsp;").replaceAll("\n", "<br>")}
+      </code></pre>
+    </div>
+
+    <div class="exprs">
+      <pre lang="js"><code>{@html
+        JSON.stringify(exprs, undefined, "&emsp;").replaceAll("\n", "<br>")}
+      </code></pre>
     </div>
   </main>
 </div>
@@ -58,19 +101,29 @@ $effect(() => {
 
 .root {
   height: 100vh;
+  max-height: 100vh;
   display: flex;
   flex-flow: column nowrap;
 }
 
 main {
   flex: 1;
-  display: flex;
-  flex-flow: row nowrap;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 0.5fr 0.5fr;
+
+  div {
+    overflow-y: auto;
+    min-height: 0;
+  }
 }
 
 textarea {
   flex: 3;
   resize: none;
+  width: 100%;
+  min-height: 0;
   padding: 1rem;
   @include font-code;
   font-size: 120%;
@@ -80,6 +133,7 @@ textarea {
   background: #002;
   border: none;
   border-radius: 0;
+  outline: none;
 
   scrollbar-width: thin;
   scrollbar-color: $col-deut #002;
@@ -89,8 +143,9 @@ textarea {
   }
 }
 
-div {
-  flex: 4;
+code {
+  @include font-code;
+  line-height: 1.3;
 }
 
 </style>

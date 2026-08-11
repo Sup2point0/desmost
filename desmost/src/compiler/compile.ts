@@ -48,6 +48,11 @@ export function compile(
       let r = parser.parse_next();
       if (r === null) break;
 
+      if ("_internal" in compile) {
+        // @ts-ignore: internals
+        compile._internal.ast.push(r);
+      }
+
       let defer: string | void;
       
       switch (r.kind) {
