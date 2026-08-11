@@ -36,8 +36,11 @@ export function compile(
   let opts = set_default_options(options);
   let parser = new DesmostParser(source);
   
-  /* If the user sets `options.place_errors: "start"`, we need a target to retroactively inject errors into. */
-  desmos.setExpression({ id: "deferred-start", latex: "" });
+  /* To aggregate errors at the start, we need a target to retroactively inject errors into */
+  if (opts.place_errors === "start") {
+    desmos.setExpression({ id: "deferred-start", latex: "" });
+  }
+
   let errors = [];
 
   try {
