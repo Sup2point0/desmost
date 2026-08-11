@@ -50,10 +50,11 @@ b = 1
 test("medium", () =>
 {
   let parser = new DesmostParser(SOURCE);
-  let r: Ast;
+  let r: Ast | null;
   
   // desmos
   r = parser.parse_next();
+  assert.isNotNull(r);
   assert_is_incantation(r);
   assert.deepEqual(r.incantation, new DesmosIncantation());
   assert.isDefined(r.arg_raw);
@@ -62,6 +63,7 @@ test("medium", () =>
   
   // viewport
   r = parser.parse_next();
+  assert.isNotNull(r);
   assert_is_incantation(r);
   assert.equal(r.incantation.identifier, "viewport");
   assert.isDefined(r.arg_raw);
@@ -72,6 +74,7 @@ test("medium", () =>
 
   // /text{ Definite Integral Calculator }
   r = parser.parse_next();
+  assert.isNotNull(r);
   assert_is_expression(r);
   assert.equal(r.data.type, "text");
   // @ts-expect-error: outdated types
@@ -82,6 +85,7 @@ test("medium", () =>
 
   // /text{ Enter your integrand here: }
   r = parser.parse_next();
+  assert.isNotNull(r);
   assert_is_expression(r);
   assert.equal(r.data.type, "text");
   // @ts-expect-error: outdated types
@@ -90,6 +94,7 @@ test("medium", () =>
 
   // /colour{ BLUE } :: f(x) =
   r = parser.parse_next();
+  assert.isNotNull(r);
   assert_is_expression(r);
   // @ts-expect-error: outdated types
   assert.equal(r.data.latex, `f(x) =`);
@@ -99,6 +104,7 @@ test("medium", () =>
 
   // /text{ Enter your integration bounds here: }
   r = parser.parse_next();
+  assert.isNotNull(r);
   assert_is_expression(r);
   assert.equal(r.data.type, "text");
   // @ts-expect-error: outdated types
@@ -107,12 +113,14 @@ test("medium", () =>
 
   // a = 0
   r = parser.parse_next();
+  assert.isNotNull(r);
   assert_is_expression(r);
   // @ts-expect-error: outdated types
   assert.equal(r.data.latex, `a = 0`);
 
   // b = 1
   r = parser.parse_next();
+  assert.isNotNull(r);
   assert_is_expression(r);
   // @ts-expect-error: outdated types
   assert.equal(r.data.latex, `b = 1`);
@@ -121,6 +129,7 @@ test("medium", () =>
 
   // /text{ Your answer is: }
   r = parser.parse_next();
+  assert.isNotNull(r);
   assert_is_expression(r);
   assert.equal(r.data.type, "text");
   // @ts-expect-error: outdated types
@@ -129,6 +138,7 @@ test("medium", () =>
 
   // \int_{a}^{b} f(x) \ dx
   r = parser.parse_next();
+  assert.isNotNull(r);
   assert_is_expression(r);
   // @ts-expect-error: outdated types
   assert.equal(r.data.latex, ltx `\int_{a}^{b} f(x) \ dx`);
@@ -137,6 +147,7 @@ test("medium", () =>
 
   // ...
   r = parser.parse_next();
+  assert.isNotNull(r);
   assert_is_expression(r);
 
   // @ts-expect-error: outdated types
