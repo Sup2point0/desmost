@@ -1,8 +1,8 @@
-<div align="center">
+<h1 align="center"> Desmost </h1>
 
-# Desmost
+<div align="center"
 
-[Docs](docs/) · [Walkthrough](docs/readme.md) · [Learn X in Y](docs/writing/learn-x-in-y.md) · [Spec](docs/spec/) · [Playground](https://sup2point0.github.io/desmost)
+[**Docs**](docs/) × [**Walkthrough**](docs/readme.md) × [**Learn X in Y**](docs/writing/learn-x-in-y.md) × [**Spec**](docs/spec/) × [**Playground**](https://sup2point0.github.io/desmost)
 
 </div>
 
@@ -42,7 +42,7 @@ y = A \sin(x - t)
   </tr>
 </table>
 
-In other words, it’s like HTML+CSS, but for Desmos. Write your content in LaTeX (alongside your Markdown!), and Desmost will produce the Desmos calculator for you.
+In other words, it’s like HTML+CSS but for Desmos. Write your content in LaTeX (alongside your Markdown!) with a touch of Desmost magic, and Desmost will turn it to a Desmos calculator embed for you.
 
 
 <br>
@@ -85,6 +85,7 @@ Pass in options to customise the compilation:
 ```ts
 compile(calc, "/text{ sup world! }", {
   errors: "crash",
+  keep_line_breaks: false,
 });
 ```
 
@@ -136,7 +137,7 @@ y = ax^2 + bx + c
 ### Intuitive
 But let’s say you want to animate the slider for one of those variables in Desmos.
 
-All you need to do is add `/anim` in front of that line, with a `::` delimiter:
+All you need to do is add `/anim` in front of that line, plus a `::` delimiter:
 
 ```hs
 /anim :: a = 2
@@ -148,7 +149,7 @@ y = ax^2 + bx + c
 
 These are called ***incantations***, and it’s the only syntax there is in Desmost.[^tiny]
 
-[^tiny]: Told you it was a tiny DSL!
+[^tiny]: Told you Desmost’s a tiny DSL!
 
 When Desmost compiles this into Desmos, it’ll see `/anim` and know to set `playing: true` for that particular Desmos expression.
 
@@ -164,7 +165,7 @@ y = ax^2 + bx + c
 ```
 
 > [!Tip]
-> Look familiar? Desmost’s incantation syntax mirrors LaTeX’s `\backslash{}` commands!
+> Look familiar? Desmost’s incantation syntax mirrors LaTeX’s `\backslash{}` commands ;)
 
 ### Readable
 This line is getting a little long, though. We can break it up over multiple lines:
@@ -197,9 +198,26 @@ We’ve got an incantation for that – `/latex`:
 }
 ```
 
+### Notes
+You’ll no doubt want to add text expressions to your Desmos at some point. You can either use the `/text{}` incantation:
+
+```latex
+/text{ The normalised Gaussian. }
+f(x) = \frac{1}{\sqrt{2\pi}} e^{-\frac{1}{2}x^2}
+```
+
+or, if you want to lean into pure LaTeX more, just leave a LaTeX comment:
+
+```latex
+% The normalised Gaussian.
+f(x) = \frac{1}{\sqrt{2\pi}} e^{-\frac{1}{2}x^2}
+```
+
 And that’s all there is to Desmost!
 
 All other functionality you might need is accessed through more incantations. For a complete list of all the available incantations, visit [Incantations Reference](docs/incantations.md).
+
+Enjoy!
 
 
 <br>
@@ -235,7 +253,7 @@ And here’s a saw wave:
 ```
 ````
 
-Exactly like how a `math` code block renders into LaTeX, or a `mermaid` code block renders a diagram.
+Exactly like how a ` ```math ` code block renders into LaTeX, or a ` ```mermaid ` code block renders a diagram.
 
 ### Keep the simple stuff simple
 We want simple stuff like this to work effortlessly:
@@ -246,9 +264,10 @@ q = 3
 p + q
 ```
 
-It’s like you *meant* to type this into Desmos, but accidentally typed it into your IDE instead.
+This keeps it easily comprehendable alongside surrounding Markdown when editing. And it’s exactly the same as what you’d type into Desmos – it’s like you meant to, but accidentally typed it into your IDE instead!
 
-Since the intention is to use Desmost alongside Markdown, we want to keep it clean and readable so that it doesn’t completely dominate other Markdown.
+### Make the complex stuff possible
+At the same time, we want to provide full control over as many aspects of the calculator as possible. Incantations make this easy – to access more functionality, all it takes is adding a new incantation.
 
 ### Mirror the Desmos API
 All object arguments to incantations such as `/viewport{}` and `/slider{}` are identical to the Desmos API. This means fewer unnecessary abstractions for you to remember.
