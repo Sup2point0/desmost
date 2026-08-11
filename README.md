@@ -1,8 +1,8 @@
-<h1 align="center"> Desmost </h1>
-
 <div align="center"
 
-[**Docs**](docs/) × [**Walkthrough**](docs/readme.md) × [**Learn X in Y**](docs/writing/learn-x-in-y.md) × [**Spec**](docs/spec/) × [**Playground**](https://sup2point0.github.io/desmost)
+# Desmost
+
+[**Docs**](docs/) · [**Walkthrough**](docs/readme.md) · [**Learn X in Y**](docs/writing/learn-x-in-y.md) · [**Spec**](docs/spec/) · [**Playground**](https://sup2point0.github.io/desmost)
 
 </div>
 
