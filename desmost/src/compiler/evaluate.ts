@@ -1,4 +1,5 @@
 import type { DesmostOptions } from "./options";
+
 import { Ast } from "../parser";
 import { UnrecoverableError, type Unrecoverable } from "../errors";
 
@@ -7,14 +8,14 @@ import { UnrecoverableError, type Unrecoverable } from "../errors";
  * Evaluate arguments (if any) to a global incantation `invocation`, then apply the incantation to `desmos`.
  */
 export function evaluate_global_incantation(
-  invocation: Ast.IncantationInvocation | Ast.ArgIncantationInvocation,
+  invocation: Ast.IncantationInvocation,
   desmos: Desmos.Calculator,
   options: Required<DesmostOptions>,
 ): Unrecoverable<void | string>
 {
   let data = undefined;
 
-  if ("arg_raw" in invocation) {
+  if ("arg_raw" in invocation && invocation.arg_raw != undefined) {
     data = invocation.incantation.evaluate_arg(invocation.arg_raw);
   }
 
@@ -74,7 +75,7 @@ export function evaluate_expr(
 
     let data = undefined;
 
-    if ("arg_raw" in invocation) {
+    if ("arg_raw" in invocation && invocation.arg_raw != undefined) {
       data = invocation.incantation.evaluate_arg(invocation.arg_raw);
     }
 

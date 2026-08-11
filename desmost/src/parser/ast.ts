@@ -20,26 +20,22 @@ export namespace Ast
     data: Desmos.ExpressionState
     incantations: Array<
       | IncantationInvocation<Incantation.Effect.LOCAL>
-      | ArgIncantationInvocation<Incantation.Effect.LOCAL>
       | InvalidIncantation
       >
   }
 
 
-  /** A pending incantation invocation that requires applying its effect. */
-  export interface IncantationInvocation<Effect extends Incantation.Effect = Incantation.Effect>
-  {
-    kind: Kind.INCANTATION_INVOCATION
-    incantation: Incantation<Effect>
-  }
-
-  /** A pending incantation invocation that requires evaluating its argument, then applying its effect. */
-  export interface ArgIncantationInvocation<Effect extends Incantation.Effect = Incantation.Effect>
-    extends IncantationInvocation<Effect>
-  {
-    incantation: ArgIncantation<Effect>
-    arg_raw: string
-  }
+  /** A pending incantation invocation that requires applying its argument (if any), then applying its effect. */
+  export type IncantationInvocation<Effect extends Incantation.Effect = Incantation.Effect> =
+    | {
+      kind: Kind.INCANTATION_INVOCATION
+      incantation: Incantation<Effect>
+    }
+    | {
+      kind: Kind.INCANTATION_INVOCATION
+      incantation: ArgIncantation<Effect>
+      arg_raw: string | undefined
+    };
 
   /**
    * An invalid invantation invocation that raised an error when parsed.
@@ -59,6 +55,5 @@ export namespace Ast
 export type Ast =
   | Ast.Expression
   | Ast.IncantationInvocation
-  | Ast.ArgIncantationInvocation
   | Ast.InvalidIncantation
 ;

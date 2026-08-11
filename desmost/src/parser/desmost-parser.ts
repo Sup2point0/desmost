@@ -174,7 +174,6 @@ export class DesmostParser extends GenericParser
   try_parse_global_incantation():
     Recoverable<
     | Ast.IncantationInvocation<GLOBAL>
-    | Ast.ArgIncantationInvocation<GLOBAL>
     | Ast.InvalidIncantation
     >
   {
@@ -224,7 +223,6 @@ export class DesmostParser extends GenericParser
   try_parse_local_incantation():
     Recoverable<
     | Ast.IncantationInvocation<LOCAL>
-    | Ast.ArgIncantationInvocation<LOCAL>
     | Ast.InvalidIncantation
     >
   {
