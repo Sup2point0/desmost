@@ -10,3 +10,15 @@ export function matrix<P,Q>(left: P[], right: Q[]): Array<[P, Q]>
   
   return left.flatMap(x => right.map(y => [x, y] as [P, Q]));
 }
+
+
+/** Produce a dummy Desmos calculator instance with no functionality for testing. */
+// @ts-expect-error: testing
+export const desmos: Desmos.Calculator =
+{
+  updateSettings: () => {},
+  setMathBounds: () => {},
+  setExpression: () => {},
+  setExpressions: () => {},
+  removeExpression: () => {},
+};

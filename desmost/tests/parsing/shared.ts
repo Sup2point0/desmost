@@ -21,6 +21,7 @@ export function assert_is_incantation(result: Ast): asserts result is Ast.Incant
 export function assert_parses_blank_line(parser: DesmostParser)
 {
   let r = parser.parse_next();
+  assert.isNotNull(r);
   assert_is_expression(r);
   // @ts-expect-error: outdated types
   assert.equal(r.data.latex, "");
