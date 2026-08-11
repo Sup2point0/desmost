@@ -122,7 +122,7 @@ export class DesmostParser extends GenericParser
       case "\n":
         return {
           kind: Ast.Kind.EXPRESSION,
-          data: { latex: `` },
+          data: { latex: ` ` },
           incantations: [],
         };
 
@@ -141,17 +141,6 @@ export class DesmostParser extends GenericParser
       default:
         return this.parse_latex_line();
     }
-  }
-
-  /**
-   * Parse the Desmost `::` separator.
-   */
-  parse_sep(): Unrecoverable<void>
-  {
-    this.consume_whitespace();
-    this.consume("::",
-      `Expected '::' separator between local incantations and expression, but found: ${this.preview()}`
-    );
   }
 
 
