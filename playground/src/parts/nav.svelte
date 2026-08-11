@@ -21,7 +21,7 @@ $font-size: 1.25rem;
 
 nav {
   padding-right: 1rem;
-  z-index: 1;
+  z-index: 10;
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;

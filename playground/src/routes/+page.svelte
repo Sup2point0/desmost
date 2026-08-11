@@ -5,6 +5,8 @@ import "#styles/essence.scss";
 import { compile } from "../../../desmost/src";
 
 import Nav from "#parts/nav.svelte";
+import DesmostAst from "#parts/ast.svelte";
+import DesmosExpressions from "#parts/exprs.svelte";
 
 import { onMount, untrack } from "svelte";
 
@@ -19,7 +21,7 @@ let source = $state(WELCOME.trim());
 let el_desmos: HTMLElement;
 let desmos: Desmos.Calculator | null;
 
-let time_delta: number | undefined = $state();
+let duration: number | undefined = $state();
 let ast: any[] = $state([]);
 let exprs: Desmos.ExpressionState[] = $state([]);
 
@@ -31,6 +33,12 @@ onMount(() => {
 
   desmos = Desmos.GraphingCalculator(el_desmos, {
     border: false,
+  });
+
+  desmos.observeEvent("change", (_, e) => {
+    if (e.isUserInitiated) {
+      sync_exprs_with_desmos();
+    }
   });
 });
 
@@ -51,14 +59,20 @@ $effect(() => {
     }
 
     untrack(() => {
-      time_delta = debug?.time_delta;
+      duration = debug?.duration;
       ast = debug?.ast ?? ["COMPILER ERROR"];
-      exprs = desmos!.getExpressions();
+      sync_exprs_with_desmos();
     });
   }, 50);
 
   return () => clearTimeout(timeout);
 });
+
+function sync_exprs_with_desmos()
+{
+  // @ts-ignore: exceptional
+  exprs = desmos?.getExpressions() ?? ["DESMOS ERROR"];
+}
 
 </script>
 
@@ -75,21 +89,8 @@ $effect(() => {
       {/if}
     </div>
 
-    <div class="ast">
-      {#if time_delta}
-        <aside>Compiled in {Math.round(time_delta * 10) / 10} ms</aside>
-      {/if}
-
-      <pre lang="js"><code>{@html
-        JSON.stringify(ast, undefined, "&emsp;").replaceAll("\n", "<br>")}
-      </code></pre>
-    </div>
-
-    <div class="exprs">
-      <pre lang="js"><code>{@html
-        JSON.stringify(exprs, undefined, "&emsp;").replaceAll("\n", "<br>")}
-      </code></pre>
-    </div>
+    <DesmostAst {ast} {duration} />
+    <DesmosExpressions {exprs} />
   </main>
 </div>
 
@@ -140,21 +141,9 @@ textarea {
   }
 }
 
-.ast {
-  position: relative;
-
-  aside {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    @include font-ui;
-    color: $col-deut;
-  }
-}
-
-code {
-  @include font-code;
-  line-height: 1.3;
+#desmos {
+  z-index: 2;
+  box-shadow: 0 2px 4px rgb(black, 20%);
 }
 
 </style>
