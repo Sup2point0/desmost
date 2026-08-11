@@ -38,10 +38,9 @@
     "@eslint/js": "^10.0",
     "@types/desmos": "1.11",
     "@types/node": "^26.0",
-    "eslint": "^10.8",
-    "globals": "^17.9",
-    "typescript": "^6.0",
-    "typescript-eslint": "^8.66",
+    "oxlint": "^1.78",
+    "oxlint-tsgolint": "^7.0",
+    "typescript": "^7.0",
     "vitest": "^4.0"
   }
 }

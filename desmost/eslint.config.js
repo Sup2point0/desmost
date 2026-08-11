@@ -11,11 +11,10 @@ export default defineConfig(
   js.configs.recommended,
   ts.configs.recommended,
   {
-    files: ["**/*.{js,ts}"],
+    files: ["**/*.ts"],
     plugins: { js },
     languageOptions: {
       globals: {
-        ...globals.browser,
         ...globals.node
       },
       parserOptions: {
