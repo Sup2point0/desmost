@@ -36,7 +36,7 @@ export abstract class Incantation<
 
 export abstract class ArgIncantation<
   Effect extends Incantation.Effect = Incantation.Effect,
-  Data = any,
+  Data = any,  // FIXME reconsider if necessary
 >
   extends Incantation<Effect, Data>
 {

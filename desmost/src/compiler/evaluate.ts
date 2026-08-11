@@ -102,6 +102,7 @@ function evaluate_expr_error(
 
     case "suppress":
       // TODO
+      break;
 
     default: switch (options.place_errors) {
       case "end":
