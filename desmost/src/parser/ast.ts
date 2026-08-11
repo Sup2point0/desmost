@@ -31,7 +31,6 @@ export namespace Ast
   {
     kind: Kind.INCANTATION_INVOCATION
     incantation: Incantation<Effect>
-    
   }
 
   /** A pending incantation invocation that requires evaluating its argument, then applying its effect. */

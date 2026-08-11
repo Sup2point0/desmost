@@ -128,8 +128,6 @@ export class GenericParser
    */
   protected try_consume(raw: string): Recoverable<void>
   {
-    // if (this.out_of_bounds()) throw new RecoverableFail();
-
     let init = this.i;
     let ii = 0;
 
