@@ -1,5 +1,6 @@
 import type { DesmostOptions } from "./options";
 import { Ast } from "../parser";
+import { UnrecoverableError, type Unrecoverable } from "../errors";
 
 
 /**
@@ -9,7 +10,7 @@ export function evaluate_global_incantation(
   invocation: Ast.IncantationInvocation | Ast.ArgIncantationInvocation,
   desmos: Desmos.Calculator,
   options: DesmostOptions,
-): Ast.Expression | void
+): Unrecoverable<void | string>
 {
   let data = undefined;
 
@@ -25,9 +26,29 @@ export function evaluate_global_incantation_error(
   error: Ast.InvalidIncantation,
   desmos: Desmos.Calculator,
   options: DesmostOptions,
-): Ast.Expression | void
+): Unrecoverable<void | string>
 {
-  // TODO
+  let text = `Error: ${error.error.message}`
+
+  switch (options.errors) {
+    case "crash":
+      throw error.error;
+
+    case "suppress":
+      console.error(error.error);
+      break;
+
+    default:
+    switch (options.place_errors) {
+      case "start":
+      case "end":
+        return text;
+      
+      default:
+        desmos.setExpression({ type: "text", text });
+        break;
+    }
+  }
 }
 
 
@@ -38,11 +59,16 @@ export function evaluate_expr(
   expr: Ast.Expression,
   desmos: Desmos.Calculator,
   options: DesmostOptions,
-): Ast.Expression | void
+): Unrecoverable<void | string>
 {
+  let errors = [];
+
   for (let invocation of expr.incantations) {
     if (invocation.kind === Ast.Kind.INVALID_INCANTATION) {
-      evaluate_expr_error(invocation, desmos, options);
+      let e = evaluate_expr_error(invocation, desmos, { ...options, place_errors: "start" });
+      if (e != undefined) {
+        errors.push(e);
+      }
       continue;
     }
 
@@ -55,6 +81,9 @@ export function evaluate_expr(
     invocation.incantation.apply(expr.data, data);
   }
   
+  if (errors.length > 0) {
+    desmos.setExpression({ type: "text", text: errors.join("\n\n") });
+  }
   desmos.setExpression(expr.data);
 }
 
@@ -63,7 +92,25 @@ function evaluate_expr_error(
   error: Ast.InvalidIncantation,
   desmos: Desmos.Calculator,
   options: DesmostOptions,
-): Ast.Expression | void
+): Unrecoverable<void | string>
 {
-  switch (options.errors) {}
+  let text = `[Invalid incantation] ${error.error.message}`;
+
+  switch (options.errors) {
+    case "crash":
+      throw error.error;
+
+    case "suppress":
+      // TODO
+
+    default: switch (options.place_errors) {
+      case "end":
+      case "start":
+        return text;
+      
+      default:
+        desmos.setExpression({ type: "text", text });
+        break;
+    }
+  }
 }

@@ -1,8 +1,6 @@
 /** Options to customise Desmost compilation. */
 export interface DesmostOptions
 {
-  show_errors?: boolean;
-
   /**
    * How should errors be *surfaced*?
    * 

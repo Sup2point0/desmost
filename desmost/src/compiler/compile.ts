@@ -1,6 +1,8 @@
 import { type DesmostOptions, set_default_options } from "./options";
-import { DesmostParser, Ast } from "../parser";
 import { evaluate_global_incantation, evaluate_expr, evaluate_global_incantation_error } from "./evaluate";
+
+import { DesmostParser, Ast } from "../parser";
+import { UnrecoverableError } from "../errors";
 
 
 /**
@@ -35,32 +37,56 @@ export function compile(
 
   let parser = new DesmostParser(source);
   
-  let deferred_exprs: Desmos.ExpressionState[] = [];
+  /* If the user sets `options.place_errors: "start"`, we need a target to retroactively inject errors into. */
+  desmos.setExpression({ id: "deferred-start", latex: "" });
+  let errors = [];
 
-  while (true) {
-    let r = parser.parse_next();
-    if (r === null) break;
+  try {
+    while (true) {
+      let r = parser.parse_next();
+      if (r === null) break;
 
-    let deferred: Ast.Expression | void;
-    
-    switch (r.kind) {
-      case Ast.Kind.INCANTATION_INVOCATION:
-        deferred = evaluate_global_incantation(r, desmos, options);
-        break;
+      let defer: string | void;
+      
+      switch (r.kind) {
+        case Ast.Kind.INCANTATION_INVOCATION:
+          defer = evaluate_global_incantation(r, desmos, options);
+          break;
 
-      case Ast.Kind.INVALID_INCANTATION:
-        deferred = evaluate_global_incantation_error(r, desmos, options);
-        break;
+        case Ast.Kind.INVALID_INCANTATION:
+          defer = evaluate_global_incantation_error(r, desmos, options);
+          break;
 
-      case Ast.Kind.EXPRESSION:
-        deferred = evaluate_expr(r, desmos, options);
-        break;
+        case Ast.Kind.EXPRESSION:
+          defer = evaluate_expr(r, desmos, options);
+          break;
+      }
+
+      if (defer !== undefined) {
+        errors.push(defer);
+      }
     }
-
-    if (deferred !== undefined) {
-      deferred_exprs.push(deferred.data);
+  }
+  catch (e) {
+    if (e instanceof UnrecoverableError) {
+      errors = [e.message];
+    } else {
+      throw e;
     }
   }
 
-  desmos.setExpressions(deferred_exprs);
+  if (errors.length === 0) return;
+  
+  let expr: Desmos.ExpressionState = {
+    type: "text",
+    text: errors.join("\n\n"),
+  };
+
+  switch (options.place_errors) {
+    case "start":
+      desmos.setExpression({ ...expr, id: "deferred-start" });
+
+    default:
+      desmos.setExpression(expr);
+  }
 }
