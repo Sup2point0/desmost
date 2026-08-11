@@ -19,8 +19,9 @@ let source = $state(WELCOME.trim());
 let el_desmos: HTMLElement;
 let desmos: Desmos.Calculator | null;
 
-let ast = $state<unknown>([]);
-let exprs = $state<Desmos.ExpressionState[]>([]);
+let time_delta: number | undefined = $state();
+let ast: any[] = $state([]);
+let exprs: Desmos.ExpressionState[] = $state([]);
 
 onMount(() => {
   if (typeof Desmos === "undefined") {
@@ -41,26 +42,23 @@ $effect(() => {
     if (desmos == null) return;
     desmos.setBlank();
 
-    let debug = compile(desmos, src, { debug: true });
+    let debug;
+
+    try {
+      debug = compile(desmos, src, { debug: true });
+    } catch {
+      debug = undefined;
+    }
 
     untrack(() => {
-      ast = debug?.ast ?? [];
+      time_delta = debug?.time_delta;
+      ast = debug?.ast ?? ["COMPILER ERROR"];
       exprs = desmos!.getExpressions();
     });
-  });
+  }, 50);
 
   return () => clearTimeout(timeout);
 });
-
-function debounce(timeout: number, callback: () => void)
-{
-  let debounce = 0;
-
-  return () => {
-    clearTimeout(debounce);
-    debounce = setTimeout(callback, timeout);
-  };
-}
 
 </script>
 
@@ -78,6 +76,10 @@ function debounce(timeout: number, callback: () => void)
     </div>
 
     <div class="ast">
+      {#if time_delta}
+        <aside>Compiled in {Math.round(time_delta * 10) / 10} ms</aside>
+      {/if}
+
       <pre lang="js"><code>{@html
         JSON.stringify(ast, undefined, "&emsp;").replaceAll("\n", "<br>")}
       </code></pre>
@@ -135,6 +137,18 @@ textarea {
 
   &::selection {
     background: rgb(#0088cc, 40%);
+  }
+}
+
+.ast {
+  position: relative;
+
+  aside {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    @include font-ui;
+    color: $col-deut;
   }
 }
 
