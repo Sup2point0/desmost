@@ -31,10 +31,13 @@ export function compile(
 
   /** Compilation options. */
   options?: DesmostOptions,
-): void
+): void | DesmostDebug
 {
+  let t_init = performance.now();
+  let ast = [];
+
   let opts = set_default_options(options);
-  let parser = new DesmostParser(source);
+  let parser = new DesmostParser(source, opts);
   
   /* To aggregate errors at the start, we need a target to retroactively inject errors into */
   if (opts.place_errors === "start") {
@@ -48,9 +51,8 @@ export function compile(
       let r = parser.parse_next();
       if (r === null) break;
 
-      if ("_internal" in compile) {
-        // @ts-ignore: internals
-        compile._internal.ast.push(r);
+      if (opts.debug) {
+        ast.push(r);
       }
 
       let defer: string | void;
@@ -98,4 +100,18 @@ export function compile(
         break;
     }
   }
+
+  if (opts.debug) {
+    return {
+      time_delta: performance.now() - t_init,
+      ast,
+    };
+  }
+}
+
+
+interface DesmostDebug
+{
+  time_delta: number;
+  ast: Ast[];
 }

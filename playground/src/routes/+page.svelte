@@ -19,8 +19,8 @@ let source = $state(WELCOME.trim());
 let el_desmos: HTMLElement;
 let desmos: Desmos.Calculator | null;
 
-let ast = $state([]);
-let exprs = $state([]);
+let ast = $state<unknown>([]);
+let exprs = $state<Desmos.ExpressionState[]>([]);
 
 onMount(() => {
   if (typeof Desmos === "undefined") {
@@ -41,15 +41,10 @@ $effect(() => {
     if (desmos == null) return;
     desmos.setBlank();
 
-    compile._internal = {
-      ast: [],
-    };
-    compile(desmos, src);
+    let debug = compile(desmos, src, { debug: true });
 
     untrack(() => {
-      // @ts-ignore: internal
-      ast = compile._internal.ast;
-
+      ast = debug?.ast ?? [];
       exprs = desmos!.getExpressions();
     });
   });

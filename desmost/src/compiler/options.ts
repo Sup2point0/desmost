@@ -10,7 +10,7 @@ export interface DesmostOptions
    * - `crash`: The entire compilation to Desmos will terminate with a single error message. This means you don't get any output at all, but errors are also immediately obvious.
    * - `suppress`: Silently fail on the frontend (if you wish to give the illusion that everything is fine).
    */
-  errors?: "surface" | "crash" | "suppress";
+  errors?: "surface" | "crash" | "suppress"
 
   /**
    * Where should errors be placed?
@@ -19,14 +19,21 @@ export interface DesmostOptions
    * - `end`: All aggregated at the end of the Desmos expressions list.
    * - `start`: All aggregated at the start of the Desmos expressions list.
    */
-  place_errors?: "inline" | "end" | "start";
+  place_errors?: "inline" | "end" | "start"
 
   /**
    * Should trailing blank lines be ignored, instead of kept as blank expressions?
    * 
    * Defaults to `false`, meaning blank lines *are* kept.
    */
-  clean_trailing_blanks?: boolean;
+  clean_trailing_blanks?: boolean
+
+  /**
+   * Return debug diagnostics? This includes the unevaluated AST, and performance diagnostics.
+   * 
+   * Defaults to `false`.
+   */
+  debug?: boolean
 }
 
 
@@ -40,6 +47,8 @@ export function set_default_options(options: Partial<DesmostOptions> | undefined
   options.errors ??= "surface";
   options.place_errors ??= "inline";
   options.clean_trailing_blanks ??= false;
+
+  options.debug ??= false;
 
   return options as Required<DesmostOptions>;
 }
