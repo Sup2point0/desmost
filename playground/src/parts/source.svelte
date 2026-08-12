@@ -27,8 +27,9 @@ let { source = $bindable() }: Props = $props();
 
 .panel {
   min-height: 0;
+  display: flex;
+  flex-flow: column nowrap;
   overflow-y: auto;
-  background: #002;
   scrollbar-width: thin;
   scrollbar-color: $col-deut #002;
 }
@@ -51,6 +52,7 @@ textarea {
   field-sizing: content;
   resize: none;
   width: 100%;
+  flex: 1;
   min-height: max-content;
   padding: 0.5rem 1rem 1rem;
   @include font-code;
