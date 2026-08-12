@@ -8,7 +8,7 @@ on:
       - 'Rakefile'
 
 jobs:
-  autodoc:
+  doc:
     runs-on: ubuntu-latest
 
     permissions:
