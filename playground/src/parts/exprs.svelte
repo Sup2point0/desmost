@@ -11,23 +11,41 @@ let { exprs }: Props = $props();
 
 let open = $state(false);
 
+
+function show_expr(expr: Desmos.ExpressionState)
+{
+  expr = { ...expr };
+
+  let did_redact = false;
+
+  if (!open) {
+    for (let [key, value] of Object.entries(expr)) {
+      if (
+        value === ""
+        || typeof value === "object" && Object.values(value).every(v => v === "")
+      ) {
+        delete expr[key as keyof Desmos.ExpressionState];
+        did_redact = true;
+      }
+    }
+  }
+
+  let json = JSON.stringify(expr, undefined, "&emsp;");
+  
+  if (!open && did_redact) {
+    json = json.replaceAll("\n}", ",\n  ...\n}");
+  }
+
+  return json.replaceAll("\n", "<br>");
+}
+
 </script>
 
 
 <ul>
   {#each exprs as expr}
-    {@const shown_data = open ? expr : Object.fromEntries(
-      Object.entries(expr)
-        .filter(([key, value]) => !(
-          value === ""
-          || typeof value === "object" && Object.values(value).every(v => v === "")
-        ))
-    )}
-
-    <li>
-      <pre lang="js"><code>{@html
-        JSON.stringify(shown_data, undefined, "&emsp;").replaceAll("\n", "<br>")
-      }</code></pre>
+    <li onclick={() => { open = !open; }}>
+      <pre lang="js"><code>{@html show_expr(expr) }</code></pre>
     </li>
   {/each}
 </ul>
@@ -49,6 +67,15 @@ ul {
   li {
     background: white;
     box-shadow: 0 2px 4px rgb(black, 20%);
+
+    &:hover, &:focus-visible {
+      cursor: pointer;
+      background: transparent;
+    }
+
+    &:active {
+      background: rgb(black, 10%);
+    }
   }
 
   pre {
