@@ -16,6 +16,7 @@ export class ViewportIncantation extends ArgIncantation<GLOBAL>
 
   apply(target: Desmos.Calculator, data: ViewportBounds)
   {
+    // TODO validate bounds
     target.setMathBounds(data);
   }
 }

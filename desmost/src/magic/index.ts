@@ -1,4 +1,4 @@
-export { Incantation, ArgIncantation, IncantationError } from "./incantation";
+export { Incantation, ArgIncantation } from "./incantation";
 export type { GLOBAL, LOCAL, EXPR } from "./incantation";
 
 export { GLOBAL_INCANTATIONS } from "./global";
