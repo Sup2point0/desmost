@@ -1,17 +1,13 @@
-import { Incantation, type LOCAL, IncantationError } from "../incantation";
+import { Incantation, type LOCAL } from "../incantation";
 
 
-export class HideIncantation extends Incantation<LOCAL, null>
+export class HideIncantation extends Incantation<LOCAL>
 {
   override readonly identifier = "hide"
 
   apply(target: Desmos.ExpressionState)
   {
-    if (target.type !== "expression") {
-      // FIXME use `Unrecoverable`
-      throw new IncantationError(`/hidden can only be applied to LaTeX expressions, but target has type: ${target.type}`);
-    }
-
+    super.require_expr_type(target.type, "expression");
     target.hidden = true;
   }
 }

@@ -1,6 +1,6 @@
 import Json5 from "json5";
 
-import type { Unrecoverable } from "../errors";
+import { UnrecoverableError, type Unrecoverable } from "../errors";
 
 
 /**
@@ -30,6 +30,20 @@ export abstract class Incantation<
     target: Effect extends GLOBAL ? Desmos.Calculator : Desmos.ExpressionState,
     data?: unknown,
   ): void
+
+  /** Error if the `actual` type of the given expression is not `required`. */
+  protected require_expr_type<T extends Desmos.ExpressionState["type"]>(
+    actual: unknown,
+    required: T,
+  ): asserts actual is T
+  {
+    if ((actual ?? "expression") !== required)
+    {
+      throw new UnrecoverableError.IllegalIncantation(
+        `/${this.identifier} can only applied to ${required === "expression" ? "latex" : required} expressions, but target block has type: ${actual}`
+      );
+    }
+  }
 }
 
 
