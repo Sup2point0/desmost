@@ -103,7 +103,7 @@ export class GenericParser
   {
     if (this.out_of_bounds()) {
       throw new UnrecoverableError.UnexpectedEnd(
-        `Unexpected end of input while trying to consume: ${raw}`
+        `Unexpected end of input while trying to consume: \`${raw}\``
       );
     }
 
@@ -111,7 +111,7 @@ export class GenericParser
 
     while (this.current === raw[ii]) {
       this.advance(
-        `Unexpected end of input while trying to consume: ${raw}`
+        `Unexpected end of input while trying to consume: \`${raw}\``
       );
 
       ii++;
@@ -119,7 +119,7 @@ export class GenericParser
     }
 
     throw new UnrecoverableError.UnexpectedInput(
-      error_msg ?? `Expected: ${raw}, but found: ${this.preview()}`
+      error_msg ?? `Expected: \`${raw}\`, but found: \`${this.preview()}\``
     );
   }
 
@@ -184,7 +184,7 @@ export class GenericParser
       if (!(e instanceof RecoverableFail)) throw e;
 
       throw new UnrecoverableError.ExcessInput(
-        error_msg ?? `Expected end of block, but found: ${this.preview()}`
+        error_msg ?? `Expected end of block, but found: \`${this.preview()}\``
       );
     }
   }

@@ -120,7 +120,7 @@ export class DesmostParser extends GenericParser
   {
     this.consume_whitespace();
     this.consume("::",
-      `Expected '::' separator between local incantations and expression, but found: ${this.preview()}`
+      `Expected \`::\` separator between local incantations and expression, but found: \`${this.preview()}\``
     );
   }
 
@@ -216,7 +216,7 @@ export class DesmostParser extends GenericParser
           kind: Ast.Kind.INVALID_INCANTATION,
           incantation,
           error: new UnrecoverableError.MissingInput(
-            `No argument provided for /${incantation.identifier}, which requires an argument of type: ${incantation.arg_type}`
+            `No argument provided for /${incantation.identifier}, which requires an argument of type: \`${incantation.arg_type}\``
           )
         };
       }
@@ -265,7 +265,7 @@ export class DesmostParser extends GenericParser
           kind: Ast.Kind.INVALID_INCANTATION,
           incantation,
           error: new UnrecoverableError.MissingInput(
-            `No argument provided for /${incantation.identifier}, which requires an argument of type: ${incantation.arg_type}`
+            `No argument provided for /${incantation.identifier}, which requires an argument of type: \`${incantation.arg_type}\``
           )
         };
       }
@@ -395,7 +395,7 @@ export class DesmostParser extends GenericParser
     let init = this.i;
 
     this.consume("{",
-      `Expected '{' to start incantation argument, but found: ${this.preview()}`
+      `Expected \`{\` to start incantation argument, but found: \`${this.preview()}\``
     );
 
     enum Ctx {
@@ -463,7 +463,9 @@ export class DesmostParser extends GenericParser
         }
       }
 
-      this.advance();
+      this.advance(
+        `Unexpected end of input while parsing incantation argument, stack: ${JSON.stringify(stack)}`
+      );
     }
 
     /* NOTE: Cut in by 1 on both sides to exclude {} braces */
