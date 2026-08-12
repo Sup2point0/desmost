@@ -22,6 +22,11 @@ export interface DesmostOptions
   place_errors?: "inline" | "end" | "start"
 
   /**
+   * The prefix to prepend to error blocks. Defaults to `[DESMOST ERROR]\n`. Provide a blank string if you wish for no prefix to be added.
+   */
+  error_prefix?: string
+
+  /**
    * Should comments be ignored, instead of turned into text expressions?
    * 
    * Defaults to `false`, meaning comments are kept.
@@ -60,6 +65,7 @@ export function set_default_options(options: Partial<DesmostOptions> | undefined
   
   options.errors ??= "surface";
   options.place_errors ??= "inline";
+  options.error_prefix ??= "[DESMOST ERROR]\n";
   
   options.ignore_comments ??= false;
   options.ignore_line_breaks ??= false;

@@ -23,36 +23,6 @@ export function evaluate_global_incantation(
 }
 
 
-export function evaluate_global_incantation_error(
-  error: Ast.InvalidIncantation,
-  desmos: Desmos.Calculator,
-  options: Required<DesmostOptions>,
-): Unrecoverable<void | string>
-{
-  let text = `Error: ${error.error.message}`
-
-  switch (options.errors) {
-    case "crash":
-      throw error.error;
-
-    case "suppress":
-      console.error(error.error);
-      break;
-
-    default:
-    switch (options.place_errors) {
-      case "start":
-      case "end":
-        return format_error(error.error);
-      
-      default:
-        desmos.setExpression({ type: "text", text: format_error(error.error) });
-        break;
-    }
-  }
-}
-
-
 /**
  * Evaluate arguments (if any) to local incantation invocations on `expr`, then add `expr` to `desmos`.
  */
@@ -66,7 +36,7 @@ export function evaluate_expr(
 
   for (let invocation of expr.incantations) {
     if (invocation.kind === Ast.Kind.INVALID_INCANTATION) {
-      let e = evaluate_expr_error(invocation, desmos, { ...options, place_errors: "start" });
+      let e = evaluate_error(invocation, desmos, { ...options, place_errors: "start" });
       if (e != undefined) {
         errors.push(e);
       }
@@ -89,36 +59,49 @@ export function evaluate_expr(
 }
 
 
-function evaluate_expr_error(
-  error: Ast.InvalidIncantation,
+/**
+ * Handle an `InvalidInvocation`, respecting the user's preferences in `options`.
+ * 
+ * If the user set `place_errors: start` or `place_errors: end`, this returns the formatted error message for deferred aggregation.
+ */
+export function evaluate_error(
+  invocation: Ast.InvalidInvocation,
   desmos: Desmos.Calculator,
   options: Required<DesmostOptions>,
 ): Unrecoverable<void | string>
 {
   switch (options.errors) {
     case "crash":
-      throw error.error;
+      throw invocation.error;
 
     case "suppress":
-      console.error(error.error);
+      console.error(invocation.error);
       break;
 
     default: switch (options.place_errors) {
       case "end":
       case "start":
-        return format_error(error.error);
+        return format_error(invocation.error, options);
       
       default:
-        desmos.setExpression({ type: "text", text: format_error(error.error) });
+        desmos.setExpression({
+          type: "text",
+          text: format_error(invocation.error, options),
+        });
         break;
     }
   }
 }
 
 
-function format_error(e: UnrecoverableError | string): string
+function format_error(
+  e: UnrecoverableError | string,
+  options: Required<DesmostOptions>,
+): string
 {
+  let prefix = options.error_prefix;
+  let sep = (prefix === "" || prefix.endsWith("\n")) ? "" : " ";
   let text = (e instanceof UnrecoverableError ? e.message : e);
 
-  return `!! ${text}`;
+  return `${prefix}${sep}${text}`;
 }

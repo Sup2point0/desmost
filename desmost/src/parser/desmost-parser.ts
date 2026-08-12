@@ -72,10 +72,10 @@ export class DesmostParser extends GenericParser
   parse_pre_sep():
     Unrecoverable<
       | { global: Ast.IncantationInvocation<GLOBAL>
-                | Ast.InvalidIncantation;
+                | Ast.InvalidInvocation;
       }
       | { local: Array<Ast.IncantationInvocation<LOCAL>
-                      | Ast.InvalidIncantation>;
+                      | Ast.InvalidInvocation>;
       }
     >
   {
@@ -188,7 +188,7 @@ export class DesmostParser extends GenericParser
   try_parse_global_incantation():
     Recoverable<
     | Ast.IncantationInvocation<GLOBAL>
-    | Ast.InvalidIncantation
+    | Ast.InvalidInvocation
     >
   {
     let init = this.i;
@@ -237,7 +237,7 @@ export class DesmostParser extends GenericParser
   try_parse_local_incantation():
     Recoverable<
     | Ast.IncantationInvocation<LOCAL>
-    | Ast.InvalidIncantation
+    | Ast.InvalidInvocation
     >
   {
     let init = this.i;

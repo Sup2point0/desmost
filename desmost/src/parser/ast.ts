@@ -20,7 +20,7 @@ export namespace Ast
     data: Desmos.ExpressionState
     incantations: Array<
       | IncantationInvocation<Incantation.Effect.LOCAL>
-      | InvalidIncantation
+      | InvalidInvocation
       >
   }
 
@@ -43,7 +43,7 @@ export namespace Ast
    * 
    * This will be propogated to the user as an extra Desmos text expression (unless they have `errors: false` configured).
    */
-  export interface InvalidIncantation
+  export interface InvalidInvocation
   {
     kind: Kind.INVALID_INCANTATION
     incantation: Incantation
@@ -56,5 +56,5 @@ export namespace Ast
 export type Ast =
   | Ast.Expression
   | Ast.IncantationInvocation
-  | Ast.InvalidIncantation
+  | Ast.InvalidInvocation
 ;

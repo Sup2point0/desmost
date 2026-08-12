@@ -1,5 +1,5 @@
 import { type DesmostOptions, set_default_options } from "./options";
-import { evaluate_global_incantation, evaluate_expr, evaluate_global_incantation_error } from "./evaluate";
+import { evaluate_global_incantation, evaluate_expr, evaluate_error } from "./evaluate";
 
 import { DesmostParser, Ast } from "../parser";
 import { UnrecoverableError } from "../errors";
@@ -67,12 +67,12 @@ export function compile(
           defer = evaluate_global_incantation(r, desmos, opts);
           break;
 
-        case Ast.Kind.INVALID_INCANTATION:
-          defer = evaluate_global_incantation_error(r, desmos, opts);
-          break;
-
         case Ast.Kind.EXPRESSION:
           defer = evaluate_expr(r, desmos, opts);
+          break;
+
+        case Ast.Kind.INVALID_INCANTATION:
+          defer = evaluate_error(r, desmos, opts);
           break;
       }
 
