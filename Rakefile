@@ -61,7 +61,7 @@ def extract_field(text:)
 end
 
 def build_table_row(ident, values, default, doc)
-   ident.chop
+   ident.chop!
    values = values.map { |v| "`#{v}`" }.join(" ")
    doc.gsub!(/\n\n/, "<br><br>")
 
