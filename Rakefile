@@ -49,6 +49,10 @@ def extract_field(text:)
    default = doc.match(/(?<=Defaults to ).*?\./)&.[](0)
    default ||= doc.match(/(?<=- ).+(?=\(default\))/)&.[](0)&.strip
    default ||= "–"
+   if default.end_with?("`.")
+      default.chop!
+   end
+   
    doc.gsub!(/Defaults to .*?\./, "")
 
    # remove comment structure
