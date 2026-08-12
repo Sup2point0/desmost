@@ -1,0 +1,27 @@
+name: 'autodoc'
+
+on:
+  push:
+    paths:
+      - '**/options.ts'
+
+jobs:
+  autodoc:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: 'git / checkout'
+        uses: actions/checkout@v7
+      
+      - name: 'rake / doc'
+        run: |
+          rake
+      
+      - name: 'git / push'
+        run: |
+          git add .
+          git diff --staged --quiet || git commit -m "update docs"
+          git push
