@@ -2,7 +2,7 @@
 
 # Desmost
 
-[**Docs**](docs/) · [**Walkthrough**](docs/readme.md) · [**Learn X in Y**](docs/writing/learn-x-in-y.md) · [**Spec**](docs/spec/) · [**Playground**](https://sup2point0.github.io/desmost)
+[**Docs**](docs/)&ensp;·&ensp;[**Learn X in Y**](docs/writing/learn-x-in-y.md)&ensp;·&ensp;[**Spec**](docs/spec/)&ensp;·&ensp;[**Playground**](https://sup2point0.github.io/desmost)
 
 </div>
 
@@ -22,14 +22,15 @@
       <pre lang="hs"><code>
 /viewport{ left: -5, right: 5 }
 <br>
+% Drag the slider!
 A = 1
 y = A \sin(x - t)
 <br>
-/label{ text: "Desmos(t) is awesome!" }
-  :: (0, 2)
+/label{ text: "we love Desmos(t)!" } :: (0, 2)
 <br>
 /anim /slider{ min: -1, max: 1 }
-  :: t = 0</code></pre>
+  :: t = 0
+</code></pre>
     </td>
     <td>
       <a href="https://sup2point0.github.io/desmost">
@@ -54,6 +55,7 @@ In other words, it’s like HTML+CSS but for Desmos. Write your content in LaTeX
 | :----- | :---------- |
 | [`desmost/`](desmost/) | The Desmost compiler, which parses and evaluates your source code, then injects the results into a `Desmos.Calculator` instance via the Desmos API. How you use the compiler and render the end result, is left up to you! |
 | [`playground/`](playground/) | The Desmost site, with the interactive live-compile playground. |
+| [`docs/`](docs/) | All the information you need for how to write and use Desmost. |
 
 
 <br>
@@ -70,7 +72,7 @@ npm install desmost
 ```
 
 ### Write
-See [Docs / Writing](docs/writing) to understand how to use Desmost syntax.
+See [Docs / Writing](docs/writing) guidance on Desmost syntax.
 
 ### Compile
 ```ts
@@ -89,6 +91,8 @@ compile(calc, "/text{ sup world! }", {
 });
 ```
 
+See [Docs / Compiling / Options](docs/compiling/compiler-options.md) for a reference of the available options.
+
 ### Render
 Up to you, in your framework of choice!
 
@@ -106,10 +110,18 @@ Or, if you enjoy nice things, Desmost provides a [Svelte](https://svelte.dev) co
 </Desmost>
 ```
 
-Pass in options directly to customise compilation:
+Pass compilation options directly to the component:
 
 ```svelte
-<Desmost height="90vh" errors="crash">
+<Desmost errors="crash">
+  <Content />
+</Desmost>
+```
+
+You can customise rendering, too:
+
+```svelte
+<Desmost lazy height="90vh">
   <Content />
 </Desmost>
 ```
@@ -264,7 +276,7 @@ q = 3
 p + q
 ```
 
-This keeps it easily comprehendable alongside surrounding Markdown when editing. And it’s exactly the same as what you’d type into Desmos – it’s like you meant to, but accidentally typed it into your IDE instead!
+This keeps it easily comprehendable when mixed with Markdown. And it’s exactly the same as what you’d type into Desmos – it’s like you meant to, but accidentally ended up typing it into your IDE!
 
 ### Make the complex stuff possible
 At the same time, we want to provide full control over as many aspects of the calculator as possible. Incantations make this easy – to access more functionality, all it takes is adding a new incantation.
