@@ -5,6 +5,7 @@ import "#styles/essence.scss";
 import { compile } from "../../../desmost/src";
 
 import Nav from "#parts/nav.svelte";
+import DesmostSource from "#parts/source.svelte";
 import DesmostAst from "#parts/ast.svelte";
 import DesmosExpressions from "#parts/exprs.svelte";
 
@@ -81,7 +82,7 @@ function sync_exprs_with_desmos()
   <Nav />
 
   <main>
-    <textarea bind:value={source}></textarea>
+    <DesmostSource bind:source />
 
     <div id="desmos" bind:this={el_desmos}>
       {#if desmos === null}
@@ -114,30 +115,6 @@ main {
   div {
     overflow-y: auto;
     min-height: 0;
-  }
-}
-
-textarea {
-  flex: 3;
-  resize: none;
-  width: 100%;
-  min-height: 0;
-  padding: 1rem;
-  @include font-code;
-  font-size: 120%;
-  font-weight: 350;
-  line-height: 1.5;
-  color: white;
-  background: #002;
-  border: none;
-  border-radius: 0;
-  outline: none;
-
-  scrollbar-width: thin;
-  scrollbar-color: $col-deut #002;
-
-  &::selection {
-    background: rgb(#0088cc, 40%);
   }
 }
 
