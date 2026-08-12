@@ -33,11 +33,12 @@ let { ast, duration }: Props = $props();
 <style lang="scss">
 
 ul {
-  padding: 0.5rem;
+  padding: 0.5rem 0.25rem;
   overflow-y: auto;
   min-height: 0;
   position: relative;;
   background: #f9f9f9;
+  scrollbar-width: thin;
 
   li {
     background: white;
@@ -50,6 +51,7 @@ ul {
 
   code {
     @include font-code;
+    font-size: 90%;
     line-height: 1.3;
   }
 }

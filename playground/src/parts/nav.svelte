@@ -29,7 +29,7 @@ nav {
 
   @include font-ui;
   background: $col-deut;
-  box-shadow: 0 2px 4px rgb(black, 20%);
+  box-shadow: 0 2px 4px rgb(black, 40%);
 }
 
 .left {

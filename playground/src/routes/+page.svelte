@@ -109,7 +109,7 @@ main {
   min-height: 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 0.5fr 0.5fr;
+  grid-template-rows: 1fr 1fr;
 
   div {
     overflow-y: auto;
