@@ -38,7 +38,7 @@ end
 
 def extract_field(text:)
    doc, src = text.strip.split(/\*\/\n +/)
-   ident, type = src.split(": ")
+   ident, type = src.split("?: ")
 
    case type
       when "boolean" then values = ["true", "false"]
@@ -61,13 +61,9 @@ def extract_field(text:)
 end
 
 def build_table_row(ident, values, default, doc)
-   if ident.end_with?("?")
-      ident.sub!(/([^?]+)/, "**\\1**")
-   end
-
+   ident.chop
    values = values.map { |v| "`#{v}`" }.join(" ")
-
    doc.gsub!(/\n\n/, "<br><br>")
 
-   return "| #{ident} | #{values} | #{default} | #{doc} |"
+   return "| **#{ident}** | #{values} | #{default} | #{doc} |"
 end

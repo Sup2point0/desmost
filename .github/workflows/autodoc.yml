@@ -5,6 +5,7 @@ on:
     paths:
       - '.github/workflows/autodoc.yml'
       - '**/options.ts'
+      - 'Rakefile'
 
 jobs:
   autodoc:
