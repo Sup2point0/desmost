@@ -43,10 +43,10 @@ export function evaluate_global_incantation_error(
     switch (options.place_errors) {
       case "start":
       case "end":
-        return text;
+        return format_error(error.error);
       
       default:
-        desmos.setExpression({ type: "text", text });
+        desmos.setExpression({ type: "text", text: format_error(error.error) });
         break;
     }
   }
@@ -95,24 +95,30 @@ function evaluate_expr_error(
   options: Required<DesmostOptions>,
 ): Unrecoverable<void | string>
 {
-  let text = `[Invalid incantation] ${error.error.message}`;
-
   switch (options.errors) {
     case "crash":
       throw error.error;
 
     case "suppress":
-      // TODO
+      console.error(error.error);
       break;
 
     default: switch (options.place_errors) {
       case "end":
       case "start":
-        return text;
+        return format_error(error.error);
       
       default:
-        desmos.setExpression({ type: "text", text });
+        desmos.setExpression({ type: "text", text: format_error(error.error) });
         break;
     }
   }
+}
+
+
+function format_error(e: UnrecoverableError | string): string
+{
+  let text = (e instanceof UnrecoverableError ? e.message : e);
+
+  return `!! ${text}`;
 }
