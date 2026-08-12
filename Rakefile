@@ -52,7 +52,7 @@ def extract_field(text:)
    doc.gsub!(/Defaults to .*?\./, "")
 
    # remove comment structure
-   doc.gsub!(/ +\* ?/, "")
+   doc.gsub!(/  +\* ?/, "")
    doc.gsub!("/**", "")
    doc.strip!
    doc.gsub!("\n", "<br>")
@@ -61,7 +61,6 @@ def extract_field(text:)
 end
 
 def build_table_row(ident, values, default, doc)
-   ident.chop!
    values = values.map { |v| "`#{v}`" }.join(" ")
    doc.gsub!(/\n\n/, "<br><br>")
 
