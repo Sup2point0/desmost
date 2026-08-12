@@ -46,7 +46,13 @@ export function evaluate_expr(
     let data = undefined;
 
     if ("arg_raw" in invocation && invocation.arg_raw != undefined) {
-      data = invocation.incantation.evaluate_arg(invocation.arg_raw);
+      try {
+        data = invocation.incantation.evaluate_arg(invocation.arg_raw);
+      }
+      catch (e) {
+        errors.push(format_error(e as any, options));
+        if (invocation.incantation.requires_arg) continue;
+      }
     }
 
     invocation.incantation.apply(expr.data, data);
@@ -95,13 +101,13 @@ export function evaluate_error(
 
 
 function format_error(
-  e: UnrecoverableError | string,
+  e: UnrecoverableError,
   options: Required<DesmostOptions>,
 ): string
 {
   let prefix = options.error_prefix;
   let sep = (prefix === "" || prefix.endsWith("\n")) ? "" : " ";
-  let text = (e instanceof UnrecoverableError ? e.message : e);
 
-  return `${prefix}${sep}${text}`;
+  return `${prefix}${sep}${e.name}: ${e.message}`;
+  // TODO maybe include stack? (configurable?)
 }

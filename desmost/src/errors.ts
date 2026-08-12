@@ -20,11 +20,11 @@ export namespace UnrecoverableError
   export class ExcessInput extends UnrecoverableError {}
 
 
-  /** Parsing an incantation's argument failed. */
-  export class InvalidIncantation extends UnrecoverableError {}
-
-  /** Applying an incantation failed. */
+  /** An incantation can't be applied here. */
   export class IllegalIncantation extends UnrecoverableError {}
+
+  /** An incantation's argument couldn't be parsed. */
+  export class InvalidArgument extends UnrecoverableError {}
 }
 
 

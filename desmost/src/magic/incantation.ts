@@ -79,7 +79,15 @@ export abstract class ArgIncantation<
       case Incantation.ArgType.STRING: return raw;
       case Incantation.ArgType.LATEX:  return raw;
       case Incantation.ArgType.ENUM:   return raw;
-      case Incantation.ArgType.OBJECT: return Json5.parse(`{${raw}}`);
+      
+      case Incantation.ArgType.OBJECT:
+        try {
+          return Json5.parse(`{${raw}}`);
+        }
+        catch (e) {
+          // @ts-expect-error: fine
+          throw new UnrecoverableError.InvalidArgument(e.message);
+        }
     }
   }
 }
