@@ -13,9 +13,9 @@ def main()
    source = File.read(root / "desmost/src/compiler/options.ts")
    output = build_table(source:)
 
-   text = File.read(root / "docs/compiling/options.md")
+   text = File.read(root / "docs/compiling/compiler-options.md")
    text.gsub!(/(?<=<!-- autodoc\? -->\n).*?(?=\n<!-- autodoc\. -->)/s, output)
-   File.write(root / "docs/compiling/options.md", text)
+   File.write(root / "docs/compiling/compiler-options.md", text)
 
    puts "done!"
 end
