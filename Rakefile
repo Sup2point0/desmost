@@ -14,7 +14,7 @@ def main()
    output = build_table(source:)
 
    text = File.read(root / "docs/compiling/compiler-options.md")
-   text.gsub!(/(?<=<!-- autodoc\? -->\n).*?(?=\n<!-- autodoc\. -->)/s, output)
+   text.gsub!(/(?<=<!-- autodoc\? -->\n).*?(?=\n<!-- autodoc\. -->)/ms, output)
    File.write(root / "docs/compiling/compiler-options.md", text)
 
    puts "done!"
