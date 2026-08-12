@@ -33,6 +33,11 @@ export function compile(
   options?: DesmostOptions,
 ): void | DesmostDebug
 {
+  if (typeof Desmos === "undefined") {
+    console.error(`Desmost: Could not find \`Desmos\` in global namespace, aborting compilation!`);
+    return;
+  }
+
   let t_init = performance.now();
   let ast = [];
 
