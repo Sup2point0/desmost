@@ -3,6 +3,7 @@ name: 'autodoc'
 on:
   push:
     paths:
+      - '.github/workflows/autodoc.yml'
       - '**/options.ts'
 
 jobs:
