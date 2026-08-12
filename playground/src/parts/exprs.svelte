@@ -8,14 +8,25 @@ interface Props {
 
 let { exprs }: Props = $props();
 
+
+let open = $state(false);
+
 </script>
 
 
 <ul>
   {#each exprs as expr}
+    {@const shown_data = open ? expr : Object.fromEntries(
+      Object.entries(expr)
+        .filter(([key, value]) => !(
+          value === ""
+          || typeof value === "object" && Object.values(value).every(v => v === "")
+        ))
+    )}
+
     <li>
       <pre lang="js"><code>{@html
-        JSON.stringify(expr, undefined, "&emsp;").replaceAll("\n", "<br>")
+        JSON.stringify(shown_data, undefined, "&emsp;").replaceAll("\n", "<br>")
       }</code></pre>
     </li>
   {/each}
