@@ -4,7 +4,8 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - '**.yml'
+      - '.github/workflows/deploy.yml'
+      - 'playground/package-lock.json'
 
 jobs:
   build:
@@ -13,9 +14,6 @@ jobs:
     steps:
       - name: 'git / checkout'
         uses: actions/checkout@v7
-        with:
-          submodules: true
-          token: ${{ secrets.SUPPETY_PAT }}
 
       - name: 'node / setup'
         uses: actions/setup-node@v6
