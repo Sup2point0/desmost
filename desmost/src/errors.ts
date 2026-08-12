@@ -20,22 +20,11 @@ export namespace UnrecoverableError
   export class ExcessInput extends UnrecoverableError {}
 
 
-  /** The parser encountered errors while trying to parse an incantation. */
-  export class InvalidIncantation extends UnrecoverableError
-  {
-    /**
-     * Can the error be contained by skipping application of this incantation?
-     * 
-     * For instance, for an invalid `/slider{ bogus } :: t = 0`, we can skip trying to apply `/slider` and keep `t = 0`. But for `/latex{ what }`, without `/latex` we can't produce an expression, so we can't skip.
-    */
-    public skip_and_surface: boolean;
+  /** Parsing an incantation's argument failed. */
+  export class InvalidIncantation extends UnrecoverableError {}
 
-    constructor(message?: string, options?: { skip_and_surface: boolean })
-    {
-      super(message);
-      this.skip_and_surface = options?.skip_and_surface ?? false;
-    }
-  }
+  /** Applying an incantation failed. */
+  export class IllegalIncantation extends UnrecoverableError {}
 }
 
 
