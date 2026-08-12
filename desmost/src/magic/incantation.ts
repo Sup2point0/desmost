@@ -4,18 +4,20 @@ import { UnrecoverableError, type Unrecoverable } from "../errors";
 
 
 /**
- * An *Incantation* is like a slash command that tells <> to do something - like changing the properties of an expression, or applying some settings to the calculator as a whole.
+ * An *Incantation* is like a slash command that tells Desmost to do something - like changing the properties of an expression, or applying some settings to the calculator as a whole.
  * 
- * Incantations must appear at the start of lines, prefixed by a `/`. They look like this:
+ * Incantations must be prefixed by a `/`. They look like this:
  * 
  * ```math
  * /viewport{ left: -1, right: 1 }
  * /hidden :: x = 69
  * /text :: Never gonna give you up
  * ```
+ * 
+ * Incantations that accept an argument derive from `ArgIncantation`.
  */
 export abstract class Incantation<
-  Effect extends Incantation.Effect = Incantation.Effect,
+  Effect extends Incantation.Effect = Incantation.Effect
 >
 {
   /** The raw text sequence that matches this incantation, such as `viewport` or `hidden`. */
@@ -47,6 +49,9 @@ export abstract class Incantation<
 }
 
 
+/**
+ * An incantation that accepts an argument.
+ */
 export abstract class ArgIncantation<
   Effect extends Incantation.Effect = Incantation.Effect
 >
@@ -111,14 +116,6 @@ export namespace Incantation
     OBJECT = "Object",
   }
 }
-
-
-// == ERRORS == //
-
-// FIXME not needed, use unified Recoverable/Unrecoverable
-
-/** Desmost failed to apply an incantation. */
-export class IncantationError extends Error {}
 
 
 // == ALIASES == //

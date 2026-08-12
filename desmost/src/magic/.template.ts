@@ -1,4 +1,4 @@
-// import { Incantation, ArgIncantation, GLOBAL, LOCAL, EXPR } from "../incantation";
+// import { Incantation, ArgIncantation, type GLOBAL, type LOCAL, type EXPR } from "../incantation";
 
 
 // export class ?Incantation extends ArgIncantation<?>
