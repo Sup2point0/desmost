@@ -1,4 +1,4 @@
-import Json5 from "JSON5";
+import Json5 from "json5";
 
 import type { Unrecoverable } from "../errors";
 
