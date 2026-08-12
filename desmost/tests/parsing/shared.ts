@@ -24,6 +24,6 @@ export function assert_parses_blank_line(parser: DesmostParser)
   assert.isNotNull(r);
   assert_is_expression(r);
   // @ts-expect-error: outdated types
-  assert.equal(r.data.latex, "");
+  assert.equal(r.data.latex, " ");
   assert.deepEqual(r.incantations, []);
 }

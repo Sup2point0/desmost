@@ -15,14 +15,14 @@ import { desmos } from "../shared";
 
 test("medium", () =>
 {
-  let { time_delta } = compile(desmos, MEDIUM, { debug: true })!;
+  let { duration } = compile(desmos, MEDIUM, { debug: true })!;
 
-  assert.isNumber(time_delta);
-  assert.isAbove(time_delta, 0);
+  assert.isNumber(duration);
+  assert.isAbove(duration, 0);
 
-  assert.isBelow(time_delta, 1000);
-  assert.isBelow(time_delta, 100);
-  assert.isBelow(time_delta, 10);
+  assert.isBelow(duration, 1000);
+  assert.isBelow(duration, 100);
+  assert.isBelow(duration, 10);
   
-  console.log(time_delta);
+  console.log(duration);
 });

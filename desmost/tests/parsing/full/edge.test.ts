@@ -1,6 +1,6 @@
 import { DesmostParser, Ast } from "../../../src/parser";
 
-import { assert_is_expression } from "../shared";
+import { assert_is_expression, assert_parses_blank_line } from "../shared";
 
 
 describe("edge cases", () =>
@@ -11,13 +11,7 @@ describe("edge cases", () =>
     let r: Ast | null;
 
     parser.parse_next();
-
-    r = parser.parse_next();
-    assert.isNotNull(r);
-    assert_is_expression(r);
-    // @ts-expect-error: outdated types
-    assert.equal(r.data.latex, "");
-    assert.equal(r.incantations.length, 0);
+    assert_parses_blank_line(parser);
 
     r = parser.parse_next();
     assert.isNull(r);
@@ -29,20 +23,8 @@ describe("edge cases", () =>
     let r: Ast | null;
 
     parser.parse_next();
-
-    r = parser.parse_next();
-    assert.isNotNull(r);
-    assert_is_expression(r);
-    // @ts-expect-error: outdated types
-    assert.equal(r.data.latex, "");
-    assert.equal(r.incantations.length, 0);
-
-    r = parser.parse_next();
-    assert.isNotNull(r);
-    assert_is_expression(r);
-    // @ts-expect-error: outdated types
-    assert.equal(r.data.latex, "");
-    assert.equal(r.incantations.length, 0);
+    assert_parses_blank_line(parser);
+    assert_parses_blank_line(parser);
 
     r = parser.parse_next();
     assert.isNull(r);
