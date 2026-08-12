@@ -16,8 +16,10 @@ def doc_incantations
 end
 
 def build_table(glob:)
-   incantations = find_incantations_of(glob:)
-   rows = incantations.map { |data| build_table_row(*data) }
+   rows = glob
+      .map { |path| File.read(path) }
+      .map { |text| extract_incantation(text:) }
+      .map { |data| build_table_row(*data) }
 
    return "
 
@@ -26,12 +28,6 @@ def build_table(glob:)
 #{rows.join("\n")}
 
    ".strip
-end
-
-def find_incantations_of(glob:)
-   return glob
-      .map { |path| File.read(path) }
-      .map { |text| extract_incantation(text:) }
 end
 
 def extract_incantation(text:)
