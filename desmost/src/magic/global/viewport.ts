@@ -10,6 +10,9 @@ interface ViewportBounds
 
 export class ViewportIncantation extends ArgIncantation<GLOBAL>
 {
+  override readonly description
+    = "Set the bounds of the viewport via `Calculator.setMathBounds()`."
+  
   override readonly identifier   = "viewport"
   override readonly requires_arg = true
   override readonly arg_type     = Incantation.ArgType.OBJECT

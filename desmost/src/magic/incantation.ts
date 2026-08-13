@@ -20,6 +20,9 @@ export abstract class Incantation<
   Effect extends Incantation.Effect = Incantation.Effect
 >
 {
+  /** Short user-facing description of what the incantation does. */
+  public abstract readonly description: string
+
   /** The raw text sequence that matches this incantation, such as `viewport` or `hidden`. */
   public abstract readonly identifier: string
 
