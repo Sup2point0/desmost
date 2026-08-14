@@ -91,7 +91,6 @@ def build_table_row(ident, ident_alt, arg, arg_type, desc)
    ident_alt_link = ident_alt.nil? ? "" : "<br>[`/#{ident_alt}`](##{ident})"
       
    return "
-  <tr></tr>
   <tr>
     <td>
 
@@ -101,6 +100,7 @@ def build_table_row(ident, ident_alt, arg, arg_type, desc)
     <td>#{arg_type}</td>
     <td>#{desc}</td>
   </tr>
+  <tr></tr>
    ".strip
 end
 
