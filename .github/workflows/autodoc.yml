@@ -5,7 +5,7 @@ on:
   push:
     paths:
       - '.github/workflows/autodoc.yml'
-      - '.autodoc/Rakefile'
+      - '.autodoc/*'
       - '**/options.ts'
       - 'desmos/src/magic/**/*.ts'
 
