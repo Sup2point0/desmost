@@ -72,7 +72,7 @@ export function compile(
           break;
 
         case Ast.Kind.INVALID_INCANTATION:
-          defer = evaluate_error(r, desmos, opts);
+          defer = evaluate_error(r.error, desmos, opts);
           break;
       }
 

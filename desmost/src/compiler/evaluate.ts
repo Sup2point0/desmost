@@ -16,7 +16,15 @@ export function evaluate_global_incantation(
   let data = undefined;
 
   if ("arg_raw" in invocation && invocation.arg_raw != undefined) {
-    data = invocation.incantation.evaluate_arg(invocation.arg_raw);
+    try {
+      data = invocation.incantation.evaluate_arg(invocation.arg_raw);
+    }
+    catch (e) {
+      let msg = evaluate_error(e as Error, desmos, options);
+      if (msg != undefined) {
+        return msg;
+      }
+    }
   }
 
   invocation.incantation.apply(desmos, data);
@@ -32,13 +40,13 @@ export function evaluate_expr(
   options: Required<DesmostOptions>,
 ): Unrecoverable<void | string>
 {
-  let errors = [];
+  let errors: string[] = [];
 
   for (let invocation of expr.incantations) {
     if (invocation.kind === Ast.Kind.INVALID_INCANTATION) {
-      let e = evaluate_error(invocation, desmos, { ...options, place_errors: "start" });
-      if (e != undefined) {
-        errors.push(e);
+      let msg = evaluate_error(invocation.error, desmos, { ...options, place_errors: "start" });
+      if (msg != undefined) {
+        errors.push(msg);
       }
       continue;
     }
@@ -50,7 +58,7 @@ export function evaluate_expr(
         data = invocation.incantation.evaluate_arg(invocation.arg_raw);
       }
       catch (e) {
-        errors.push(format_error(e as any, options));
+        errors.push(format_error(e as Error, options));
         if (invocation.incantation.requires_arg) continue;
       }
     }
@@ -71,28 +79,28 @@ export function evaluate_expr(
  * If the user set `place_errors: start` or `place_errors: end`, this returns the formatted error message for deferred aggregation.
  */
 export function evaluate_error(
-  invocation: Ast.InvalidInvocation,
+  error: UnrecoverableError,
   desmos: Desmos.Calculator,
   options: Required<DesmostOptions>,
 ): Unrecoverable<void | string>
 {
   switch (options.errors) {
     case "crash":
-      throw invocation.error;
+      throw error;
 
     case "suppress":
-      console.error(invocation.error);
+      console.error(error);
       break;
 
     default: switch (options.place_errors) {
       case "end":
       case "start":
-        return format_error(invocation.error, options);
+        return format_error(error, options);
       
       default:
         desmos.setExpression({
           type: "text",
-          text: format_error(invocation.error, options),
+          text: format_error(error, options),
         });
         break;
     }
