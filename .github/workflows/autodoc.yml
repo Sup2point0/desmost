@@ -5,8 +5,9 @@ on:
   push:
     paths:
       - '.github/workflows/autodoc.yml'
+      - '.autodoc/Rakefile'
       - '**/options.ts'
-      - 'Rakefile'
+      - 'desmos/src/magic/**/*.ts'
 
 jobs:
   doc:
@@ -21,6 +22,7 @@ jobs:
       
       - name: 'rake / doc'
         run: |
+          cd .autodoc
           rake
       
       - name: 'git / push'
