@@ -4,6 +4,8 @@
 
 <script lang="ts">
 
+import Prism from "prismjs";
+
 import type { Ast } from "desmost/internal";
 
 
@@ -14,6 +16,11 @@ interface Props {
 
 let { ast, duration }: Props = $props();
 
+
+let json = $derived(JSON.stringify(ast, undefined, "  "));
+// let cleaned = $derived(json.replaceAll("\n", "<br>"));
+let highlighted = $derived(Prism.highlight(json, Prism.languages.javascript, "javascript"));
+
 </script>
 
 
@@ -23,9 +30,7 @@ let { ast, duration }: Props = $props();
   {/if}
 
   <li>
-    <pre lang="js"><code>{@html
-      JSON.stringify(ast, undefined, "&emsp;").replaceAll("\n", "<br>")}
-    </code></pre>
+    <pre lang="js"><code>{@html highlighted}</code></pre>
   </li>
 </ul>
 

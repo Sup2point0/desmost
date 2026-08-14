@@ -1,6 +1,7 @@
 <script lang="ts">
 
 import "#styles/essence.scss";
+import "#styles/prism.scss";
 
 import { compile } from "desmost";
 

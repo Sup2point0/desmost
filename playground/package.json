@@ -18,7 +18,8 @@
   "dependencies":
   {
     "desmost": "^0.1",
-    "json5": "^2.2"
+    "json5": "^2.2",
+    "prismjs": "^1.30"
   },
 
   "devDependencies":
@@ -27,6 +28,7 @@
     "@sveltejs/kit": "^2.0",
     "@sveltejs/vite-plugin-svelte": "^7.0",
     "@types/desmos": "^1.11",
+    "@types/prismjs": "^1.26",
     "sass": "^1.100",
     "svelte": "^5.0",
     "svelte-preprocess": "^6.0",
