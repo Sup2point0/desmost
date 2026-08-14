@@ -10,7 +10,7 @@ interface FillOptions
 export class FillIncantation extends ArgIncantation<LOCAL>
 {
   override readonly description
-    = "Change fill styles for a block."
+    = "Change fill styles for a rendered block."
   
   override readonly identifier   = "fill"
   override readonly requires_arg = true
@@ -18,7 +18,7 @@ export class FillIncantation extends ArgIncantation<LOCAL>
 
   override apply(target: Desmos.ExpressionState, data: FillOptions)
   {
-    // @ts-expect-error: outdated types
+    super.require_expr_type(target.type, "expression");
     target.fillOpacity = data.opacity;
   }
 }

@@ -10,7 +10,7 @@ export class SecretIncantation extends Incantation<LOCAL>
 
   override apply(target: Desmos.ExpressionState)
   {
-    // @ts-expect-error: outdated types
+    super.require_expr_type(target.type, "expression");
     target.secret = true;
   }
 }

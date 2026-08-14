@@ -20,6 +20,7 @@ export class SliderIncantation extends ArgIncantation<LOCAL>
 
   override apply(target: Desmos.ExpressionState, data: SliderBounds)
   {
+    super.require_expr_type(target.type, "expression");
     // @ts-expect-error: outdated types
     target.sliderBounds = data;
   }

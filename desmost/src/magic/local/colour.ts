@@ -16,6 +16,7 @@ export class ColourIncantation extends ArgIncantation<LOCAL>
 
   override apply(target: Desmos.ExpressionState, data: DesmosColour)
   {
+    super.require_expr_type(target.type, "expression");
     // @ts-expect-error: outdated types
     target.color = data;
   }
@@ -31,7 +32,7 @@ export class ColourIncantation extends ArgIncantation<LOCAL>
       case "BLACK":  return DesmosColour.BLACK;
       default:
         throw new UnrecoverableError(
-          `Invalid colour: ${data}`
+          `Invalid colour: \`${data}\``
         );
     }
   }
