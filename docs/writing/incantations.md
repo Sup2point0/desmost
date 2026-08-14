@@ -1,5 +1,12 @@
 # Incantations Reference
 
+[Expression Incantations](#expression)&ensp;·&ensp;[Global Incantations](#global)&ensp;·&ensp;[Local Incantations](#local)
+
+This page documents all the incantations available in Desmost.
+
+
+<br>
+
 
 ## Expression
 <!-- autodoc? expr -->
@@ -71,18 +78,15 @@
 [`/viewport`](#viewport)
     </td>
     <td>required</td>
-    <td><pre lang="ts"><code>{
-<br>
-  left: number; right: number;
-<br>
-  bottom: number; top: number;
-<br>
-}</code></pre></td>
+    <td><pre lang="ts"><code>{<br>  left: number; right: number;<br>  bottom: number; top: number;<br>}</code></pre></td>
     <td>Set the bounds of the viewport via `Calculator.setMathBounds()`.</td>
   </tr>
   <tr></tr>
 </table>
 <!-- autodoc. -->
+
+
+<br>
 
 
 ## Local
@@ -121,11 +125,7 @@
 [`/fill`](#fill)
     </td>
     <td>required</td>
-    <td><pre lang="ts"><code>{
-<br>
-  opacity: number;
-<br>
-}</code></pre></td>
+    <td><pre lang="ts"><code>{<br>  opacity: number;<br>}</code></pre></td>
     <td>Change fill styles for a block.</td>
   </tr>
   <tr></tr>
@@ -155,15 +155,7 @@
 [`/point`](#point)
     </td>
     <td>required</td>
-    <td><pre lang="ts"><code>{
-<br>
-  style?: keyof typeof Desmos.Styles;
-<br>
-  size?: number;
-<br>
-  opacity?: number;
-<br>
-}</code></pre></td>
+    <td><pre lang="ts"><code>{<br>  style?: keyof typeof Desmos.Styles;<br>  size?: number;<br>  opacity?: number;<br>}</code></pre></td>
     <td></td>
   </tr>
   <tr></tr>
@@ -183,15 +175,7 @@
 [`/slider`](#slider)
     </td>
     <td>required</td>
-    <td><pre lang="ts"><code>{
-<br>
-  min?: number \| string;
-<br>
-  max?: number \| string;
-<br>
-  step?: number \| string;
-<br>
-}</code></pre></td>
+    <td><pre lang="ts"><code>{<br>  min?: number \| string;<br>  max?: number \| string;<br>  step?: number \| string;<br>}</code></pre></td>
     <td>Set the bounds of the slider for a variable.</td>
   </tr>
   <tr></tr>
