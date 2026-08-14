@@ -4,6 +4,7 @@ import {
   GLOBAL_INCANTATIONS, LOCAL_INCANTATIONS, EXPR_INCANTATIONS,
 } from "../../src/magic";
 
+import { assert_is_expression } from "./shared";
 
 
 describe("try-parse-global-incantation()", () =>
@@ -44,6 +45,6 @@ describe("try-parse-expr-incantation()", () =>
     let parser = new DesmostParser(`/${incantation.identifier}{ sup }`);
     let r = parser.try_parse_expr_incantation();
     
-    assert.equal(r.kind, Ast.Kind.EXPRESSION);
+    assert_is_expression(r);
   });
 });

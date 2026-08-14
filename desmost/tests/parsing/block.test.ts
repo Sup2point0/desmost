@@ -1,6 +1,5 @@
 import { DesmostParser } from "../../src/parser";
 
-import { ltx } from "../shared";
 import { assert_is_expression } from "./shared";
 
 
@@ -16,6 +15,7 @@ describe("parse-next", () =>
   ("line breaks", src => {
     let parser = new DesmostParser(src);
     let r = parser.parse_next();
+    
     assert_is_expression(r);
     // @ts-expect-error: outdated types
     assert.equal(r.data.latex, `y = x^2`);

@@ -1,20 +1,20 @@
 import util from "node:util";
 
 import { DesmostParser, Ast } from "../../src/parser";
+import type { RecoverableFail } from "../../src/errors";
 
 
-export function assert_is_expression(result: Ast): asserts result is Ast.Expression
+export function assert_is_expression(result: Ast | RecoverableFail | null): asserts result is Ast.Expression
 {
-  assert.equal(result.kind, Ast.Kind.EXPRESSION);
+  assert.isNotNull(result);
+  assert.equal((result as Ast).kind, Ast.Kind.EXPRESSION, `received: ${util.inspect(result)}`);
 }
 
-export function assert_is_incantation(result: Ast): asserts result is Ast.IncantationInvocation
+export function assert_is_incantation(result: Ast | RecoverableFail | null): asserts result is Ast.IncantationInvocation
 {
-  assert.equal(
-    result.kind,
-    Ast.Kind.INCANTATION_INVOCATION,
-    `received: ${util.inspect(result)}`
-  );
+  assert.isNotNull(result);
+
+  assert.equal((result as Ast).kind, Ast.Kind.INCANTATION_INVOCATION, `received: ${util.inspect(result)}`);
 }
 
 

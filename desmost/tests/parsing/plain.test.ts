@@ -1,6 +1,7 @@
 import { DesmostParser, Ast } from "../../src/parser";
 
 import { ltx } from "../shared";
+import { assert_is_expression } from "./shared";
 
 
 /**
@@ -21,16 +22,17 @@ describe("preserves plain LaTeX", () =>
   });
 
   test.for([
-    ltx `\n`,
-    ltx `\n`,
+    ``,
+    `\n`,
   ])("empty", source =>
   {
     let parser = new DesmostParser(source);
     let r = parser.parse_next();
     
-    // FIXME
-    // assert.isNotNull(result);
-    // assert.equal(result.kind, ParseResult.Kind.EXPRESSION);
-    // assert.deepEqual((result as ParseResult.Expression).data, { latex: "" });
+    assert.isNotNull(r);
+    assert_is_expression(r);
+    assert.equal(r.kind, Ast.Kind.EXPRESSION);
+    // @ts-expect-error: outdated types
+    assert.equal(r.data.latex, " ");
   });
 });
