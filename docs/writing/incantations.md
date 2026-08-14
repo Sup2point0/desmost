@@ -3,33 +3,155 @@
 
 ## Expression
 <!-- autodoc? expr -->
-| Incantation | Argument | Argument Type | Description |
-| :---------- | :------- | :------------ | :---------- |
-| [`/latex`](#latex) | required | <pre lang="ts"><code>string</code></pre> |  |
-| [`/text`](#text) | required | <pre lang="ts"><code>string</code></pre> |  |
+<table>
+  <tr>
+    <th> Incantation </th>
+    <th> Argument </th>
+    <th> Argument Type </th>
+    <th> Description </th>
+  </tr>
+  <tr>
+    <td>
+
+[`/latex`](#latex)
+    </td>
+    <td>required</td>
+    <td><code>string</code></td>
+    <td></td>
+  </tr>
+<tr>
+    <td>
+
+[`/text`](#text)
+    </td>
+    <td>required</td>
+    <td><code>string</code></td>
+    <td></td>
+  </tr>
+</table>
 <!-- autodoc. -->
 
 
 ## Global
 <!-- autodoc? global -->
-| Incantation | Argument | Argument Type | Description |
-| :---------- | :------- | :------------ | :---------- |
-| [`/dark`](#dark) | — | — |  |
-| [`/desmos`](#desmos) | optional | ? |  |
-| [`/viewport`](#viewport) | required | <pre lang="ts"><code>{<br>  left: number; right: number;<br>  bottom: number; top: number;<br>}</code></pre> | Set the bounds of the viewport via `Calculator.setMathBounds()`. |
+<table>
+  <tr>
+    <th> Incantation </th>
+    <th> Argument </th>
+    <th> Argument Type </th>
+    <th> Description </th>
+  </tr>
+  <tr>
+    <td>
+
+[`/dark`](#dark)
+    </td>
+    <td>—</td>
+    <td>—</td>
+    <td></td>
+  </tr>
+<tr>
+    <td>
+
+[`/desmos`](#desmos)
+    </td>
+    <td>optional</td>
+    <td>?</td>
+    <td></td>
+  </tr>
+<tr>
+    <td>
+
+[`/viewport`](#viewport)
+    </td>
+    <td>required</td>
+    <td><pre lang="ts"><code>{<br>  left: number; right: number;<br>  bottom: number; top: number;<br>}</code></pre></td>
+    <td>Set the bounds of the viewport via `Calculator.setMathBounds()`.</td>
+  </tr>
+</table>
 <!-- autodoc. -->
 
 
 ## Local
 <!-- autodoc? local -->
-| Incantation | Argument | Argument Type | Description |
-| :---------- | :------- | :------------ | :---------- |
-| [`/color`](#color)<br>[`/colour`](#color) | required | <pre lang="ts"><code>DesmosColour</code></pre> |  |
-| [`/dashed`](#dashed) | — | — |  |
-| [`/fill`](#fill) | required | <pre lang="ts"><code>{<br>  opacity: number;<br>}</code></pre> |  |
-| [`/hide`](#hide) | — | — |  |
-| [`/no-line`](#no-line) | — | — |  |
-| [`/point`](#point) | required | <pre lang="ts"><code>{<br>  style: keyof typeof Desmos.Styles;<br>  size: number;<br>  opacity: number;<br>}</code></pre> |  |
-| [`/secret`](#secret) | — | — |  |
-| [`/slider`](#slider) | required | <pre lang="ts"><code>{<br>  min?: number \| string;<br>  max?: number \| string;<br>  step?: number \| string;<br>}</code></pre> |  |
+<table>
+  <tr>
+    <th> Incantation </th>
+    <th> Argument </th>
+    <th> Argument Type </th>
+    <th> Description </th>
+  </tr>
+  <tr>
+    <td>
+
+[`/color`](#color)<br>[`/colour`](#color)
+    </td>
+    <td>required</td>
+    <td><code>DesmosColour</code></td>
+    <td></td>
+  </tr>
+<tr>
+    <td>
+
+[`/dashed`](#dashed)
+    </td>
+    <td>—</td>
+    <td>—</td>
+    <td></td>
+  </tr>
+<tr>
+    <td>
+
+[`/fill`](#fill)
+    </td>
+    <td>required</td>
+    <td><pre lang="ts"><code>{<br>  opacity: number;<br>}</code></pre></td>
+    <td></td>
+  </tr>
+<tr>
+    <td>
+
+[`/hide`](#hide)
+    </td>
+    <td>—</td>
+    <td>—</td>
+    <td></td>
+  </tr>
+<tr>
+    <td>
+
+[`/no-line`](#no-line)
+    </td>
+    <td>—</td>
+    <td>—</td>
+    <td></td>
+  </tr>
+<tr>
+    <td>
+
+[`/point`](#point)
+    </td>
+    <td>required</td>
+    <td><pre lang="ts"><code>{<br>  style: keyof typeof Desmos.Styles;<br>  size: number;<br>  opacity: number;<br>}</code></pre></td>
+    <td></td>
+  </tr>
+<tr>
+    <td>
+
+[`/secret`](#secret)
+    </td>
+    <td>—</td>
+    <td>—</td>
+    <td></td>
+  </tr>
+<tr>
+    <td>
+
+[`/slider`](#slider)
+    </td>
+    <td>required</td>
+    <td><pre lang="ts"><code>{<br>  min?: number \| string;<br>  max?: number \| string;<br>  step?: number \| string;<br>}</code></pre></td>
+    <td></td>
+  </tr>
+</table>
 <!-- autodoc. -->
