@@ -111,6 +111,16 @@ This page documents all the incantations available in Desmost.
   <tr>
     <td>
 
+[`/anim`](#anim)
+    </td>
+    <td>—</td>
+    <td>—</td>
+    <td>Animates the slider of a block.</td>
+  </tr>
+  <tr></tr>
+<tr>
+    <td>
+
 [`/color`](#color)<br>[`/colour`](#color)
     </td>
     <td>required</td>
@@ -137,7 +147,7 @@ This page documents all the incantations available in Desmost.
     <td><pre lang="ts"><code>{
 <br>  opacity: number;
 <br>}</code></pre></td>
-    <td>Change fill styles for a block.</td>
+    <td>Change fill styles for a rendered block.</td>
   </tr>
   <tr></tr>
 <tr>
@@ -148,6 +158,20 @@ This page documents all the incantations available in Desmost.
     <td>—</td>
     <td>—</td>
     <td>Hide rendering for a block. This includes graphs, points, polygons, etc.</td>
+  </tr>
+  <tr></tr>
+<tr>
+    <td>
+
+[`/line`](#line)
+    </td>
+    <td>required</td>
+    <td><pre lang="ts"><code>{
+<br>  style?: keyof typeof Desmos.Styles;  // TODO allow raw enum
+<br>  width?: number;
+<br>  opacity?: number;
+<br>}</code></pre></td>
+    <td>Change line styles for a rendered block.</td>
   </tr>
   <tr></tr>
 <tr>
