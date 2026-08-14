@@ -33,8 +33,13 @@ export function compile(
   options?: DesmostOptions,
 ): void | DesmostDebug
 {
-  if (typeof Desmos === "undefined") {
-    console.error(`Desmost: Could not find \`Desmos\` in global namespace, aborting compilation!`);
+  if (desmos == undefined) {
+    console.error(`Desmost: No \`Desmos.Calculator\` instance provided, aborting compilation!`);
+    return;
+  }
+
+  if (source == undefined) {
+    console.error(`Desmost: No source code provided, aborting compilation!`);
     return;
   }
 
