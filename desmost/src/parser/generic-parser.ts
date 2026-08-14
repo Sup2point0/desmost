@@ -1,5 +1,5 @@
-import { RecoverableFail, UnrecoverableError } from "../errors";
-import type { Recoverable, Unrecoverable } from "../errors";
+import { FAIL, UnrecoverableError } from "../errors";
+import type { RecoverableFail, Unrecoverable } from "../errors";
 
 
 const IGNORED_CHARACTERS = new Set([
@@ -58,10 +58,13 @@ export class GenericParser
 
   /**
    * Peek a snippet of the upcoming source text (for error messages).
+   * 
+   * Optionally start from the given `idx`.
    */
-  public preview(): string
+  public preview(idx?: number): string
   {
-    return this.source.slice(this.i, this.i + 20) + "...";
+    idx ??= this.i;
+    return this.source.slice(idx, idx + 20) + "...";
   }
 
   /**
@@ -75,24 +78,27 @@ export class GenericParser
       throw new UnrecoverableError.UnexpectedEnd(error_msg ?? "Unexpected end of input");
     }
 
+    this.#advance();
+  }
+
+  /**
+   * Attempt to advance to the next character, skipping ignored characters.
+   * 
+   * Fails if the parser is the out-of-bounds *before* advancing.
+   */
+  protected try_advance(): void | RecoverableFail
+  {
+    if (this.out_of_bounds()) return FAIL;
+    this.#advance();
+  }
+
+  #advance(): void
+  {
     this.i++;
 
     // @ts-expect-error: `this.current == undefined` is a true negative
     if (IGNORED_CHARACTERS.has(this.current)) {
       this.advance();
-    }
-  }
-
-  /**
-   * Attempt to advance to the next character, skipping ignored characters.
-   */
-  protected try_advance(): Recoverable<void>
-  {
-    try {
-      this.advance();
-    }
-    catch {
-      throw new RecoverableFail();
     }
   }
 
@@ -107,11 +113,12 @@ export class GenericParser
       );
     }
 
+    let init = this.i;
     let ii = 0;
 
     while (this.current === raw[ii]) {
       this.advance(
-        `Unexpected end of input while trying to consume: \`${raw}\``
+        `Unexpected end of input while trying to consume: \`${raw}\`, at: \`${this.preview(init)}\``
       );
 
       ii++;
@@ -119,28 +126,29 @@ export class GenericParser
     }
 
     throw new UnrecoverableError.UnexpectedInput(
-      error_msg ?? `Expected: \`${raw}\`, but found: \`${this.preview()}\``
+      error_msg ?? `Expected: \`${raw}\`, but found: \`${this.preview(init)}\``
     );
   }
 
   /**
-   * Attempt to consume `raw`, backtracking and throwing if `raw` was not found.
+   * Attempt to consume `raw`, backtracking if `raw` was not found.
    */
-  protected try_consume(raw: string): Recoverable<void>
+  protected try_consume(raw: string): void | RecoverableFail
   {
     let init = this.i;
     let ii = 0;
 
     while (this.current === raw[ii]) {
-      this.try_advance();
-      ii++;
+      let r = this.try_advance();
+      if (r === FAIL) return FAIL;
 
+      ii++;
       if (ii === raw.length) return;
       if (this.i === this.length) break;
     }
 
     this.i = init;
-    throw new RecoverableFail();
+    return FAIL;
   }
 
   /**
@@ -177,15 +185,8 @@ export class GenericParser
 
     this.consume_spaces();
 
-    try {
-      this.try_consume("\n");
-    }
-    catch (e) {
-      if (!(e instanceof RecoverableFail)) throw e;
-
-      throw new UnrecoverableError.ExcessInput(
-        error_msg ?? `Expected end of block, but found: \`${this.preview()}\``
-      );
-    }
+    this.consume("\n",
+      error_msg ?? `Expected end of block, but found: \`${this.preview()}\``
+    );
   }
 }

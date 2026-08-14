@@ -1,8 +1,8 @@
 import { GenericParser } from "./generic-parser";
 import { Ast } from "./ast";
 
-import { RecoverableFail, UnrecoverableError } from "../errors";
-import type { Recoverable, Unrecoverable, MaybeRecoverable } from "../errors";
+import { FAIL, UnrecoverableError } from "../errors";
+import type { RecoverableFail, Unrecoverable, MaybeRecoverable } from "../errors";
 
 import {
   Incantation, ArgIncantation,
@@ -80,30 +80,23 @@ export class DesmostParser extends GenericParser
     >
   {
     // 1 global incantation
-    try {
-      let r = this.try_parse_global_incantation();
+    let r = this.try_parse_global_incantation();
 
+    if (r !== FAIL) {
       this.consume_end_of_block(
         `Received excess input after global incantation /${r.incantation.identifier}`
       );
 
       return { global: r };
     }
-    catch (e) {
-      if (!(e instanceof RecoverableFail)) throw e;
-    }
-
-    let incantations = [];
 
     // 1+ local incantations
+    let incantations = [];
+
     while (this.current === "/") {
-      try {
-        incantations.push(this.try_parse_local_incantation());
-      }
-      catch (e) {
-        if (!(e instanceof RecoverableFail)) throw e;
-        break;
-      }
+      let invocation = this.try_parse_local_incantation();
+      if (invocation === FAIL) break;
+      incantations.push(invocation);
     }
 
     if (incantations.length > 0) {
@@ -145,11 +138,9 @@ export class DesmostParser extends GenericParser
 
       // expr incantation
       case "/":
-        try {
-          return this.try_parse_expr_incantation();
-        }
-        catch (e) {
-          if (!(e instanceof RecoverableFail)) throw e;
+        let incantation = this.try_parse_expr_incantation();
+        if (incantation !== FAIL) return incantation;
+        else {
           // plain LaTeX (fallback)
           return this.parse_latex_line();
         }
@@ -186,23 +177,18 @@ export class DesmostParser extends GenericParser
    * Attempt to parse a global incantation invocation.
    */
   try_parse_global_incantation():
-    Recoverable<
     | Ast.IncantationInvocation<GLOBAL>
     | Ast.InvalidInvocation
-    >
+    | RecoverableFail
   {
     let init = this.i;
 
-    this.try_consume("/");
+    if (this.try_consume("/") === FAIL) return FAIL;
 
-    try {
-      var incantation = this.try_parse_identifier(GLOBAL_INCANTATIONS);
-    }
-    catch (e) {
-      if (e instanceof RecoverableFail) {
-        this.i = init;
-      }
-      throw e;
+    let incantation = this.try_parse_identifier(GLOBAL_INCANTATIONS);
+    if (incantation === FAIL) {
+      this.i = init;
+      return FAIL;
     }
 
     let data = undefined;
@@ -224,6 +210,7 @@ export class DesmostParser extends GenericParser
 
     this.consume_spaces();
 
+    // @ts-expect-error: FIXME
     return {
       kind: Ast.Kind.INCANTATION_INVOCATION,
       incantation,
@@ -235,23 +222,18 @@ export class DesmostParser extends GenericParser
    * Attempt to parse a local incantation invocation.
    */
   try_parse_local_incantation():
-    Recoverable<
     | Ast.IncantationInvocation<LOCAL>
     | Ast.InvalidInvocation
-    >
+    | RecoverableFail
   {
     let init = this.i;
 
-    this.try_consume("/");
+    if (this.try_consume("/") === FAIL) return FAIL;
 
-    try {
-      var incantation = this.try_parse_identifier(LOCAL_INCANTATIONS);
-    }
-    catch (e) {
-      if (e instanceof RecoverableFail) {
-        this.i = init;
-      }
-      throw e;
+    let incantation = this.try_parse_identifier(LOCAL_INCANTATIONS);
+    if (incantation === FAIL) {
+      this.i = init;
+      return FAIL;
     }
 
     let arg_raw = undefined;
@@ -273,6 +255,7 @@ export class DesmostParser extends GenericParser
 
     this.consume_whitespace();
 
+    // @ts-expect-error: FIXME
     return {
       kind: Ast.Kind.INCANTATION_INVOCATION,
       incantation,
@@ -285,20 +268,16 @@ export class DesmostParser extends GenericParser
     // TODO refactor with `backtrack()` helper
     let init = this.i;
 
-    this.try_consume("/");
+    if (this.try_consume("/") === FAIL) return FAIL;
 
-    try {
-      var incantation = this.try_parse_identifier(EXPR_INCANTATIONS) as ArgIncantation<EXPR>;
-    }
-    catch (e) {
-      if (e instanceof RecoverableFail) {
-        // TODO maybe flag to user
-        this.i = init;
-      }
-      throw e;
+    let incantation = this.try_parse_identifier(EXPR_INCANTATIONS);
+    if (incantation === FAIL) {
+      // TODO maybe flag to user
+      this.i = init;
+      return FAIL;
     }
 
-    let arg_raw = this.parse_incantation_arg(incantation.arg_type);
+    let arg_raw = this.parse_incantation_arg((incantation as ArgIncantation<EXPR>).arg_type);
 
     let data = {};
     incantation.apply(data, arg_raw);
@@ -315,30 +294,20 @@ export class DesmostParser extends GenericParser
    */
   try_parse_identifier<Effect extends Incantation.Effect>(
     incantations: Incantation<Effect>[]
-  ): Recoverable<Incantation<Effect>>
+  ): Incantation<Effect> | RecoverableFail
   {
     for (let incantation of incantations) {
       // yeah the duplication here is a little meh, unfortunately needing `return` means we can't extract it into a helper
-      try {
-        this.try_consume(incantation.identifier);
-        return incantation;
-      }
-      catch (e) {
-        if (!(e instanceof RecoverableFail)) throw e;
-      }
+      let r = this.try_consume(incantation.identifier);
+      if (r !== FAIL) return incantation;
 
       if (incantation.alias != undefined) {
-        try {
-          this.try_consume(incantation.alias);
-          return incantation;
-        }
-        catch (e) {
-          if (!(e instanceof RecoverableFail)) throw e;
-        }
+        let r = this.try_consume(incantation.alias);
+        if (r !== FAIL) return incantation;
       }
     }
 
-    throw new RecoverableFail();
+    return FAIL;
   }
 
   /**
