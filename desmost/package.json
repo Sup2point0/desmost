@@ -22,7 +22,8 @@
   "files": [
     "./src/",
     "./dist/",
-    "package.json"
+    "package.json",
+    "LICENCE"
   ],
   "exports": {
     ".": {
@@ -36,14 +37,13 @@
   },
 
   "scripts": {
-    "build":   "tsc -p ./tsconfig.build.json & tsc-alias -p ./tsconfig.build.json",
+    "build":    "nu build.nu",
+      "buildx": "nu build.nu full",
 
-    "test":    "vitest run",
-      "testw": "vitest",
+    "test":     "vitest run",
+      "testw":  "vitest",
 
-    "check":   "npx oxlint src",
-
-    "prepublishOnly": "rm -rf dist && npm run build"
+    "check":    "npx oxlint src"
   },
 
   "dependencies":
