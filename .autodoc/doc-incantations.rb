@@ -55,11 +55,10 @@ def extract_incantation(text:)
          arg = "optional"
       end
 
-      arg_type = (
-         text.match(/(?<=interface )\w+\s*\{.*?\}(?=\n\n)/m)
-            &.[](0)
-            &.gsub(/\s+/, " ")
-      )|| "?"
+      arg_type = text.match(/interface \w+\s*(\{.*?\})\n\n/m)&.[](1) || "?"
+      arg_type.gsub!(/\|/, "\\|")
+      arg_type.gsub!(/\n/, "<br>")
+      arg_type.gsub!(/: +/, ": ")
    else
       arg = "—"
       arg_type = "—"
@@ -76,7 +75,7 @@ def build_table_row(ident, ident_alt, arg, arg_type, desc)
    ident_link = "[`/#{ident}`](##{ident})"
    ident_alt_link = ident_alt.nil? ? "" : "<br>[`/#{ident_alt}`](##{ident})"
    
-   return "| #{ident_link}#{ident_alt_link} | #{arg} | `#{arg_type}` | #{desc} |"
+   return "| #{ident_link}#{ident_alt_link} | #{arg} | <pre lang=\"ts\"><code>#{arg_type}</code></pre> | #{desc} |"
 end
 
 
