@@ -133,7 +133,7 @@ b = 1
   }
 ```
 
-btw, you can see this example for yourself in [Playground](https://sup2point0.github.io/desmost/playground).
+btw, you can see this example for yourself in [Playground](https://sup2point0.github.io/desmost).
 
 And that's all there is to Desmost!
 
