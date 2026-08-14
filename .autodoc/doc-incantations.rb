@@ -29,11 +29,15 @@ def build_table(glob:)
       .map { |data| build_table_row(*data) }
 
    return "
-
-| Incantation | Argument | Argument Type | Description |
-| :---------- | :------- | :------------ | :---------- |
-#{rows.join("\n")}
-
+<table>
+  <tr>
+    <th> Incantation </th>
+    <th> Argument </th>
+    <th> Argument Type </th>
+    <th> Description </th>
+  </tr>
+  #{rows.join("\n")}
+</table>
    ".strip
 end
 
@@ -63,7 +67,11 @@ def extract_incantation(text:)
          arg_type.gsub!(/\|/, "\\|")
          arg_type.gsub!(/\n/, "<br>")
          arg_type.gsub!(/: +/, ": ")
-         arg_type = "<pre lang=\"ts\"><code>#{arg_type}</code></pre>"
+         if arg_type.include?("{")
+            arg_type = "<pre lang=\"ts\"><code>#{arg_type}</code></pre>"
+         else
+            arg_type = "<code>#{arg_type}</code>"
+         end
       end
    else
       arg = "—"
@@ -81,7 +89,17 @@ def build_table_row(ident, ident_alt, arg, arg_type, desc)
    ident_link = "[`/#{ident}`](##{ident})"
    ident_alt_link = ident_alt.nil? ? "" : "<br>[`/#{ident_alt}`](##{ident})"
    
-   return "| #{ident_link}#{ident_alt_link} | #{arg} | #{arg_type} | #{desc} |"
+   return "
+  <tr>
+    <td>
+
+#{ident_link}#{ident_alt_link}
+    </td>
+    <td>#{arg}</td>
+    <td>#{arg_type}</td>
+    <td>#{desc}</td>
+  </tr>
+   ".strip
 end
 
 
