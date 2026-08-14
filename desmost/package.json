@@ -8,18 +8,27 @@
   "keywords": [
     "desmos", "latex", "desmost"
   ],
-  
-  "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
 
-  "homepage": "https://github.com/Sup2point0/desmost#readme",
+  "homepage": "https://github.com/Sup2point0/desmost",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Sup2point0/desmost.git"
   },
   "bugs": {
     "url": "https://github.com/Sup2point0/desmost/issues"
+  },
+  
+  "type": "module",
+  "files": [
+    "./src/",
+    "./dist/",
+    "package.json"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
   },
 
   "scripts": {

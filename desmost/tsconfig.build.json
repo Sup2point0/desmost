@@ -4,8 +4,11 @@
     "./src/",
   ],
   "compilerOptions": {
-    "rootDir": "./src/",
+    "rootDir": "./",
     "outDir": "./dist/",
     "target": "esnext",
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
   }
 }
