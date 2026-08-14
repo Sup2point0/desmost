@@ -17,7 +17,6 @@ export class ColourIncantation extends ArgIncantation<LOCAL>
   override apply(target: Desmos.ExpressionState, data: DesmosColour)
   {
     super.require_expr_type(target.type, "expression");
-    // @ts-expect-error: outdated types
     target.color = data;
   }
 
