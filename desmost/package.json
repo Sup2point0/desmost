@@ -10,7 +10,8 @@
   ],
   
   "type": "module",
-  "main": "index.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
 
   "homepage": "https://github.com/Sup2point0/desmost#readme",
   "repository": {
@@ -22,6 +23,8 @@
   },
 
   "scripts": {
+    "build":   "tsc -p ./tsconfig.build.json",
+
     "test":    "vitest run",
       "testw": "vitest",
 

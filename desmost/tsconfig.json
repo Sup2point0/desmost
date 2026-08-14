@@ -1,10 +1,14 @@
 {
   "compilerOptions": {
+    "declaration": true,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
     "strict": true,
-    "target": "esnext",
     "types": ["desmos", "node", "vitest/globals"],
     "verbatimModuleSyntax": true
-  }
+  },
+  "include": [
+    "./src/",
+    "./tests/"
+  ],
 }
