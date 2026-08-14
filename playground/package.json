@@ -17,6 +17,7 @@
 
   "dependencies":
   {
+    "desmost": "^0.1",
     "json5": "^2.2"
   },
 

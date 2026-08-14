@@ -4,7 +4,7 @@
 
 <script lang="ts">
 
-import type { Ast } from "../../../desmost/src/parser";
+import type { Ast } from "desmost/internal";
 
 
 interface Props {

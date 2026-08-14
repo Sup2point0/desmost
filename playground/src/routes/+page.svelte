@@ -2,7 +2,7 @@
 
 import "#styles/essence.scss";
 
-import { compile } from "../../../desmost/src";
+import { compile } from "desmost";
 
 import Nav from "#parts/nav.svelte";
 import DesmostSource from "#parts/source.svelte";
@@ -20,7 +20,7 @@ f\left( x \right) = x^2
 let source = $state(WELCOME.trim());
 
 let el_desmos: HTMLElement;
-let desmos: Desmos.Calculator | null;
+let desmos: Desmos.Calculator | null | undefined = $state(undefined);
 
 let duration: number | undefined = $state();
 let ast: any[] = $state([]);
