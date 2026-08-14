@@ -10,6 +10,7 @@
     <th> Argument Type </th>
     <th> Description </th>
   </tr>
+  <tr></tr>
   <tr>
     <td>
 
@@ -19,7 +20,8 @@
     <td><code>string</code></td>
     <td></td>
   </tr>
-<tr>
+<tr></tr>
+  <tr>
     <td>
 
 [`/text`](#text)
@@ -41,6 +43,7 @@
     <th> Argument Type </th>
     <th> Description </th>
   </tr>
+  <tr></tr>
   <tr>
     <td>
 
@@ -50,7 +53,8 @@
     <td>—</td>
     <td></td>
   </tr>
-<tr>
+<tr></tr>
+  <tr>
     <td>
 
 [`/desmos`](#desmos)
@@ -59,7 +63,8 @@
     <td>?</td>
     <td></td>
   </tr>
-<tr>
+<tr></tr>
+  <tr>
     <td>
 
 [`/viewport`](#viewport)
@@ -81,6 +86,7 @@
     <th> Argument Type </th>
     <th> Description </th>
   </tr>
+  <tr></tr>
   <tr>
     <td>
 
@@ -90,7 +96,8 @@
     <td><code>DesmosColour</code></td>
     <td></td>
   </tr>
-<tr>
+<tr></tr>
+  <tr>
     <td>
 
 [`/dashed`](#dashed)
@@ -99,7 +106,8 @@
     <td>—</td>
     <td></td>
   </tr>
-<tr>
+<tr></tr>
+  <tr>
     <td>
 
 [`/fill`](#fill)
@@ -108,7 +116,8 @@
     <td><pre lang="ts"><code>{<br>  opacity: number;<br>}</code></pre></td>
     <td></td>
   </tr>
-<tr>
+<tr></tr>
+  <tr>
     <td>
 
 [`/hide`](#hide)
@@ -117,7 +126,8 @@
     <td>—</td>
     <td></td>
   </tr>
-<tr>
+<tr></tr>
+  <tr>
     <td>
 
 [`/no-line`](#no-line)
@@ -126,7 +136,8 @@
     <td>—</td>
     <td></td>
   </tr>
-<tr>
+<tr></tr>
+  <tr>
     <td>
 
 [`/point`](#point)
@@ -135,7 +146,8 @@
     <td><pre lang="ts"><code>{<br>  style: keyof typeof Desmos.Styles;<br>  size: number;<br>  opacity: number;<br>}</code></pre></td>
     <td></td>
   </tr>
-<tr>
+<tr></tr>
+  <tr>
     <td>
 
 [`/secret`](#secret)
@@ -144,7 +156,8 @@
     <td>—</td>
     <td></td>
   </tr>
-<tr>
+<tr></tr>
+  <tr>
     <td>
 
 [`/slider`](#slider)
