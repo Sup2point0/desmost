@@ -1,6 +1,12 @@
 # Changelog
 
 
+## v0.1.2
+
+### Fixes
+- Fix misconfigured TSConfig, resulting in files being compiled to `dist/src/` instead of `dist/`
+
+
 ## v0.1.1
 
 ### New
