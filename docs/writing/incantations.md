@@ -4,6 +4,9 @@
 
 This page documents all the incantations available in Desmost.
 
+> [!Note]
+> These tables are auto-generated directly from [incantation definitions](../../desmost/src/magic/) in the source code.
+
 
 <br>
 
@@ -40,6 +43,9 @@ This page documents all the incantations available in Desmost.
   <tr></tr>
 </table>
 <!-- autodoc. -->
+
+
+<br>
 
 
 ## Global
