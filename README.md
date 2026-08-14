@@ -4,6 +4,10 @@
 
 [**Docs**](docs/)&ensp;·&ensp;[**Learn X in Y**](docs/writing/learn-x-in-y.md)&ensp;·&ensp;[**Spec**](docs/spec/)&ensp;·&ensp;[**Playground**](https://sup2point0.github.io/desmost)
 
+[![test](https://github.com/Sup2point0/desmost/actions/workflows/test.yml/badge.svg)](https://github.com/Sup2point0/desmost/actions/workflows/test.yml)
+[![autodoc](https://github.com/Sup2point0/desmost/actions/workflows/autodoc.yml/badge.svg)](https://github.com/Sup2point0/desmost/actions/workflows/autodoc.yml)
+[![site](https://github.com/Sup2point0/desmost/actions/workflows/deploy.yml/badge.svg)](https://github.com/Sup2point0/desmost/actions/workflows/deploy.yml)
+
 </div>
 
 > [!Warning]
