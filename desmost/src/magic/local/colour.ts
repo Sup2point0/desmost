@@ -6,6 +6,9 @@ import { DesmosColour } from "../../desmos";
 
 export class ColourIncantation extends ArgIncantation<LOCAL>
 {
+  override readonly description
+    = ""
+
   override readonly identifier   = "color"
   override readonly alias        = "colour"
   override readonly requires_arg = true

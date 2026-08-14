@@ -1,10 +1,12 @@
 import { Incantation, type LOCAL } from "../incantation";
 
 
-export class NoLineIncantation
-  extends Incantation<LOCAL>
+export class NoLineIncantation extends Incantation<LOCAL>
 {
-  override readonly identifier   = "no-line"
+  override readonly description
+    = "Disable rendering lines for a block."
+  
+  override readonly identifier = "no-line"
 
   override apply(target: Desmos.ExpressionState)
   {

@@ -9,6 +9,9 @@ interface FillOptions
 
 export class FillIncantation extends ArgIncantation<LOCAL>
 {
+  override readonly description
+    = "Change fill styles for a block."
+  
   override readonly identifier   = "fill"
   override readonly requires_arg = true
   override readonly arg_type     = Incantation.ArgType.OBJECT

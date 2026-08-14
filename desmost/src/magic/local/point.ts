@@ -3,14 +3,17 @@ import { Incantation, ArgIncantation, type LOCAL } from "../incantation";
 
 interface PointStyles
 {
-  style:   keyof typeof Desmos.Styles;
-  size:    number;
-  opacity: number;
+  style?:   keyof typeof Desmos.Styles;
+  size?:    number;
+  opacity?: number;
 }
 
 
 export class PointIncantation extends ArgIncantation<LOCAL>
 {
+  override readonly description
+    = ""
+  
   override readonly identifier   = "point"
   override readonly requires_arg = true
   override readonly arg_type     = Incantation.ArgType.OBJECT
