@@ -1,7 +1,7 @@
 /**
  * Very rudimentary performance tests for Desmost.
  * 
- * Obviously regressions are unwanted, but we're not too fussed about performance, since input is expected to remain very small.
+ * Obviously regressions are unwanted, but we're not *too* fussed about performance, since input is expected to remain very small.
  * 
  * Of course, these tests are unreliable and can be flaky; we just want a sanity check that it isn't horrifically slow!
  */
@@ -13,16 +13,27 @@ import { compile } from "../../src";
 import { desmos } from "../shared";
 
 
+const TRIALS = 10;
+
+
 test("medium", () =>
 {
-  let { duration } = compile(desmos, MEDIUM, { debug: true })!;
+  let t_init = performance.now();
 
-  assert.isNumber(duration);
-  assert.isAbove(duration, 0);
+  for (let i = 0; i < TRIALS; i++) {
+    compile(desmos, MEDIUM);
+  }
 
-  assert.isBelow(duration, 1000);
-  assert.isBelow(duration, 100);
-  assert.isBelow(duration, 10);
+  let total_duration = performance.now() - t_init;
+  let mean_duration = total_duration / TRIALS;
+
+  assert.isNumber(mean_duration);
+  assert.isAbove(mean_duration, 0);
+
+  assert.isBelow(mean_duration, 1000);
+  assert.isBelow(mean_duration, 100);
+  assert.isBelow(mean_duration, 10);
+  assert.isBelow(mean_duration, 1);
   
-  console.log(duration);
+  console.log(mean_duration);
 });
