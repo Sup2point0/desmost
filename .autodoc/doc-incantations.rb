@@ -45,7 +45,7 @@ def extract_incantation(text:)
       
    ident_alt = text.match(/alias += "([\w-]+)"/)&.[](1)
 
-   accepts_arg = not (text.match(/extends ArgIncantation/).nil?)
+   accepts_arg = (not (text.match(/extends ArgIncantation/).nil?))
    requires_arg = text.match(/requires_arg += (true|false)/)&.[](1) || "false"
 
    if accepts_arg
