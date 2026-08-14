@@ -84,6 +84,7 @@ ul {
 
   code {
     @include font-code;
+    color: black;
     font-size: 90%;
     line-height: 1.3;
   }

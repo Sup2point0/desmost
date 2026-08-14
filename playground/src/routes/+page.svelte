@@ -78,8 +78,6 @@ function recompile()
   return () => clearTimeout(timeout);
 }
 
-$inspect(is_compiling)
-
 function sync_exprs_with_desmos()
 {
   // @ts-ignore: exceptional
