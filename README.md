@@ -2,7 +2,7 @@
 
 # Desmost
 
-[**Docs**](docs/)&ensp;·&ensp;[**Learn X in Y**](docs/writing/learn-x-in-y.md)&ensp;·&ensp;[**Spec**](docs/spec/)&ensp;·&ensp;[**Playground**](https://sup2point0.github.io/desmost)
+[**Docs**](docs/)&ensp;·&ensp;[**Learn X in Y**](docs/writing/learn-x-in-y.md)&ensp;·&ensp;[**Changelog**](CHANGELOG.md)&ensp;·&ensp;[**Spec**](docs/spec/)&ensp;·&ensp;[**Playground**](https://sup2point0.github.io/desmost)
 
 [![npm](https://img.shields.io/npm/v/desmost?color=c93ff5)](https://www.npmjs.com/package/desmost)
 [![test](https://github.com/Sup2point0/desmost/actions/workflows/test.yml/badge.svg)](https://github.com/Sup2point0/desmost/actions/workflows/test.yml)
@@ -12,7 +12,7 @@
 </div>
 
 > [!Warning]
-> I’ve only just started developing this project, so it’s not quite presentable yet!
+> This is still a freshly created project, so expect incomplete or broken features!
 
 ***Desmost*** compiles LaTeX into Desmos.
 
@@ -69,7 +69,7 @@ In other words, it’s like HTML+CSS but for Desmos. Write your content in LaTeX
 ## Usage
 
 > [!Important]
-> Desmost only works **in the browser**. This is because the Desmos API (currently) can only be included via `<script>`.
+> Desmost only works **in the browser**. This is because it relies on the Desmos API, which (currently) can only be included via `<script>`.
 
 ### Install
 ```bash
@@ -270,7 +270,7 @@ And here’s a saw wave:
 ```
 ````
 
-Exactly like how a ` ```math ` code block renders into LaTeX, or a ` ```mermaid ` code block renders a diagram.
+Exactly like how a ` ```math ` block renders into LaTeX, or a ` ```mermaid ` block renders a diagram.
 
 ### Keep the simple stuff simple
 We want simple stuff like this to work effortlessly:
@@ -305,4 +305,5 @@ Desmost only handles what it needs to care about to work. You don’t need a LaT
 Every bug, typo and inefficiency was lovingly crafted by hand :D
 
 
+<br>
 <br>
