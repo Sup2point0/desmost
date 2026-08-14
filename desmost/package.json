@@ -28,6 +28,10 @@
     ".": {
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
+    },
+    "./internal": {
+      "import": "./dist/index.internal.js",
+      "types": "./dist/index.internal.d.ts"
     }
   },
 
