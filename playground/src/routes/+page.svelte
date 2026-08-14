@@ -56,27 +56,24 @@ $effect(() => {
 function recompile()
 {
   is_compiling = true;
-  let timeout: number;
 
-  requestAnimationFrame(() => {
-    timeout = setTimeout(() => {
-      if (desmos == null) return;
+  let timeout = setTimeout(() => {
+    if (desmos == null) return;
 
-      desmos.setBlank();
+    desmos.setBlank();
 
-      let debug;
-      try {
-        debug = compile(desmos, source, { debug: true });
-      } catch {
-        debug = undefined;
-      }
+    let debug;
+    try {
+      debug = compile(desmos, source, { debug: true });
+    } catch {
+      debug = undefined;
+    }
 
-      duration = debug?.duration;
-      ast = debug?.ast ?? ["COMPILER ERROR"];
-      sync_exprs_with_desmos();
-      is_compiling = false;
-    }, 50);
-  });
+    duration = debug?.duration;
+    ast = debug?.ast ?? ["COMPILER ERROR"];
+    sync_exprs_with_desmos();
+    is_compiling = false;
+  }, 50);
 
   return () => clearTimeout(timeout);
 }
