@@ -11,7 +11,6 @@
     <th> Argument Type </th>
     <th> Description </th>
   </tr>
-  <tr></tr>
   <tr>
     <td>
 
@@ -21,8 +20,8 @@
     <td><code>string</code></td>
     <td>Produce a LaTeX expression. This allows the input to span multiple lines.</td>
   </tr>
-<tr></tr>
-  <tr>
+  <tr></tr>
+<tr>
     <td>
 
 [`/text`](#text)
@@ -31,6 +30,7 @@
     <td><code>string</code></td>
     <td>Produce a text expression (“Add Note” in the Desmos GUI).</td>
   </tr>
+  <tr></tr>
 </table>
 <!-- autodoc. -->
 
@@ -45,7 +45,6 @@
     <th> Argument Type </th>
     <th> Description </th>
   </tr>
-  <tr></tr>
   <tr>
     <td>
 
@@ -55,8 +54,8 @@
     <td>—</td>
     <td>Enable dark mode for the calculator, which inverts all colours.</td>
   </tr>
-<tr></tr>
-  <tr>
+  <tr></tr>
+<tr>
     <td>
 
 [`/desmos`](#desmos)
@@ -65,8 +64,8 @@
     <td>?</td>
     <td>Set the configuration of the calculator via `Calculator.updateSettings()`.</td>
   </tr>
-<tr></tr>
-  <tr>
+  <tr></tr>
+<tr>
     <td>
 
 [`/viewport`](#viewport)
@@ -81,6 +80,7 @@
 }</code></pre></td>
     <td>Set the bounds of the viewport via `Calculator.setMathBounds()`.</td>
   </tr>
+  <tr></tr>
 </table>
 <!-- autodoc. -->
 
@@ -95,7 +95,6 @@
     <th> Argument Type </th>
     <th> Description </th>
   </tr>
-  <tr></tr>
   <tr>
     <td>
 
@@ -105,8 +104,8 @@
     <td><code>DesmosColour</code></td>
     <td></td>
   </tr>
-<tr></tr>
-  <tr>
+  <tr></tr>
+<tr>
     <td>
 
 [`/dashed`](#dashed)
@@ -115,8 +114,8 @@
     <td>—</td>
     <td>Render a block as a dashed line.</td>
   </tr>
-<tr></tr>
-  <tr>
+  <tr></tr>
+<tr>
     <td>
 
 [`/fill`](#fill)
@@ -129,8 +128,8 @@
 }</code></pre></td>
     <td>Change fill styles for a block.</td>
   </tr>
-<tr></tr>
-  <tr>
+  <tr></tr>
+<tr>
     <td>
 
 [`/hide`](#hide)
@@ -139,8 +138,8 @@
     <td>—</td>
     <td>Hide rendering for a block. This includes graphs, points, polygons, etc.</td>
   </tr>
-<tr></tr>
-  <tr>
+  <tr></tr>
+<tr>
     <td>
 
 [`/no-line`](#no-line)
@@ -149,8 +148,8 @@
     <td>—</td>
     <td>Disable rendering lines for a block.</td>
   </tr>
-<tr></tr>
-  <tr>
+  <tr></tr>
+<tr>
     <td>
 
 [`/point`](#point)
@@ -167,8 +166,8 @@
 }</code></pre></td>
     <td></td>
   </tr>
-<tr></tr>
-  <tr>
+  <tr></tr>
+<tr>
     <td>
 
 [`/secret`](#secret)
@@ -177,8 +176,8 @@
     <td>—</td>
     <td>Turn a block into a secret expression, which is hidden from the end user.</td>
   </tr>
-<tr></tr>
-  <tr>
+  <tr></tr>
+<tr>
     <td>
 
 [`/slider`](#slider)
@@ -195,5 +194,6 @@
 }</code></pre></td>
     <td>Set the bounds of the slider for a variable.</td>
   </tr>
+  <tr></tr>
 </table>
 <!-- autodoc. -->
