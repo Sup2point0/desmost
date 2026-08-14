@@ -7,7 +7,7 @@ on:
       - '.github/workflows/autodoc.yml'
       - '.autodoc/*'
       - '**/options.ts'
-      - 'desmos/src/magic/**/*.ts'
+      - 'desmost/src/magic/**/*.ts'
 
 jobs:
   doc:
