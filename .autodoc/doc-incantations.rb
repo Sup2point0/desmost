@@ -66,7 +66,7 @@ def extract_incantation(text:)
          arg_type = "?"
       else
          arg_type.gsub!(/\|/, "\\|")
-         arg_type.gsub!(/\n/, "\n<br>\n")
+         arg_type.gsub!(/\n/, "\n<br>")
          arg_type.gsub!(/: +/, ": ")
          if arg_type.include?("{")
             arg_type = "<pre lang=\"ts\"><code>#{arg_type}</code></pre>"
