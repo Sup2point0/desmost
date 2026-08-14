@@ -1,8 +1,28 @@
 <!-- @component `<Nav>` -->
 
+<script lang="ts">
+
+import { prefs } from "#scripts/prefs";
+
+</script>
+
 <nav>
   <div class="left">
     <h1> Desmost <span>Playground</span> &ensp; <small>by Sup#2.0</small> </h1>
+
+    <button
+      class:off={!$prefs.options}
+      onclick={() => { $prefs.options = !$prefs.options; }}
+    >
+      Options
+    </button>
+
+    <button
+      class:off={!$prefs.debug}
+      onclick={() => { $prefs.debug = !$prefs.debug; }}
+    >
+      Debug
+    </button>
   </div>
 
   <div class="right">
@@ -28,7 +48,6 @@ nav {
   justify-content: space-between;
   align-items: stretch;
 
-  @include font-ui;
   background: $col-deut;
   box-shadow: 0 2px 4px rgb(black, 40%);
 }
@@ -41,7 +60,8 @@ nav {
 
   h1 {
     padding: $pad-vert 1.5rem;
-    margin-right: 0.5rem;
+    margin-right: 1rem;
+    @include font-ui;
     color: white;
     font-size: $font-size;
     font-weight: normal;
@@ -61,11 +81,15 @@ nav {
   align-items: stretch;
 }
 
-a {
+a, button {
   padding: $pad-vert 0.5em;
-  font-size: $font-size;
+  @include font-ui;
   color: white;
+  font-size: $font-size;
   text-decoration: none;
+  background: none;
+  border: none;
+  outline: none;
 
   &:hover, &:focus-visible {
     cursor: pointer;
@@ -74,6 +98,10 @@ a {
 
   &:active {
     background: rgb(black, 25%);
+  }
+
+  &.off {
+    opacity: 50%;
   }
 }
 

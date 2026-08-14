@@ -5,6 +5,8 @@ import "#styles/prism.scss";
 
 import { compile } from "desmost";
 
+import { prefs } from "#scripts/prefs";
+
 import Nav from "#parts/nav.svelte";
 import DesmostSource from "#parts/source.svelte";
 import DesmostAst from "#parts/ast.svelte";
@@ -82,7 +84,7 @@ function sync_exprs_with_desmos()
 <div class="root">
   <Nav />
 
-  <main>
+  <main style:--rows={$prefs.debug ? 2 : 1}>
     <DesmostSource bind:source />
 
     <div id="desmos" bind:this={el_desmos}>
@@ -91,8 +93,10 @@ function sync_exprs_with_desmos()
       {/if}
     </div>
 
-    <DesmostAst {ast} {duration} />
-    <DesmosExpressions {exprs} />
+    {#if $prefs.debug}
+      <DesmostAst {ast} {duration} />
+      <DesmosExpressions {exprs} />
+    {/if}
   </main>
 </div>
 
@@ -111,7 +115,7 @@ main {
   min-height: 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: repeat(var(--rows, 1), 1fr);
 
   div {
     overflow-y: auto;
