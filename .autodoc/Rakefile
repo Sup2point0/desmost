@@ -1,0 +1,9 @@
+task default: :doc
+
+
+task :doc do
+   ruby "doc-options.rb"
+   ruby "doc-incantations.rb"
+   
+   puts "done!"
+end
