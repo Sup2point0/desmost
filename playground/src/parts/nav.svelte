@@ -4,6 +4,13 @@
 
 import { prefs } from "#scripts/prefs";
 
+interface Props {
+  is_compiling: boolean;
+  recompile: () => void;
+}
+
+let { is_compiling, recompile }: Props = $props();
+
 </script>
 
 <nav>
@@ -22,6 +29,14 @@ import { prefs } from "#scripts/prefs";
       onclick={() => { $prefs.debug = !$prefs.debug; }}
     >
       Debug
+    </button>
+  </div>
+
+  <div class="center">
+    <button id="recompile" class:off={is_compiling} onclick={recompile}>
+      {#if is_compiling} Recompiling...
+      {:else} Recompile
+      {/if}
     </button>
   </div>
 
@@ -50,14 +65,19 @@ nav {
 
   background: $col-deut;
   box-shadow: 0 2px 4px rgb(black, 40%);
+
+  > div {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: stretch;
+  }
+
+  .left { flex: 2; justify-content: start; }
+  .center { flex: 1; justify-content: center; }
+  .right { flex: 2; justify-content: end; }
 }
 
 .left {
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: end;
-  align-items: stretch;
-
   h1 {
     padding: $pad-vert 1.5rem;
     margin-right: 1rem;
@@ -72,13 +92,6 @@ nav {
       text-decoration: none;
     }
   }
-}
-
-.right {
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: end;
-  align-items: stretch;
 }
 
 a, button {
@@ -102,6 +115,18 @@ a, button {
 
   &.off {
     opacity: 50%;
+  }
+
+  &#recompile {
+    padding: 0 1.5rem;
+
+    &:hover, &:focus-visible {
+      background: rgb(black, 40%);
+    }
+
+    &:active {
+      background: rgb(black, 60%);
+    }
   }
 }
 

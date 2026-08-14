@@ -12,7 +12,7 @@ import DesmostSource from "#parts/source.svelte";
 import DesmostAst from "#parts/ast.svelte";
 import DesmosExpressions from "#parts/exprs.svelte";
 
-import { onMount, untrack } from "svelte";
+import { onMount } from "svelte";
 
 
 const WELCOME = String.raw `
@@ -25,6 +25,7 @@ let source = $state(WELCOME.trim());
 let el_desmos: HTMLElement;
 let desmos: Desmos.Calculator | null | undefined = $state(undefined);
 
+let is_compiling = $state(false);
 let duration: number | undefined = $state();
 let ast: any[] = $state([]);
 let exprs: Desmos.ExpressionState[] = $state([]);
@@ -48,29 +49,39 @@ onMount(() => {
 
 
 $effect(() => {
-  let src = source;
+  let _ = source;
+  recompile();
+});
 
-  let timeout = setTimeout(() => {
-    if (desmos == null) return;
-    desmos.setBlank();
+function recompile()
+{
+  is_compiling = true;
+  let timeout: number;
 
-    let debug;
+  requestAnimationFrame(() => {
+    timeout = setTimeout(() => {
+      if (desmos == null) return;
 
-    try {
-      debug = compile(desmos, src, { debug: true });
-    } catch {
-      debug = undefined;
-    }
+      desmos.setBlank();
 
-    untrack(() => {
+      let debug;
+      try {
+        debug = compile(desmos, source, { debug: true });
+      } catch {
+        debug = undefined;
+      }
+
       duration = debug?.duration;
       ast = debug?.ast ?? ["COMPILER ERROR"];
       sync_exprs_with_desmos();
-    });
-  }, 50);
+      is_compiling = false;
+    }, 50);
+  });
 
   return () => clearTimeout(timeout);
-});
+}
+
+$inspect(is_compiling)
 
 function sync_exprs_with_desmos()
 {
@@ -82,7 +93,7 @@ function sync_exprs_with_desmos()
 
 
 <div class="root">
-  <Nav />
+  <Nav {is_compiling} {recompile} />
 
   <main style:--rows={$prefs.debug ? 2 : 1}>
     <DesmostSource bind:source />
