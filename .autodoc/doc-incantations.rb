@@ -30,6 +30,7 @@ def build_table(glob:)
 
    return "
 <table>
+  <tr></tr>
   <tr>
     <th> Incantation </th>
     <th> Argument </th>
@@ -65,7 +66,7 @@ def extract_incantation(text:)
          arg_type = "?"
       else
          arg_type.gsub!(/\|/, "\\|")
-         arg_type.gsub!(/\n/, "<br>")
+         arg_type.gsub!(/\n/, "\n<br>\n")
          arg_type.gsub!(/: +/, ": ")
          if arg_type.include?("{")
             arg_type = "<pre lang=\"ts\"><code>#{arg_type}</code></pre>"
@@ -88,7 +89,7 @@ def build_table_row(ident, ident_alt, arg, arg_type, desc)
 
    ident_link = "[`/#{ident}`](##{ident})"
    ident_alt_link = ident_alt.nil? ? "" : "<br>[`/#{ident_alt}`](##{ident})"
-   
+      
    return "
   <tr></tr>
   <tr>
