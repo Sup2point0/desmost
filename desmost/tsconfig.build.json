@@ -4,7 +4,7 @@
     "./src/",
   ],
   "compilerOptions": {
-    "rootDir": "./",
+    "rootDir": "./src/",
     "outDir": "./dist/",
     "target": "esnext",
     "sourceMap": true,
