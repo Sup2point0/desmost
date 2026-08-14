@@ -36,14 +36,12 @@ ul {
   padding: 0.5rem 0.25rem;
   overflow-y: auto;
   min-height: 0;
-  position: relative;;
-  background: #f9f9f9;
+  position: relative;
+  background: #002;
+  border-top: 0.5px solid rgb(white, 30%);
+  box-shadow: -4px -4px 8px rgb(black, 50%);
   scrollbar-width: thin;
-
-  li {
-    background: white;
-    box-shadow: 0 2px 4px rgb(black, 20%);
-  }
+  scrollbar-color: $col-orange #002;
 
   pre {
     padding: 0.5rem;
@@ -51,8 +49,11 @@ ul {
 
   code {
     @include font-code;
+    color: white;
     font-size: 90%;
     line-height: 1.3;
+    word-break: break-all;
+    white-space: pre-wrap;
   }
 }
 
@@ -61,7 +62,7 @@ aside {
   top: 1rem;
   right: 1rem;
   @include font-ui;
-  color: $col-deut;
+  color: $col-orange;
 }
 
 </style>

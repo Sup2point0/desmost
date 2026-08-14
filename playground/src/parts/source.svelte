@@ -4,6 +4,8 @@
 
 <script lang="ts">
 
+import { version } from "#playground/node_modules/desmost/package.json" with { type: "json" };
+
 interface Props {
   source: string;
 }
@@ -16,7 +18,8 @@ let { source = $bindable() }: Props = $props();
 
 <div class="panel">
   <header>
-    <h2> Desmost Source </h2>
+    <h2> Source </h2>
+    <small> Desmost <span>v{version}</span> </small>
   </header>
 
   <textarea bind:value={source}></textarea>
@@ -36,6 +39,9 @@ let { source = $bindable() }: Props = $props();
 
 header {
   padding: 0.5rem 1rem;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
   position: sticky;
   top: 0;
   background: #002;
@@ -45,6 +51,15 @@ header {
     color: rgb(white, 50%);
     font-size: 80%;
     font-weight: normal;
+  }
+
+  small {
+    @include font-code;
+    color: rgb(white, 50%);
+
+    span {
+      color: white;
+    }
   }
 }
 

@@ -1,11 +1,5 @@
 <!-- @component `<Nav>` -->
 
-<script>
-
-import { version } from "#playground/node_modules/desmost/package.json" with { type: "json" };
-
-</script>
-
 <nav>
   <div class="left">
     <h1> Desmost <span>Playground</span> &ensp; <small>by Sup#2.0</small> </h1>
@@ -16,7 +10,7 @@ import { version } from "#playground/node_modules/desmost/package.json" with { t
     <a target="_blank" href="https://github.com/Sup2point0/desmost/blob/main/docs/writing/learn-x-in-y.md">Learn</a>
     <a target="_blank" href="https://github.com/Sup2point0/desmost/blob/main/docs/spec/readme.md">Spec</a>
     <a target="_blank" href="https://github.com/Sup2point0/desmost">GitHub</a>
-    <a target="_blank" href="https://www.npmjs.com/package/desmost">npm <small>v{version}</small></a>
+    <a target="_blank" href="https://www.npmjs.com/package/desmost">npm</a>
   </div>
 </nav>
 
