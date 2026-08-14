@@ -137,4 +137,4 @@ btw, you can see this example for yourself in [Playground](https://sup2point0.gi
 
 And that's all there is to Desmost!
 
-For a complete list of all the available incantations, head to [Incantations Reference](../incantations.md).
+For a complete list of all the available incantations, head to [Incantations Reference](incantations.md).
