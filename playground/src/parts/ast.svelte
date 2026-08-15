@@ -23,28 +23,32 @@ let highlighted = $derived(Prism.highlight(json, Prism.languages.javascript, "ja
 </script>
 
 
-<ul>
+<div class="panel">
   <header>
     <h2> Compiled AST </h2>
   </header>
 
-  <li>
-    <pre lang="js"><code>{@html highlighted}</code></pre>
-  </li>
-</ul>
+  <ul>
+    <li>
+      <pre lang="js"><code>{@html highlighted}</code></pre>
+    </li>
+  </ul>
+</div>
 
 
 <style lang="scss">
 
-ul {
-  padding: 0 0.25rem;
-  overflow-y: auto;
-  min-height: 0;
-  background: #002;
+.panel {
   border-top: 0.5px solid rgb(white, 30%);
+  background: #002;
   box-shadow: -4px -4px 8px rgb(black, 50%);
+  overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: $col-orange #002;
+}
+
+ul {
+  padding: 0 0.5rem;
 }
 
 header {

@@ -205,7 +205,6 @@ main {
     position: relative;
     z-index: 4;
     background: transparent;
-    // background: rgb(blue, 25%);  // TEMP
     transform-origin: 50% 50%;
 
     &.x { transform: scaleX(5); &:hover { cursor: ew-resize; } }
