@@ -1,7 +1,7 @@
 # Changelog
 
 
-## Next (v0.2.0)
+## v0.2.0
 
 ### New
 - `::` now no longer requires the LaTeX to be on the same line, so these are allowed:
