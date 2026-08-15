@@ -44,8 +44,8 @@ let { is_compiling, recompile }: Props = $props();
     <a target="_blank" href="https://github.com/Sup2point0/desmost/tree/main/docs">Docs</a>
     <a target="_blank" href="https://github.com/Sup2point0/desmost/blob/main/docs/writing/learn-x-in-y.md">Learn</a>
     <a target="_blank" href="https://github.com/Sup2point0/desmost/blob/main/docs/spec/readme.md">Spec</a>
-    <a target="_blank" href="https://github.com/Sup2point0/desmost">GitHub</a>
     <a target="_blank" href="https://www.npmjs.com/package/desmost">npm</a>
+    <a target="_blank" href="https://github.com/Sup2point0/desmost">GitHub</a>
   </div>
 </nav>
 
@@ -70,15 +70,16 @@ nav {
     display: flex;
     flex-flow: row nowrap;
     align-items: stretch;
-  }
 
-  .left { flex: 2; justify-content: start; }
-  .center { flex: 1; justify-content: center; }
-  .right { flex: 2; justify-content: end; }
+    &.left { flex: 2; justify-content: start; }
+    &.center { flex: 1; justify-content: center; }
+    &.right { flex: 2; justify-content: end; }
+  }
 }
 
 .left {
   h1 {
+    min-width: max-content;
     padding: $pad-vert 1.5rem;
     margin-right: 1rem;
     @include font-ui;
@@ -95,6 +96,7 @@ nav {
 }
 
 a, button {
+  min-width: max-content;
   padding: $pad-vert 0.5em;
   @include font-ui;
   color: white;
@@ -132,6 +134,19 @@ a, button {
 
 small {
   color: rgb(white, 70%);
+}
+
+
+@media (max-width: 80rem) {
+  .left small {
+    display: none;
+  }
+}
+
+@media (max-width: 60rem) {
+  .right {
+    display: none;
+  }
 }
 
 </style>
