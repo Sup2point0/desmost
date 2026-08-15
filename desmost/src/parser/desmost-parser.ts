@@ -115,6 +115,7 @@ export class DesmostParser extends GenericParser
     this.consume("::",
       `Expected \`::\` separator between local incantations and expression, but found: \`${this.preview()}\``
     );
+    this.consume_whitespace();
   }
 
   /**

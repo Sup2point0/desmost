@@ -3,6 +3,18 @@
 
 ## Next (v0.2.0)
 
+### New
+- `::` now no longer requires the LaTeX to be on the same line, so these are allowed:
+
+```hs
+/hide ::
+  y = x^2
+
+/hide
+::
+  y = x^2
+```
+
 ### Fixes
 - Refactor internals to avoid costly exceptions, for significant performance gains!
 - Trim trailing spaces in LaTeX output
