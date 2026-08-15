@@ -379,24 +379,12 @@ export class DesmostParser extends GenericParser
 
     /**
      * Pop `ctx` if it is the currently active context, returning `true` if successful.
-     * 
-     * If `{ force: true }`, backtrack the stack and report errors for unterminated contexts.
     */
-    function try_pop(ctx: Ctx, options?: { force: boolean }): boolean
+    function try_pop(ctx: Ctx): boolean
     {
       if (stack.at(-1) === ctx) {
         stack.pop();
         return true;
-      }
-      else if (options?.force) {
-        if (stack.includes(ctx)) {
-          /* NOTE: We could report errors for unterminated contexts, but we'll leave that for the actual evaluation - in case we get something wrong ;) */
-          while (stack.at(-1) !== ctx) {
-            stack.pop();
-          }
-
-          return true;
-        }
       }
 
       return false;
@@ -414,14 +402,13 @@ export class DesmostParser extends GenericParser
       switch (this.current) {
         case Ctx.ESCAPE: stack.push(Ctx.ESCAPE); break;
 
-        /* NOTE: *Currently* `{}` should be ignored in all contexts except `Ctx.BLOCK`. This might change if more contexts are added in future! */
         case Char.L_BRACE:
+          /* NOTE: *Currently* `{}` should be ignored in all contexts except `Ctx.BLOCK`. This might change if more contexts are added in future! */
           if (top !== Ctx.BLOCK) break;
           stack.push(Ctx.BLOCK); break;
 
         case Char.R_BRACE:
-          if (top !== Ctx.BLOCK) break;
-          try_pop(Ctx.BLOCK, { force: true }); break;
+          try_pop(Ctx.BLOCK); break;
       }
 
       if (arg_type === Incantation.ArgType.OBJECT) {
