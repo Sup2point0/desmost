@@ -167,7 +167,7 @@ export class DesmostParser extends GenericParser
 
     return {
       kind: Ast.Kind.EXPRESSION,
-      data: { latex: this.source.slice(init, this.i) },
+      data: { latex: this.source.slice(init, this.i).trimEnd() },
       incantations: [],
     };
   }

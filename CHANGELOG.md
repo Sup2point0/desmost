@@ -5,6 +5,7 @@
 
 ### Fixes
 - Refactor internals to avoid costly exceptions, for significant performance gains!
+- Trim trailing spaces in LaTeX output
 
 
 ## v0.1.2
