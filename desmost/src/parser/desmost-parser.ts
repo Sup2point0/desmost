@@ -48,6 +48,10 @@ export class DesmostParser extends GenericParser
       // 1+ locals + 1 expr
       let incantations = r.local;
 
+      if (incantations.length > 0) {
+        this.parse_sep();
+      }
+
       var expr = this.parse_post_sep();
 
       for (let invocation of incantations) {
@@ -97,10 +101,6 @@ export class DesmostParser extends GenericParser
       let invocation = this.try_parse_local_incantation();
       if (invocation === FAIL) break;
       incantations.push(invocation);
-    }
-
-    if (incantations.length > 0) {
-      this.parse_sep();
     }
 
     return { local: incantations };
@@ -265,7 +265,6 @@ export class DesmostParser extends GenericParser
 
   try_parse_expr_incantation(): MaybeRecoverable<Ast.Expression>
   {
-    // TODO refactor with `backtrack()` helper
     let init = this.i;
 
     if (this.try_consume("/") === FAIL) return FAIL;
