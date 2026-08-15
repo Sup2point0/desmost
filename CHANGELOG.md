@@ -17,6 +17,7 @@
 
 ### Fixes
 - Refactor internals to avoid costly exceptions, for significant performance gains!
+- Fix balanced string quote matching in arguments, so nested quotes in strings like `"don't"` work properly
 - Trim trailing spaces in LaTeX output
 
 

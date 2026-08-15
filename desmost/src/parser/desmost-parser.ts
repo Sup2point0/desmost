@@ -426,9 +426,23 @@ export class DesmostParser extends GenericParser
 
       if (arg_type === Incantation.ArgType.OBJECT) {
         switch (this.current) {
-          case Ctx.STR_1: try_pop(Ctx.STR_1) || stack.push(Ctx.STR_1); break;
-          case Ctx.STR_2: try_pop(Ctx.STR_2) || stack.push(Ctx.STR_2); break;
-          case Ctx.STR_F: try_pop(Ctx.STR_F) || stack.push(Ctx.STR_F); break;
+          case Ctx.STR_1:
+            if (top === Ctx.STR_2) break;
+            if (top === Ctx.STR_F) break;
+            try_pop(Ctx.STR_1) || stack.push(Ctx.STR_1);
+            break;
+            
+          case Ctx.STR_2:
+            if (top === Ctx.STR_1) break;
+            if (top === Ctx.STR_F) break;
+            try_pop(Ctx.STR_2) || stack.push(Ctx.STR_2);
+            break;
+
+          case Ctx.STR_F:
+            if (top === Ctx.STR_1) break;
+            if (top === Ctx.STR_2) break;
+            try_pop(Ctx.STR_F) || stack.push(Ctx.STR_F);
+            break;
         }
       }
 
