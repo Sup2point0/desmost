@@ -34,7 +34,7 @@ describe("parse-arg()", () =>
       let parser = new DesmostParser(`{}`);
       let r = parser.parse_incantation_arg(arg_type);
       assert.equal(r, "");
-    })
+    });
 
     test.each(matrix(
       ARG_TYPES,
@@ -88,7 +88,6 @@ describe("parse-arg()", () =>
       [`{ x: 1 }`,         `x: 1`],
       [`{ x: 1, y: 2 }`,   `x: 1, y: 2`],
       [`{ sup: 2.0 }`,     `sup: 2.0`],
-      [`{ sup: "world" }`, `sup: "world"`],
     ]))
     ("flat", run_test);
 
@@ -98,6 +97,13 @@ describe("parse-arg()", () =>
       [`{ obj: { x: 1 } }`, `obj: { x: 1 }`],
     ]))
     ("nested", run_test);
+
+    test.each(matrix([Incantation.ArgType.OBJECT], [
+      [`{ sup: 'world' }`, `sup: 'world'`],
+      [`{ sup: "world" }`, `sup: "world"`],
+      [`{ sup: \`world\` }`, `sup: \`world\``],
+    ]))
+    ("with strings", run_test);
 
     test.each(matrix([Incantation.ArgType.OBJECT], [
       [`{ diabolical: '{error' }`, `diabolical: '{error'`],
@@ -110,5 +116,33 @@ describe("parse-arg()", () =>
       [`{ diabolical: "error}" }`, `diabolical: "error}"`],
     ]))
     ("with } in string", run_test);
+
+    test.each(matrix([Incantation.ArgType.OBJECT], [
+      [`{ problem: "don't don't" }`, `problem: "don't don't"`],
+      [`{ problem: "don't do it" }`, `problem: "don't do it"`],
+    ]))
+    ("with ' in \" string", run_test);
+
+    test.each(matrix([Incantation.ArgType.OBJECT], [
+      [`{ problem: 'this "quote" might break' }`, `problem: 'this "quote" might break'`],
+      [`{ problem: 'this "quote is broken' }`, `problem: 'this "quote is broken'`],
+    ]))
+    ("with \" in ' string", run_test);
+
+    test.each([
+      `{ sup`,
+      `{ this: "does not end`,
+      `{ this: "does not end }`,
+      `{ this: "does not end"`,
+      `{ malformed: { }`,
+      `{ malformed: ""lmao" }`,
+    ])
+    ("crashes if unmatched", src => {
+      let parser = new DesmostParser(src);
+
+      assert.throws(() => {
+        parser.parse_incantation_arg(Incantation.ArgType.OBJECT);
+      });
+    })
   })
 })
