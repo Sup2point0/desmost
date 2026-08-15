@@ -24,6 +24,10 @@ let highlighted = $derived(Prism.highlight(json, Prism.languages.javascript, "ja
 
 
 <ul>
+  <header>
+    <h2> Compiled AST </h2>
+  </header>
+
   <li>
     <pre lang="js"><code>{@html highlighted}</code></pre>
   </li>
@@ -33,7 +37,7 @@ let highlighted = $derived(Prism.highlight(json, Prism.languages.javascript, "ja
 <style lang="scss">
 
 ul {
-  padding: 0.5rem 0.25rem;
+  padding: 0 0.25rem;
   overflow-y: auto;
   min-height: 0;
   background: #002;
@@ -41,7 +45,26 @@ ul {
   box-shadow: -4px -4px 8px rgb(black, 50%);
   scrollbar-width: thin;
   scrollbar-color: $col-orange #002;
+}
 
+header {
+  padding: 0.5rem 1rem;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  background: #002;
+
+  h2 {
+    @include font-code;
+    color: rgb(white, 50%);
+    font-size: 80%;
+    font-weight: normal;
+  }
+}
+
+li {
   pre {
     padding: 0.5rem;
   }
@@ -50,7 +73,7 @@ ul {
     @include font-code;
     color: white;
     font-size: 90%;
-    line-height: 1.3;
+    line-height: 1.4;
     word-break: break-all;
     white-space: pre-wrap;
   }

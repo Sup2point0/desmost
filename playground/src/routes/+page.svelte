@@ -114,6 +114,7 @@ function sync_exprs_with_desmos()
   max-height: 100vh;
   display: flex;
   flex-flow: column nowrap;
+  position: relative;
 }
 
 main {

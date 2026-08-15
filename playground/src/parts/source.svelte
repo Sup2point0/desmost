@@ -14,27 +14,33 @@ let { source = $bindable(), duration }: Props = $props();
 </script>
 
 
-<div class="panel">
-  <header>
-    <h2> Source </h2>
-    <small> Desmost <span>v{version}</span> </small>
-  </header>
-  
+<div class="container">
+  <div class="panel">
+    <header>
+      <h2> Source </h2>
+      <small> Desmost <span>v{version}</span> </small>
+    </header>
+
+    <textarea bind:value={source}></textarea>
+  </div>
+
   {#if duration}
     <aside>Compiled in {Math.round(duration * 10) / 10} ms</aside>
   {/if}
-
-  <textarea bind:value={source}></textarea>
 </div>
 
 
 <style lang="scss">
 
-.panel {
+.container {
   min-height: 0;
   display: flex;
   flex-flow: column nowrap;
   position: relative;
+  background: #002;
+}
+
+.panel {
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: $col-blue #002;
@@ -91,7 +97,7 @@ textarea {
 aside {
   position: absolute;
   bottom: 1rem;
-  right: 1rem;
+  right: 1.5rem;
   @include font-ui;
   color: $col-blue;
 }
