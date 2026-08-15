@@ -34,7 +34,7 @@ describe("parse-arg()", () =>
       let parser = new DesmostParser(`{}`);
       let r = parser.parse_incantation_arg(arg_type);
       assert.equal(r, "");
-    });
+    })
 
     test.each(matrix(
       ARG_TYPES,
@@ -51,7 +51,7 @@ describe("parse-arg()", () =>
       ].map(src => [src, ""])
     ))
     ("whitespace", run_test);
-  });
+  })
 
   describe("string", () =>
   {
@@ -77,7 +77,7 @@ describe("parse-arg()", () =>
       [`{ don't track }`, `don't track`],
     ]))
     (`with quotes`, run_test);
-  });
+  })
 
   describe("object", () =>
   {
@@ -110,5 +110,5 @@ describe("parse-arg()", () =>
       [`{ diabolical: "error}" }`, `diabolical: "error}"`],
     ]))
     ("with } in string", run_test);
-  });
-});
+  })
+})

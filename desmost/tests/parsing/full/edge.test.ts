@@ -18,7 +18,7 @@ y = x^2
     parser.parse_next();
     r = parser.parse_next();
     assert.isNull(r);
-  });
+  })
   
   test("inline blanks", () => {
     let parser = new DesmostParser(`
@@ -35,7 +35,7 @@ y = x^2
     parser.parse_next();
     r = parser.parse_next();
     assert.isNull(r);
-  });
+  })
 
   test("leading blank", () => {
     let parser = new DesmostParser(`\ny = x`);
@@ -45,7 +45,7 @@ y = x^2
     parser.parse_next();
     r = parser.parse_next();
     assert.isNull(r);
-  });
+  })
 
   test("leading blanks", () => {
     let parser = new DesmostParser(`\n\n\ny = x`);
@@ -57,7 +57,7 @@ y = x^2
     parser.parse_next();
     r = parser.parse_next();
     assert.isNull(r);
-  });
+  })
 
   test("trailing blank", () =>
   {
@@ -68,7 +68,7 @@ y = x^2
     assert_parses_blank_line(parser);
     r = parser.parse_next();
     assert.isNull(r);
-  });
+  })
 
   test("trailing blanks", () =>
   {
@@ -81,8 +81,8 @@ y = x^2
     assert_parses_blank_line(parser);
     r = parser.parse_next();
     assert.isNull(r);
-  });
-});
+  })
+})
 
 describe("spaces", () =>
 {
@@ -93,7 +93,7 @@ describe("spaces", () =>
     assert_is_expression(r);
     // @ts-expect-error: outdated types
     assert.equal(r.data.latex, "y = x");
-  });
+  })
 
   test("leading spaces (with blanks)", () => {
     let parser = new DesmostParser(`\n  y = x`);
@@ -103,7 +103,7 @@ describe("spaces", () =>
     assert_is_expression(r);
     // @ts-expect-error: outdated types
     assert.equal(r.data.latex, "y = x");
-  });
+  })
 
   test("trailing spaces", () => {
     let parser = new DesmostParser(`y = x  `);
@@ -112,7 +112,7 @@ describe("spaces", () =>
     assert_is_expression(r);
     // @ts-expect-error: outdated types
     assert.equal(r.data.latex, "y = x");
-  });
+  })
 
   test("trailing spaces (with blanks)", () => {
     let parser = new DesmostParser(`\ny = x  \ny = x^2`);
@@ -129,5 +129,5 @@ describe("spaces", () =>
     assert.equal(r.data.latex, "y = x^2");
     r = parser.parse_next();
     assert.isNull(r);
-  });
-});
+  })
+})

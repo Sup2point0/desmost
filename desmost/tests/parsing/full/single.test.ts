@@ -15,7 +15,7 @@ test("/latex", () => {
   // @ts-expect-error: outdated types
   assert.equal(r.data.latex, "y = x^2")
   assert.deepEqual(r.incantations, []);
-});
+})
 
 test("/viewport", () => {
   let parser = new DesmostParser(`/viewport{ left: -1, right: 1 }`);
@@ -25,7 +25,7 @@ test("/viewport", () => {
   assert.equal(r.kind, Ast.Kind.INCANTATION_INVOCATION);
   assert.deepEqual(r.incantation, new ViewportIncantation());
   assert.deepEqual(r.arg_raw, "left: -1, right: 1");
-});
+})
 
 test("/colour", () => {
   let parser = new DesmostParser(`/colour{ BLUE } :: y = x^2`);
@@ -39,4 +39,4 @@ test("/colour", () => {
   let invocation = r.incantations[0];
   assert.deepEqual(invocation.incantation, new ColourIncantation());
   assert.equal(invocation.arg_raw, "BLUE")
-});
+})

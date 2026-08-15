@@ -136,4 +136,4 @@ test("medium", () =>
   assert.equal(r.incantations[3].kind, Ast.Kind.INCANTATION_INVOCATION);
   assert.equal(r.incantations[1].arg_raw, "BLUE");
   assert.equal(r.incantations[3].arg_raw, "opacity: 0.2");
-});
+})

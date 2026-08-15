@@ -19,7 +19,7 @@ describe("try-parse-identifier()", () =>
     let parser = new DesmostParser(src);
     let incantation = parser.try_parse_identifier(GLOBAL_INCANTATIONS);
     assert.isTrue(incantation instanceof ViewportIncantation);
-  });
+  })
 
   test.each([
     ltx `slider`,
@@ -31,5 +31,5 @@ describe("try-parse-identifier()", () =>
     let parser = new DesmostParser(src);
     let incantation = parser.try_parse_identifier(LOCAL_INCANTATIONS);
     assert.isTrue(incantation instanceof SliderIncantation);
-  });
-});
+  })
+})

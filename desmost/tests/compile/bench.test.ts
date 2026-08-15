@@ -35,4 +35,4 @@ test("medium", () =>
   assert.isBelow(mean_duration, 10);
   
   console.log(mean_duration);
-});
+})

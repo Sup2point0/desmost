@@ -18,8 +18,8 @@ describe("preserves plain LaTeX", () =>
     
     assert.isNotNull(r);
     assert.equal(r.kind, Ast.Kind.EXPRESSION);
-    assert.deepEqual((r as Ast.Expression).data, { latex: source });
-  });
+    assert.deepEqual((r as Ast.Expression).data, { latex: source })
+  })
 
   test.for([
     ``,
@@ -34,5 +34,5 @@ describe("preserves plain LaTeX", () =>
     assert.equal(r.kind, Ast.Kind.EXPRESSION);
     // @ts-expect-error: outdated types
     assert.equal(r.data.latex, " ");
-  });
-});
+  })
+})

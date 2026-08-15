@@ -19,5 +19,5 @@ describe("parse-next", () =>
     assert_is_expression(r);
     // @ts-expect-error: outdated types
     assert.equal(r.data.latex, `y = x^2`);
-  });
-});
+  })
+})

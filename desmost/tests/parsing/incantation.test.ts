@@ -19,8 +19,8 @@ describe("try-parse-global-incantation()", () =>
     
     assert.equal(r.kind, Ast.Kind.INCANTATION_INVOCATION);
     assert.equal(r.incantation, incantation);
-  });
-});
+  })
+})
 
 describe("try-parse-local-incantation()", () =>
 {
@@ -34,8 +34,8 @@ describe("try-parse-local-incantation()", () =>
     
     assert.equal(r.kind, Ast.Kind.INCANTATION_INVOCATION);
     assert.equal(r.incantation, incantation);
-  });
-});
+  })
+})
 
 describe("try-parse-expr-incantation()", () =>
 {
@@ -46,5 +46,5 @@ describe("try-parse-expr-incantation()", () =>
     let r = parser.try_parse_expr_incantation();
     
     assert_is_expression(r);
-  });
-});
+  })
+})
