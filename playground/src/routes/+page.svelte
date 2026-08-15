@@ -28,6 +28,7 @@ onMount(() => {
     border: false,
   });
 
+  // @ts-expect-error: outdated types
   desmos.observeEvent("change", (_, e) => {
     if (e.isUserInitiated) {
       sync_exprs_with_desmos();
@@ -86,35 +87,54 @@ function sync_exprs_with_desmos()
 }
 
 
-let dragging = $state(false);
-let frac = $state(0.5);
+let frac_x = $state(0.5);
+let frac_y = $state(0.6);
 
-let x_init = 0;
-let frac_init = 0;
+let drag_state: "x" | "y" | null = $state(null);
 
-function start_drag(e: MouseEvent)
+let init = {
+  x: 0, y: 0,
+  frac_x: 0, frac_y: 0,
+};
+
+function start_drag(state: "x" | "y"): (e: MouseEvent) => void
 {
-  dragging = true;
-  x_init = e.clientX;
-  frac_init = frac;
+  return e => {
+    drag_state = state;
+
+    init.x = e.clientX;
+    init.y = e.clientY;
+    init.frac_x = frac_x;
+    init.frac_y = frac_y;
+  };
 }
 
 function continue_drag(e: MouseEvent)
 {
-  if (!dragging) return;
-
-  let delta_x = e.clientX - x_init;
-  let delta_frac = delta_x / window.innerWidth;
-  frac = frac_init + delta_frac;
-  frac = Math.max(0.2, Math.min(0.8, frac));
+  switch (drag_state) {
+    case "x": {
+      let delta_x = e.clientX - init.x;
+      let delta_frac = delta_x / window.innerWidth;
+      frac_x = init.frac_x + delta_frac;
+      frac_x = Math.max(0.2, Math.min(0.8, frac_x));
+      break;
+    }
+    case "y": {
+      let delta_y = e.clientY - init.y;
+      let delta_frac = delta_y / window.innerHeight;
+      frac_y = init.frac_y + delta_frac;
+      frac_y = Math.max(0.2, Math.min(0.8, frac_y));
+      break;
+    }
+    case null:
+      return;
+  }
 }
 
 function finish_drag()
 {
-  dragging = false;
+  drag_state = null;
 }
-
-$inspect(frac)
 
 </script>
 
@@ -123,12 +143,13 @@ $inspect(frac)
   <Nav {is_compiling} {recompile} />
 
   <main
-    style:--rows={$prefs.debug ? 2 : 1}
-    style:--frac={frac}
+    class:debug={$prefs.debug}
+    style:--frac-x={frac_x}
+    style:--frac-y={frac_y}
   >
     <DesmostSource bind:source {duration} />
 
-    <div class="resize-drag" onmousedown={start_drag}></div>
+    <div class="resize-drag x" onmousedown={start_drag("x")}></div>
 
     <div id="desmos" bind:this={el_desmos}>
       {#if desmos === null}
@@ -137,8 +158,12 @@ $inspect(frac)
     </div>
 
     {#if $prefs.debug}
+      <div class="resize-drag y" onmousedown={start_drag("y")}></div>
+      <div></div>
+      <div class="resize-drag y" onmousedown={start_drag("y")}></div>
+
       <DesmostAst {ast} />
-      <div class="resize-drag" onmousedown={start_drag}></div>
+      <div class="resize-drag x" onmousedown={start_drag("x")}></div>
       <DesmosExpressions {exprs} />
     {/if}
   </main>
@@ -156,33 +181,47 @@ $inspect(frac)
 }
 
 main {
-  $drag-width: 0.5px;
+  $drag-size: 0.5px;
 
   flex: 1;
   min-height: 0;
   display: grid;
   grid-template-columns:
-    calc(100% * var(--frac, 1) - $drag_width / 2)
-    $drag-width
-    calc(100% * (1 - var(--frac, 1)) - $drag_width / 2)
+    calc(100% * var(--frac-x, 1) - $drag-size / 2)
+    $drag-size
+    calc(100% * (1 - var(--frac-x, 1)) - $drag-size / 2)
   ;
-  grid-template-rows: repeat(var(--rows, 1), 1fr);
+
+  &.debug {
+    grid-template-rows:
+      calc(100% * var(--frac-y, 1) - $drag-size / 2)
+      $drag-size
+      calc(100% * (1 - var(--frac-y, 1)) - $drag-size / 2)
+    ;
+  }
 
   .resize-drag {
     user-select: none;
+    position: relative;
     z-index: 4;
     background: transparent;
-    transform: scaleX(7);
-    transform-origin: 50%;
+    // background: rgb(blue, 25%);  // TEMP
+    transform-origin: 50% 50%;
 
-    &:hover {
-      cursor: ew-resize;
-      background: #ff60ff;
-    }
+    &.x { transform: scaleX(5); &:hover { cursor: ew-resize; } }
+    &.y { transform: scaleY(5); &:hover { cursor: ns-resize; } }
 
-    &:active {
-      background: $col-red;
+    &::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
     }
+    &.x::after { transform: scaleX(5); }
+    &.y::after { transform: scaleY(5); }
+
+    &:hover, &:active { background: #ff60ff; }
+    &:active { filter: brightness(75%); }
   }
 }
 
