@@ -28,5 +28,6 @@ All settings are optional with sensible defaults that should cover most use case
 | **ignore_comments** | `true` `false` | `false`, meaning comments are kept. | Should comments be ignored, instead of turned into text expressions? |
 | **ignore_line_breaks** | `true` `false` | `false`, meaning all blank lines are kept. | Should all line breaks be ignored, instead of kept as blank expressions. |
 | **ignore_trailing_blanks** | `true` `false` | `false`, meaning trailing blank lines are kept. | Should trailing blank lines at the end of the source be ignored, instead of kept as blank expressions? |
+| **prettify** | `true` `false` | `true`, meaning LaTeX is prettified. | Prettify LaTeX output so it renders nicely in the Desmos editor? |
 | **debug** | `true` `false` | `false` | Return debug diagnostics? This includes the unevaluated AST, and performance diagnostics. |
 <!-- autodoc. -->
