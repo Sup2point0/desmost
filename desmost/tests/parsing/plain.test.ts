@@ -9,9 +9,10 @@ import { assert_is_expression } from "./shared";
  */
 describe("preserves plain LaTeX", () =>
 {
-  test.for([
+  test.each([
     ltx `f\left(x\right)=\sin\left(x\right)`,
-  ])("non-empty", source =>
+  ])
+  ("non-empty", source =>
   {
     let parser = new DesmostParser(source);
     let r = parser.parse_next();
@@ -21,10 +22,11 @@ describe("preserves plain LaTeX", () =>
     assert.deepEqual((r as Ast.Expression).data, { latex: source })
   })
 
-  test.for([
+  test.each([
     ``,
-    `\n`,
-  ])("empty", source =>
+    `\n`,  // FIXME?
+  ])
+  ("empty", source =>
   {
     let parser = new DesmostParser(source);
     let r = parser.parse_next();

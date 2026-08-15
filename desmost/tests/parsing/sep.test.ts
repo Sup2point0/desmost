@@ -3,7 +3,7 @@ import { DesmostParser } from "../../src/parser";
 
 describe("parse-sep", () =>
 {
-  test.for([
+  test.each([
     ` :: `,
     `:: `,
     ` ::`,
@@ -16,7 +16,7 @@ describe("parse-sep", () =>
     assert.isNull(r);
   })
 
-  test.for([
+  test.each([
     ` ::\n  `,
     ` ::\n`,
     ` :: \n`,
@@ -24,7 +24,7 @@ describe("parse-sep", () =>
     `::\n`,
   ])("medium", src => {
     let parser = new DesmostParser(src);
-    
+
     parser.parse_sep();
     let r = parser.parse_next();
     assert.isNull(r);
