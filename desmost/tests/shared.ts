@@ -12,13 +12,17 @@ export function matrix<P,Q>(left: P[], right: Q[]): Array<[P, Q]>
 }
 
 
-/** Produce a dummy Desmos calculator instance with no functionality for testing. */
-// @ts-expect-error: testing
-export const desmos: Desmos.Calculator =
+let expressions: Desmos.ExpressionState[] = [];
+
+/** Produce a dummy Desmos calculator instance with limited functionality for testing. */
+export function testing_desmos(): Desmos.Calculator
 {
-  updateSettings: () => {},
-  setMathBounds: () => {},
-  setExpression: () => {},
-  setExpressions: () => {},
-  removeExpression: () => {},
-};
+  return {
+    getExpressions: () => expressions,
+    updateSettings: () => {},
+    setMathBounds: () => {},
+    setExpression: (expr: Desmos.ExpressionState) => expressions.push(expr),
+    setExpressions: (exprs: Desmos.ExpressionState[]) => expressions.push(...exprs),
+    removeExpression: () => {},
+  } as unknown as Desmos.Calculator;
+}

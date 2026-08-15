@@ -18,9 +18,9 @@ import type { DesmostOptions } from "../compiler";
  */
 export class DesmostParser extends GenericParser
 {
-  constructor(source: string, options?: DesmostOptions)
+  constructor(source: string, protected options?: DesmostOptions)
   {
-    super(options?.ignore_trailing_blanks ? source : (source + "\n"));
+    super(source + "\n");
   }
 
 

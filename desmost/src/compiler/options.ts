@@ -48,6 +48,13 @@ export interface DesmostOptions
   ignore_trailing_blanks?: boolean
 
   /**
+   * Prettify LaTeX output so it renders nicely in the Desmos editor?
+   * 
+   * Defaults to `true`, meaning LaTeX is prettified.
+   */
+  prettify?: boolean
+
+  /**
    * Return debug diagnostics? This includes the unevaluated AST, and performance diagnostics.
    * 
    * Defaults to `false`.
@@ -71,6 +78,7 @@ export function set_default_options(options: Partial<DesmostOptions> | undefined
   options.ignore_line_breaks ??= false;
   options.ignore_trailing_blanks ??= false;
 
+  options.prettify ??= true;
   options.debug ??= false;
 
   return options as Required<DesmostOptions>;

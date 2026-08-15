@@ -2,7 +2,7 @@
 
 Desmost provides many options to customise how it compiles your source code.
 
-To configure options, pass in an `options` object when calling `compile()`:
+To configure options, pass in a `DesmostOptions` object when calling `compile()`:
 
 ```ts
 compile(calc, source, {
@@ -11,7 +11,7 @@ compile(calc, source, {
 });
 ```
 
-All settings are optional with sensible defaults that should cover most use cases.
+All settings are optional with sensible defaults that should cover most use cases. *Most* boolean-valued options default to `false` for simplicity.
 
 
 ## Options

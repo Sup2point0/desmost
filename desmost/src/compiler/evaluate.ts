@@ -69,6 +69,18 @@ export function evaluate_expr(
   if (errors.length > 0) {
     desmos.setExpression({ type: "text", text: errors.join("\n\n") });
   }
+
+  // @ts-expect-error: outdated types
+  if (expr.data.latex != undefined) {
+    // @ts-expect-error: outdated types
+    expr.data.latex = normalise_latex(expr.data.latex);
+
+    if (options.prettify) {
+      // @ts-expect-error: outdated types
+      expr.data.latex = prettify_latex(expr.data.latex);
+    }
+  }
+
   desmos.setExpression(expr.data);
 }
 
@@ -105,6 +117,36 @@ export function evaluate_error(
         break;
     }
   }
+}
+
+
+/**
+ * Remove line breaks from `latex` so Desmos can properly consume it.
+ */
+function normalise_latex(latex: string): string
+{
+  return latex.replaceAll("\n", " ");
+}
+
+
+/**
+ * Prettify `latex` to render nicely in Desmos, reflecting how you would type directly into Desmos.
+ * 
+ * This includes:
+ * 
+ * - Replace `()`, `[]`, etc. with `\left(\right)`
+ * - Replace `min()`, `max()`, etc. with `\operatorname{min}()`
+ */
+function prettify_latex(latex: string): string
+{
+  latex = latex.replaceAll("(", "\\left(");
+  latex = latex.replaceAll(")", "\\right)");
+  latex = latex.replaceAll("[", "\\left[");
+  latex = latex.replaceAll("]", "\\right]");
+  latex = latex.replaceAll("\\{", "\\left{");
+  latex = latex.replaceAll("\\}", "\\right}");
+  latex = latex.replaceAll(/(?<=[^\w]|^)(min)(?=\(|\\left\()/g, "\\1");
+  return latex;
 }
 
 
