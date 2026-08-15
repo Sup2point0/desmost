@@ -3,6 +3,7 @@ import { ltx } from "../shared";
 
 // example from /docs/learn-x-in-y.md
 export const MEDIUM = ltx `
+
 /desmos{
   expressions: true,
   settingsMenu: false,
@@ -32,4 +33,5 @@ b = 1
     \leq y
     \leq max(0, f(x))
   }
+
 `.trim();

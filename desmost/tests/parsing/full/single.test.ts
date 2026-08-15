@@ -2,7 +2,7 @@ import { ViewportIncantation } from "../../../src/magic/global/viewport";
 import { ColourIncantation } from "../../../src/magic/local/colour";
 
 import { DesmostParser, Ast } from "../../../src/parser";
-import { assert_is_expression, assert_is_incantation } from "../shared";
+import { assert_is_expression, assert_is_invocation } from "../shared";
 
 
 test("/latex", () => {
@@ -21,7 +21,7 @@ test("/viewport", () => {
   let parser = new DesmostParser(`/viewport{ left: -1, right: 1 }`);
   let r = parser.parse_next();
 
-  assert_is_incantation(r);
+  assert_is_invocation(r);
   assert.equal(r.kind, Ast.Kind.INCANTATION_INVOCATION);
   assert.deepEqual(r.incantation, new ViewportIncantation());
   assert.deepEqual(r.arg_raw, "left: -1, right: 1");
