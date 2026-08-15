@@ -15,20 +15,8 @@ import DesmosExpressions from "#parts/exprs.svelte";
 import { onMount } from "svelte";
 
 
-const WELCOME = String.raw `
-/text{ Welcome to Desmost! }
-f\left( x \right) = x^2
-`;
-
-let source = $state(WELCOME.trim());
-
 let el_desmos: HTMLElement;
 let desmos: Desmos.Calculator | null | undefined = $state(undefined);
-
-let is_compiling = $state(false);
-let duration: number | undefined = $state();
-let ast: any[] = $state([]);
-let exprs: Desmos.ExpressionState[] = $state([]);
 
 onMount(() => {
   if (typeof Desmos === "undefined") {
@@ -47,6 +35,19 @@ onMount(() => {
   });
 });
 
+
+// TODO move into examples
+const WELCOME = String.raw `
+/text{ Welcome to Desmost! }
+f\left( x \right) = x^2
+`;
+
+let source = $state(WELCOME.trim());
+
+let is_compiling = $state(false);
+let duration: number | undefined = $state();
+let ast: any[] = $state([]);
+let exprs: Desmos.ExpressionState[] = $state([]);
 
 $effect(() => {
   let _ = source;
@@ -84,14 +85,50 @@ function sync_exprs_with_desmos()
   exprs = desmos?.getExpressions() ?? ["DESMOS ERROR"];
 }
 
+
+let dragging = $state(false);
+let frac = $state(0.5);
+
+let x_init = 0;
+let frac_init = 0;
+
+function start_drag(e: MouseEvent)
+{
+  dragging = true;
+  x_init = e.clientX;
+  frac_init = frac;
+}
+
+function continue_drag(e: MouseEvent)
+{
+  if (!dragging) return;
+
+  let delta_x = e.clientX - x_init;
+  let delta_frac = delta_x / window.innerWidth;
+  frac = frac_init + delta_frac;
+  frac = Math.max(0.2, Math.min(0.8, frac));
+}
+
+function finish_drag()
+{
+  dragging = false;
+}
+
+$inspect(frac)
+
 </script>
 
 
-<div class="root">
+<div class="root" onmousemove={continue_drag} onmouseup={finish_drag}>
   <Nav {is_compiling} {recompile} />
 
-  <main style:--rows={$prefs.debug ? 2 : 1}>
+  <main
+    style:--rows={$prefs.debug ? 2 : 1}
+    style:--frac={frac}
+  >
     <DesmostSource bind:source {duration} />
+
+    <div class="resize-drag" onmousedown={start_drag}></div>
 
     <div id="desmos" bind:this={el_desmos}>
       {#if desmos === null}
@@ -101,6 +138,7 @@ function sync_exprs_with_desmos()
 
     {#if $prefs.debug}
       <DesmostAst {ast} />
+      <div class="resize-drag" onmousedown={start_drag}></div>
       <DesmosExpressions {exprs} />
     {/if}
   </main>
@@ -118,19 +156,39 @@ function sync_exprs_with_desmos()
 }
 
 main {
+  $drag-width: 0.5px;
+
   flex: 1;
   min-height: 0;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns:
+    calc(100% * var(--frac, 1) - $drag_width / 2)
+    $drag-width
+    calc(100% * (1 - var(--frac, 1)) - $drag_width / 2)
+  ;
   grid-template-rows: repeat(var(--rows, 1), 1fr);
 
-  div {
-    overflow-y: auto;
-    min-height: 0;
+  .resize-drag {
+    user-select: none;
+    z-index: 4;
+    background: transparent;
+    transform: scaleX(7);
+    transform-origin: 50%;
+
+    &:hover {
+      cursor: ew-resize;
+      background: #ff60ff;
+    }
+
+    &:active {
+      background: $col-red;
+    }
   }
 }
 
 #desmos {
+  overflow-y: auto;
+  min-height: 0;
   z-index: 2;
   box-shadow: 0 2px 4px rgb(black, 20%);
 }
