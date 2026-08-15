@@ -87,9 +87,6 @@ function sync_exprs_with_desmos()
 }
 
 
-let frac_x = $state(0.5);
-let frac_y = $state(0.6);
-
 let drag_state: "x" | "y" | null = $state(null);
 
 let init = {
@@ -104,8 +101,8 @@ function start_drag(state: "x" | "y"): (e: MouseEvent) => void
 
     init.x = e.clientX;
     init.y = e.clientY;
-    init.frac_x = frac_x;
-    init.frac_y = frac_y;
+    init.frac_x = $prefs.frac_x;
+    init.frac_y = $prefs.frac_y;
   };
 }
 
@@ -115,15 +112,15 @@ function continue_drag(e: MouseEvent)
     case "x": {
       let delta_x = e.clientX - init.x;
       let delta_frac = delta_x / window.innerWidth;
-      frac_x = init.frac_x + delta_frac;
-      frac_x = Math.max(0.2, Math.min(0.8, frac_x));
+      $prefs.frac_x = init.frac_x + delta_frac;
+      $prefs.frac_x = Math.max(0.2, Math.min(0.8, $prefs.frac_x));
       break;
     }
     case "y": {
       let delta_y = e.clientY - init.y;
       let delta_frac = delta_y / window.innerHeight;
-      frac_y = init.frac_y + delta_frac;
-      frac_y = Math.max(0.2, Math.min(0.8, frac_y));
+      $prefs.frac_y = init.frac_y + delta_frac;
+      $prefs.frac_y = Math.max(0.2, Math.min(0.8, $prefs.frac_y));
       break;
     }
     case null:
@@ -144,8 +141,8 @@ function finish_drag()
 
   <main
     class:debug={$prefs.debug}
-    style:--frac-x={frac_x}
-    style:--frac-y={frac_y}
+    style:--frac-x={$prefs.frac_x}
+    style:--frac-y={$prefs.frac_y}
   >
     <DesmostSource bind:source {duration} />
 

@@ -7,4 +7,8 @@ export const prefs = persisted("desmost.playground.prefs", {
 
   /** Are the debug panels open? */
   debug: false,
+
+  frac_x: 0.5,
+
+  frac_y: 0.6,
 });
