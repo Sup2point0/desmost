@@ -1,6 +1,4 @@
-<!-- @component `<DesmostSource>`
-
--->
+<!-- @component `<DesmostSource>` -->
 
 <script lang="ts">
 
@@ -8,10 +6,10 @@ import { version } from "#playground/node_modules/desmost/package.json" with { t
 
 interface Props {
   source: string;
+  duration: number | undefined;
 }
 
-let { source = $bindable() }: Props = $props();
-
+let { source = $bindable(), duration }: Props = $props();
 
 </script>
 
@@ -21,6 +19,10 @@ let { source = $bindable() }: Props = $props();
     <h2> Source </h2>
     <small> Desmost <span>v{version}</span> </small>
   </header>
+  
+  {#if duration}
+    <aside>Compiled in {Math.round(duration * 10) / 10} ms</aside>
+  {/if}
 
   <textarea bind:value={source}></textarea>
 </div>
@@ -32,9 +34,10 @@ let { source = $bindable() }: Props = $props();
   min-height: 0;
   display: flex;
   flex-flow: column nowrap;
+  position: relative;
   overflow-y: auto;
   scrollbar-width: thin;
-  scrollbar-color: $col-deut #002;
+  scrollbar-color: $col-blue #002;
 }
 
 header {
@@ -83,6 +86,14 @@ textarea {
   &::selection {
     background: rgb(#0088cc, 40%);
   }
+}
+
+aside {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  @include font-ui;
+  color: $col-blue;
 }
 
 </style>

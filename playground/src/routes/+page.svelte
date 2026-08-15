@@ -91,7 +91,7 @@ function sync_exprs_with_desmos()
   <Nav {is_compiling} {recompile} />
 
   <main style:--rows={$prefs.debug ? 2 : 1}>
-    <DesmostSource bind:source />
+    <DesmostSource bind:source {duration} />
 
     <div id="desmos" bind:this={el_desmos}>
       {#if desmos === null}
@@ -100,7 +100,7 @@ function sync_exprs_with_desmos()
     </div>
 
     {#if $prefs.debug}
-      <DesmostAst {ast} {duration} />
+      <DesmostAst {ast} />
       <DesmosExpressions {exprs} />
     {/if}
   </main>

@@ -63,7 +63,7 @@ nav {
   justify-content: space-between;
   align-items: stretch;
 
-  background: $col-deut;
+  background: $col-blue;
   box-shadow: 0 2px 4px rgb(black, 40%);
 
   > div {
