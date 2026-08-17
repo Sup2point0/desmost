@@ -1,10 +1,16 @@
-/** Options to customise Desmost compilation. */
+/**
+ * Options to customise Desmost compilation.
+ * 
+ * To customise compilation, pass in a `DesmostOptions` object as the last argument to `compile()`:
+ * 
+ * ```ts
+ * compile(calc, source, { errors: "crash" });
+ * ```
+ */
 export interface DesmostOptions
 {
   /**
-   * How should errors be *surfaced*?
-   * 
-   * Errors will always be logged to console for the developer; this setting affects how they visually reach the end user.
+   * How should errors be *surfaced* to the end user?
    * 
    * - `surface` (default): Blocks that result in errors will become Desmos text expressions containing the error message, leaving other expressions unaffected.
    * - `crash`: The entire compilation to Desmos will terminate with a single error message. This means you don't get any output at all, but errors are also immediately obvious.
@@ -22,7 +28,11 @@ export interface DesmostOptions
   place_errors?: "inline" | "end" | "start"
 
   /**
-   * The prefix to prepend to error blocks. Defaults to `[DESMOST ERROR]\n`. Provide a blank string if you wish for no prefix to be added.
+   * The prefix to prepend to error blocks.
+   * 
+   * Defaults to `[DESMOST ERROR]\n`.
+   * 
+   * Provide a `""` blank string if you wish for no prefix to be added.
    */
   error_prefix?: string
 
@@ -34,11 +44,11 @@ export interface DesmostOptions
   ignore_comments?: boolean
 
   /**
-   * Should all line breaks be ignored, instead of kept as blank expressions.
+   * Should all line breaks be ignored, instead of kept as blank expressions?
    * 
    * Defaults to `false`, meaning all blank lines are kept.
    */
-  ignore_line_breaks?: boolean
+  ignore_blank_lines?: boolean
 
   /**
    * Should trailing blank lines at the end of the source be ignored, instead of kept as blank expressions?
@@ -55,9 +65,11 @@ export interface DesmostOptions
   prettify?: boolean
 
   /**
-   * Return debug diagnostics? This includes the unevaluated AST, and performance diagnostics.
+   * Return debug diagnostics?
    * 
-   * Defaults to `false`.
+   * This includes the unevaluated AST, and performance diagnostics.
+   * 
+   * Defaults to `false`, meaning `compile()` returns `void`.
    */
   debug?: boolean
 }
@@ -75,7 +87,7 @@ export function set_default_options(options: Partial<DesmostOptions> | undefined
   options.error_prefix ??= "[DESMOST ERROR]\n";
   
   options.ignore_comments ??= false;
-  options.ignore_line_breaks ??= false;
+  options.ignore_blank_lines ??= false;
   options.ignore_trailing_blanks ??= false;
 
   options.prettify ??= true;
