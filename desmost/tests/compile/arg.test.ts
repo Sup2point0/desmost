@@ -6,6 +6,14 @@ import { testing_desmos } from "../shared";
 import { assert_no_errors } from "./shared";
 
 
+function compiles(src: string)
+{
+  let desmos = testing_desmos();
+  compile(desmos, src);
+  assert_no_errors(desmos);
+}
+
+
 describe("enum literals", () =>
 {
   test.each([
@@ -13,44 +21,37 @@ describe("enum literals", () =>
     `/colour{ blue } :: y = x`,
     `/colour{ Blue } :: y = x`,
   ])
-  ("inline", src => {
-    let desmos = testing_desmos();
-    compile(desmos, src);
-    assert_no_errors(desmos);
-  })
+  ("unkeyed", compiles);
 
   test.each([
     `/point{ style: DOTTED } :: (0, 0)`,
     `/point{ style: dotted } :: (0, 0)`,
     `/point{ style: Dotted } :: (0, 0)`,
   ])
-  ("keyed", src => {
-    let desmos = testing_desmos();
-    compile(desmos, src);
-    assert_no_errors(desmos);
-  })
+  ("basic", compiles);
 
   test.each([
-    `/point{ style: DOTTED, style: DOTTED } :: (0, 0)`,
+    `/line{ style: DOTTED, style: DASHED } :: y = x`,
+    `/point{ pos: RIGHT, text: "Test" } :: (0, 0)`,
+    `/point{ text: "Test", pos: RIGHT } :: (0, 0)`,
   ])
-  ("keyed with comma", src => {
-    let desmos = testing_desmos();
-    compile(desmos, src);
-    assert_no_errors(desmos);
-  })
+  ("with commas", compiles);
 
   test.each([
-    `/point{ style: DOTTED } /point{ pos: RIGHT, text: "Test" } :: (0, 0)`,
-    `/point{ style: DOTTED } /point{ text: "Test", pos: RIGHT } :: (0, 0)`,
+    `/line{ style: DOTTED } /point{ pos: RIGHT, text: "Test" } :: f(x)`,
+    `/line{ style: DOTTED } /point{ text: "Test", pos: RIGHT } :: f(x)`,
   ])
-  ("many incantations (keyed with comma)", src => {
-    let desmos = testing_desmos();
-    compile(desmos, src);
-    assert_no_errors(desmos);
-  })
+  ("many incantations with commas", compiles);
+
+  test.each([
+    `/desmos{ expressions: true }`,
+    `/desmos{ expressions: false }`,
+  ])
+  ("ignores booleans", compiles);
   
   test.each([
     `/colour{ UNKNOWN } :: y = x`,
+    `/line{ value: UNKNOWN } :: y = x`,
   ])
   ("bad", src => {
     assert.throws(() => {
