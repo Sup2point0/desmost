@@ -8,9 +8,9 @@ const IGNORED_CHARACTERS = new Set([
 
 
 /**
- * A stateful lazy parser, providing core methods for parsing.
+ * A stateful lazy parser, providing core (non-Desmost-specific) methods for parsing.
  * 
- * Many methods come in `<verb>` and `try_<verb>` pairs. On parsing failure, the former throws an `UnrecoverableError`, but the latter instead backtracks and only throws a `RecoverableFail`.
+ * Many methods come in `<verb>` and `try_<verb>` pairs. On parsing failure, the former throws an `UnrecoverableError`, but the latter instead backtracks and only returns a `RecoverableFail`. The former is for expected parses, while the latter is for speculative parsing.
  */
 export class GenericParser
 {

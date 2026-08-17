@@ -1,3 +1,11 @@
+/**
+ * Implements incantations logic.
+ * 
+ * Incantations are represented with `Incantation` and `ArgIncantation` objects. Individual incantations derive from one of these classes, defining their own evaluation and application logic.
+ * 
+ * Defined incantations are listed under `*_INCANTATIONS` lists.
+ */
+
 export { Incantation, ArgIncantation } from "./incantation";
 export type { GLOBAL, LOCAL, EXPR } from "./incantation";
 
