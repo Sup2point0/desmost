@@ -24,16 +24,26 @@ describe("enum literals", () =>
     `/point{ style: dotted } :: (0, 0)`,
     `/point{ style: Dotted } :: (0, 0)`,
   ])
-  ("keyed (one)", src => {
+  ("keyed", src => {
     let desmos = testing_desmos();
     compile(desmos, src);
     assert_no_errors(desmos);
   })
 
   test.each([
-    `/point{ style: DOTTED } /label{ pos: RIGHT, text: "Test" } :: (0, 0)`,
+    `/point{ style: DOTTED, style: DOTTED } :: (0, 0)`,
   ])
-  ("keyed (many)", src => {
+  ("keyed with comma", src => {
+    let desmos = testing_desmos();
+    compile(desmos, src);
+    assert_no_errors(desmos);
+  })
+
+  test.each([
+    `/point{ style: DOTTED } /point{ pos: RIGHT, text: "Test" } :: (0, 0)`,
+    `/point{ style: DOTTED } /point{ text: "Test", pos: RIGHT } :: (0, 0)`,
+  ])
+  ("many incantations (keyed with comma)", src => {
     let desmos = testing_desmos();
     compile(desmos, src);
     assert_no_errors(desmos);

@@ -1,16 +1,16 @@
 import { GenericParser } from "./generic-parser";
 import { Ast } from "./ast";
 
+import type { DesmostOptions } from "../compiler";
 import { FAIL, UnrecoverableError } from "../errors";
 import type { RecoverableFail, Unrecoverable, MaybeRecoverable } from "../errors";
+import * as utils from "../utils";
 
 import {
   Incantation, ArgIncantation,
   GLOBAL_INCANTATIONS, LOCAL_INCANTATIONS, EXPR_INCANTATIONS
 } from "../magic";
 import type { GLOBAL, LOCAL, EXPR } from "../magic";
-
-import type { DesmostOptions } from "../compiler";
 
 
 /**
@@ -410,16 +410,6 @@ export class DesmostParser extends GenericParser
 
       if (arg_type === Incantation.ArgType.OBJECT)
       {
-        switch (this.current)
-        {
-          case ":": stack.push(Ctx.VALUE, { when: [Ctx.BLOCK] }); break;
-          case ",": stack.try_pop(Ctx.VALUE); break;
-
-          case Char.QUOTE_1:  stack.pop_or_push(Ctx.STR_1, { unless: [Ctx.STR_2, Ctx.STR_F] }); break;
-          case Char.QUOTE_2:  stack.pop_or_push(Ctx.STR_2, { unless: [Ctx.STR_1, Ctx.STR_F] }); break;
-          case Char.BACKTICK: stack.pop_or_push(Ctx.STR_F, { unless: [Ctx.STR_1, Ctx.STR_2] }); break;
-        }
-
         if (top === Ctx.VALUE && this.current?.match(/[a-zA-Z]/)) {
           stack.push(Ctx.ENUM);
           indices_to_insert_quotes.push(this.i);
@@ -432,6 +422,25 @@ export class DesmostParser extends GenericParser
             console.error(`Desmost [INTERNAL]: Logic error in \`parse_incantation_arg()\`: Mismatched inserted quotes`);
           }
         }
+
+        switch (this.current)
+        {
+          case ":": stack.push(Ctx.VALUE, { when: [Ctx.BLOCK] }); break;
+          case ",": stack.try_pop(Ctx.VALUE); break;
+
+          case Char.QUOTE_1:
+            stack.pop_or_push(Ctx.STR_1, { unless: [Ctx.STR_2, Ctx.STR_F] });
+            stack.try_pop(Ctx.VALUE);
+            break;
+          case Char.QUOTE_2:
+            stack.pop_or_push(Ctx.STR_2, { unless: [Ctx.STR_1, Ctx.STR_F] });
+            stack.try_pop(Ctx.VALUE);
+            break;
+          case Char.BACKTICK:
+            stack.pop_or_push(Ctx.STR_F, { unless: [Ctx.STR_1, Ctx.STR_2] });
+            stack.try_pop(Ctx.VALUE);
+            break;
+        }
       }
 
       this.advance(
@@ -439,19 +448,23 @@ export class DesmostParser extends GenericParser
       );
     }
 
+    // TODO use Array
+
+    /* NOTE: Cut in by 1 on both sides to exclude {} braces */
     let out = this.source.slice(init + 1, this.i - 1);
-    let idx_offset = -1;
     
-    for (let idx of indices_to_insert_quotes) {
-      idx -= init;
-      idx += idx_offset;
-      out = out.slice(0, idx) + `"` + out.slice(idx);
-      idx_offset++;
+    for (let [i, j] of utils.reversing(utils.paired(indices_to_insert_quotes))) {
+      i -= init + 1;
+      j -= init + 1;
+
+      let value = out.slice(i, j);
+      if (["true", "false", "null", "undefined"].includes(value)) continue;
+      
+      out = out.slice(0, i) + `"` + value + `"` + out.slice(j);
     }
 
     console.log(`out =`, out);
 
-    /* NOTE: Cut in by 1 on both sides to unless {} braces */
     return out.trim();
   }
 }
