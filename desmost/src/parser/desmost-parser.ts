@@ -318,24 +318,31 @@ export class DesmostParser extends GenericParser
    *             ^^^^^^^
    * ```
    * 
+   * Returns the raw text without `{}`.
+   * 
+   * ```ts
+   * /incantation{ arg }
+   *               ^^^
+   * ```
+   * 
    * ## Notes
    * 
    * We don't actually care for what type the argument is since we won't be evaluating it, we just want to find the closing `}`.
    * 
-   * However, the argument itself might be *meant* to contain a `}`. So we need a way to accurately identify the actual closing brace:
+   * However, the argument itself might contain one or many `}`! So we need a way to accurately identify the actual closing brace:
    * 
    * ```ts
    * /incantation{ field: { value: 1 } }
    *                                 ^ ^
    * ```
    * 
-   * A well-formed argument always has matching pairs of `{}`, so we'll keep a stack. It starts with the opening `{`. When the stack is depleted, we must've reached the end of the argument.
+   * In our context, we have the guarantee that any well-formed argument always has matching pairs of `{}`. So we'll keep track of a context stack that starts with the opening `{`, and when the stack is depleted, we must've reached the end of the argument.
    * 
    * However, there's still more edge cases:
    * 
    * ```ts
    * /label{ text: "This }s weird" }
-   *              ^
+   *                     ^
    * ```
    * 
    * `{` and `}` can appear in strings, and they won't necessarily be matched, so we'll ignore them by also tracking string contexts.
@@ -345,9 +352,18 @@ export class DesmostParser extends GenericParser
    *          ^
    * ```
    * 
-   * `{` and `}` in LaTeX can be escaped with `\{` or `\}`, and these won't necessarily be matched, so we'll ignore them by also tracking backslash escapes.
+   * `{` and `}` in LaTeX can be escaped with `\{` or `\}`, and these won't necessarily be matched, so we'll ignore them by also tracking escapes.
    * 
    * If the user truly mismatches `{}`, then, well ...parsing will fail catastrophically!
+   * 
+   * This method also handles parsing raw enum literals by converting them to strings. So this:
+   * 
+   * ```ts
+   * /line{ style: DOTTED }
+   *               ^^^^^^
+   * ```
+   * 
+   * Produces `style: "DOTTED"` (instead of `style: DOTTED`, which would fail to later parse as JSON).
    */
   parse_incantation_arg(
     /**
@@ -367,79 +383,63 @@ export class DesmostParser extends GenericParser
       `Expected \`{\` to start incantation argument, but found: \`${this.preview()}\``
     );
 
-    enum Ctx { BLOCK, VALUE, STR_1, STR_2, STR_F, ESCAPE }
+    /** The context stack to keep track of when the closing `}` is encountered. */
+    let stack = new ContextStack();
 
-    let stack: Ctx[] = [Ctx.BLOCK];
-
-    /** Pop `ctx` from the context stack if it is the currently active context, returning `true` if so. */
-    function try_pop(ctx: Ctx): boolean
-    {
-      if (stack.at(-1) === ctx) {
-        stack.pop();
-        return true;
-      } else {
-        return false;
-      }
-    }
-
-    /** Backtrack the stack until `ctx` is popped from the context stack. */
-    function force_pop(ctx: Ctx): void
-    {
-      let idx = stack.lastIndexOf(ctx);
-      if (idx !== -1) {
-        stack.splice(idx);
-      }
-
-      /* NOTE: We could report errors for unterminated contexts, but we'll leave that for the actual evaluation - in case we get something wrong ;) */
-    }
+    /** Indices at which to later insert `"` quotes. */
+    let enum_quote_insertions: number[] = [];
 
     while (stack.length > 0) {
-      if (try_pop(Ctx.ESCAPE)) {
+      if (stack.try_pop(Ctx.ESCAPE)) {
         this.advance(
-          `Unexpected end of input while parsing incantation argument, stack: ${JSON.stringify(stack)}`
+          `Unexpected end of input while parsing incantation argument, stack: ${stack.debug()}`
         );
       }
       
-      let top = stack.at(-1)!;
+      let top = stack.top!;
 
       switch (this.current)
       {
-        case Char.BACKSLASH:
+        case "\\":
           stack.push(Ctx.ESCAPE);
           break;
 
-        case Char.L_BRACE:
+        case "{":
           if ([Ctx.STR_1, Ctx.STR_2, Ctx.STR_F].includes(top)) break;
           stack.push(Ctx.BLOCK);
           break;
 
-        case Char.R_BRACE:
+        case "}":
           if ([Ctx.STR_1, Ctx.STR_2, Ctx.STR_F].includes(top)) break;
-          force_pop(Ctx.BLOCK);
+          stack.force_pop(Ctx.BLOCK);
           break;
       }
 
       if (arg_type === Incantation.ArgType.OBJECT) {
         switch (this.current)
         {
-          case Char.COLON:
+          case ":":
             if (top !== Ctx.BLOCK) break;
             stack.push(Ctx.VALUE);
             break;
 
+          case ",":
+            stack.try_pop(Ctx.VALUE);
+            break;
+
           case Char.QUOTE_SINGLE:
             if (top === Ctx.STR_2 || top === Ctx.STR_F) break;
-            try_pop(Ctx.STR_1) || stack.push(Ctx.STR_1);
+            stack.pop_or_push(Ctx.STR_1);
             break;
             
           case Char.QUOTE_DOUBLE:
             if (top === Ctx.STR_1 || top === Ctx.STR_F) break;
-            try_pop(Ctx.STR_2) || stack.push(Ctx.STR_2);
+            stack.pop_or_push(Ctx.STR_2);
             break;
 
           case Char.BACKTICK:
             if (top === Ctx.STR_1 || top === Ctx.STR_2) break;
-            try_pop(Ctx.STR_F) || stack.push(Ctx.STR_F);
+            stack.pop_or_push(Ctx.STR_F);
             break;
         }
       }
@@ -452,17 +452,64 @@ export class DesmostParser extends GenericParser
     /* NOTE: Cut in by 1 on both sides to exclude {} braces */
     return this.source.slice(init + 1, this.i - 1).trim();
   }
-
 }
 
 
+class ContextStack
+{
+  #data: Ctx[] = [Ctx.BLOCK]
+
+  get length(): number {
+    return this.#data.length;
+  }
+
+  /** The currently active context. */
+  get top(): Ctx | undefined {
+    return this.#data.at(-1);
+  }
+
+  push(ctx: Ctx) {
+    this.#data.push(ctx);
+  }
+
+  /** Pop `ctx` if it is the currently active context, returning `true` if so. */
+  try_pop(ctx: Ctx): boolean
+  {
+    if (this.top === ctx) {
+      this.#data.pop();
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  /** Backtrack until `ctx` is popped. */
+  force_pop(ctx: Ctx): void
+  {
+    let idx = this.#data.lastIndexOf(ctx);
+    if (idx !== -1) {
+      this.#data.splice(idx);
+    }
+
+    /* NOTE: We could report errors for unterminated contexts, but we'll leave that for the actual evaluation - in case we get something wrong ;) */
+  }
+
+  /** Pop `ctx` if it is the current context, else push it onto the stack. */
+  pop_or_push(ctx: Ctx)
+  {
+    this.try_pop(ctx) || this.push(ctx);
+  }
+
+  debug(): string {
+    return JSON.stringify(this.#data);
+  }
+}
+
+enum Ctx { BLOCK, VALUE, STR_1, STR_2, STR_F, ESCAPE }
+
 enum Char
 {
-  L_BRACE      = "{",
-  R_BRACE      = "}",
-  COLON        = ":",
   QUOTE_SINGLE = `'`,
   QUOTE_DOUBLE = `"`,
   BACKTICK     = "`",
-  BACKSLASH    = "\\",
 }
