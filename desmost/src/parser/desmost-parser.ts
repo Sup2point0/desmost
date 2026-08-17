@@ -387,7 +387,7 @@ export class DesmostParser extends GenericParser
     let stack = new ContextStack();
 
     /** Indices at which to later insert `"` quotes. */
-    let enum_quote_insertions: number[] = [];
+    let indices_to_insert_quotes: number[] = [];
 
     while (stack.length > 0) {
       if (stack.try_pop(Ctx.ESCAPE)) {
@@ -400,47 +400,36 @@ export class DesmostParser extends GenericParser
 
       switch (this.current)
       {
-        case "\\":
-          stack.push(Ctx.ESCAPE);
-          break;
-
-        case "{":
-          if ([Ctx.STR_1, Ctx.STR_2, Ctx.STR_F].includes(top)) break;
-          stack.push(Ctx.BLOCK);
-          break;
-
-        case "}":
-          if ([Ctx.STR_1, Ctx.STR_2, Ctx.STR_F].includes(top)) break;
-          stack.force_pop(Ctx.BLOCK);
-          break;
+        case "\\": stack.push(Ctx.ESCAPE); break;
+        case "{":  stack.push(Ctx.BLOCK, { unless: [Ctx.STR_1, Ctx.STR_2, Ctx.STR_F] }); break;
+        case "}":  stack.force_pop(Ctx.BLOCK, { unless: [Ctx.STR_1, Ctx.STR_2, Ctx.STR_F] }); break;
       }
 
-      if (arg_type === Incantation.ArgType.OBJECT) {
+      OBJECT:
+      if (arg_type === Incantation.ArgType.OBJECT)
+      {
+        if (top === Ctx.VALUE && this.current?.match(/[a-zA-Z]/)) {
+          indices_to_insert_quotes.push(this.i);
+          break OBJECT;
+        }
+
         switch (this.current)
         {
-          case ":":
-            if (top !== Ctx.BLOCK) break;
-            stack.push(Ctx.VALUE);
-            break;
+          case ":": stack.push(Ctx.VALUE, { unless: [Ctx.BLOCK] }); break;
+          case ",": stack.try_pop(Ctx.VALUE); break;
 
-          case ",":
-            stack.try_pop(Ctx.VALUE);
-            break;
+          case Char.QUOTE_1:  stack.pop_or_push(Ctx.STR_1, { unless: [Ctx.STR_2, Ctx.STR_F] }); break;
+          case Char.QUOTE_2:  stack.pop_or_push(Ctx.STR_2, { unless: [Ctx.STR_1, Ctx.STR_F] }); break;
+          case Char.BACKTICK: stack.pop_or_push(Ctx.STR_F, { unless: [Ctx.STR_1, Ctx.STR_2] }); break;
 
-          case Char.QUOTE_SINGLE:
-            if (top === Ctx.STR_2 || top === Ctx.STR_F) break;
-            stack.pop_or_push(Ctx.STR_1);
-            break;
+          default:
+            if (top !== Ctx.VALUE) break;
             
-          case Char.QUOTE_DOUBLE:
-            if (top === Ctx.STR_1 || top === Ctx.STR_F) break;
-            stack.pop_or_push(Ctx.STR_2);
-            break;
-
-          case Char.BACKTICK:
-            if (top === Ctx.STR_1 || top === Ctx.STR_2) break;
-            stack.pop_or_push(Ctx.STR_F);
-            break;
+            /* NOTE: Hacky but easy; will break if `.preview()` shrinks peek length; acceptable because all Desmos enums are short and sweet */
+            let enum_literal = this.preview().match(/[a-zA-Z]+\b/);
+            if (enum_literal?.[0]) {
+              console.log(`enum_literal =`, enum_literal);
+            }
         }
       }
 
@@ -449,7 +438,7 @@ export class DesmostParser extends GenericParser
       );
     }
 
-    /* NOTE: Cut in by 1 on both sides to exclude {} braces */
+    /* NOTE: Cut in by 1 on both sides to unless {} braces */
     return this.source.slice(init + 1, this.i - 1).trim();
   }
 }
@@ -464,12 +453,16 @@ class ContextStack
   }
 
   /** The currently active context. */
-  get top(): Ctx | undefined {
-    return this.#data.at(-1);
+  get top(): Ctx {
+    return this.#data.at(-1)!;
   }
 
-  push(ctx: Ctx) {
+  push(ctx: Ctx, options?: { unless: Ctx[] }): boolean
+  {
+    if (options?.unless.includes(this.top)) return false;
+
     this.#data.push(ctx);
+    return true;
   }
 
   /** Pop `ctx` if it is the currently active context, returning `true` if so. */
@@ -484,20 +477,25 @@ class ContextStack
   }
 
   /** Backtrack until `ctx` is popped. */
-  force_pop(ctx: Ctx): void
+  force_pop(ctx: Ctx, options?: { unless: Ctx[] }): boolean
   {
+    if (options?.unless.includes(this.top)) return false;
+
     let idx = this.#data.lastIndexOf(ctx);
-    if (idx !== -1) {
-      this.#data.splice(idx);
-    }
+    if (idx === -1) return false;
 
     /* NOTE: We could report errors for unterminated contexts, but we'll leave that for the actual evaluation - in case we get something wrong ;) */
+    this.#data.splice(idx);
+    return true;
   }
 
   /** Pop `ctx` if it is the current context, else push it onto the stack. */
-  pop_or_push(ctx: Ctx)
+  pop_or_push(ctx: Ctx, options?: { unless: Ctx[] }): boolean
   {
+    if (options?.unless.includes(this.top)) return false;
+
     this.try_pop(ctx) || this.push(ctx);
+    return true;
   }
 
   debug(): string {
@@ -509,7 +507,7 @@ enum Ctx { BLOCK, VALUE, STR_1, STR_2, STR_F, ESCAPE }
 
 enum Char
 {
-  QUOTE_SINGLE = `'`,
-  QUOTE_DOUBLE = `"`,
-  BACKTICK     = "`",
+  QUOTE_1  = `'`,
+  QUOTE_2  = `"`,
+  BACKTICK = "`",
 }
