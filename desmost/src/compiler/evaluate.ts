@@ -139,13 +139,18 @@ function normalise_latex(latex: string): string
  */
 function prettify_latex(latex: string): string
 {
-  latex = latex.replaceAll("(", "\\left(");
-  latex = latex.replaceAll(")", "\\right)");
-  latex = latex.replaceAll("[", "\\left[");
-  latex = latex.replaceAll("]", "\\right]");
+  latex = latex.replaceAll(/(?<!\\left)\(/g, "\\left(");
+  latex = latex.replaceAll(/(?<!\\right)\)/g, "\\right)");
+  latex = latex.replaceAll(/(?<!\\left)\[/g, "\\left[");
+  latex = latex.replaceAll(/(?<!\\right)\]/g, "\\right]");
   latex = latex.replaceAll("\\{", "\\left{");
   latex = latex.replaceAll("\\}", "\\right}");
-  latex = latex.replaceAll(/(?<=[^\w]|^)(min)(?=\(|\\left\()/g, "\\1");
+
+  latex = latex.replaceAll(
+    /(?<=[^\w]|^)\\?(mean|median|count|total|repeat|join|sort|shuffle|unique|mod|ceil|floor|round|sign)(?=\(|\\left\()/g,
+    "\\operatorname{$1}"
+  );
+
   return latex;
 }
 

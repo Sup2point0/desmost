@@ -1,6 +1,15 @@
 # Changelog
 
 
+## Next (v0.3.0)
+
+### New
+- `prettify` compiler option to prettify LaTeX output for Desmos
+  - `()`, `[]`, etc. are converted to `\left(\right)`
+  - Handles Desmos-only functions like `round()`, `mod()` are converted to `\operatorname{round}()`
+  - This means your LaTeX source can be clean, but still render nicely!
+
+
 ## v0.2.0
 
 ### New
