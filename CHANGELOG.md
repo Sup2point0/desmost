@@ -1,7 +1,7 @@
 # Changelog
 
 
-## Next (v0.4.0)
+## v0.4.0
 
 ### New
 - `ignore_blank_lines` compiler option to strip all blank expressions from Desmos output
