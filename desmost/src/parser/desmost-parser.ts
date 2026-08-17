@@ -390,6 +390,8 @@ export class DesmostParser extends GenericParser
     let indices_to_insert_quotes: number[] = [];
 
     while (stack.length > 0) {
+      // If the last character was an escape, we don't care at all what the next character is!
+      // This handles \\ double escape perfectly fine, since the first negates the second
       if (stack.try_pop(Ctx.ESCAPE)) {
         this.advance(
           `Unexpected end of input while parsing incantation argument, stack: ${stack.debug()}`
@@ -400,8 +402,9 @@ export class DesmostParser extends GenericParser
 
       switch (this.current)
       {
-        case "\\": stack.push(Ctx.ESCAPE); break;
-        case "{":  stack.push(Ctx.BLOCK, { unless: [Ctx.STR_1, Ctx.STR_2, Ctx.STR_F] }); break;
+        case Char.BACKSLASH: stack.push(Ctx.ESCAPE); break;
+
+        case "{":  stack.push(     Ctx.BLOCK, { unless: [Ctx.STR_1, Ctx.STR_2, Ctx.STR_F] }); break;
         case "}":  stack.force_pop(Ctx.BLOCK, { unless: [Ctx.STR_1, Ctx.STR_2, Ctx.STR_F] }); break;
       }
 
@@ -415,7 +418,7 @@ export class DesmostParser extends GenericParser
 
         switch (this.current)
         {
-          case ":": stack.push(Ctx.VALUE, { unless: [Ctx.BLOCK] }); break;
+          case ":": stack.push(Ctx.VALUE, { when: [Ctx.BLOCK] }); break;
           case ",": stack.try_pop(Ctx.VALUE); break;
 
           case Char.QUOTE_1:  stack.pop_or_push(Ctx.STR_1, { unless: [Ctx.STR_2, Ctx.STR_F] }); break;
@@ -425,11 +428,10 @@ export class DesmostParser extends GenericParser
           default:
             if (top !== Ctx.VALUE) break;
             
-            /* NOTE: Hacky but easy; will break if `.preview()` shrinks peek length; acceptable because all Desmos enums are short and sweet */
-            let enum_literal = this.preview().match(/[a-zA-Z]+\b/);
-            if (enum_literal?.[0]) {
-              console.log(`enum_literal =`, enum_literal);
-            }
+            /* NOTE: Hacky but easy; will break if `.preview()` shrinks peek length; acceptable cuz all Desmos enums are short and sweet */
+            let enum_literal = this.preview().match(/^[a-zA-Z]+\b/);
+            console.debug(`\nthis.preview() =`, this.preview());
+            console.log(`enum_literal =`, enum_literal);
         }
       }
 
@@ -457,9 +459,9 @@ class ContextStack
     return this.#data.at(-1)!;
   }
 
-  push(ctx: Ctx, options?: { unless: Ctx[] }): boolean
+  push(ctx: Ctx, options?: StackOperationOptions): boolean
   {
-    if (options?.unless.includes(this.top)) return false;
+    if (this.#should_skip(options)) return false;
 
     this.#data.push(ctx);
     return true;
@@ -477,9 +479,9 @@ class ContextStack
   }
 
   /** Backtrack until `ctx` is popped. */
-  force_pop(ctx: Ctx, options?: { unless: Ctx[] }): boolean
+  force_pop(ctx: Ctx, options?: StackOperationOptions): boolean
   {
-    if (options?.unless.includes(this.top)) return false;
+    if (this.#should_skip(options)) return false;
 
     let idx = this.#data.lastIndexOf(ctx);
     if (idx === -1) return false;
@@ -490,9 +492,9 @@ class ContextStack
   }
 
   /** Pop `ctx` if it is the current context, else push it onto the stack. */
-  pop_or_push(ctx: Ctx, options?: { unless: Ctx[] }): boolean
+  pop_or_push(ctx: Ctx, options?: StackOperationOptions): boolean
   {
-    if (options?.unless.includes(this.top)) return false;
+    if (this.#should_skip(options)) return false;
 
     this.try_pop(ctx) || this.push(ctx);
     return true;
@@ -501,13 +503,38 @@ class ContextStack
   debug(): string {
     return JSON.stringify(this.#data);
   }
+
+  #should_skip(options: StackOperationOptions | undefined): boolean
+  {
+    return Boolean(
+        options?.when != undefined && !options?.when?.includes(this.top)
+      || options?.unless?.includes(this.top)
+    );
+  }
 }
 
-enum Ctx { BLOCK, VALUE, STR_1, STR_2, STR_F, ESCAPE }
+interface StackOperationOptions
+{
+  /** Only perform this operation if the current context is any of these. */
+  when?: Ctx[];
+
+  /** Don't perform this operation if the current context is any of these. */
+  unless?: Ctx[];
+}
 
 enum Char
 {
-  QUOTE_1  = `'`,
-  QUOTE_2  = `"`,
-  BACKTICK = "`",
+  BACKSLASH = "\\",
+  QUOTE_1   = `'`,
+  QUOTE_2   = `"`,
+  BACKTICK  = "`",
+}
+
+enum Ctx {
+  BLOCK  = "{",
+  VALUE  = ":",
+  STR_1  = Char.QUOTE_1,
+  STR_2  = Char.QUOTE_2,
+  STR_F  = Char.BACKTICK,
+  ESCAPE = Char.BACKSLASH,
 }
