@@ -143,8 +143,8 @@ function prettify_latex(latex: string): string
   latex = latex.replaceAll(/(?<!\\right)\)/g, "\\right)");
   latex = latex.replaceAll(/(?<!\\left)\[/g, "\\left[");
   latex = latex.replaceAll(/(?<!\\right)\]/g, "\\right]");
-  latex = latex.replaceAll("\\{", "\\left{");
-  latex = latex.replaceAll("\\}", "\\right}");
+  latex = latex.replaceAll("\\{", "\\left\\{");
+  latex = latex.replaceAll("\\}", "\\right\\}");
 
   latex = latex.replaceAll(
     /(?<=[^\w]|^)\\?(mean|median|count|total|repeat|join|sort|shuffle|unique|mod|ceil|floor|round|sign)(?=\(|\\left\()/g,
