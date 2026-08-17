@@ -10,7 +10,7 @@ import { MEDIUM } from "../cases/medium";
 
 import { compile } from "../../src";
 
-import { desmos } from "../shared";
+import { testing_desmos } from "../shared";
 
 
 const TRIALS = 10;
@@ -21,7 +21,7 @@ test("medium", () =>
   let t_init = performance.now();
 
   for (let i = 0; i < TRIALS; i++) {
-    compile(desmos, MEDIUM);
+    compile(testing_desmos(), MEDIUM);
   }
 
   let total_duration = performance.now() - t_init;

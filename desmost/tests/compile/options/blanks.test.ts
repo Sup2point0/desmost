@@ -26,7 +26,7 @@ y = x^2
     assert.equal(exprs[1].latex, "y = x^2");
   })
   
-  test.each([2, 3, 20, 100])("many blanks", n => {
+  test.each([2, 5, 20, 100])("many blanks", n => {
     const src = `
 y = x
 ${"\n".repeat(n)}

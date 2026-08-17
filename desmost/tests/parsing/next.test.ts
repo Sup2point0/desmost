@@ -1,6 +1,6 @@
 import { DesmostParser } from "../../src/parser";
 
-import { assert_is_expression } from "./shared";
+import { assert_is_expression, assert_is_invalid } from "./shared";
 
 
 describe("parse-next", () =>
@@ -49,5 +49,23 @@ describe("parse-next", () =>
     assert_is_expression(r);
     // @ts-expect-error: outdated types
     assert.equal(r.data.latex, `y = x^2`);
+  })
+
+  test.each([
+    `/viewport`,
+  ])
+  ("global (invalid)", src => {
+    let parser = new DesmostParser(src);
+    let r = parser.parse_next();
+    assert_is_invalid(r);
+  })
+
+  test.each([
+    `/desmos{`,
+    `/desmos}`,
+  ])
+  ("global (crash)", src => {
+    let parser = new DesmostParser(src);
+    assert.throws(() => parser.parse_next());
   })
 })
