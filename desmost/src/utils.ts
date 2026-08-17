@@ -29,3 +29,26 @@ export function* pairing<T>(items: Iterable<T>): Generator<[left: T, right: T]>
     return previous;
   }
 }
+
+
+export function chars(s: string, start?: number, stop?: number): string[]
+{
+  return new Range(start ?? 0, stop ?? s.length).map(i => s[i]).toArray();
+}
+
+
+export class Range
+{
+  constructor(
+    protected start: number, 
+    protected stop: number,
+  )
+  {}
+
+  *map<T>(callback: (n: number) => T): Generator<T>
+  {
+    for (let n = this.start; n < this.stop; n++) {
+      yield callback(n);
+    }
+  }
+}
