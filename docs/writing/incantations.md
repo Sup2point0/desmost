@@ -115,7 +115,7 @@ This page documents all the incantations available in Desmost.
     </td>
     <td>—</td>
     <td>—</td>
-    <td>Animates the slider of a block.</td>
+    <td>Animate the slider of a block.</td>
   </tr>
   <tr></tr>
 <tr>
@@ -172,7 +172,7 @@ This page documents all the incantations available in Desmost.
 <br>  size?: number \| keyof typeof Desmos.LabelSizes;
 <br>  pos?: keyof typeof Desmos.LabelOrientations;
 <br>}</code></pre></td>
-    <td></td>
+    <td>Label a block that evaluates to a point(s).</td>
   </tr>
   <tr></tr>
 <tr>
