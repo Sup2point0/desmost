@@ -163,6 +163,21 @@ This page documents all the incantations available in Desmost.
 <tr>
     <td>
 
+[`/label`](#label)
+    </td>
+    <td>required</td>
+    <td><pre lang="ts"><code>{
+<br>  text: string;
+<br>  show?: boolean;
+<br>  size?: number \| keyof typeof Desmos.LabelSizes;
+<br>  pos?: keyof typeof Desmos.LabelOrientations;
+<br>}</code></pre></td>
+    <td></td>
+  </tr>
+  <tr></tr>
+<tr>
+    <td>
+
 [`/line`](#line)
     </td>
     <td>required</td>
