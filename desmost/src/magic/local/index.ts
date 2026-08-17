@@ -3,11 +3,12 @@ import { AnimIncantation } from "./anim";
 
 import { ColourIncantation } from "./colour";
 import { DashedIncantation } from "./dashed";
-import { FillIncantation } from "./fill";
-import { HideIncantation } from "./hide";
-import { LineIncantation } from "./line";
+import { FillIncantation   } from "./fill";
+import { HideIncantation   } from "./hide";
+import { LabelIncantation  } from "./label";
+import { LineIncantation   } from "./line";
 import { NoLineIncantation } from "./no-line";
-import { PointIncantation } from "./point";
+import { PointIncantation  } from "./point";
 import { SecretIncantation } from "./secret";
 import { SliderIncantation } from "./slider";
 
@@ -19,6 +20,7 @@ export const LOCAL_INCANTATIONS: Incantation<LOCAL>[] =
   new DashedIncantation(),
   new FillIncantation(),
   new HideIncantation(),
+  new LabelIncantation(),
   new LineIncantation(),
   new NoLineIncantation(),
   new PointIncantation(),

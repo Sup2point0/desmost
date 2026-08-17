@@ -1,0 +1,58 @@
+import { UnrecoverableError } from "../../errors";
+import { Incantation, ArgIncantation, type LOCAL } from "../incantation";
+
+
+interface LabelOptions
+{
+  text: string;
+  show?: boolean;
+  size?: number | keyof typeof Desmos.LabelSizes;
+  pos?: keyof typeof Desmos.LabelOrientations;
+}
+
+
+export class LabelIncantation extends ArgIncantation<LOCAL>
+{
+  override readonly description
+    = ""
+
+  override readonly identifier   = "label"
+  override readonly requires_arg = true
+  override readonly arg_type     = Incantation.ArgType.OBJECT
+
+  override apply(target: Desmos.ExpressionState, data: LabelOptions)
+  {
+    super.require_expr_type(target.type, "expression");
+    target.label = data.text;
+    if (data.show != undefined) target.showLabel = data.show;
+    // @ts-expect-error: outdated types TODO check
+    if (data.size != undefined) target.labelSize = data.size;
+    if (data.pos  != undefined) target.labelOrientation = data.pos;
+  }
+
+  override evaluate_arg(raw: string): LabelOptions
+  {
+    let out = super.evaluate_arg(raw) as LabelOptions;
+
+    if (!("text" in out)) {
+      throw new UnrecoverableError.InvalidArgument(
+        `/label requires a \`text\` argument, such as: \`/label{ text: "sup world!" }\``
+      );
+    }
+
+    if (typeof out.pos != "undefined") {
+      switch (out.pos.trim().toUpperCase()) {
+        case "ABOVE": out.pos = Desmos.LabelOrientations.ABOVE; break;
+        case "BELOW": out.pos = Desmos.LabelOrientations.BELOW; break;
+        case "LEFT":  out.pos = Desmos.LabelOrientations.LEFT; break;
+        case "RIGHT": out.pos = Desmos.LabelOrientations.RIGHT; break;
+        default:
+          throw new UnrecoverableError.InvalidArgument(
+            `/label: Invalid label position: ${out.pos}`
+          );
+      }
+    }
+
+    return out;
+  }
+}

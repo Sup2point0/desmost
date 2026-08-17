@@ -8,6 +8,7 @@
   - `()`, `[]`, etc. are converted to `\left(\right)`
   - Handles Desmos-only functions like `round()`, `mod()` are converted to `\operatorname{round}()`
   - This means your LaTeX source can be clean, but still render nicely!
+- `/label` incantation for adding labels to points
 
 
 ## v0.2.0
