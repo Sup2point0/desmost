@@ -65,7 +65,7 @@ export function compile(
         ast.push(r);
       }
 
-      let defer: string | void;
+      let defer: string | void = undefined;
       
       switch (r.kind) {
         case Ast.Kind.INCANTATION_INVOCATION:
@@ -73,6 +73,8 @@ export function compile(
           break;
 
         case Ast.Kind.EXPRESSION:
+          // @ts-expect-error: outdated types
+          if (opts.ignore_blank_lines && r.data.latex === " ") break;
           defer = evaluate_expr(r, desmos, opts);
           break;
 
