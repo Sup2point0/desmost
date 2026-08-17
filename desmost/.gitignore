@@ -2,3 +2,6 @@ LICENCE
 
 dist/
 node_modules/
+
+stryker*
+reports/
