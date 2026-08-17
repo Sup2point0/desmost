@@ -44,7 +44,9 @@
     "test":     "vitest run",
       "testw":  "vitest",
 
-    "check":    "npx oxlint src"
+    "check":    "npx oxlint src",
+
+    "prepublishOnly": "npm run buildx"
   },
 
   "dependencies":
