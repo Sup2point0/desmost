@@ -1,6 +1,4 @@
-<!-- @component `<DesmostAst>`
-
--->
+<!-- @component `<DesmostAst>` -->
 
 <script lang="ts">
 
@@ -17,7 +15,6 @@ let { ast }: Props = $props();
 
 
 let json = $derived(JSON.stringify(ast, undefined, "  "));
-// let cleaned = $derived(json.replaceAll("\n", "<br>"));
 let highlighted = $derived(Prism.highlight(json, Prism.languages.javascript, "javascript"));
 
 </script>
