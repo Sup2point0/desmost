@@ -74,6 +74,7 @@ export default defineConfig({
     "typescript/no-unsafe-return": true,
     "typescript/no-unsafe-type-assertion": false,
     "typescript/prefer-nullish-coalescing": true,
+    "typescript/restrict-template-expressions": false,
     "typescript/strict-boolean-expressions": true,
     "typescript/switch-exhaustiveness-check": false,  // TEMP
   }),
