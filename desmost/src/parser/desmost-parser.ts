@@ -408,15 +408,8 @@ export class DesmostParser extends GenericParser
         case "}":  stack.force_pop(Ctx.BLOCK, { unless: [Ctx.STR_1, Ctx.STR_2, Ctx.STR_F] }); break;
       }
 
-      OBJECT:
       if (arg_type === Incantation.ArgType.OBJECT)
       {
-        if (top === Ctx.VALUE && this.current?.match(/[a-zA-Z]/)) {
-          stack.push(Ctx.ENUM);
-          indices_to_insert_quotes.push(this.i);
-          break OBJECT;
-        }
-
         switch (this.current)
         {
           case ":": stack.push(Ctx.VALUE, { when: [Ctx.BLOCK] }); break;
@@ -427,7 +420,11 @@ export class DesmostParser extends GenericParser
           case Char.BACKTICK: stack.pop_or_push(Ctx.STR_F, { unless: [Ctx.STR_1, Ctx.STR_2] }); break;
         }
 
-        if (top === Ctx.ENUM && this.current?.match(/[^a-zA-Z]/)) {
+        if (top === Ctx.VALUE && this.current?.match(/[a-zA-Z]/)) {
+          stack.push(Ctx.ENUM);
+          indices_to_insert_quotes.push(this.i);
+        }
+        else if (top === Ctx.ENUM && this.current?.match(/[^a-zA-Z]/)) {
           stack.pop();
           indices_to_insert_quotes.push(this.i);
 
@@ -448,9 +445,11 @@ export class DesmostParser extends GenericParser
     for (let idx of indices_to_insert_quotes) {
       idx -= init;
       idx += idx_offset;
-      out = out.slice(0, idx) + `"` + out.slice(idx, -1);
+      out = out.slice(0, idx) + `"` + out.slice(idx);
       idx_offset++;
     }
+
+    console.log(`out =`, out);
 
     /* NOTE: Cut in by 1 on both sides to unless {} braces */
     return out.trim();
