@@ -367,27 +367,30 @@ export class DesmostParser extends GenericParser
       `Expected \`{\` to start incantation argument, but found: \`${this.preview()}\``
     );
 
-    enum Ctx {
-      BLOCK  = Char.L_BRACE,
-      STR_1  = Char.QUOTE_SINGLE,
-      STR_2  = Char.QUOTE_DOUBLE,
-      STR_F  = Char.BACKTICK,
-      ESCAPE = Char.BACKSLASH,
-    }
+    enum Ctx { BLOCK, VALUE, STR_1, STR_2, STR_F, ESCAPE }
 
     let stack: Ctx[] = [Ctx.BLOCK];
 
-    /**
-     * Pop `ctx` if it is the currently active context, returning `true` if successful.
-    */
+    /** Pop `ctx` from the context stack if it is the currently active context, returning `true` if so. */
     function try_pop(ctx: Ctx): boolean
     {
       if (stack.at(-1) === ctx) {
         stack.pop();
         return true;
+      } else {
+        return false;
+      }
+    }
+
+    /** Backtrack the stack until `ctx` is popped from the context stack. */
+    function force_pop(ctx: Ctx): void
+    {
+      let idx = stack.lastIndexOf(ctx);
+      if (idx !== -1) {
+        stack.splice(idx);
       }
 
-      return false;
+      /* NOTE: We could report errors for unterminated contexts, but we'll leave that for the actual evaluation - in case we get something wrong ;) */
     }
 
     while (stack.length > 0) {
@@ -399,35 +402,43 @@ export class DesmostParser extends GenericParser
       
       let top = stack.at(-1)!;
 
-      switch (this.current) {
-        case Ctx.ESCAPE: stack.push(Ctx.ESCAPE); break;
+      switch (this.current)
+      {
+        case Char.BACKSLASH:
+          stack.push(Ctx.ESCAPE);
+          break;
 
         case Char.L_BRACE:
-          /* NOTE: *Currently* `{}` should be ignored in all contexts except `Ctx.BLOCK`. This might change if more contexts are added in future! */
-          if (top !== Ctx.BLOCK) break;
-          stack.push(Ctx.BLOCK); break;
+          if ([Ctx.STR_1, Ctx.STR_2, Ctx.STR_F].includes(top)) break;
+          stack.push(Ctx.BLOCK);
+          break;
 
         case Char.R_BRACE:
-          try_pop(Ctx.BLOCK); break;
+          if ([Ctx.STR_1, Ctx.STR_2, Ctx.STR_F].includes(top)) break;
+          force_pop(Ctx.BLOCK);
+          break;
       }
 
       if (arg_type === Incantation.ArgType.OBJECT) {
-        switch (this.current) {
-          case Ctx.STR_1:
-            if (top === Ctx.STR_2) break;
-            if (top === Ctx.STR_F) break;
+        switch (this.current)
+        {
+          case Char.COLON:
+            if (top !== Ctx.BLOCK) break;
+            stack.push(Ctx.VALUE);
+            break;
+
+          case Char.QUOTE_SINGLE:
+            if (top === Ctx.STR_2 || top === Ctx.STR_F) break;
             try_pop(Ctx.STR_1) || stack.push(Ctx.STR_1);
             break;
             
-          case Ctx.STR_2:
-            if (top === Ctx.STR_1) break;
-            if (top === Ctx.STR_F) break;
+          case Char.QUOTE_DOUBLE:
+            if (top === Ctx.STR_1 || top === Ctx.STR_F) break;
             try_pop(Ctx.STR_2) || stack.push(Ctx.STR_2);
             break;
 
-          case Ctx.STR_F:
-            if (top === Ctx.STR_1) break;
-            if (top === Ctx.STR_2) break;
+          case Char.BACKTICK:
+            if (top === Ctx.STR_1 || top === Ctx.STR_2) break;
             try_pop(Ctx.STR_F) || stack.push(Ctx.STR_F);
             break;
         }
@@ -449,6 +460,7 @@ enum Char
 {
   L_BRACE      = "{",
   R_BRACE      = "}",
+  COLON        = ":",
   QUOTE_SINGLE = `'`,
   QUOTE_DOUBLE = `"`,
   BACKTICK     = "`",
