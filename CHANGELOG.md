@@ -4,7 +4,7 @@
 ## v0.3.1
 
 ### Fixes
-- Fix `\{\}` prettification
+- Fix `\{\}` prettification (thanks [@iTechnical](https://github.com/itechnicals)!)
 
 
 ## v0.3.0
