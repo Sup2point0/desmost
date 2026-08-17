@@ -23,7 +23,8 @@
     "./src/",
     "./dist/",
     "package.json",
-    "LICENCE"
+    "LICENCE",
+    "README.md"
   ],
   "exports": {
     ".": {
