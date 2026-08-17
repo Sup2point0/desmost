@@ -4,7 +4,7 @@ import { Incantation, type LOCAL } from "../incantation";
 export class AnimIncantation extends Incantation<LOCAL>
 {
   override readonly description
-    = "Animates the slider of a block."
+    = "Animate the slider of a block."
   
   override readonly identifier = "anim"
 

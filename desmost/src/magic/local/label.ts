@@ -14,7 +14,7 @@ interface LabelOptions
 export class LabelIncantation extends ArgIncantation<LOCAL>
 {
   override readonly description
-    = ""
+    = "Label a block that evaluates to a point(s)."
 
   override readonly identifier   = "label"
   override readonly requires_arg = true
@@ -41,14 +41,19 @@ export class LabelIncantation extends ArgIncantation<LOCAL>
     }
 
     if (typeof out.pos != "undefined") {
-      switch (out.pos.trim().toUpperCase()) {
-        case "ABOVE": out.pos = Desmos.LabelOrientations.ABOVE; break;
-        case "BELOW": out.pos = Desmos.LabelOrientations.BELOW; break;
-        case "LEFT":  out.pos = Desmos.LabelOrientations.LEFT; break;
-        case "RIGHT": out.pos = Desmos.LabelOrientations.RIGHT; break;
+      let pos = out.pos.trim().toUpperCase();
+
+      switch (pos) {
+        case "ABOVE":
+        case "BELOW":
+        case "LEFT":
+        case "RIGHT":
+          out.pos = pos;
+          break;
+        
         default:
           throw new UnrecoverableError.InvalidArgument(
-            `/label: Invalid label position: ${out.pos}`
+            `/label: Invalid label position: ${pos}`
           );
       }
     }

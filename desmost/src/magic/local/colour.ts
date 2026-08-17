@@ -22,7 +22,7 @@ export class ColourIncantation extends ArgIncantation<LOCAL>
 
   override evaluate_arg(data: string): DesmosColour
   {
-    switch (data.trim()) {
+    switch (data.trim().toUpperCase()) {
       case "RED":    return DesmosColour.RED;
       case "BLUE":   return DesmosColour.BLUE;
       case "GREEN":  return DesmosColour.GREEN;
