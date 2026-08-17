@@ -1,7 +1,7 @@
 # Changelog
 
 
-## Next (v0.3.0)
+## v0.3.0
 
 ### New
 - `prettify` compiler option to prettify LaTeX output for Desmos
