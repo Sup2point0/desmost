@@ -1,7 +1,7 @@
 # Changelog
 
 
-## v0.4.0
+## v0.4
 
 ### New
 - `ignore_blank_lines` compiler option to strip all blank expressions from Desmos output
@@ -14,7 +14,7 @@
 ## v0.3.2
 
 ### Fixes
-- Improve publish pipeline to avoid stale builds
+- Tighten publish pipeline to avoid stale builds being published
 
 
 ## v0.3.1
@@ -23,17 +23,17 @@
 - Fix `\{\}` prettification (thanks [@iTechnical](https://github.com/itechnicals)!)
 
 
-## v0.3.0
+## v0.3
 
 ### New
 - `prettify` compiler option to prettify LaTeX output for Desmos
   - `()`, `[]`, etc. are converted to `\left(\right)`
-  - Handles Desmos-only functions like `round()`, `mod()` are converted to `\operatorname{round}()`
+  - Desmos-only functions like `round()`, `mod()` are converted to `\operatorname{round}()`
   - This means your LaTeX source can be clean, but still render nicely!
 - `/label` incantation for adding labels to points
 
 
-## v0.2.0
+## v0.2
 
 ### New
 - `::` now no longer requires the LaTeX to be on the same line, so these are allowed:
@@ -68,7 +68,7 @@
 - Add explicit file extensions to compiled files for end users without bundlers
 
 
-## v0.1.0
+## v0.1
 
 Initial release on npm!
 
