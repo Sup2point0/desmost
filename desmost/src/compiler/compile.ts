@@ -1,5 +1,6 @@
 import { type DesmostOptions, set_default_options } from "./options";
 import { evaluate_global_incantation, evaluate_expr, evaluate_error } from "./evaluate";
+import { format_error } from "./format";
 
 import { DesmostParser, Ast } from "../parser";
 import { UnrecoverableError } from "../errors";
@@ -90,7 +91,7 @@ export function compile(
   }
   catch (e) {
     if (e instanceof UnrecoverableError) {
-      errors = [e.message];
+      errors = [format_error(e, opts)];
     } else {
       throw e;
     }

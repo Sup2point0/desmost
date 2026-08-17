@@ -1,6 +1,18 @@
 # Changelog
 
 
+## Next (v0.4.0)
+
+### Fixes
+- Format parser crash error messages properly
+
+
+## v0.3.2
+
+### Fixes
+- Improve publish pipeline to avoid stale builds
+
+
 ## v0.3.1
 
 ### Fixes
