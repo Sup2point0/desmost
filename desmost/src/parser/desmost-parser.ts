@@ -412,6 +412,7 @@ export class DesmostParser extends GenericParser
       if (arg_type === Incantation.ArgType.OBJECT)
       {
         if (top === Ctx.VALUE && this.current?.match(/[a-zA-Z]/)) {
+          stack.push(Ctx.ENUM);
           indices_to_insert_quotes.push(this.i);
           break OBJECT;
         }
@@ -424,14 +425,15 @@ export class DesmostParser extends GenericParser
           case Char.QUOTE_1:  stack.pop_or_push(Ctx.STR_1, { unless: [Ctx.STR_2, Ctx.STR_F] }); break;
           case Char.QUOTE_2:  stack.pop_or_push(Ctx.STR_2, { unless: [Ctx.STR_1, Ctx.STR_F] }); break;
           case Char.BACKTICK: stack.pop_or_push(Ctx.STR_F, { unless: [Ctx.STR_1, Ctx.STR_2] }); break;
+        }
 
-          default:
-            if (top !== Ctx.VALUE) break;
-            
-            /* NOTE: Hacky but easy; will break if `.preview()` shrinks peek length; acceptable cuz all Desmos enums are short and sweet */
-            let enum_literal = this.preview().match(/^[a-zA-Z]+\b/);
-            console.debug(`\nthis.preview() =`, this.preview());
-            console.log(`enum_literal =`, enum_literal);
+        if (top === Ctx.ENUM && this.current?.match(/[^a-zA-Z]/)) {
+          stack.pop();
+          indices_to_insert_quotes.push(this.i);
+
+          if (indices_to_insert_quotes.length % 2 != 0) {
+            console.error(`Desmost [INTERNAL]: Logic error in \`parse_incantation_arg()\`: Mismatched inserted quotes`);
+          }
         }
       }
 
@@ -440,8 +442,18 @@ export class DesmostParser extends GenericParser
       );
     }
 
+    let out = this.source.slice(init + 1, this.i - 1);
+    let idx_offset = -1;
+    
+    for (let idx of indices_to_insert_quotes) {
+      idx -= init;
+      idx += idx_offset;
+      out = out.slice(0, idx) + `"` + out.slice(idx, -1);
+      idx_offset++;
+    }
+
     /* NOTE: Cut in by 1 on both sides to unless {} braces */
-    return this.source.slice(init + 1, this.i - 1).trim();
+    return out.trim();
   }
 }
 
@@ -465,6 +477,11 @@ class ContextStack
 
     this.#data.push(ctx);
     return true;
+  }
+
+  pop(): void
+  {
+    this.#data.pop();
   }
 
   /** Pop `ctx` if it is the currently active context, returning `true` if so. */
@@ -533,6 +550,7 @@ enum Char
 enum Ctx {
   BLOCK  = "{",
   VALUE  = ":",
+  ENUM   = "<enum literal>",
   STR_1  = Char.QUOTE_1,
   STR_2  = Char.QUOTE_2,
   STR_F  = Char.BACKTICK,

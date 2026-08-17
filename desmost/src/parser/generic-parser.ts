@@ -57,7 +57,7 @@ export class GenericParser
   }
 
   /**
-   * Peek a snippet of the upcoming source text (for error messages).
+   * Peek a snippet of the upcoming source text.
    * 
    * Optionally start from the given `idx`.
    */

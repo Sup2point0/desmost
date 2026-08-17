@@ -84,11 +84,8 @@ export abstract class ArgIncantation<
       case Incantation.ArgType.ENUM:   return raw;
       
       case Incantation.ArgType.OBJECT: {
-        // convert raw enums like `colour: BLUE` into `colour: "BLUE"`
-        let data = raw.replaceAll(/(\w:\s*)([A-Z]+\b)$/mg, `$1"$2"`);
-
         try {
-          return Json5.parse(`{${data}}`);
+          return Json5.parse(`{${raw}}`);
         }
         catch (e) {
           // @ts-expect-error: fine

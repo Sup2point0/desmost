@@ -6,7 +6,7 @@ export function assert_no_errors(desmos: Desmos.Calculator)
     assert.notInclude(
       expr.text,
       "[DESMOST ERROR]",
-      `Compile Error: ${JSON.stringify(expr.text)}`
+      `\n\n${expr.text}\n\n`
     );
   }
 }
