@@ -1,3 +1,4 @@
+import { format_error } from "./format";
 import type { DesmostOptions } from "./options";
 
 import { Ast } from "../parser";
@@ -152,17 +153,4 @@ function prettify_latex(latex: string): string
   );
 
   return latex;
-}
-
-
-function format_error(
-  e: UnrecoverableError,
-  options: Required<DesmostOptions>,
-): string
-{
-  let prefix = options.error_prefix;
-  let sep = (prefix === "" || prefix.endsWith("\n")) ? "" : " ";
-
-  return `${prefix}${sep}${e.name}: ${e.message}`;
-  // TODO maybe include stack? (configurable?)
 }
