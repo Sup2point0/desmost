@@ -46,7 +46,7 @@
 
     "check":    "npx oxlint src",
 
-    "prepublishOnly": "npm run buildx"
+    "prepublishOnly": "npm run test && npm run buildx"
   },
 
   "dependencies":
