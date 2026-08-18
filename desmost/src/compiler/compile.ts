@@ -56,6 +56,7 @@ export function compile(
 
   let errors = [];
 
+  /* NOTE: The compiler is lazy, parsing and evaluating one block at a time (as opposed to first parsing the entire AST). We don't need the whole AST, so this saves memory. It also doesn't sacrifice performance, since `.setExpressions()` internally just calls `.setExpression()` in a loop anyway. Benchmarks in the frontend produce similar times for both, so there's no performance improvement. */
   try {
     while (true) {
       let r = parser.parse_next();
