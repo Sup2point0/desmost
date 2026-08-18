@@ -77,7 +77,7 @@ onMount(() =>
     );
     
     if (width != undefined)  el_desmos.width = width;
-    if (height != undefined) el_desmos.width = height;
+    if (height != undefined) el_desmos.height = height;
     if (style != undefined)  el_desmos.cssText = style;
 
     let desmos = Desmos.GraphingCalculator(el_desmos);
