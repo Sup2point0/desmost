@@ -4,6 +4,15 @@
 <br>
 
 
+## v0.5.5
+
+### Fixes
+- `<Desmost>` styles apply properly without `style` overriding `width` and `height`
+
+
+<br>
+
+
 ## v0.5.4
 
 ### Fixes
