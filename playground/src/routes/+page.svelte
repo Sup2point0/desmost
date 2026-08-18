@@ -53,7 +53,7 @@ let exprs: Desmos.ExpressionState[] = $state([]);
 
 $effect(() => {
   let _ = source;
-  recompile();
+  return recompile();
 });
 
 function recompile()
