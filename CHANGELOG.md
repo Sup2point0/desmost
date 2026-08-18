@@ -4,6 +4,15 @@
 <br>
 
 
+## v0.5.2
+
+### Fixes
+- The `desmost/svelte` subpackage files weren’t being published!
+
+
+<br>
+
+
 ## v0.5.1
 
 ### Fixes
