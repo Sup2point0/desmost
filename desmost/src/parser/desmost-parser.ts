@@ -37,6 +37,18 @@ export class DesmostParser extends GenericParser
       return null;
     }
 
+    if (this.current === "%") {
+      if (this.options?.ignore_comments) {
+        // ignore comment
+        this.parse_line();
+        this.consume_end_of_block();
+        return this.parse_next();
+      }
+      else {
+        // comment
+        var expr = this.parse_comment();
+      }
+    }
     else if (this.current === "/") {
       let r = this.parse_pre_sep();
 
@@ -137,17 +149,6 @@ export class DesmostParser extends GenericParser
           incantations: [],
         };
 
-      // note
-      case "%":
-        this.advance();
-        let text = this.parse_line();
-
-        return {
-          kind: Ast.Kind.EXPRESSION,
-          data: { type: "text", text },
-          incantations: [],
-        };
-
       // expr incantation
       case "/":
         let incantation = this.try_parse_expr_incantation();
@@ -162,6 +163,18 @@ export class DesmostParser extends GenericParser
           incantations: [],
         };
     }
+  }
+
+  parse_comment(): Unrecoverable<Ast.Expression>
+  {
+    this.advance();
+    let text = this.parse_line();
+
+    return {
+      kind: Ast.Kind.EXPRESSION,
+      data: { type: "text", text },
+      incantations: [],
+    };
   }
 
 

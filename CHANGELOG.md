@@ -1,6 +1,12 @@
 # Changelog
 
 
+## Next (v0.5.1)
+
+### Fixes
+- Disallow `%` LaTeX comments after local incantations
+
+
 ## v0.5
 
 ### New
