@@ -44,6 +44,7 @@ export function compile(
   }
 
   let t_init = performance.now();
+  let num_blocks = 0;
   let ast = [];
 
   let opts = fill_defaults(options);
@@ -63,6 +64,7 @@ export function compile(
       if (r === null) break;
 
       if (opts.debug) {
+        num_blocks++;
         ast.push(r);
       }
 
@@ -117,14 +119,16 @@ export function compile(
   if (opts.debug) {
     return {
       duration: performance.now() - t_init,
+      num_blocks,
       ast,
     };
   }
 }
 
 
-interface DesmostDebug
+export interface DesmostDebug
 {
   duration: number;
+  num_blocks: number;
   ast: Ast[];
 }
