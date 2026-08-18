@@ -4,6 +4,15 @@
 <br>
 
 
+## v0.5.3
+
+### Fixes
+- Fix compilation issues in `<Desmost>`
+
+
+<br>
+
+
 ## v0.5.2
 
 ### Fixes
