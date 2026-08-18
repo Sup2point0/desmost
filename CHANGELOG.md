@@ -4,6 +4,15 @@
 <br>
 
 
+## v0.5.4
+
+### Fixes
+- Apply `<Desmost>` styles to correct element
+
+
+<br>
+
+
 ## v0.5.3
 
 ### Fixes
