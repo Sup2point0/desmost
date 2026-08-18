@@ -6,6 +6,7 @@
 ### Fixes
 - Implement `ignore_comments` compile option
 - Disallow `%` LaTeX comments after local incantations
+- `prettify` replaces all sequences of >1 whitespace characters with a singular ` ` space
 
 
 ## v0.5

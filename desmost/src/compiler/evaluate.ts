@@ -126,7 +126,8 @@ export function evaluate_error(
  */
 function normalise_latex(latex: string): string
 {
-  return latex.replaceAll("\n", " ");
+  latex = latex.replaceAll(/\s+/g, " ");
+  return latex;
 }
 
 

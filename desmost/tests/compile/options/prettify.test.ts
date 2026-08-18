@@ -24,7 +24,7 @@ describe("parentheses", () =>
     
     test.each([
       [`/latex{ f(\nx\n) = x^2 }`,  ltx `f\left( x \right) = x^2`],
-      [`/latex{ f(\n x\n) = x^2 }`, ltx `f\left(  x \right) = x^2`],
+      [`/latex{ f(\n x\n) = x^2 }`, ltx `f\left( x \right) = x^2`],
     ])
     ("multi line", (src, expected) => {
       let desmos = testing_desmos();
