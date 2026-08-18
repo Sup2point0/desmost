@@ -11,9 +11,6 @@
 
 </div>
 
-> [!Warning]
-> This is still a freshly created project, so expect incomplete or broken features!
-
 ***Desmost*** compiles LaTeX into Desmos.
 
 <table>
@@ -29,18 +26,19 @@
 <br>
 % Drag the slider!
 A = 1
-y = A \sin(x - t)
+f(x) = A \sin(x - t)
 <br>
-/label{ text: "we love Desmos(t)!" } :: (0, 2)
+/label{ text: "we love Desmos(t)!" } :: (0, f(0))
 <br>
-/anim /slider{ min: -1, max: 1 }
+/anim /slider{ min: -10, max: 10 }
   :: t = 0
 </code></pre>
     </td>
     <td>
       <a href="https://sup2point0.github.io/desmost">
         <img
-          src=".assets/"
+          width="500"
+          src=".assets/demo.png"
           alt="“Desmos(t) is awesome!”, but in a fully-fledged Desmos graphing calculator embed"
         />
       </a>
@@ -54,22 +52,10 @@ In other words, it’s like HTML+CSS but for Desmos. Write your content in LaTeX
 <br>
 
 
-## Directory
-
-| Folder | Description |
-| :----- | :---------- |
-| [`desmost/`](desmost/) | The Desmost compiler, which parses and evaluates your source code, then injects the results into a `Desmos.Calculator` instance via the Desmos API. How you use the compiler and render the end result, is left up to you! |
-| [`playground/`](playground/) | The Desmost site, with the interactive live-compile playground. |
-| [`docs/`](docs/) | All the information you need for how to write and use Desmost. |
-
-
-<br>
-
-
 ## Usage
 
 > [!Important]
-> Desmost only works **in the browser**. This is because it relies on the Desmos API, which (currently) can only be included via `<script>`.
+> Desmost only works **in the browser**. This is because it relies on the [Desmos API](https://www.desmos.com/api/v1.12/docs/index.html), which (currently) can only be included via `<script>`.
 
 ### Install
 ```bash
@@ -77,7 +63,7 @@ npm install desmost
 ```
 
 ### Write
-See [Docs / Writing](docs/writing) guidance on Desmost syntax.
+See [Docs / Writing](docs/writing) for guidance on Desmost syntax.
 
 ### Compile
 ```ts
@@ -87,7 +73,7 @@ let calc = Desmos.GraphingCalculator(...);
 compile(calc, "f(x) = x^2");
 ```
 
-Pass in options to customise the compilation:
+Pass in [options](docs/compiling/compiler-options.md) to customise the compilation:
 
 ```ts
 compile(calc, "/text{ sup world! }", {
@@ -96,12 +82,10 @@ compile(calc, "/text{ sup world! }", {
 });
 ```
 
-See [Docs / Compiling / Options](docs/compiling/compiler-options.md) for a reference of the available options.
-
 ### Render
-Up to you, in your framework of choice!
+Left up to you, in your framework of choice!
 
-Or, if you enjoy nice things, Desmost provides a [Svelte](https://svelte.dev) component for mass-compiling ` ```desmos ` blocks in [MDsveX](https://github.com/pngwn/mdsvex) content:
+But if you enjoy nice things, Desmost provides a [Svelte](https://svelte.dev) component for mass-compiling ` ```desmos ` blocks in [MDsveX](https://github.com/pngwn/mdsvex) content:
 
 ```svelte
 <script>
@@ -151,12 +135,26 @@ c = 5
 y = ax^2 + bx + c
 ```
 
+If you want to add Desmos notes, just leave a `%` LaTeX comment:
+
+```hs
+% Welcome to Desmost!
+
+a = 2
+b = 3
+c = 5
+
+y = ax^2 + bx + c
+```
+
 ### Intuitive
-But let’s say you want to animate the slider for one of those variables in Desmos.
+But let’s say you want to do something fancier, like animating the slider for one of those variables.
 
 All you need to do is add `/anim` in front of that line, plus a `::` delimiter:
 
 ```hs
+% Welcome to Desmost!
+
 /anim :: a = 2
 b = 3
 c = 5
@@ -164,7 +162,7 @@ c = 5
 y = ax^2 + bx + c
 ```
 
-These are called ***incantations***, and it’s the only syntax there is in Desmost.[^tiny]
+These are called [***incantations***](docs/writing/incantations.md), and it’s the only syntax there is in Desmost.[^tiny]
 
 [^tiny]: Told you Desmost’s a tiny DSL!
 
@@ -174,6 +172,8 @@ When Desmost compiles this into Desmos, it’ll see `/anim` and know to set `pla
 Suppose you also want to customise the slider bounds. Just add another incantation, this time with an argument:
 
 ```hs
+% Welcome to Desmost!
+
 /anim /slider{ min: 0, max: 10 } :: a = 2
 b = 3
 c = 5
@@ -188,6 +188,8 @@ y = ax^2 + bx + c
 This line is getting a little long, though. We can break it up over multiple lines:
 
 ```hs
+% Welcome to Desmost!
+
 /anim
 /slider{ min: 0, max: 10 }
   :: a = 2
@@ -200,34 +202,19 @@ y = ax^2 + bx + c
 ### Multi-Line LaTeX
 What if it’s not your incantations, but your LaTeX that’s becoming too long?
 
-```hs
+```latex
 I = \int \frac{1 + x + x^2}{1 + x} \ dx
 ```
 
 We’ve got an incantation for that – `/latex`:
 
-```hs
+```latex
 /latex{
   I = \int \frac
       {1 + x + x^2}
       {1 + x}
     \ dx
 }
-```
-
-### Notes
-You’ll no doubt want to add text expressions to your Desmos at some point. You can either use the `/text{}` incantation:
-
-```latex
-/text{ The normalised Gaussian. }
-f(x) = \frac{1}{\sqrt{2\pi}} e^{-\frac{1}{2}x^2}
-```
-
-or, if you want to lean into pure LaTeX more, just leave a LaTeX comment:
-
-```latex
-% The normalised Gaussian.
-f(x) = \frac{1}{\sqrt{2\pi}} e^{-\frac{1}{2}x^2}
 ```
 
 And that’s all there is to Desmost!
