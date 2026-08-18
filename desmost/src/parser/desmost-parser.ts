@@ -37,11 +37,11 @@ export class DesmostParser extends GenericParser
       return null;
     }
 
-    if (this.current === "/") {
+    else if (this.current === "/") {
       let r = this.parse_pre_sep();
 
+      // 1 global
       if ("global" in r) {
-        // 1 global
         return r.global;
       }
 
@@ -137,18 +137,30 @@ export class DesmostParser extends GenericParser
           incantations: [],
         };
 
+      // note
+      case "%":
+        this.advance();
+        let text = this.parse_line();
+
+        return {
+          kind: Ast.Kind.EXPRESSION,
+          data: { type: "text", text },
+          incantations: [],
+        };
+
       // expr incantation
       case "/":
         let incantation = this.try_parse_expr_incantation();
         if (incantation !== FAIL) return incantation;
-        else {
-          // plain LaTeX (fallback)
-          return this.parse_latex_line();
-        }
+        // FALLTHROUGH: to fallback on plain LaTeX
 
       // plain LaTeX
       default:
-        return this.parse_latex_line();
+        return {
+          kind: Ast.Kind.EXPRESSION,
+          data: { latex: this.parse_line() },
+          incantations: [],
+        };
     }
   }
 
@@ -156,9 +168,9 @@ export class DesmostParser extends GenericParser
   // == LOW-LEVEL == //
 
   /**
-   * Parse a single line of LaTeX.
+   * Parse a single line of arbitrary text.
    */
-  parse_latex_line(): Unrecoverable<Ast.Expression>
+  parse_line(): Unrecoverable<string>
   {
     let init = this.i;
 
@@ -166,13 +178,8 @@ export class DesmostParser extends GenericParser
       this.advance();
     }
 
-    return {
-      kind: Ast.Kind.EXPRESSION,
-      data: { latex: this.source.slice(init, this.i).trimEnd() },
-      incantations: [],
-    };
+    return this.source.slice(init, this.i).trim();
   }
-
 
   /**
    * Attempt to parse a global incantation invocation.
