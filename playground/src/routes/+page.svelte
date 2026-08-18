@@ -4,7 +4,6 @@ import "#styles/essence.scss";
 import "#styles/prism.scss";
 
 // import { compile } from "../../../desmost/src";
-// import type { DesmostDebug } from "../../../desmost/src/index.internal";
 import { compile } from "desmost";
 import type { DesmostDebug } from "desmost/internal";
 

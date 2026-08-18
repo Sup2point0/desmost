@@ -4,7 +4,7 @@
 
 import { version } from "#playground/node_modules/desmost/package.json" with { type: "json" };
 
-import type { DesmostDebug } from "../../../desmost/src/index.internal";
+import type { DesmostDebug } from "desmost/internal";
 
 
 interface Props {
