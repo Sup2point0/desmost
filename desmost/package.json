@@ -6,7 +6,7 @@
 
   "description": "A tiny DSL for compiling LaTeX to Desmos",
   "keywords": [
-    "desmos", "latex", "desmost"
+    "desmos", "latex", "compiler"
   ],
 
   "homepage": "https://sup2point0.github.io/desmost",
@@ -37,7 +37,8 @@
     }
   },
 
-  "scripts": {
+  "scripts":
+  {
     "build":    "nu build.nu",
       "buildx": "nu build.nu full",
 
