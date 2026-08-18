@@ -70,12 +70,15 @@ onMount(() =>
 
   for (let source of sources.values()) {
     source.style.display = "none";
-    if (style != undefined) source.cssText = style;
 
     let el_desmos = source.parentNode!.insertBefore(
       document.createElement("div"),
       source.nextSibling,
     );
+    
+    if (width != undefined)  el_desmos.width = width;
+    if (height != undefined) el_desmos.width = height;
+    if (style != undefined)  el_desmos.cssText = style;
 
     let desmos = Desmos.GraphingCalculator(el_desmos);
     desmos_instances.push(desmos);
