@@ -78,20 +78,20 @@ export interface DesmostOptions
 /**
  * Fill in `options` with Desmost's defaults to produce a complete `DesmostOptions` config.
  */
-export function set_default_options(options: Partial<DesmostOptions> | undefined): Required<DesmostOptions>
+export function fill_defaults(options: Partial<DesmostOptions> | undefined): Required<DesmostOptions>
 {
-  options ??= {};
+  let out = Object.assign({}, options);
   
-  options.errors ??= "surface";
-  options.place_errors ??= "inline";
-  options.error_prefix ??= "[DESMOST ERROR]\n";
+  out.errors ??= "surface";
+  out.place_errors ??= "inline";
+  out.error_prefix ??= "[DESMOST ERROR]\n";
   
-  options.ignore_comments ??= false;
-  options.ignore_blank_lines ??= false;
-  options.ignore_trailing_blanks ??= false;
+  out.ignore_comments ??= false;
+  out.ignore_blank_lines ??= false;
+  out.ignore_trailing_blanks ??= false;
 
-  options.prettify ??= true;
-  options.debug ??= false;
+  out.prettify ??= true;
+  out.debug ??= false;
 
-  return options as Required<DesmostOptions>;
+  return out as Required<DesmostOptions>;
 }

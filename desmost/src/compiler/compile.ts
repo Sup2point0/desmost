@@ -1,4 +1,4 @@
-import { type DesmostOptions, set_default_options } from "./options";
+import { type DesmostOptions, fill_defaults } from "./options";
 import { evaluate_global_incantation, evaluate_expr, evaluate_error } from "./evaluate";
 
 import { DesmostParser, Ast } from "../parser";
@@ -46,7 +46,7 @@ export function compile(
   let t_init = performance.now();
   let ast = [];
 
-  let opts = set_default_options(options);
+  let opts = fill_defaults(options);
   let parser = new DesmostParser(source, opts);
   
   /* To aggregate errors at the start, we need a target to retroactively inject errors into */

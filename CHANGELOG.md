@@ -1,6 +1,12 @@
 # Changelog
 
 
+## v0.4.1
+
+### Fixes
+- Avoid assignments to passed in `DesmostOptions` object which might affect externals
+
+
 ## v0.4
 
 ### New
