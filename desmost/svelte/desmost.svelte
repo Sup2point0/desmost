@@ -76,9 +76,9 @@ onMount(() =>
       source.nextSibling,
     );
     
-    if (width != undefined)  el_desmos.width = width;
-    if (height != undefined) el_desmos.height = height;
-    if (style != undefined)  el_desmos.cssText = style;
+    if (width  != undefined) el_desmos.style.width = width;
+    if (height != undefined) el_desmos.style.height = height;
+    if (style  != undefined) el_desmos.style.cssText += style;
 
     let desmos = Desmos.GraphingCalculator(el_desmos);
     desmos_instances.push(desmos);
