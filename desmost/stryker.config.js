@@ -4,7 +4,7 @@ const config =
   testRunner: "vitest",
   reporters: ["html", "clear-text", "progress"],
   coverageAnalysis: "perTest",
-  timeout_factor: 2.0,
+  timeoutFactor: 2.0,
   mutator: {
     excludedMutations: ["StringLiteral"],
   },
