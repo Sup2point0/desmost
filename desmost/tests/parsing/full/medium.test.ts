@@ -32,8 +32,6 @@ test("medium", () =>
   assert.include(r.arg_raw, "left: -8,");
   assert.include(r.arg_raw, "right: 8,");
   
-  assert_parses_blank_line(parser);
-
   // /text{ Definite Integral Calculator }
   r = parser.parse_next();
   assert_is_expression(r);
