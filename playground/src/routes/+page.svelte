@@ -4,7 +4,9 @@ import "#styles/essence.scss";
 import "#styles/prism.scss";
 
 // import { compile } from "../../../desmost/src";
+// import type { DesmostDebug } from "../../../desmost/src/index.internal";
 import { compile } from "desmost";
+import type { DesmostDebug } from "desmost/internal";
 
 import { prefs } from "#scripts/prefs";
 
@@ -47,8 +49,11 @@ f\left( x \right) = x^2
 let source = $state(WELCOME.trim());
 
 let is_compiling = $state(false);
-let duration: number | undefined = $state();
-let ast: any[] = $state([]);
+let debug: DesmostDebug = $state({
+  duration: 0,
+  num_blocks: 0,
+  ast: [],
+});
 let exprs: Desmos.ExpressionState[] = $state([]);
 
 $effect(() => {
@@ -65,15 +70,19 @@ function recompile()
 
     desmos.setBlank();
 
-    let debug;
+    let r;
     try {
-      debug = compile(desmos, source, { debug: true });
+      r = compile(desmos, source, { debug: true });
     } catch {
-      debug = undefined;
+      r = undefined;
     }
 
-    duration = debug?.duration;
-    ast = debug?.ast ?? ["COMPILER ERROR"];
+    if (r != undefined) {
+      debug.duration   = r.duration;
+      debug.num_blocks = r.num_blocks;
+      debug.ast        = r.ast ?? ["COMPILER ERROR"];
+    }
+
     sync_exprs_with_desmos();
     is_compiling = false;
   }, 50);
@@ -145,7 +154,7 @@ function finish_drag()
     style:--frac-x={$prefs.frac_x}
     style:--frac-y={$prefs.frac_y}
   >
-    <DesmostSource bind:source {duration} />
+    <DesmostSource bind:source {debug} />
 
     <div class="resize-drag x" onmousedown={start_drag("x")}></div>
 
@@ -160,7 +169,7 @@ function finish_drag()
       <div></div>
       <div class="resize-drag y" onmousedown={start_drag("y")}></div>
 
-      <DesmostAst {ast} />
+      <DesmostAst ast={debug.ast} />
       <div class="resize-drag x" onmousedown={start_drag("x")}></div>
       <DesmosExpressions {exprs} />
     {/if}

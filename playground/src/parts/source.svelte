@@ -4,12 +4,15 @@
 
 import { version } from "#playground/node_modules/desmost/package.json" with { type: "json" };
 
+import type { DesmostDebug } from "../../../desmost/src/index.internal";
+
+
 interface Props {
   source: string;
-  duration: number | undefined;
+  debug: Partial<DesmostDebug>;
 }
 
-let { source = $bindable(), duration }: Props = $props();
+let { source = $bindable(), debug }: Props = $props();
 
 </script>
 
@@ -24,8 +27,16 @@ let { source = $bindable(), duration }: Props = $props();
     <textarea bind:value={source}></textarea>
   </div>
 
-  {#if duration}
-    <aside>Compiled in {Math.round(duration * 10) / 10} ms</aside>
+  {#if debug.duration}
+    <aside>
+      <p> Compiled in <span>{Math.round(debug.duration * 10) / 10}</span> ms </p>
+
+      {#if debug.num_blocks}
+        <p class="per">
+          <span>{Math.round(debug.duration / debug.num_blocks * 10) / 10}</span> ms / block
+        </p>
+      {/if}
+    </aside>
   {/if}
 </div>
 
@@ -101,6 +112,13 @@ aside {
   right: 1.5rem;
   @include font-ui;
   color: $col-blue;
+  text-align: right;
+
+  .per {
+    padding-top: 0.25em;
+    color: rgb(white, 60%);
+    font-size: 90%;
+  }
 }
 
 </style>
