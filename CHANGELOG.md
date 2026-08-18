@@ -1,11 +1,11 @@
 # Changelog
 
 
-## Next (v0.5)
+## v0.5
 
 ### New
 - `desmost/svelte` subpackage providing the `<Desmost>` Svelte component
-- You can use `% sup, world` LaTeX comments for Desmos text expressions
+- Compile `% sup, world` LaTeX comments into Desmos text expressions
 
 
 ## v0.4.1
