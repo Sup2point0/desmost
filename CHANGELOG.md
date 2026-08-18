@@ -1,7 +1,7 @@
 # Changelog
 
 
-## Next (v0.5.1)
+## v0.5.1
 
 ### Fixes
 - Implement `ignore_comments` compile option
