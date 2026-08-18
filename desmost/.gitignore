@@ -3,5 +3,5 @@ LICENCE
 dist/
 node_modules/
 
-stryker*
+.stryker-tmp/
 reports/
