@@ -37,7 +37,7 @@ export interface DesmostOptions
   error_prefix?: string
 
   /**
-   * Should comments be ignored, instead of turned into text expressions?
+   * Should comments be ignored, instead of turned into text expressions (notes)?
    * 
    * Defaults to `false`, meaning comments are kept.
    */

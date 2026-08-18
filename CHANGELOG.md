@@ -4,6 +4,7 @@
 ## Next (v0.5.1)
 
 ### Fixes
+- Implement `ignore_comments` compile option
 - Disallow `%` LaTeX comments after local incantations
 
 
@@ -26,7 +27,7 @@
 ## v0.4
 
 ### New
-- `ignore_blank_lines` compiler option to strip all blank expressions from Desmos output
+- `ignore_blank_lines` compile option to strip all blank expressions from Desmos output
 - Object arguments to incantations can now use unquoted enum literals, like `/line{ style: DOTTED }` instead of `/line{ style: "DOTTED" }`
 
 ### Fixes
@@ -48,7 +49,7 @@
 ## v0.3
 
 ### New
-- `prettify` compiler option to prettify LaTeX output for Desmos
+- `prettify` compile option to prettify LaTeX output for Desmos
   - `()`, `[]`, etc. are converted to `\left(\right)`
   - Desmos-only functions like `round()`, `mod()` are converted to `\operatorname{round}()`
   - This means your LaTeX source can be clean, but still render nicely!
