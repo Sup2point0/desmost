@@ -31,6 +31,9 @@
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
     },
+    "./svelte": {
+      "import": "./svelte/desmost.svelte"
+    },
     "./internal": {
       "import": "./dist/index.internal.js",
       "types": "./dist/index.internal.d.ts"
@@ -56,7 +59,8 @@
 
   "peerDependencies":
   {
-    "@types/desmos": "1.11"
+    "@types/desmos": "1.11",
+    "svelte": "^5.0"
   },
 
   "devDependencies":
