@@ -8,12 +8,16 @@ Desmost is a simple, tiny, lightweight form of line-based LaTeX that compiles to
 Access Desmos specialties using `/incantation`s (mirroring LaTeX’s `\commands`).
 
 ```hs
--- These block will be plotted in Desmos.
+-- These blocks will be plotted in Desmos.
 y = x^2
 y = x^3 - 1
 
 -- Any LaTeX is accepted.
 y = \int_{0}^{2\pi} e^x \sin{x} \ dx
+
+-- LaTeX comments become Desmos text expressions (“Add Note” in the GUI).
+% This is a sine wave.
+y = \sin(x)
 
 
 -- To change how blocks are compiled, we invoke 'incantations'.
@@ -61,11 +65,6 @@ y = \frac{1}{x}
 }
   :: T = 0
 
--- The only requirement is that :: must be on the last line of the block.
-/anim ::
-  T = 0
-  -- Desmost will parse this as 2 separate blocks!
-
 
 -- So far, we've been using 'local' incantations.
 -- To modify the entire calculator's state, we use 'global' incantations.
@@ -109,12 +108,15 @@ Putting it all together, here's what a full Desmost 'program' might look like:
   left: -8, right: 8,
 }
 
-/text{ Definite Integral Calculator }
+/text{
+Definite Integral Calculator
+v1.0
+}
 
-/text{ Enter your integrand here: }
-/colour{ BLUE } :: f(x) = 
+% Enter your integrand here:
+/colour{ BLUE } :: f(x) =
 
-/text{ Enter your integration bounds here: }
+% Enter your integration bounds here:
 a = 0
 b = 1
 
@@ -122,10 +124,9 @@ b = 1
 \int_{a}^{b} f(x) \ dx
 
 /secret
-/fill{
-  color: BLUE,
-  opacity: 0.2,
-}
+/colour{ BLUE }
+/no-line
+/fill{ opacity: 0.2 }
   :: /latex{
     min(0, f(x))
     \leq y

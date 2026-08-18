@@ -21,3 +21,8 @@ y = A \sin(x - t)
 
 And Desmost gives you this: -->
 
+
+## Requirements
+
+- Desmos API v1.12
+- Desmost only works **in the browser**, because the Desmos API can only be included via a `<script>` tag
