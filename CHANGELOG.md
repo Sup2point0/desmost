@@ -3,6 +3,9 @@
 
 ## v0.4.1
 
+### New
+- Expose `DesmostDebug` from `desmost/internal`
+
 ### Fixes
 - Avoid assignments to passed in `DesmostOptions` object which might affect externals
 
