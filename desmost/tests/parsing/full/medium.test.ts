@@ -39,7 +39,7 @@ test("medium", () =>
   assert_is_expression(r);
   assert.equal(r.data.type, "text");
   // @ts-expect-error: outdated types
-  assert.equal(r.data.text, "Definite Integral Calculator");
+  assert.equal(r.data.text, "Definite Integral Calculator\nv1.0");
   assert.deepEqual(r.incantations, []);
 
   assert_parses_blank_line(parser);

@@ -12,12 +12,15 @@ export const MEDIUM = ltx `
   left: -8, right: 8,
 }
 
-/text{ Definite Integral Calculator }
+/text{
+Definite Integral Calculator
+v1.0
+}
 
-/text{ Enter your integrand here: }
+% Enter your integrand here:
 /colour{ BLUE } :: f(x) =
 
-/text{ Enter your integration bounds here: }
+% Enter your integration bounds here:
 a = 0
 b = 1
 
