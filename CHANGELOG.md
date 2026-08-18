@@ -1,12 +1,18 @@
 # Changelog
 
 
+<br>
+
+
 ## v0.5.1
 
 ### Fixes
 - Implement `ignore_comments` compile option
 - Disallow `%` LaTeX comments after local incantations
 - `prettify` replaces all sequences of >1 whitespace characters with a singular ` ` space
+
+
+<br>
 
 
 ## v0.5
@@ -16,6 +22,9 @@
 - Compile `% sup, world` LaTeX comments into Desmos text expressions
 
 
+<br>
+
+
 ## v0.4.1
 
 ### New
@@ -23,6 +32,9 @@
 
 ### Fixes
 - Avoid assignments to passed in `DesmostOptions` object which might affect externals
+
+
+<br>
 
 
 ## v0.4
@@ -35,16 +47,25 @@
 - Format parser crash error messages properly
 
 
+<br>
+
+
 ## v0.3.2
 
 ### Fixes
 - Tighten publish pipeline to avoid stale builds being published
 
 
+<br>
+
+
 ## v0.3.1
 
 ### Fixes
 - Fix `\{\}` prettification (thanks [@iTechnical](https://github.com/itechnicals)!)
+
+
+<br>
 
 
 ## v0.3
@@ -55,6 +76,9 @@
   - Desmos-only functions like `round()`, `mod()` are converted to `\operatorname{round}()`
   - This means your LaTeX source can be clean, but still render nicely!
 - `/label` incantation for adding labels to points
+
+
+<br>
 
 
 ## v0.2
@@ -77,10 +101,16 @@
 - Trim trailing spaces in LaTeX output
 
 
+<br>
+
+
 ## v0.1.2
 
 ### Fixes
 - Fix misconfigured TSConfig, which was resulting in files being compiled to `dist/src/` instead of `dist/`
+
+
+<br>
 
 
 ## v0.1.1
@@ -90,6 +120,9 @@
 
 ### Fixes
 - Add explicit file extensions to compiled files for end users without bundlers
+
+
+<br>
 
 
 ## v0.1
@@ -103,7 +136,7 @@ Available incantations:
 - `/viewport`
 - `/dark`
 - `/anim`
-- `/colour`/`/color`
+- `/colour` (`/color`)
 - `/dashed`
 - `/fill`
 - `/hide`
