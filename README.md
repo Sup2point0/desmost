@@ -66,7 +66,7 @@ npm install desmost
 ```
 
 ### Write
-See [Docs / Writing](docs/writing) for guidance on Desmost syntax.
+See [Docs / Writing](docs/writing) to learn how to use Desmost syntax on top of LaTeX.
 
 ### Compile
 ```ts
@@ -76,24 +76,23 @@ let calc = Desmos.GraphingCalculator(...);
 compile(calc, "f(x) = x^2");
 ```
 
-Pass in [options](docs/compiling/compiler-options.md) to customise the compilation:
+Pass in [options](docs/compiling/compiler-options.md) to customise compilation:
 
 ```ts
 compile(calc, "/text{ sup world! }", {
   errors: "crash",
-  keep_line_breaks: false,
+  ignore_blank_lines: true,
 });
 ```
 
 ### Render
 Left up to you, in your framework of choice!
 
-But if you enjoy nice things, Desmost provides a [Svelte](https://svelte.dev) component for mass-compiling ` ```desmos ` blocks in [MDsveX](https://github.com/pngwn/mdsvex) content:
+But if you enjoy nice things, Desmost provides a [Svelte](https://svelte.dev) component for mass-compiling Desmost, intended to be used in conjunction with MDsveX:
 
 ```svelte
 <script>
   import Content from "./intro.md";
-
   import { Desmost } from "desmost/svelte";
 </script>
 
@@ -102,21 +101,7 @@ But if you enjoy nice things, Desmost provides a [Svelte](https://svelte.dev) co
 </Desmost>
 ```
 
-Pass compilation options directly to the component:
-
-```svelte
-<Desmost errors="crash">
-  <Content />
-</Desmost>
-```
-
-You can customise rendering, too:
-
-```svelte
-<Desmost lazy height="90vh">
-  <Content />
-</Desmost>
-```
+This will replace all ` ```desmos ` blocks from your Markdown source with Desmos calculator embeds.
 
 
 <br>
@@ -271,7 +256,7 @@ q = 3
 p + q
 ```
 
-This keeps it easily comprehendable when mixed with Markdown. And it’s exactly the same as what you’d type into Desmos – it’s like you meant to, but accidentally ended up typing it into your IDE!
+This keeps it easily comprehendable when mixed with Markdown. And it’s exactly the same as what you’d type into Desmos – it’s like you meant to do that, but accidentally ended up typing it into your IDE!
 
 ### Make the complex stuff possible
 At the same time, we want to provide full control over as many aspects of the calculator as possible. Incantations make this easy – to access more functionality, all it takes is adding a new incantation.
