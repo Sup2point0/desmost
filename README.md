@@ -5,9 +5,9 @@
 [**Docs**](docs/)&ensp;·&ensp;[**Learn X in Y**](docs/writing/learn-x-in-y.md)&ensp;·&ensp;[**Changelog**](CHANGELOG.md)&ensp;·&ensp;[**Spec**](docs/spec/)&ensp;·&ensp;[**Playground**](https://sup2point0.github.io/desmost)
 
 [![npm](https://img.shields.io/npm/v/desmost?color=c93ff5&style=flat-square)](https://www.npmjs.com/package/desmost)
-[![test](https://img.shields.io/github/actions/workflow/status/Sup2point0/desmost/test.yml?style=flat-square)](https://github.com/Sup2point0/desmost/actions/workflows/test.yml)
-[![autodoc](https://img.shields.io/github/actions/workflow/status/Sup2point0/desmost/autodoc.yml?style=flat-square)](https://github.com/Sup2point0/desmost/actions/workflows/autodoc.yml)
-[![site](https://img.shields.io/github/actions/workflow/status/Sup2point0/desmost/deploy.yml?style=flat-square)](https://github.com/Sup2point0/desmost/actions/workflows/deploy.yml)
+[![test](https://img.shields.io/github/actions/workflow/status/Sup2point0/desmost/test.yml?label=tests&style=flat-square)](https://github.com/Sup2point0/desmost/actions/workflows/test.yml)
+[![autodoc](https://img.shields.io/github/actions/workflow/status/Sup2point0/desmost/autodoc.yml?label=docs&style=flat-square)](https://github.com/Sup2point0/desmost/actions/workflows/autodoc.yml)
+[![site](https://img.shields.io/github/actions/workflow/status/Sup2point0/desmost/deploy.yml?label=playground&style=flat-square)](https://github.com/Sup2point0/desmost/actions/workflows/deploy.yml)
 
 </div>
 
