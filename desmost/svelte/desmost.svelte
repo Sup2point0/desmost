@@ -1,8 +1,10 @@
 <!-- @component `<Desmost>`
 
-Compile Desmost from Markdown.
+Mass-compile Desmost.
 
 This transforms `<pre lang="desmos">` blocks into Desmos calculator embeds. It selects each `<pre lang="desmos">` block in its children, and for each constructs a `Desmos.GraphingCalculator` instance then calls the Desmost compiler on the source.
+
+This is intended to be used with MDsveX or similar, where Markdown content containing ` ```desmos ` blocks is compiled into HTML.
 
 When this component is unmounted, it calls `.destroy()` on each calculator instance to cleanup resources.
 
@@ -10,19 +12,19 @@ When this component is unmounted, it calls `.destroy()` on each calculator insta
 
 ```svelte
 <script>
-  import Content from "./content.svx";
+    import Content from "./content.svx";
 </script>
 
 <Desmost>
-  <Content />
+    <Content />
 </Desmost>
 ```
 
 With compile options:
 
 ```svelte
-<Desmost errors="crash">
-  <Content />
+<Desmost options={{ errors: "crash" }}>
+    <Content />
 </Desmost>
 ```
 
@@ -30,7 +32,7 @@ With styling:
 
 ```svelte
 <Desmost width="100%" height="50vh">
-  <Content />
+    <Content />
 </Desmost>
 ```
 -->
@@ -43,9 +45,12 @@ import { compile, type DesmostOptions } from "../src";
 import { onMount, type Snippet } from "svelte";
 
 
-interface Props extends DesmostOptions
+interface Props
 {
   children: Snippet;
+
+  /** Compile options to pass to Desmost.*/
+  options?: DesmostOptions;
 
   /** CSS styles to apply to each Desmos calculator's containing element. */
   style?: string;
@@ -57,7 +62,7 @@ interface Props extends DesmostOptions
   height?: string;
 }
 
-let { children, style, width, height, ...options }: Props = $props();
+let { children, options, style, width, height }: Props = $props();
 
 
 let root: HTMLElement;

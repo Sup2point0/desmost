@@ -4,6 +4,15 @@
 <br>
 
 
+## v0.6
+
+### Breaking
+- `<Desmost>` requires single `options` object, instead of unpacking into individual fields
+
+
+<br>
+
+
 ## v0.5.5
 
 ### Fixes
