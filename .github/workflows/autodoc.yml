@@ -6,8 +6,8 @@ on:
     paths:
       - '.github/workflows/autodoc.yml'
       - '.autodoc/*'
-      - '**/options.ts'
-      - 'desmost/src/magic/**/*.ts'
+      - 'desmost/src/compiler/options.ts'
+      - 'desmost/src/magic/*/*.ts'
 
 jobs:
   doc:
@@ -17,15 +17,15 @@ jobs:
       contents: write
 
     steps:
-      - name: 'git / checkout'
+      - name: 'Checkout'
         uses: actions/checkout@v7
       
-      - name: 'rake / doc'
+      - name: '> rake'
         run: |
           cd .autodoc
           rake
       
-      - name: 'git / push'
+      - name: '> git push'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
