@@ -28,16 +28,19 @@
 A = 1
 f(x) = A \sin(x - t)
 <br>
-/label{ text: "we love Desmos(t)!" } :: (0, f(0))
+/label{
+  text: "we love Desmos(t)!"
+} :: (0, f(0))
 <br>
-/anim /slider{ min: -10, max: 10 }
+/anim
+/slider{ min: -10, max: 10 }
   :: t = 0
 </code></pre>
     </td>
     <td>
       <a href="https://sup2point0.github.io/desmost">
         <img
-          width="500"
+          width="600"
           src=".assets/demo.png"
           alt="“Desmos(t) is awesome!”, but in a fully-fledged Desmos graphing calculator embed"
         />
