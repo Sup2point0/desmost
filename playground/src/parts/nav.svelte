@@ -18,8 +18,8 @@ let { is_compiling, recompile }: Props = $props();
     <h1> Desmost <span>Playground</span> &ensp; <small>by Sup#2.0</small> </h1>
 
     <button
-      class:off={!$prefs.options}
-      onclick={() => { $prefs.options = !$prefs.options; }}
+      class:off={!$prefs.show_options}
+      onclick={() => { $prefs.show_options = !$prefs.show_options; }}
     >
       Options
     </button>

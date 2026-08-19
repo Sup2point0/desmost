@@ -71,7 +71,7 @@ function recompile()
 
     let r;
     try {
-      r = compile(desmos, source, { debug: true });
+      r = compile(desmos, source, { ...$prefs.options, debug: true });
     } catch {
       r = undefined;
     }
