@@ -4,7 +4,7 @@ This page explains in full detail how Desmost and Desmos fit together.
 
 You don’t need to understand all this to work with Desmost – but it’ll certainly help sink in the intuition!
 
-If you’re interest in a quicker introduction to Desmost, head to [Learn X in Y](learn-x-in-y.md).
+If you’re interested in a quicker introduction to Desmost, head to [Learn X in Y](learn-x-in-y.md).
 
 
 <br>
@@ -12,7 +12,7 @@ If you’re interest in a quicker introduction to Desmost, head to [Learn X in Y
 
 ## How does Desmos work?
 
-Desmost compiles to Desmos, so you’ll certain need to be familiar with how Desmos works.
+> Desmost compiles to Desmos, so you’ll certainly need to be familiar with how Desmos works.
 
 The Desmos graphing calculator has 2 parts: on the right, the ***graphing window*** or “viewport”; on the left, the ***expressions list*** or “editor”.[^names]
 
