@@ -3,7 +3,7 @@ require "pathname"
 
 ROOT = Pathname(__dir__).parent
 SOURCE = ROOT / "desmost/src/magic"
-TARGET = ROOT / "docs/writing/incantations.md"
+TARGET = ROOT / "docs/writing/incantations-reference.md"
 
 
 def main()

@@ -5,7 +5,7 @@
 This page documents all the incantations available in Desmost.
 
 > [!Note]
-> These tables are auto-generated directly from [incantation definitions](../../desmost/src/magic/) in the source code.
+> These tables are auto-generated directly from [incantation definitions](../../desmost/src/magic) in the source code.
 
 
 <br>
