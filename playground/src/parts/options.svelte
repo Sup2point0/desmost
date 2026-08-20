@@ -5,7 +5,7 @@ The dropdown panel for configuring compile options.
 
 <script lang="ts">
 
-import { prefs } from "#scripts/prefs";
+import { options } from "#scripts/options";
 
 </script>
 
@@ -16,7 +16,7 @@ import { prefs } from "#scripts/prefs";
 
 <form>
   <section>
-    <input id="prettify" type="checkbox" bind:checked={$prefs.options.prettify} />
+    <input id="prettify" type="checkbox" bind:checked={$options.prettify} />
 
     <label for="prettify">
       <h3> Prettify </h3>

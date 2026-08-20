@@ -8,6 +8,7 @@ import { compile } from "desmost";
 import type { DesmostDebug } from "desmost/internal";
 
 import { prefs } from "#scripts/prefs";
+import { options } from "#scripts/options";
 
 import Nav from "#parts/nav.svelte";
 import DesmostSource from "#parts/source.svelte";
@@ -57,7 +58,7 @@ let exprs: Desmos.ExpressionState[] = $state([]);
 
 $effect(() => {
   let _ = source;
-  let __ = $prefs.options;
+  let __ = $options;
   return recompile();
 });
 
@@ -75,7 +76,7 @@ function recompile()
 
     let r;
     try {
-      r = compile(desmos, source, { ...$prefs.options, debug: true });
+      r = compile(desmos, source, { ...$options, debug: true });
     } catch {
       r = undefined;
     }
