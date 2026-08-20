@@ -69,6 +69,7 @@
   {
     "@types/desmos": "1.11",
     "@types/node": "^26.0",
+    "jsdom": "^30.0",
     "oxlint": "^1.78",
     "oxlint-tsgolint": "^7.0",
     "tsc-alias": "^1.9",
