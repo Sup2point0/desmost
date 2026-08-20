@@ -23,16 +23,29 @@ import { options } from "#scripts/options";
       <p> Prettify LaTeX output for Desmos? </p>
     </label>
   </section>
+  
+  <section>
+    <input id="ignore-comments" type="checkbox" bind:checked={$options.ignore_comments} />
+
+    <label for="ignore-comments">
+      <h3> Ignore Comments </h3>
+      <p> Ignore <code>%</code> LaTeX comments instead of turning them into notes? </p>
+    </label>
+  </section>
 </form>
 
 
 <style lang="scss">
 
 form {
-  padding: 0 1rem 1rem;
+  flex: 0.5;
+  max-height: max-content;
+  padding: 0.5rem 1rem;
   z-index: 2;
   border-bottom: 0.5px solid rgb(white, 30%);
-  // box-shadow: 0 4px 8px black;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: $col-green black;
 }
 
 header {
@@ -53,19 +66,27 @@ header {
 }
 
 section {
+  margin-bottom: 0.5rem;
   display: flex;
   flex-flow: row nowrap;
   gap: 1rem;
 
   h3 {
+    margin-bottom: 0.2rem;
     @include font-ui;
-    color: $col-blue;
+    color: white;
+    font-size: 100%;
     font-weight: normal;
   }
 
   p {
     @include font-ui;
-    color: rgb(white, 50%);
+    color: rgb(white, 40%);
+    font-size: 90%;
+  }
+
+  &:hover p {
+    color: white;
   }
 }
 
