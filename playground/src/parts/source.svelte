@@ -6,6 +6,10 @@ import { version } from "#playground/node_modules/desmost/package.json" with { t
 
 import type { DesmostDebug } from "desmost/internal";
 
+import { prefs } from "#scripts/prefs";
+
+import DesmostOptions from "#parts/options.svelte";
+
 
 interface Props {
   source: string;
@@ -18,6 +22,10 @@ let { source = $bindable(), debug }: Props = $props();
 
 
 <div class="container">
+  {#if $prefs.show_options}
+    <DesmostOptions />
+  {/if}
+
   <div class="panel">
     <header>
       <h2> Source </h2>
