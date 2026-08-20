@@ -97,7 +97,7 @@ y = x^2
     `.trim();
 
     let desmos = testing_desmos();
-    compile(desmos, src, { ignore_blank_lines: true })!;
+    compile(desmos, src, { ignore_all_blanks: true })!;
     let exprs = desmos.getExpressions();
 
     assert.equal(exprs.length, 2);
@@ -115,7 +115,7 @@ y = x^2
     `.trim();
 
     let desmos = testing_desmos();
-    compile(desmos, src, { ignore_blank_lines: true })!;
+    compile(desmos, src, { ignore_all_blanks: true })!;
 
     let exprs = desmos.getExpressions();
     assert.equal(exprs.length, 2);
@@ -136,7 +136,7 @@ r = 3
     `.trim();
 
     let desmos = testing_desmos();
-    compile(desmos, src, { ignore_blank_lines: true })!;
+    compile(desmos, src, { ignore_all_blanks: true })!;
 
     let exprs = desmos.getExpressions();
     assert.equal(exprs.length, 3);

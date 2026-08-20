@@ -37,7 +37,14 @@ export interface DesmostOptions
   error_prefix?: string
 
   /**
-   * Should comments be ignored, instead of turned into text expressions (notes)?
+   * Prettify LaTeX output so it renders nicely in the Desmos editor?
+   * 
+   * Defaults to `true`, meaning LaTeX is prettified.
+   */
+  prettify?: boolean
+
+  /**
+   * Should `%` LaTeX comments be ignored, instead of turned into text expressions (notes)?
    * 
    * Defaults to `false`, meaning comments are kept.
    */
@@ -48,26 +55,26 @@ export interface DesmostOptions
    * 
    * Defaults to `false`, meaning all blank lines are kept.
    */
-  ignore_blank_lines?: boolean
+  ignore_all_blanks?: boolean
 
   /**
-   * Should trailing blank lines at the end of the source be ignored, instead of kept as blank expressions?
+   * Should trailing blank lines at the start of the source be kept as blank expressions?
    * 
-   * Defaults to `false`, meaning trailing blank lines are kept.
+   * Defaults to `false`, meaning leading blank lines are ignored.
    */
-  ignore_trailing_blanks?: boolean
+  keep_leading_blanks?: boolean
 
   /**
-   * Prettify LaTeX output so it renders nicely in the Desmos editor?
+   * Should trailing blank lines at the end of the source be kept as blank expressions?
    * 
-   * Defaults to `true`, meaning LaTeX is prettified.
+   * Defaults to `false`, meaning trailing blank lines are ignored.
    */
-  prettify?: boolean
+  keep_trailing_blanks?: boolean
 
   /**
    * Return debug diagnostics?
    * 
-   * This includes the unevaluated AST, and performance diagnostics.
+   * This includes the unevaluated AST and performance diagnostics.
    * 
    * Defaults to `false`, meaning `compile()` returns `void`.
    */
@@ -87,7 +94,7 @@ export function fill_defaults(options: Partial<DesmostOptions> | undefined): Req
   out.error_prefix ??= "[DESMOST ERROR]\n";
   
   out.ignore_comments ??= false;
-  out.ignore_blank_lines ??= false;
+  out.ignore_all_blanks ??= false;
   out.ignore_trailing_blanks ??= false;
 
   out.prettify ??= true;

@@ -77,7 +77,7 @@ export function compile(
 
         case Ast.Kind.EXPRESSION:
           // @ts-expect-error: outdated types
-          if (opts.ignore_blank_lines && r.data.latex === " ") break;
+          if (opts.ignore_all_blanks && r.data.latex === " ") break;
           defer = evaluate_expr(r, desmos, opts);
           break;
 
