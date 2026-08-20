@@ -207,7 +207,7 @@ We’ve got an incantation for that – `/latex`:
 
 And that’s all there is to Desmost!
 
-All other functionality you might need is accessed through more incantations. For a complete list of all the available incantations, visit [Incantations Reference](docs/incantations.md).
+All other functionality you might need is accessed through more incantations. For a complete list of all the available incantations, visit [Incantations Reference](docs/incantations-reference.md).
 
 Enjoy!
 
@@ -277,7 +277,7 @@ Desmost only handles what it needs to care about to work. You don’t need a LaT
   <img align="right" height="40" src=".assets/brainmade-black.svg" />
 </a>
 
-Every bug, typo and inefficiency was lovingly crafted by hand :D
+Every bug, typo and inefficiency was lovingly crafted by hand <3
 
 
 <br>

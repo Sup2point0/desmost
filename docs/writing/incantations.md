@@ -26,6 +26,9 @@ They consist of a `/` slash followed by an *identifier*. Certain incantations al
 [^backslash]: When developing the original rudimentary hacked-together origin of Desmost in [*Integrity*](https://github.com/Sup2point0/integrity), I opted for forward slashes to avoid confusion with LaTeX ;)
 
 
+<br>
+
+
 ## Incantation Types
 
 Incantations come in 3 flavours: ***expression***, ***global***, and ***local*** incantations. Each has different purposes, but the syntax and principles are all the same.
@@ -115,3 +118,6 @@ In Desmost:
 ```hs
 /slider{ min: -1, max: 1 } :: t = 0
 ```
+
+
+<br>
