@@ -42,7 +42,7 @@ onMount(() => {
 // TODO move into examples
 const WELCOME = String.raw `
 /text{ Welcome to Desmost! }
-f\left( x \right) = x^2
+f(x) = x^2
 `;
 
 let source = $state(WELCOME.trim());
@@ -57,6 +57,7 @@ let exprs: Desmos.ExpressionState[] = $state([]);
 
 $effect(() => {
   let _ = source;
+  let __ = $prefs.options;
   return recompile();
 });
 
@@ -65,7 +66,10 @@ function recompile()
   is_compiling = true;
 
   let timeout = setTimeout(() => {
-    if (desmos == null) return;
+    if (desmos == null) {
+      is_compiling = false;
+      return;
+    }
 
     desmos.setBlank();
 
@@ -187,7 +191,8 @@ function finish_drag()
 }
 
 main {
-  $drag-size: 0.5px;
+  $drag-size: 0.25px;
+  $drag-scale: 8;
 
   flex: 1;
   min-height: 0;
@@ -211,10 +216,10 @@ main {
     position: relative;
     z-index: 4;
     background: transparent;
-    transform-origin: 50% 50%;
+    transform-origin: 100% 100%;
 
-    &.x { transform: scaleX(5); &:hover { cursor: ew-resize; } }
-    &.y { transform: scaleY(5); &:hover { cursor: ns-resize; } }
+    &.x { transform: scaleX($drag-scale); &:hover { cursor: ew-resize; } }
+    &.y { transform: scaleY($drag-scale); &:hover { cursor: ns-resize; } }
 
     &::after {
       content: '';
@@ -222,8 +227,8 @@ main {
       width: 100%;
       height: 100%;
     }
-    &.x::after { transform: scaleX(5); }
-    &.y::after { transform: scaleY(5); }
+    &.x::after { transform: scaleX($drag-scale); }
+    &.y::after { transform: scaleY($drag-scale); }
 
     &:hover, &:active { background: #ff60ff; }
     &:active { filter: brightness(75%); }
@@ -235,6 +240,14 @@ main {
   min-height: 0;
   z-index: 2;
   box-shadow: 0 2px 4px rgb(black, 20%);
+
+  p {
+    width: 80%;
+    margin: 3rem auto;
+    @include font-code;
+    color: $col-red;
+    text-align: center;
+  }
 }
 
 </style>

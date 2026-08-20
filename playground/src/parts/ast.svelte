@@ -36,9 +36,10 @@ let highlighted = $derived(Prism.highlight(json, Prism.languages.javascript, "ja
 <style lang="scss">
 
 .panel {
-  border-top: 0.5px solid rgb(white, 30%);
+  z-index: 2;
   background: #002;
-  box-shadow: -4px -4px 8px rgb(black, 50%);
+  border-top: 0.5px solid rgb(white, 30%);
+  box-shadow: -4px -4px 8px rgb(black, 80%);
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: $col-orange #002;
