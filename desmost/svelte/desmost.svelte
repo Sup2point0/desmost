@@ -12,7 +12,7 @@ When this component is unmounted, it calls `.destroy()` on each calculator insta
 
 ```svelte
 <script>
-    import Content from "./content.svx";
+    import Content from "./content.md";
 </script>
 
 <Desmost>
@@ -52,22 +52,74 @@ interface Props
   /** Compile options to pass to Desmost.*/
   options?: DesmostOptions;
 
-  /** CSS styles to apply to each Desmos calculator's containing element. */
+  /**
+   * Default settings to apply to all Desmos calculator instances.
+   * 
+   * These are applied *before* compilation, so individual Desmost blocks can override them with `/desmos`.
+   */
+  settings?: Desmos.GraphConfiguration & Desmos.GraphSettings;
+
+  /**
+   * Should compilation be lazy using `IntersectionObserver`?
+   * 
+   * ## Example
+   * 
+   * ```svelte
+   * <Desmost lazy />
+   * ```
+   */
+  lazy?: true;
+
+  /**
+   * CSS styles to apply to each Desmos calculator's containing element.
+   * 
+   * ## Example
+   * 
+   * ```svelte
+   * <Desmost style="margin: 1rem; border: 1px solid red" />
+   * ```
+   */
   style?: string;
 
-  /** Width of each Desmos calculator's containing element. */
+  /**
+   * Width of each Desmos calculator's containing element.
+   * 
+   * ## Example
+   * 
+   * ```svelte
+   * <Desmost width="500px" />
+   * <Desmost width="40rem" />
+   * <Desmost width="80vw" />
+   * ```
+   */
   width?: string;
   
-  /** Height of each Desmos calculator's containing element. */
+  /**
+   * Height of each Desmos calculator's containing element.
+   * 
+   * ## Example
+   * 
+   * ```svelte
+   * <Desmost height="500px" />
+   * <Desmost height="40rem" />
+   * <Desmost height="80vw" />
+   * ```
+   */
   height?: string;
 }
 
-let { children, options, style, width, height }: Props = $props();
+let {
+  children,
+  options, settings,
+  lazy,
+  style, width, height,
+}: Props = $props();
 
 
 let root: HTMLElement;
 
 let desmos_instances: Desmos.Calculator[] = [];
+let lazy_observers: IntersectionObserver[] = [];
 
 onMount(() =>
 {
@@ -85,10 +137,16 @@ onMount(() =>
     if (height != undefined) el_desmos.style.height = height;
     if (style  != undefined) el_desmos.style.cssText += style;
 
-    let desmos = Desmos.GraphingCalculator(el_desmos);
-    desmos_instances.push(desmos);
-
-    compile(desmos, source.textContent, options);
+    if (!lazy) {
+      inject(el_desmos, source.textContent);
+    }
+    else {
+      let observer = new IntersectionObserver(
+        _ => inject(el_desmos, source.textContent)
+      );
+      observer.observe(el_desmos);
+      lazy_observers.push(observer);
+    }
   }
 
   return () => {
@@ -97,6 +155,18 @@ onMount(() =>
     }
   };
 });
+
+function inject(el_desmos: HTMLElement, source: string)
+{
+  let desmos = Desmos.GraphingCalculator(el_desmos);
+
+  if (settings != undefined) {
+    desmos.updateSettings(settings);
+  }
+
+  desmos_instances.push(desmos);
+  compile(desmos, source, options);
+}
 
 </script>
 

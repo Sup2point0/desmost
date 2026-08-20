@@ -7,7 +7,18 @@
 ## v0.6
 
 ### Breaking
-- `<Desmost>` requires single `options` object, instead of unpacking into individual fields
+- `<Desmost>` requires single `options` object, instead of unpacking into individual fields:
+
+```svelte
+<!-- old -->
+<Desmost errors="crash" >
+```
+
+> This avoids confusion between compile options vs other Svelte parameters, and also avoids polluting the props with a huge (and growing) number of compile options.
+
+### New
+- `<Desmost settings={}>` field for setting global Desmos defaults
+- `<Desmost lazy>` tag for lazily compiling Desmost blocks using `IntersectionObserver`
 
 
 <br>
