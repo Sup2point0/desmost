@@ -1,7 +1,7 @@
 {
   "name": "desmost",
   "author": "Sup#2.0",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "license": "MIT",
 
   "description": "A tiny DSL for compiling LaTeX to Desmos",

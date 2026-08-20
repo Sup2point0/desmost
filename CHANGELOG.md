@@ -18,6 +18,15 @@
 <br>
 
 
+## v0.6.1
+
+### Fixes
+- Disconnect `IntersectionObserver` in `<Desmost>` to avoid duplicate fires
+
+
+<br>
+
+
 ## v0.6
 
 ### Breaking
