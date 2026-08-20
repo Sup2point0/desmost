@@ -1,6 +1,14 @@
 # Changelog
 
 
+## Next (v0.7)
+
+### New
+- `/note` alias for `/text`[^note]
+
+[^note]: I’ve caught myself using `/note` instead of `/text` far too many times, so at this point I think it’s worth adding in the alias :P
+
+
 <br>
 
 

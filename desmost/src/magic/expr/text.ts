@@ -7,6 +7,7 @@ export class TextIncantation extends ArgIncantation<EXPR>
     = "Produce a text expression (“Add Note” in the Desmos GUI)."
   
   override readonly identifier   = "text"
+  override readonly alias        = "note"
   override readonly requires_arg = true
   override readonly arg_type     = Incantation.ArgType.STRING
 
