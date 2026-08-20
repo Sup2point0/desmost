@@ -34,7 +34,7 @@ This page documents all the incantations available in Desmost.
 <tr>
     <td>
 
-[`/text`](#text)
+[`/text`](#text)<br>[`/note`](#text)
     </td>
     <td>required</td>
     <td><code>string</code></td>
