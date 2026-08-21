@@ -32,6 +32,33 @@ import { options } from "#scripts/options";
       <p> Ignore <code>%</code> LaTeX comments instead of turning them into notes? </p>
     </label>
   </section>
+  
+  <section>
+    <input id="ignore-all-blanks" type="checkbox" bind:checked={$options.ignore_all_blanks} />
+
+    <label for="ignore-all-blanks">
+      <h3> Ignore All Blanks </h3>
+      <p> Ignore all blank lines, instead of keeping them as blank expressions? </p>
+    </label>
+  </section>
+  
+  <section>
+    <input id="keep-leading-blanks" type="checkbox" bind:checked={$options.keep_leading_blanks} />
+
+    <label for="keep-leading-blanks">
+      <h3> Keep Leading Blanks </h3>
+      <p> Keep blank lines at the start of the source as empty expressions? </p>
+    </label>
+  </section>
+  
+  <section>
+    <input id="keep-trailing-blanks" type="checkbox" bind:checked={$options.keep_trailing_blanks} />
+
+    <label for="keep-trailing-blanks">
+      <h3> Keep Trailing Blanks </h3>
+      <p> Keep blank lines at the end of the source as empty expressions? </p>
+    </label>
+  </section>
 </form>
 
 
