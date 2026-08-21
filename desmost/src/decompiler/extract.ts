@@ -1,13 +1,45 @@
 import { Ast } from "../parser";
 
+import { DesmosIncantation, ViewportIncantation } from "../magic/global";
 
-function extract_settings(desmos: Desmos.Calculator): Ast
+
+/**
+ * Extract a `/desmos` incantation from the settings of `desmos`.
+ */
+export function extract_settings(desmos: Desmos.Calculator): Ast
 {
-  // TODO
+  return {
+    kind: Ast.Kind.INCANTATION_INVOCATION,
+    incantation: new DesmosIncantation(),
+    arg_raw: JSON.stringify(
+      desmos.settings,
+      (key, value) => ["observe", "unobserve"].includes(key) ? undefined : value,
+      "  ",
+    ),
+  };
 }
 
 
-function extract_expression(expression: Desmos.ExpressionState): Ast
+/**
+ * Extract a `/viewport` incantation from the viewport bounds of `desmos`.
+ */
+export function extract_viewport(desmos: Desmos.Calculator): Ast
+{
+  let { left, right, bottom, top } = desmos.graphpaperBounds.mathCoordinates;
+
+  return {
+    kind: Ast.Kind.INCANTATION_INVOCATION,
+    incantation: new ViewportIncantation(),
+    arg_raw: JSON.stringify(
+      { left, right, bottom, top },
+      undefined,
+      "  ",
+    ),
+  };
+}
+
+
+export function extract_expression(expression: Desmos.ExpressionState): Ast
 {
   // TODO
 }
