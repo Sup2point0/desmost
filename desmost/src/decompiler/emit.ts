@@ -31,7 +31,7 @@ export function emit_expression(expr?: Ast.Expression): string
 
    switch (expr.data.type) {
       case "text":
-         content = expr.data.text;
+         content = `/text{ ${expr.data.text} }`;
          break;
       default:
          // @ts-expect-error: outdated types
