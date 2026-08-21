@@ -3,6 +3,7 @@
 <script lang="ts">
 
 import { prefs } from "#scripts/prefs";
+import { options } from "#scripts/options";
 
 interface Props {
   is_compiling: boolean;
@@ -25,8 +26,8 @@ let { is_compiling, recompile }: Props = $props();
     </button>
 
     <button
-      class:off={!$prefs.debug}
-      onclick={() => { $prefs.debug = !$prefs.debug; }}
+      class:off={!$options.debug}
+      onclick={() => { $options.debug = !$options.debug; }}
     >
       Debug
     </button>

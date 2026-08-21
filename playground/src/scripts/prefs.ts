@@ -7,9 +7,6 @@ interface PlaygroundPrefs
   /** Is the compiler options panel open? */
   show_options: boolean;
 
-  /** Are the debug panels open? */
-  debug: boolean;
-
   frac_x: number;
 
   frac_y: number;

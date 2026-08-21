@@ -7,6 +7,7 @@ import { version } from "#playground/node_modules/desmost/package.json" with { t
 import type { DesmostDebug } from "desmost/internal";
 
 import { prefs } from "#scripts/prefs";
+import { options } from "#scripts/options";
 
 import DesmostOptions from "#parts/options.svelte";
 
@@ -35,7 +36,7 @@ let { source = $bindable(), debug }: Props = $props();
     <textarea bind:value={source}></textarea>
   </div>
 
-  {#if debug.duration}
+  {#if $options.debug && debug.duration}
     <aside>
       <p> Compiled in <span>{Math.round(debug.duration * 10) / 10}</span> ms </p>
 

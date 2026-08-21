@@ -76,7 +76,7 @@ function recompile()
 
     let r;
     try {
-      r = compile(desmos, source, { ...$options, debug: true });
+      r = compile(desmos, source, $options);
     } catch {
       r = undefined;
     }
@@ -154,7 +154,7 @@ function finish_drag()
   <Nav {is_compiling} {recompile} />
 
   <main
-    class:debug={$prefs.debug}
+    class:debug={$options.debug}
     style:--frac-x={$prefs.frac_x}
     style:--frac-y={$prefs.frac_y}
   >
@@ -168,7 +168,7 @@ function finish_drag()
       {/if}
     </div>
 
-    {#if $prefs.debug}
+    {#if $options.debug}
       <div class="resize-drag y" onmousedown={start_drag("y")}></div>
       <div></div>
       <div class="resize-drag y" onmousedown={start_drag("y")}></div>
