@@ -1,7 +1,7 @@
 # Changelog
 
 
-## Next (v0.7.2)
+## v0.7.2
 
 ### Fixes
 - Handle empty `/latex{}` expressions properly
