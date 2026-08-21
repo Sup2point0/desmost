@@ -38,6 +38,7 @@ export function prettify_latex(latex: string): string
 {
   latex = latex.replaceAll(/(?<!\\left)(\(|\[|\\\{)/g, "\\left$1");
   latex = latex.replaceAll(/(?<!\\right)(\)|\]|\\\})/g, "\\right$1");
+  latex = latex.replaceAll(/(:|,)(?!\\ ) */g, "$1\\ ");
 
   latex = latex.replaceAll(
     /(?<=[^\w]|^)\\?(mean|median|count|total|repeat|join|sort|shuffle|unique|mod|ceil|floor|round|sign) ?(?=\(|\\left\()/g,

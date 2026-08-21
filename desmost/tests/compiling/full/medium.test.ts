@@ -31,7 +31,7 @@ describe("medium", () =>
     assert.equal(exprs[i++].type, "text");
     assert.equal(exprs[i++].latex, ltx `\int_{a}^{b} f\left(x\right) \ dx`);
     assert.equal(exprs[i++].latex, ` `);
-    assert.equal(exprs[i++].latex, ltx `min\left(0, f\left(x\right)\right) \leq y \leq max\left(0, f\left(x\right)\right)`);
+    assert.equal(exprs[i++].latex, ltx `min\left(0,\ f\left(x\right)\right) \leq y \leq max\left(0,\ f\left(x\right)\right)`);
     assert.equal(exprs[i++], undefined);
   });
 })

@@ -4,6 +4,15 @@
 <br>
 
 
+## Next (v0.8)
+
+### New
+- `prettify` subtitutes `:`/`,` with `:\\ `/`,\\ ` to add a visual trailing space
+
+
+<br>
+
+
 ## v0.7.3
 
 ### Fixes
