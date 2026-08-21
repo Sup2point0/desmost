@@ -42,9 +42,6 @@
 - Disconnect `IntersectionObserver` in `<Desmost>` to avoid duplicate fires
 
 
-<br>
-
-
 ## v0.6
 
 ### Breaking
@@ -71,16 +68,10 @@
 - `<Desmost>` styles apply properly without `style` overriding `width` and `height`
 
 
-<br>
-
-
 ## v0.5.4
 
 ### Fixes
 - Apply `<Desmost>` styles to correct element
-
-
-<br>
 
 
 ## v0.5.3
@@ -89,16 +80,10 @@
 - Fix compilation issues in `<Desmost>`
 
 
-<br>
-
-
 ## v0.5.2
 
 ### Fixes
 - The `desmost/svelte` subpackage files weren’t being published!
-
-
-<br>
 
 
 ## v0.5.1
@@ -107,9 +92,6 @@
 - Implement `ignore_comments` compile option
 - Disallow `%` LaTeX comments after local incantations
 - `prettify` replaces all sequences of >1 whitespace characters with a singular ` ` space
-
-
-<br>
 
 
 ## v0.5
@@ -126,9 +108,6 @@
 
 ### Fixes
 - Avoid assignments to passed in `DesmostOptions` object which might affect externals
-
-
-<br>
 
 
 ## v0.4
@@ -150,16 +129,10 @@
 - Tighten publish pipeline to avoid stale builds being published
 
 
-<br>
-
-
 ## v0.3.1
 
 ### Fixes
 - Fix `\{\}` prettification (thanks [@iTechnical](https://github.com/itechnicals)!)
-
-
-<br>
 
 
 ## v0.3
@@ -204,9 +177,6 @@
 - Fix misconfigured TSConfig, which was resulting in files being compiled to `dist/src/` instead of `dist/`
 
 
-<br>
-
-
 ## v0.1.1
 
 ### New
@@ -214,9 +184,6 @@
 
 ### Fixes
 - Add explicit file extensions to compiled files for end users without bundlers
-
-
-<br>
 
 
 ## v0.1
