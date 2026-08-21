@@ -11,7 +11,7 @@ import { DesmosIncantation, ViewportIncantation } from "../magic/global";
 export function extract_settings(
    desmos: Desmos.Calculator,
    blank: Desmos.Calculator,
-): Ast.IncantationInvocation
+): Ast.IncantationInvocation | null
 {
    let defaults = blank.settings;
 
@@ -27,6 +27,8 @@ export function extract_settings(
       "  ",
    );
 
+   if (arg_raw.trim() === "") return null;
+
 	return {
 		kind: Ast.Kind.INCANTATION_INVOCATION,
 		incantation: new DesmosIncantation(),
@@ -40,19 +42,23 @@ export function extract_settings(
 export function extract_viewport(
    desmos: Desmos.Calculator,
    blank: Desmos.Calculator,
-): Ast.IncantationInvocation
+): Ast.IncantationInvocation | null
 {
    let defaults = blank.graphpaperBounds.mathCoordinates;
 	let { left, right, bottom, top } = desmos.graphpaperBounds.mathCoordinates;
 
+   let arg_raw = stringify_json5(
+      { left, right, bottom, top },
+      (k, v) => v === defaults[k] ? undefined : v,
+      "  ",
+   );
+
+   if (arg_raw.trim() === "") return null;
+
 	return {
 		kind: Ast.Kind.INCANTATION_INVOCATION,
 		incantation: new ViewportIncantation(),
-		arg_raw: stringify_json5(
-			{ left, right, bottom, top },
-			(k, v) => v === defaults[k] ? undefined : v,
-			"  ",
-		),
+		arg_raw,
 	};
 }
 
