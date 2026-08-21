@@ -3,10 +3,10 @@
 import "#styles/essence.scss";
 import "#styles/prism.scss";
 
-import { compile } from "../../../desmost/src";
-// import { compile } from "desmost";
-import { desmos_to_ast, ast_to_source } from "../../../desmost/src/index.internal";
-// import { desmos_to_ast, ast_to_source } from "desmost/internal";
+// import { compile } from "../../../desmost/src";
+import { compile } from "desmost";
+// import { desmos_to_ast, ast_to_source } from "../../../desmost/src/index.internal";
+import { desmos_to_ast, ast_to_source } from "desmost/internal";
 import type { Ast, DesmostDebug } from "desmost/internal";
 
 import { prefs } from "#scripts/prefs";
