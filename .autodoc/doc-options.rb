@@ -38,6 +38,14 @@ def extract_field(text:)
       else values = type.split(" | ")
    end
 
+   # remove comment structure
+   doc.gsub!(/  +\* ?/, "")
+   doc.sub!("/**", "")
+   doc.strip!
+   doc.gsub!("\n", "<br>")
+
+   # puts "'#{doc}'"
+
    # extract default
    default = doc.match(/(?<=Defaults to ).*?\./)&.[](0)
    default ||= doc.match(/(?<=- ).+(?=\(default\))/)&.[](0)&.strip
@@ -46,13 +54,7 @@ def extract_field(text:)
       default.chop!
    end
    
-   doc.gsub!(/Defaults to .*?\./, "")
-
-   # remove comment structure
-   doc.gsub!(/  +\* ?/, "")
-   doc.gsub!("/**", "")
-   doc.strip!
-   doc.gsub!("\n", "<br>")
+   doc.gsub!(/((<br>){2})?Defaults to .*?\./, "")
 
    return [ident, values, default, doc]
 end
