@@ -30,7 +30,7 @@ export function desmos_to_ast(desmos: Desmos.Calculator, blank: Desmos.Calculato
 		globals: [
 			extract_settings(desmos, blank),
 			extract_viewport(desmos, blank),
-		],
+		].filter(x => x != null),
 		locals: desmos.getExpressions().map(extract_expression),
 	};
 }
