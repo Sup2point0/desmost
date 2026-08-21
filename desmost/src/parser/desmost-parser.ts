@@ -417,7 +417,7 @@ export class DesmostParser extends GenericParser
 				);
 			}
 			
-			let top = stack.top!;
+			let top = stack.top;
 
 			switch (this.current)
 			{
@@ -552,7 +552,7 @@ class ContextStack
 	#should_skip(options: StackOperationOptions | undefined): boolean
 	{
 		return Boolean(
-				options?.when != undefined && !options?.when?.includes(this.top)
+				options?.when != undefined && !options.when?.includes(this.top)
 			|| options?.unless?.includes(this.top)
 		);
 	}

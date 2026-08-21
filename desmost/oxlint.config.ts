@@ -49,14 +49,6 @@ export default defineConfig({
 		"prefer-const": false,
 
 		"typescript/ban-ts-comment": true,
-		"typescript/explicit-member-accessibility": ["warn", {
-			overrides: { constructors: "no-public" },
-			ignoredMethodNames: [
-				"parse_pre_sep", "parse_sep", "parse_post_sep",
-				"try_parse_global_incantation", "try_parse_local_incantation", "try_parse_expr_incantation",
-				"try_parse_identifier", "parse_incantation_arg", "parse_latex_line",
-			],
-		}],
 		"typescript/explicit-module-boundary-types": true,
 		"typescript/no-confusing-void-expression": true,
 		"typescript/no-empty-object-type": true,
