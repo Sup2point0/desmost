@@ -2,7 +2,15 @@ import { type DesmostOptions, fill_defaults } from "./options";
 import { evaluate_global_incantation, evaluate_expr, evaluate_error } from "./evaluate";
 
 import { DesmostParser, Ast } from "../parser";
-import { UnrecoverableError } from "../errors";
+
+
+/** Debug diagnostics returned from `compile()`. */
+export interface DesmostDebug
+{
+  duration: number;
+  num_blocks: number;
+  ast: Ast[];
+}
 
 
 /**
@@ -60,7 +68,8 @@ export function compile(
 
   let errors = [];
 
-  /* NOTE: The compiler is lazy, parsing and evaluating one block at a time (as opposed to first parsing the entire AST). We don't need the whole AST, so this saves memory. It also doesn't sacrifice performance, since `.setExpressions()` internally just calls `.setExpression()` in a loop anyway. Benchmarks in the frontend produce similar times for both, so there's no performance improvement. */
+  /* The compiler is lazy, parsing and evaluating one block at a time (as opposed to first parsing the entire AST). We don't need the whole AST, so this saves memory. */
+  /* NOTE: It also doesn't sacrifice performance, since `.setExpressions()` internally just calls `.setExpression()` in a loop anyway. Benchmarks in the frontend produce similar times for both, so there's no performance improvement. */
   try {
     while (true) {
       let r = parser.parse_next();
@@ -71,6 +80,7 @@ export function compile(
         ast!.push(r);
       }
 
+      /** An error message to leave for aggregation later. */
       let defer: string | void = undefined;
       
       switch (r.kind) {
@@ -124,10 +134,3 @@ export function compile(
   }
 }
 
-
-export interface DesmostDebug
-{
-  duration: number;
-  num_blocks: number;
-  ast: Ast[];
-}

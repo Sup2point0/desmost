@@ -87,12 +87,8 @@ export class DesmostParser extends GenericParser
    */
   parse_pre_sep():
     Unrecoverable<
-      | { global: Ast.IncantationInvocation<GLOBAL>
-                | Ast.InvalidInvocation;
-      }
-      | { local: Array<Ast.IncantationInvocation<LOCAL>
-                      | Ast.InvalidInvocation>;
-      }
+    | { global: Ast.IncantationInvocation<GLOBAL> | Ast.InvalidInvocation }
+    | { local: Array<Ast.IncantationInvocation<LOCAL> | Ast.InvalidInvocation> }
     >
   {
     // 1 global incantation
