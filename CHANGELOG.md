@@ -1,7 +1,7 @@
 # Changelog
 
 
-## Next (v0.7)
+## v0.7
 
 ### Breaking
 - Leading and trailing blank lines are ignored by default, instead of kept as blank expressions
