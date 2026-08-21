@@ -35,7 +35,12 @@ export function emit_expression(expr?: Ast.Expression): string
          break;
       default:
          // @ts-expect-error: outdated types
-         content = expr.data.latex ?? "?";
+         if (expr.data.latex.trim() === "") {
+            content = "";
+         } else {
+            // @ts-expect-error: outdated types
+            content = expr.data.latex ?? "?";
+         }
    }
 
    return `${locals.join(" ")}${sep}${content}`;
