@@ -1,6 +1,12 @@
 # Changelog
 
 
+## Next (v0.7.2)
+
+### Fixes
+- Properly disconnect unfired `IntersectionObservers` when unmounting `<Desmost>`
+
+
 ## v0.7.1
 
 ### Fixes

@@ -151,9 +151,8 @@ onMount(() =>
   }
 
   return () => {
-    for (let instance of desmos_instances) {
-      instance.destroy();
-    }
+    desmos_instances.forEach(d => d.destroy());
+    lazy_observers.forEach(o => o.disconnect());
   };
 });
 
