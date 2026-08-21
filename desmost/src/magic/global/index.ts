@@ -1,3 +1,8 @@
+export { DesmosIncantation } from "./desmos";
+export { ViewportIncantation } from "./viewport";
+export { DarkModeIncantation } from "./dark-mode";
+
+
 import { Incantation, type GLOBAL } from "../incantation";
 
 import { DesmosIncantation } from "./desmos";
