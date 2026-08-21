@@ -95,11 +95,7 @@ export function compile(
     }
   }
   catch (e) {
-    if (e instanceof UnrecoverableError) {
-      errors.push(e);
-    } else {
-      throw e;
-    }
+    errors.push((e as Error).message);
   }
 
   if (errors.length > 0) {

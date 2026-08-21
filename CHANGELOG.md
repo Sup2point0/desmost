@@ -4,7 +4,7 @@
 ## Next (v0.7)
 
 ### Breaking
-- Leading and trailing blank lines are ignored by default. instead of kept as blank expressions
+- Leading and trailing blank lines are ignored by default, instead of kept as blank expressions
 - `ignore_trailing_blanks` renamed to `keep_trailing_blanks`
 - `ignore_blank_lines` renamed to `ignore_all_blanks`
 
@@ -13,6 +13,9 @@
 - `/note` alias for `/text`[^note]
 
 [^note]: I’ve caught myself using `/note` instead of `/text` far too many times, so at this point I think it’s worth adding in the alias :P
+
+### Fixes
+- `compile()` no longer allows non-Desmost exceptions to escape; they will also be injected into Desmos
 
 
 <br>
