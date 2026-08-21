@@ -20,6 +20,7 @@ import { onMount } from "svelte";
 
 let el_desmos: HTMLElement;
 let desmos: Desmos.Calculator | null | undefined = $state(undefined);
+let blank_state: unknown | null = null;
 
 onMount(() => {
   if (typeof Desmos === "undefined") {
@@ -30,6 +31,8 @@ onMount(() => {
   desmos = Desmos.GraphingCalculator(el_desmos, {
     border: false,
   });
+
+  blank_state = desmos.getState();
 
   // @ts-expect-error: outdated types
   desmos.observeEvent("change", (_, e) => {
@@ -72,7 +75,7 @@ function recompile()
       return;
     }
 
-    desmos.setBlank();
+    desmos.setState(blank_state);
 
     let r;
     try {
