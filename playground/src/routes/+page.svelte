@@ -17,7 +17,7 @@ import DesmostSource from "#parts/source.svelte";
 import DesmostAst from "#parts/ast.svelte";
 import DesmosExpressions from "#parts/exprs.svelte";
 
-import { onMount } from "svelte";
+import { onMount, untrack } from "svelte";
 
 
 let el_desmos: HTMLElement;
@@ -56,6 +56,7 @@ let ast: Ast[] = $state([]);
 let exprs: Desmos.ExpressionState[] = $state([]);
 
 let is_compiling = $state(false);
+let is_decompiling = $state(false);
 
 let debug: Partial<DesmostDebug> = $state({
   duration: 0,
@@ -65,11 +66,16 @@ let debug: Partial<DesmostDebug> = $state({
 $effect(() => {
   let _ = source;
   let __ = $options;
-  return recompile();
+  return untrack(recompile);
 });
+
+$inspect(is_decompiling)
 
 function recompile()
 {
+  /* NOTE: This avoids decompilation triggering a recompilation due to Svelte reactivity */
+  if (is_decompiling) return;
+
   is_compiling = true;
 
   let timeout = setTimeout(() => {
@@ -119,9 +125,12 @@ function redecompile()
 
   if (desmos == undefined) return;
 
+  is_decompiling = true;
   ast = desmos_to_ast(desmos, blank); 
   source = ast_to_source(ast);
 
+  /* NOTE: Finish 1 frame later to avoid triggering circular recompilation */
+  requestAnimationFrame(() => { is_decompiling = false; });
 }
 
 
