@@ -85,8 +85,8 @@ This page documents all the incantations available in Desmost.
     </td>
     <td>required</td>
     <td><pre lang="ts"><code>{
-<br>  left: number; right: number;
-<br>  bottom: number; top: number;
+<br>  left?: number; right?: number;
+<br>  bottom?: number; top?: number;
 <br>}</code></pre></td>
     <td>Set the bounds of the viewport via `Calculator.setMathBounds()`.</td>
   </tr>
