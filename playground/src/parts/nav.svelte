@@ -8,9 +8,11 @@ import { options } from "#scripts/options";
 interface Props {
   is_compiling: boolean;
   recompile: () => void;
+  is_decompiling: boolean;
+  redecompile: () => void;
 }
 
-let { is_compiling, recompile }: Props = $props();
+let { is_compiling, recompile, is_decompiling, redecompile }: Props = $props();
 
 </script>
 
@@ -39,6 +41,12 @@ let { is_compiling, recompile }: Props = $props();
       {:else} Recompile
       {/if}
     </button>
+    
+    <button id="redecompile" class:off={is_decompiling} onclick={redecompile}>
+      {#if is_decompiling} Decompiling...
+      {:else} Decompile
+      {/if}
+    </button>
   </div>
 
   <div class="right">
@@ -54,7 +62,7 @@ let { is_compiling, recompile }: Props = $props();
 <style lang="scss">
 
 $pad-vert: 0.5rem;
-$font-size: 1.25rem;
+$font-size: 1.2rem;
 
 nav {
   padding-right: 1rem;
@@ -120,8 +128,8 @@ a, button {
     opacity: 50%;
   }
 
-  &#recompile {
-    padding: 0 1.5rem;
+  .center & {
+    padding: 0 $font-size;
 
     &:hover, &:focus-visible {
       background: rgb(black, 40%);

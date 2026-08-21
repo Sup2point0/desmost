@@ -69,8 +69,6 @@ $effect(() => {
   return untrack(recompile);
 });
 
-$inspect(is_decompiling)
-
 function recompile()
 {
   /* NOTE: This avoids decompilation triggering a recompilation due to Svelte reactivity */
@@ -186,7 +184,7 @@ function finish_drag()
 <div id="desmos-blank" bind:this={el_blank}></div>
 
 <div class="root" onmousemove={continue_drag} onmouseup={finish_drag}>
-  <Nav {is_compiling} {recompile} />
+  <Nav {is_compiling} {recompile} {is_decompiling} {redecompile} />
 
   <main
     class:debug={$options.debug}
