@@ -4,9 +4,11 @@
 <br>
 
 
-## Next (v0.8)
+## v0.8
 
 ### New
+- Rudimentary decompiler!
+  - `desmost` now exports a `decompile()` function, for turning a `Desmos.Calculator` instance into raw Desmost source code
 - `prettify` subtitutes `:`/`,` with `:\\ `/`,\\ ` to add a visual trailing space
 
 
