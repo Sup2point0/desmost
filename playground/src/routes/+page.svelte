@@ -3,9 +3,11 @@
 import "#styles/essence.scss";
 import "#styles/prism.scss";
 
-// import { compile } from "../../../desmost/src";
-import { compile } from "desmost";
-import type { DesmostDebug } from "desmost/internal";
+import { compile } from "../../../desmost/src";
+// import { compile } from "desmost";
+import { desmos_to_ast, ast_to_source } from "../../../desmost/src/index.internal";
+// import { desmos_to_ast, ast_to_source } from "desmost/internal";
+import type { Ast, DesmostDebug } from "desmost/internal";
 
 import { prefs } from "#scripts/prefs";
 import { options } from "#scripts/options";
@@ -37,7 +39,7 @@ onMount(() => {
   // @ts-expect-error: outdated types
   desmos.observeEvent("change", (_, e) => {
     if (e.isUserInitiated) {
-      sync_exprs_with_desmos();
+      redecompile();
     }
   });
 });
@@ -50,14 +52,15 @@ f(x) = x^2
 `;
 
 let source = $state(WELCOME.trim());
+let ast: Ast[] = $state([]);
+let exprs: Desmos.ExpressionState[] = $state([]);
 
 let is_compiling = $state(false);
-let debug: DesmostDebug = $state({
+
+let debug: Partial<DesmostDebug> = $state({
   duration: 0,
   num_blocks: 0,
-  ast: [],
 });
-let exprs: Desmos.ExpressionState[] = $state([]);
 
 $effect(() => {
   let _ = source;
@@ -87,20 +90,35 @@ function recompile()
     if (r != undefined) {
       debug.duration   = r.duration;
       debug.num_blocks = r.num_blocks;
-      debug.ast        = r.ast ?? ["COMPILER ERROR"];
+      ast              = r.ast ?? ["COMPILER ERROR"];
     }
 
-    sync_exprs_with_desmos();
+    sync_desmos_to_exprs();
     is_compiling = false;
   }, 50);
 
   return () => clearTimeout(timeout);
 }
 
-function sync_exprs_with_desmos()
+function sync_desmos_to_exprs()
 {
-  // @ts-ignore: exceptional
-  exprs = desmos?.getExpressions() ?? ["DESMOS ERROR"];
+  // @ts-expect-error: repaired after
+  exprs = desmos?.getExpressions();
+
+  if (exprs == undefined) {
+    // @ts-ignore: exceptional
+    exprs = ["DESMOS ERROR"];
+    return;
+  }
+}
+
+function redecompile()
+{
+  sync_desmos_to_exprs();
+  
+  if (desmos != undefined) {
+    ast = desmos_to_ast(desmos);
+  }
 }
 
 
@@ -176,7 +194,7 @@ function finish_drag()
       <div></div>
       <div class="resize-drag y" onmousedown={start_drag("y")}></div>
 
-      <DesmostAst ast={debug.ast} />
+      <DesmostAst ast={ast} />
       <div class="resize-drag x" onmousedown={start_drag("x")}></div>
       <DesmosExpressions {exprs} />
     {/if}

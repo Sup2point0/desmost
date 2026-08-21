@@ -33,7 +33,12 @@ let { source = $bindable(), debug }: Props = $props();
       <small> Desmost <span>v{version}</span> </small>
     </header>
 
-    <textarea bind:value={source}></textarea>
+    <textarea bind:value={
+      () => source,
+      (value: string) => {
+        source = value;
+      }
+    }></textarea>
   </div>
 
   {#if $options.debug && debug.duration}
