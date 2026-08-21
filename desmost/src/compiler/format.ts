@@ -4,15 +4,15 @@ import { UnrecoverableError } from "../errors";
 
 
 export function format_error(
-  e: UnrecoverableError,
-  options: Required<DesmostOptions>,
+	e: UnrecoverableError,
+	options: Required<DesmostOptions>,
 ): string
 {
-  let prefix = options.error_prefix;
-  let sep = (prefix === "" || prefix.endsWith("\n")) ? "" : " ";
+	let prefix = options.error_prefix;
+	let sep = (prefix === "" || prefix.endsWith("\n")) ? "" : " ";
 
-  return `${prefix}${sep}${e.name}: ${e.message}`;
-  // TODO maybe include stack? (configurable?)
+	return `${prefix}${sep}${e.name}: ${e.message}`;
+	// TODO maybe include stack? (configurable?)
 }
 
 
@@ -21,8 +21,8 @@ export function format_error(
  */
 export function normalise_latex(latex: string): string
 {
-  latex = latex.replaceAll(/\s+/g, " ");
-  return latex;
+	latex = latex.replaceAll(/\s+/g, " ");
+	return latex;
 }
 
 
@@ -36,14 +36,14 @@ export function normalise_latex(latex: string): string
  */
 export function prettify_latex(latex: string): string
 {
-  latex = latex.replaceAll(/(?<!\\left)(\(|\[|\\\{)/g, "\\left$1");
-  latex = latex.replaceAll(/(?<!\\right)(\)|\]|\\\})/g, "\\right$1");
-  latex = latex.replaceAll(/(:|,)(?!\\ ) */g, "$1\\ ");
+	latex = latex.replaceAll(/(?<!\\left)(\(|\[|\\\{)/g, "\\left$1");
+	latex = latex.replaceAll(/(?<!\\right)(\)|\]|\\\})/g, "\\right$1");
+	latex = latex.replaceAll(/(:|,)(?!\\ ) */g, "$1\\ ");
 
-  latex = latex.replaceAll(
-    /(?<=[^\w]|^)\\?(mean|median|count|total|repeat|join|sort|shuffle|unique|mod|ceil|floor|round|sign) ?(?=\(|\\left\()/g,
-    "\\operatorname{$1}"
-  );
+	latex = latex.replaceAll(
+		/(?<=[^\w]|^)\\?(mean|median|count|total|repeat|join|sort|shuffle|unique|mod|ceil|floor|round|sign) ?(?=\(|\\left\()/g,
+		"\\operatorname{$1}"
+	);
 
-  return latex;
+	return latex;
 }

@@ -15,15 +15,15 @@ import { SliderIncantation } from "./slider";
 
 export const LOCAL_INCANTATIONS: Incantation<LOCAL>[] =
 [
-  new AnimIncantation(),
-  new ColourIncantation(),
-  new DashedIncantation(),
-  new FillIncantation(),
-  new HideIncantation(),
-  new LabelIncantation(),
-  new LineIncantation(),
-  new NoLineIncantation(),
-  new PointIncantation(),
-  new SecretIncantation(),
-  new SliderIncantation(),
+	new AnimIncantation(),
+	new ColourIncantation(),
+	new DashedIncantation(),
+	new FillIncantation(),
+	new HideIncantation(),
+	new LabelIncantation(),
+	new LineIncantation(),
+	new NoLineIncantation(),
+	new PointIncantation(),
+	new SecretIncantation(),
+	new SliderIncantation(),
 ];

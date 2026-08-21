@@ -9,24 +9,24 @@ import { UnrecoverableError, type Unrecoverable } from "../errors";
  * Evaluate arguments (if any) to a global incantation `invocation`, then apply the incantation to `desmos`.
  */
 export function evaluate_global_incantation(
-  invocation: Ast.IncantationInvocation,
-  desmos: Desmos.Calculator,
-  options: Required<DesmostOptions>,
+	invocation: Ast.IncantationInvocation,
+	desmos: Desmos.Calculator,
+	options: Required<DesmostOptions>,
 ): Unrecoverable<void | string>
 {
-  let data = undefined;
+	let data = undefined;
 
-  if ("arg_raw" in invocation && invocation.arg_raw != undefined) {
-    try {
-      data = invocation.incantation.evaluate_arg(invocation.arg_raw);
-    }
-    catch (e) {
-      let msg = evaluate_error(e as Error, desmos, options);
-      return msg;
-    }
-  }
+	if ("arg_raw" in invocation && invocation.arg_raw != undefined) {
+		try {
+			data = invocation.incantation.evaluate_arg(invocation.arg_raw);
+		}
+		catch (e) {
+			let msg = evaluate_error(e as Error, desmos, options);
+			return msg;
+		}
+	}
 
-  invocation.incantation.apply(desmos, data);
+	invocation.incantation.apply(desmos, data);
 }
 
 
@@ -34,53 +34,53 @@ export function evaluate_global_incantation(
  * Evaluate arguments (if any) to local incantation invocations on `expr`, then add `expr` to `desmos`.
  */
 export function evaluate_expr(
-  expr: Ast.Expression,
-  desmos: Desmos.Calculator,
-  options: Required<DesmostOptions>,
+	expr: Ast.Expression,
+	desmos: Desmos.Calculator,
+	options: Required<DesmostOptions>,
 ): Unrecoverable<void | string>
 {
-  let errors: string[] = [];
+	let errors: string[] = [];
 
-  for (let invocation of expr.incantations) {
-    if (invocation.kind === Ast.Kind.INVALID_INCANTATION) {
-      let msg = evaluate_error(invocation.error, desmos, { ...options, place_errors: "start" });
-      if (msg != undefined) {
-        errors.push(msg);
-      }
-      continue;
-    }
+	for (let invocation of expr.incantations) {
+		if (invocation.kind === Ast.Kind.INVALID_INCANTATION) {
+			let msg = evaluate_error(invocation.error, desmos, { ...options, place_errors: "start" });
+			if (msg != undefined) {
+				errors.push(msg);
+			}
+			continue;
+		}
 
-    let data = undefined;
+		let data = undefined;
 
-    if ("arg_raw" in invocation && invocation.arg_raw != undefined) {
-      try {
-        data = invocation.incantation.evaluate_arg(invocation.arg_raw);
-      }
-      catch (e) {
-        errors.push(format_error(e as Error, options));
-        if (invocation.incantation.requires_arg) continue;
-      }
-    }
+		if ("arg_raw" in invocation && invocation.arg_raw != undefined) {
+			try {
+				data = invocation.incantation.evaluate_arg(invocation.arg_raw);
+			}
+			catch (e) {
+				errors.push(format_error(e as Error, options));
+				if (invocation.incantation.requires_arg) continue;
+			}
+		}
 
-    invocation.incantation.apply(expr.data, data);
-  }
-  
-  if (errors.length > 0) {
-    desmos.setExpression({ type: "text", text: errors.join("\n\n") });
-  }
+		invocation.incantation.apply(expr.data, data);
+	}
+	
+	if (errors.length > 0) {
+		desmos.setExpression({ type: "text", text: errors.join("\n\n") });
+	}
 
-  // @ts-expect-error: outdated types
-  if (expr.data.latex != undefined) {
-    // @ts-expect-error: outdated types
-    expr.data.latex = normalise_latex(expr.data.latex);
+	// @ts-expect-error: outdated types
+	if (expr.data.latex != undefined) {
+		// @ts-expect-error: outdated types
+		expr.data.latex = normalise_latex(expr.data.latex);
 
-    if (options.prettify) {
-      // @ts-expect-error: outdated types
-      expr.data.latex = prettify_latex(expr.data.latex);
-    }
-  }
+		if (options.prettify) {
+			// @ts-expect-error: outdated types
+			expr.data.latex = prettify_latex(expr.data.latex);
+		}
+	}
 
-  desmos.setExpression(expr.data);
+	desmos.setExpression(expr.data);
 }
 
 
@@ -90,30 +90,30 @@ export function evaluate_expr(
  * If the user set `place_errors: start` or `place_errors: end`, this returns the formatted error message for deferred aggregation.
  */
 export function evaluate_error(
-  error: UnrecoverableError,
-  desmos: Desmos.Calculator,
-  options: Required<DesmostOptions>,
+	error: UnrecoverableError,
+	desmos: Desmos.Calculator,
+	options: Required<DesmostOptions>,
 ): Unrecoverable<void | string>
 {
-  switch (options.errors) {
-    case "crash":
-      throw error;
+	switch (options.errors) {
+		case "crash":
+			throw error;
 
-    case "suppress":
-      console.error(error);
-      break;
+		case "suppress":
+			console.error(error);
+			break;
 
-    default: switch (options.place_errors) {
-      case "end":
-      case "start":
-        return format_error(error, options);
-      
-      default:
-        desmos.setExpression({
-          type: "text",
-          text: format_error(error, options),
-        });
-        break;
-    }
-  }
+		default: switch (options.place_errors) {
+			case "end":
+			case "start":
+				return format_error(error, options);
+			
+			default:
+				desmos.setExpression({
+					type: "text",
+					text: format_error(error, options),
+				});
+				break;
+		}
+	}
 }

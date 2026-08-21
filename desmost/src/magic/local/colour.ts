@@ -6,33 +6,33 @@ import { DesmosColour } from "../../desmos";
 
 export class ColourIncantation extends ArgIncantation<LOCAL>
 {
-  override readonly description
-    = ""
+	override readonly description
+		= ""
 
-  override readonly identifier   = "color"
-  override readonly alias        = "colour"
-  override readonly requires_arg = true
-  override readonly arg_type     = Incantation.ArgType.ENUM
+	override readonly identifier   = "color"
+	override readonly alias        = "colour"
+	override readonly requires_arg = true
+	override readonly arg_type     = Incantation.ArgType.ENUM
 
-  override apply(target: Desmos.ExpressionState, data: DesmosColour)
-  {
-    super.require_expr_type(target.type, "expression");
-    target.color = data;
-  }
+	override apply(target: Desmos.ExpressionState, data: DesmosColour)
+	{
+		super.require_expr_type(target.type, "expression");
+		target.color = data;
+	}
 
-  override evaluate_arg(data: string): DesmosColour
-  {
-    switch (data.trim().toUpperCase()) {
-      case "RED":    return DesmosColour.RED;
-      case "BLUE":   return DesmosColour.BLUE;
-      case "GREEN":  return DesmosColour.GREEN;
-      case "PURPLE": return DesmosColour.PURPLE;
-      case "ORANGE": return DesmosColour.ORANGE;
-      case "BLACK":  return DesmosColour.BLACK;
-      default:
-        throw new UnrecoverableError(
-          `Invalid colour: \`${data}\``
-        );
-    }
-  }
+	override evaluate_arg(data: string): DesmosColour
+	{
+		switch (data.trim().toUpperCase()) {
+			case "RED":    return DesmosColour.RED;
+			case "BLUE":   return DesmosColour.BLUE;
+			case "GREEN":  return DesmosColour.GREEN;
+			case "PURPLE": return DesmosColour.PURPLE;
+			case "ORANGE": return DesmosColour.ORANGE;
+			case "BLACK":  return DesmosColour.BLACK;
+			default:
+				throw new UnrecoverableError(
+					`Invalid colour: \`${data}\``
+				);
+		}
+	}
 }

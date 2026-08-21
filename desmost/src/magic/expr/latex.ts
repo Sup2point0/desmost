@@ -3,22 +3,22 @@ import { Incantation, ArgIncantation, type EXPR } from "../incantation";
 
 export class LatexIncantation extends ArgIncantation<EXPR>
 {
-  override readonly description
-    = "Produce a LaTeX expression. This allows the input to span multiple lines."
-  
-  override readonly identifier   = "latex"
-  override readonly requires_arg = true
-  override readonly arg_type     = Incantation.ArgType.LATEX
+	override readonly description
+		= "Produce a LaTeX expression. This allows the input to span multiple lines."
+	
+	override readonly identifier   = "latex"
+	override readonly requires_arg = true
+	override readonly arg_type     = Incantation.ArgType.LATEX
 
-  apply(target: Desmos.ExpressionState, data: string): void
-  {
-    target.type = "expression";
-    // @ts-expect-error: outdated types
-    target.latex = data === "" ? " " : data;
-  }
+	apply(target: Desmos.ExpressionState, data: string): void
+	{
+		target.type = "expression";
+		// @ts-expect-error: outdated types
+		target.latex = data === "" ? " " : data;
+	}
 
-  override evaluate_arg(data: string): string
-  {
-    return data;
-  }
+	override evaluate_arg(data: string): string
+	{
+		return data;
+	}
 }
