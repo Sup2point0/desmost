@@ -18,21 +18,21 @@ const TRIALS = 10;
 
 test("medium", () =>
 {
-  let t_init = performance.now();
+	let t_init = performance.now();
 
-  for (let i = 0; i < TRIALS; i++) {
-    compile(testing_desmos(), MEDIUM);
-  }
+	for (let i = 0; i < TRIALS; i++) {
+		compile(testing_desmos(), MEDIUM);
+	}
 
-  let total_duration = performance.now() - t_init;
-  let mean_duration = total_duration / TRIALS;
+	let total_duration = performance.now() - t_init;
+	let mean_duration = total_duration / TRIALS;
 
-  assert.isNumber(mean_duration);
-  assert.isAbove(mean_duration, 0);
+	assert.isNumber(mean_duration);
+	assert.isAbove(mean_duration, 0);
 
-  assert.isBelow(mean_duration, 1000);
-  assert.isBelow(mean_duration, 100);
-  assert.isBelow(mean_duration, 10);
-  
-  console.log(mean_duration);
+	assert.isBelow(mean_duration, 1000);
+	assert.isBelow(mean_duration, 100);
+	assert.isBelow(mean_duration, 10);
+	
+	console.log(mean_duration);
 })

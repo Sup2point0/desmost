@@ -7,146 +7,146 @@ import { testing_desmos } from "../../shared";
 
 describe("ignore-comments", () =>
 {
-  test("only comment", () => {
-    const src = `% sup`.trim();
+	test("only comment", () => {
+		const src = `% sup`.trim();
 
-    let desmos = testing_desmos();
-    compile(desmos, src, { ignore_comments: true });
-    let exprs = desmos.getExpressions();
+		let desmos = testing_desmos();
+		compile(desmos, src, { ignore_comments: true });
+		let exprs = desmos.getExpressions();
 
-    assert.isEmpty(exprs);
-  })
-  
-  test("only comments", () => {
-    const src = `
+		assert.isEmpty(exprs);
+	})
+	
+	test("only comments", () => {
+		const src = `
 % sup
 % soup
 % slurp
-    `.trim();
+		`.trim();
 
-    let desmos = testing_desmos();
-    compile(desmos, src, { ignore_comments: true });
-    let exprs = desmos.getExpressions();
+		let desmos = testing_desmos();
+		compile(desmos, src, { ignore_comments: true });
+		let exprs = desmos.getExpressions();
 
-    assert.isEmpty(exprs);
-  })
-  
-  test("mixed", () => {
-    const src = `
+		assert.isEmpty(exprs);
+	})
+	
+	test("mixed", () => {
+		const src = `
 % sup
 y = x
-    `.trim();
+		`.trim();
 
-    let desmos = testing_desmos();
-    compile(desmos, src, { ignore_comments: true });
-    let exprs = desmos.getExpressions();
+		let desmos = testing_desmos();
+		compile(desmos, src, { ignore_comments: true });
+		let exprs = desmos.getExpressions();
 
-    assert.equal(exprs.length, 1);
-    // @ts-expect-error: outdated types
-    assert.equal(exprs[0].latex, `y = x`);
-  })
-  
-  test("interspersed", () => {
-    const src = `
+		assert.equal(exprs.length, 1);
+		// @ts-expect-error: outdated types
+		assert.equal(exprs[0].latex, `y = x`);
+	})
+	
+	test("interspersed", () => {
+		const src = `
 y = x
-% sup
-y = x^2
-    `.trim();
-
-    let desmos = testing_desmos();
-    compile(desmos, src, { ignore_comments: true });
-    let exprs = desmos.getExpressions();
-
-    assert.equal(exprs.length, 2);
-    // @ts-expect-error: outdated types
-    assert.equal(exprs[0].latex, `y = x`);
-    // @ts-expect-error: outdated types
-    assert.equal(exprs[1].latex, `y = x^2`);
-  })
-  
-  test("interspersed + blanks", () => {
-    const src = `
-y = x
-
 % sup
 y = x^2
-    `.trim();
+		`.trim();
 
-    let desmos = testing_desmos();
-    compile(desmos, src, { ignore_comments: true });
-    let exprs = desmos.getExpressions();
+		let desmos = testing_desmos();
+		compile(desmos, src, { ignore_comments: true });
+		let exprs = desmos.getExpressions();
 
-    assert.equal(exprs.length, 3);
-    // @ts-expect-error: outdated types
-    assert.equal(exprs[0].latex, `y = x`);
-    // @ts-expect-error: outdated types
-    assert.equal(exprs[1].latex, ` `);
-    // @ts-expect-error: outdated types
-    assert.equal(exprs[2].latex, `y = x^2`);
-  })
+		assert.equal(exprs.length, 2);
+		// @ts-expect-error: outdated types
+		assert.equal(exprs[0].latex, `y = x`);
+		// @ts-expect-error: outdated types
+		assert.equal(exprs[1].latex, `y = x^2`);
+	})
+	
+	test("interspersed + blanks", () => {
+		const src = `
+y = x
+
+% sup
+y = x^2
+		`.trim();
+
+		let desmos = testing_desmos();
+		compile(desmos, src, { ignore_comments: true });
+		let exprs = desmos.getExpressions();
+
+		assert.equal(exprs.length, 3);
+		// @ts-expect-error: outdated types
+		assert.equal(exprs[0].latex, `y = x`);
+		// @ts-expect-error: outdated types
+		assert.equal(exprs[1].latex, ` `);
+		// @ts-expect-error: outdated types
+		assert.equal(exprs[2].latex, `y = x^2`);
+	})
 })
 
 
 describe("ignore-blank-lines", () =>
 {
-  test("1 blank", () => {
-    const src = `
+	test("1 blank", () => {
+		const src = `
 y = x
 
 y = x^2
-    `.trim();
+		`.trim();
 
-    let desmos = testing_desmos();
-    compile(desmos, src, { ignore_all_blanks: true })!;
-    let exprs = desmos.getExpressions();
+		let desmos = testing_desmos();
+		compile(desmos, src, { ignore_all_blanks: true })!;
+		let exprs = desmos.getExpressions();
 
-    assert.equal(exprs.length, 2);
-    // @ts-expect-error: outdated types
-    assert.equal(exprs[0].latex, `y = x`);
-    // @ts-expect-error: outdated types
-    assert.equal(exprs[1].latex, `y = x^2`);
-  })
-  
-  test.each([2, 5, 20, 100])("many blanks", n => {
-    const src = `
+		assert.equal(exprs.length, 2);
+		// @ts-expect-error: outdated types
+		assert.equal(exprs[0].latex, `y = x`);
+		// @ts-expect-error: outdated types
+		assert.equal(exprs[1].latex, `y = x^2`);
+	})
+	
+	test.each([2, 5, 20, 100])("many blanks", n => {
+		const src = `
 y = x
 ${"\n".repeat(n)}
 y = x^2
-    `.trim();
+		`.trim();
 
-    let desmos = testing_desmos();
-    compile(desmos, src, { ignore_all_blanks: true })!;
+		let desmos = testing_desmos();
+		compile(desmos, src, { ignore_all_blanks: true })!;
 
-    let exprs = desmos.getExpressions();
-    assert.equal(exprs.length, 2);
-    // @ts-expect-error: outdated types
-    assert.equal(exprs[0].latex, `y = x`);
-    // @ts-expect-error: outdated types
-    assert.equal(exprs[1].latex, `y = x^2`);
-  })
-  
-  test("spliced", n => {
-    const src = `
+		let exprs = desmos.getExpressions();
+		assert.equal(exprs.length, 2);
+		// @ts-expect-error: outdated types
+		assert.equal(exprs[0].latex, `y = x`);
+		// @ts-expect-error: outdated types
+		assert.equal(exprs[1].latex, `y = x^2`);
+	})
+	
+	test("spliced", n => {
+		const src = `
 p = 1
 
 q = 2
 
 
 r = 3
-    `.trim();
+		`.trim();
 
-    let desmos = testing_desmos();
-    compile(desmos, src, { ignore_all_blanks: true })!;
+		let desmos = testing_desmos();
+		compile(desmos, src, { ignore_all_blanks: true })!;
 
-    let exprs = desmos.getExpressions();
-    assert.equal(exprs.length, 3);
-    // @ts-expect-error: outdated types
-    assert.equal(exprs[0].latex, `p = 1`);
-    // @ts-expect-error: outdated types
-    assert.equal(exprs[1].latex, `q = 2`);
-    // @ts-expect-error: outdated types
-    assert.equal(exprs[2].latex, `r = 3`);
-  })
+		let exprs = desmos.getExpressions();
+		assert.equal(exprs.length, 3);
+		// @ts-expect-error: outdated types
+		assert.equal(exprs[0].latex, `p = 1`);
+		// @ts-expect-error: outdated types
+		assert.equal(exprs[1].latex, `q = 2`);
+		// @ts-expect-error: outdated types
+		assert.equal(exprs[2].latex, `r = 3`);
+	})
 })
 
 
