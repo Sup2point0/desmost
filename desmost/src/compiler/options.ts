@@ -13,7 +13,10 @@ export interface DesmostOptions
    * How should errors be *surfaced* to the end user?
    * 
    * - `surface` (default): Blocks that result in errors will become Desmos text expressions containing the error message, leaving other expressions unaffected.
+   * 
    * - `crash`: The entire compilation to Desmos will terminate with a single error message. This means you don't get any output at all, but errors are also immediately obvious.
+   *    - Note that this will *clear all expressions* in the calculator instance.
+   * 
    * - `suppress`: Silently fail on the frontend (if you wish to give the illusion that everything is fine).
    */
   errors?: "surface" | "crash" | "suppress"

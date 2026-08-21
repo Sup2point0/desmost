@@ -280,6 +280,9 @@ export class DesmostParser extends GenericParser
     };
   }
 
+  /**
+   * Attempt to parse an expression incantation invocation.
+   */
   try_parse_expr_incantation(): Unrecoverable<Ast.Expression | NoMatch>
   {
     let init = this.i;
