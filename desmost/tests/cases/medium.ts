@@ -11,6 +11,7 @@ export const MEDIUM = ltx `
 /viewport{
   left: -8, right: 8,
 }
+
 /text{
 Definite Integral Calculator
 v1.0

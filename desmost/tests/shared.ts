@@ -24,5 +24,8 @@ export function testing_desmos(): Desmos.Calculator
     setExpression: (expr: Desmos.ExpressionState) => expressions.push(expr),
     setExpressions: (exprs: Desmos.ExpressionState[]) => expressions.push(...exprs),
     removeExpression: () => {},
+    graphpaperBounds: {
+      mathCoordinates: { left: -10, right: 10, bottom: -10, top: 10 },
+    },
   } as unknown as Desmos.Calculator;
 }
