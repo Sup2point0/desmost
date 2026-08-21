@@ -49,7 +49,7 @@ f(x) = A \sin(x - t)
   </tr>
 </table>
 
-In other words, it’s like HTML+CSS but for Desmos. Write your content in LaTeX (alongside your Markdown!) with a touch of Desmost magic, and Desmost will turn it to a Desmos calculator embed for you.
+In other words, it’s like HTML+CSS but for Desmos. Write your content in LaTeX (alongside your Markdown!) with Desmost syntax where you need it, and Desmost will turn it into a Desmos calculator embed for you.
 
 
 <br>
