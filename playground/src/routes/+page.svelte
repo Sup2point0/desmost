@@ -21,8 +21,10 @@ import { onMount } from "svelte";
 
 
 let el_desmos: HTMLElement;
-let desmos: Desmos.Calculator | null | undefined = $state(undefined);
-let blank_state: unknown | null = null;
+let el_blank: HTMLElement;
+let desmos: Desmos.Calculator | null;
+let blank: Desmos.Calculator;
+let blank_state: unknown;
 
 onMount(() => {
   if (typeof Desmos === "undefined") {
@@ -30,11 +32,9 @@ onMount(() => {
     return;
   }
 
-  desmos = Desmos.GraphingCalculator(el_desmos, {
-    border: false,
-  });
-
-  blank_state = desmos.getState();
+  desmos = Desmos.GraphingCalculator(el_desmos, { border: false });
+  blank = Desmos.GraphingCalculator(el_blank, { border: false });
+  blank_state = blank.getState();
 
   // @ts-expect-error: outdated types
   desmos.observeEvent("change", (_, e) => {
@@ -102,8 +102,9 @@ function recompile()
 
 function sync_desmos_to_exprs()
 {
-  // @ts-expect-error: repaired after
-  exprs = desmos?.getExpressions();
+  if (desmos == undefined) return;
+
+  exprs = desmos.getExpressions();
 
   if (exprs == undefined) {
     // @ts-ignore: exceptional
@@ -115,10 +116,12 @@ function sync_desmos_to_exprs()
 function redecompile()
 {
   sync_desmos_to_exprs();
-  
-  if (desmos != undefined) {
-    ast = desmos_to_ast(desmos);
-  }
+
+  if (desmos == undefined) return;
+
+  ast = desmos_to_ast(desmos, blank); 
+  source = ast_to_source(ast);
+
 }
 
 
@@ -170,6 +173,8 @@ function finish_drag()
 
 </script>
 
+
+<div id="desmos-blank" bind:this={el_blank}></div>
 
 <div class="root" onmousemove={continue_drag} onmouseup={finish_drag}>
   <Nav {is_compiling} {recompile} />
@@ -270,6 +275,10 @@ main {
     color: $col-red;
     text-align: center;
   }
+}
+
+#desmos-blank {
+  display: none;
 }
 
 </style>
