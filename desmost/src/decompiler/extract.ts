@@ -1,3 +1,5 @@
+import { stringify_json5 } from "./format";
+
 import { Ast } from "../parser";
 
 import { DesmosIncantation, ViewportIncantation } from "../magic/global";
@@ -11,11 +13,12 @@ export function extract_settings(desmos: Desmos.Calculator): Ast.IncantationInvo
 	return {
 		kind: Ast.Kind.INCANTATION_INVOCATION,
 		incantation: new DesmosIncantation(),
-		arg_raw: JSON.stringify(
-			desmos.settings,
-			(key, value) => ["observe", "unobserve"].includes(key) ? undefined : value,
-			"  ",
-		),
+		arg_raw:
+         stringify_json5(
+            desmos.settings,
+            (key, value) => ["observe", "unobserve"].includes(key) ? undefined : value,
+            "  ",
+         )
 	};
 }
 
@@ -29,7 +32,7 @@ export function extract_viewport(desmos: Desmos.Calculator): Ast.IncantationInvo
 	return {
 		kind: Ast.Kind.INCANTATION_INVOCATION,
 		incantation: new ViewportIncantation(),
-		arg_raw: JSON.stringify(
+		arg_raw: stringify_json5(
 			{ left, right, bottom, top },
 			undefined,
 			"  ",

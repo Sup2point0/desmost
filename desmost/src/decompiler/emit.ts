@@ -11,7 +11,7 @@ export function emit_global_incantation(invocation?: Ast.IncantationInvocation):
    let ident = invocation.incantation.identifier;
    let arg_raw = invocation.arg_raw;
 	
-   return `/${ident}{ ${arg_raw} }`;
+   return `/${ident}{\n  ${arg_raw}\n}`;
 }
 
 
@@ -23,7 +23,7 @@ export function emit_expression(expr?: Ast.Expression): string
 	if (expr == undefined) return "";
 
 	// TODO
-   let locals = [];
+   let locals: string[] = [];
 
    let sep = expr.incantations.length > 0 ? " :: " : "";
    
