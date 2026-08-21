@@ -1,6 +1,12 @@
 # Changelog
 
 
+## v0.7.1
+
+### Fixes
+- `/label` enables `showLabel: true` by default
+
+
 ## v0.7
 
 ### Breaking

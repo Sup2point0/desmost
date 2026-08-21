@@ -24,7 +24,7 @@ export class LabelIncantation extends ArgIncantation<LOCAL>
   {
     super.require_expr_type(target.type, "expression");
     target.label = data.text;
-    if (data.show != undefined) target.showLabel = data.show;
+    target.showLabel = data.show ?? true;
     // @ts-expect-error: outdated types TODO check
     if (data.size != undefined) target.labelSize = data.size;
     if (data.pos  != undefined) target.labelOrientation = data.pos;
