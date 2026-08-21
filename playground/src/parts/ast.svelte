@@ -14,8 +14,17 @@ interface Props {
 let { ast }: Props = $props();
 
 
-let json = $derived(JSON.stringify(ast, undefined, "  "));
-let highlighted = $derived(Prism.highlight(json, Prism.languages.javascript, "javascript"));
+let json = $derived(
+  JSON.stringify(
+    ast,
+    (key: string, value) => ["description"].includes(key) ? undefined : value,
+    "  "
+  )
+);
+
+let highlighted = $derived(
+  Prism.highlight(json, Prism.languages.javascript, "javascript")
+);
 
 </script>
 
