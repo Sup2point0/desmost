@@ -10,3 +10,11 @@ export const stringify_json5: (typeof JSON.stringify) = (
       .replaceAll(/"([^"]+)":/g, "$1:")  // "key": <value> -> key: <value>
    );
 }
+
+
+export function prettify_source(source: string): string
+{
+   source = source.replaceAll(/(?<=[^ ])=(?=[^ ])/g, " = ");
+
+   return source;
+}

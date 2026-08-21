@@ -1,4 +1,4 @@
-import { stringify_json5 } from "./format";
+import { stringify_json5, prettify_source } from "./format";
 
 import { Ast } from "../parser";
 
@@ -77,6 +77,10 @@ export function extract_expression(expression: Desmos.ExpressionState): Ast.Expr
          Object.entries(expression)
          .filter(([key, value]) => !is_insignificant(key, value))
       );
+   }
+
+   if ("latex" in data) {
+      data.latex = prettify_source(data.latex);
    }
 
 	return {
