@@ -4,35 +4,32 @@ import { extract_settings, extract_viewport, extract_expression } from "./extrac
 import { Ast } from "../parser";
 
 
-/**
- * Decompile Desmos into raw Desmost source code.
- */
-export function decompile(desmos: Desmos.Calculator): string
+export interface SemiStructuredAst
 {
-	return ast_to_source(desmos_to_ast(desmos));
-}
-
-/**
- * Decompile `desmos` into an AST.
- */
-export function desmos_to_ast(desmos: Desmos.Calculator): Ast[]
-{
-   let { globals, locals } = desmos_to_ast_structured(desmos);
-   return [...globals, ...locals];
-}
-
-/**
- * Decompile `desmos` into a semi-structured AST (for incremental decompilation).
- */
-export function desmos_to_ast_structured(desmos: Desmos.Calculator): {
-	globals: Ast.IncantationInvocation[];
+   globals: Ast.IncantationInvocation[];
 	locals: Ast.Expression[];
 }
+
+
+/**
+ * Decompile Desmos into raw Desmost source code.
+ * 
+ * The caller must also supply a `blank` calculator instance. This is used as a reference for default field values, so that emitted incantations like `/desmos{}` don't get filled with a huge amount of noise.
+ */
+export function decompile(desmos: Desmos.Calculator, blank: Desmos.Calculator): string
+{
+	return ast_to_source(desmos_to_ast(desmos, blank));
+}
+
+/**
+ * Decompile `desmos` into a semi-structured AST.
+ */
+export function desmos_to_ast(desmos: Desmos.Calculator, blank: Desmos.Calculator): SemiStructuredAst
 {
 	return {
 		globals: [
-			extract_settings(desmos),
-			extract_viewport(desmos),
+			extract_settings(desmos, blank),
+			extract_viewport(desmos, blank),
 		],
 		locals: desmos.getExpressions().map(extract_expression),
 	};
@@ -41,21 +38,11 @@ export function desmos_to_ast_structured(desmos: Desmos.Calculator): {
 /**
  * Emit the Desmost source code representation of `ast`.
  */
-export function ast_to_source(ast: Ast[]): string
+export function ast_to_source(ast: SemiStructuredAst): string
 {
 	return (
-		ast.map(each => {
-			switch (each.kind) {
-				case Ast.Kind.INCANTATION_INVOCATION:
-					return emit_global_incantation(each);
-				
-				case Ast.Kind.EXPRESSION:
-					return emit_expression(each);
-
-				default:
-					return "";
-			}
-		})
-		.join("\n")
+      ast.globals.map(emit_global_incantation).join("\n")
+      + "\n\n"
+      + ast.locals.map(emit_expression).join("\n")
 	);
 }
