@@ -4,6 +4,7 @@
 ## Next (v0.7.2)
 
 ### Fixes
+- Handle empty `/latex{}` expressions properly
 - Do not call `.updateSettings()` when `/desmos` is invoked without an argument
 - Properly disconnect unfired `IntersectionObservers` when unmounting `<Desmost>`
 
