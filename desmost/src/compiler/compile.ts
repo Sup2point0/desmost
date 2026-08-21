@@ -60,13 +60,19 @@ export function compile(
   }
 
   let parser = new DesmostParser(source, opts);
+
+  let errors: string[] = [];
   
   /* To aggregate errors at the start, we need a target to retroactively inject errors into */
   if (opts.place_errors === "start") {
     desmos.setExpression({ id: "deferred-start", latex: " " });  // FIXME check if ` ` needed
   }
 
-  let errors = [];
+  /* Keep track of whether we're still evaluating leading blank expressions, which might be ignored. */
+  let seen_non_blank = false;
+
+  /** The number of pending blank expressions to add. */
+  let pending_blanks: number = 0;
 
   /* The compiler is lazy, parsing and evaluating one block at a time (as opposed to first parsing the entire AST). We don't need the whole AST, so this saves memory. */
   /* NOTE: It also doesn't sacrifice performance, since `.setExpressions()` internally just calls `.setExpression()` in a loop anyway. Benchmarks in the frontend produce similar times for both, so there's no performance improvement. */
@@ -90,9 +96,18 @@ export function compile(
 
         case Ast.Kind.EXPRESSION:
           // @ts-expect-error: outdated types
-          if (opts.ignore_all_blanks && r.data.latex === " ") break;
-          defer = evaluate_expr(r, desmos, opts);
-          break;
+          if (r.data.latex === " ") {
+            if (opts.ignore_all_blanks) break;
+            if (!seen_non_blank && !opts.keep_leading_blanks) break;
+            pending_blanks++;
+            break;
+          }
+          else {
+            flush_pending_blanks(desmos, pending_blanks);
+            seen_non_blank = true;
+            defer = evaluate_expr(r, desmos, opts);
+            break;
+          }
 
         case Ast.Kind.INVALID_INCANTATION:
           defer = evaluate_error(r.error, desmos, opts);
@@ -106,6 +121,10 @@ export function compile(
   }
   catch (e) {
     errors.push((e as Error).message);
+  }
+
+  if (opts.keep_trailing_blanks) {
+    flush_pending_blanks(desmos, pending_blanks);
   }
 
   if (errors.length > 0) {
@@ -134,3 +153,10 @@ export function compile(
   }
 }
 
+
+function flush_pending_blanks(desmos: Desmos.Calculator, count: number)
+{
+  for (let i = 0; i < count; i++) {
+    desmos.setExpression({ latex: ` ` });
+  }
+}
