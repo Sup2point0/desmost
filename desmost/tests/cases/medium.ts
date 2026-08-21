@@ -5,11 +5,11 @@ import { ltx } from "../shared";
 export const MEDIUM = ltx `
 
 /desmos{
-  expressions: true,
-  settingsMenu: false,
+	expressions: true,
+	settingsMenu: false,
 }
 /viewport{
-  left: -8, right: 8,
+	left: -8, right: 8,
 }
 
 /text{
@@ -31,10 +31,10 @@ b = 1
 /colour{ BLUE }
 /no-line
 /fill{ opacity: 0.2 }
-  :: /latex{
-    min(0, f(x))
-    \leq y
-    \leq max(0, f(x))
-  }
+	:: /latex{
+		min(0, f(x))
+		\leq y
+		\leq max(0, f(x))
+	}
 
 `.trim();

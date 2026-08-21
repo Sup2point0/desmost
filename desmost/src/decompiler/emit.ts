@@ -6,8 +6,8 @@ import type { Ast } from "../parser";
  */
 export function emit_global_incantation(invocation?: Ast.IncantationInvocation): string
 {
-  if (invocation == undefined) return "";
-  // TODO
+	if (invocation == undefined) return "";
+	// TODO
 }
 
 
@@ -16,6 +16,6 @@ export function emit_global_incantation(invocation?: Ast.IncantationInvocation):
  */
 export function emit_expression(expr?: Ast.Expression): string
 {
-  if (expr == undefined) return "";
-  // TODO
+	if (expr == undefined) return "";
+	// TODO
 }
