@@ -1,5 +1,5 @@
 import { DesmostParser, Ast } from "../../src/parser";
-import { FAIL } from "../../src/errors";
+import { NO_MATCH } from "../../src/errors";
 
 import {
   ArgIncantation,
@@ -39,7 +39,7 @@ describe("try-parse-global-incantation()", () =>
   ("invalid identifier", incantation => {
     let parser = new DesmostParser(`/${incantation.identifier}`);
     let r = parser.try_parse_global_incantation();
-    assert.equal(r, FAIL);
+    assert.equal(r, NO_MATCH);
   })
 })
 
@@ -61,7 +61,7 @@ describe("try-parse-local-incantation()", () =>
   ("invalid identifier", incantation => {
     let parser = new DesmostParser(`/${incantation.identifier}`);
     let r = parser.try_parse_local_incantation();
-    assert.equal(r, FAIL);
+    assert.equal(r, NO_MATCH);
   })
 })
 
@@ -81,6 +81,6 @@ describe("try-parse-expr-incantation()", () =>
   ("invalid identifier", incantation => {
     let parser = new DesmostParser(`/${incantation.identifier}`);
     let r = parser.try_parse_expr_incantation();
-    assert.equal(r, FAIL);
+    assert.equal(r, NO_MATCH);
   })
 })

@@ -2,8 +2,8 @@ import { GenericParser } from "./generic-parser";
 import { Ast } from "./ast";
 
 import type { DesmostOptions } from "../compiler";
-import { FAIL, UnrecoverableError } from "../errors";
-import type { RecoverableFail, Unrecoverable, MaybeRecoverable } from "../errors";
+import { NO_MATCH, UnrecoverableError } from "../errors";
+import type { NoMatch, Unrecoverable } from "../errors";
 import * as utils from "../utils";
 
 import {
@@ -94,7 +94,7 @@ export class DesmostParser extends GenericParser
     // 1 global incantation
     let r = this.try_parse_global_incantation();
 
-    if (r !== FAIL) {
+    if (r !== NO_MATCH) {
       this.consume_end_of_block(
         `Received excess input after global incantation /${r.incantation.identifier}`
       );
@@ -107,7 +107,7 @@ export class DesmostParser extends GenericParser
 
     while (this.current === "/") {
       let invocation = this.try_parse_local_incantation();
-      if (invocation === FAIL) break;
+      if (invocation === NO_MATCH) break;
       incantations.push(invocation);
     }
 
@@ -148,7 +148,7 @@ export class DesmostParser extends GenericParser
       // expr incantation
       case "/":
         let incantation = this.try_parse_expr_incantation();
-        if (incantation !== FAIL) return incantation;
+        if (incantation !== NO_MATCH) return incantation;
         // FALLTHROUGH: to fallback on plain LaTeX
 
       // plain LaTeX
@@ -196,16 +196,16 @@ export class DesmostParser extends GenericParser
   try_parse_global_incantation():
     | Ast.IncantationInvocation<GLOBAL>
     | Ast.InvalidInvocation
-    | RecoverableFail
+    | NoMatch
   {
     let init = this.i;
 
-    if (this.try_consume("/") === FAIL) return FAIL;
+    if (this.try_consume("/") === NO_MATCH) return NO_MATCH;
 
     let incantation = this.try_parse_identifier(GLOBAL_INCANTATIONS);
-    if (incantation === FAIL) {
+    if (incantation === NO_MATCH) {
       this.i = init;
-      return FAIL;
+      return NO_MATCH;
     }
 
     let data = undefined;
@@ -241,16 +241,16 @@ export class DesmostParser extends GenericParser
   try_parse_local_incantation():
     | Ast.IncantationInvocation<LOCAL>
     | Ast.InvalidInvocation
-    | RecoverableFail
+    | NoMatch
   {
     let init = this.i;
 
-    if (this.try_consume("/") === FAIL) return FAIL;
+    if (this.try_consume("/") === NO_MATCH) return NO_MATCH;
 
     let incantation = this.try_parse_identifier(LOCAL_INCANTATIONS);
-    if (incantation === FAIL) {
+    if (incantation === NO_MATCH) {
       this.i = init;
-      return FAIL;
+      return NO_MATCH;
     }
 
     let arg_raw = undefined;
@@ -280,17 +280,17 @@ export class DesmostParser extends GenericParser
     };
   }
 
-  try_parse_expr_incantation(): MaybeRecoverable<Ast.Expression>
+  try_parse_expr_incantation(): Unrecoverable<Ast.Expression | NoMatch>
   {
     let init = this.i;
 
-    if (this.try_consume("/") === FAIL) return FAIL;
+    if (this.try_consume("/") === NO_MATCH) return NO_MATCH;
 
     let incantation = this.try_parse_identifier(EXPR_INCANTATIONS);
-    if (incantation === FAIL) {
+    if (incantation === NO_MATCH) {
       // TODO maybe flag to user
       this.i = init;
-      return FAIL;
+      return NO_MATCH;
     }
 
     let arg_raw = this.parse_incantation_arg((incantation as ArgIncantation<EXPR>).arg_type);
@@ -310,20 +310,20 @@ export class DesmostParser extends GenericParser
    */
   try_parse_identifier<Effect extends Incantation.Effect>(
     incantations: Incantation<Effect>[]
-  ): Incantation<Effect> | RecoverableFail
+  ): Incantation<Effect> | NoMatch
   {
     for (let incantation of incantations) {
       // yeah the duplication here is a little meh, unfortunately needing `return` means we can't extract it into a helper
       let r = this.try_consume(incantation.identifier);
-      if (r !== FAIL) return incantation;
+      if (r !== NO_MATCH) return incantation;
 
       if (incantation.alias != undefined) {
         let r = this.try_consume(incantation.alias);
-        if (r !== FAIL) return incantation;
+        if (r !== NO_MATCH) return incantation;
       }
     }
 
-    return FAIL;
+    return NO_MATCH;
   }
 
   /**

@@ -28,19 +28,12 @@ export namespace UnrecoverableError
 }
 
 
-/** The compiler encountered a non-fatal recoverable failure (usually during speculative parsing), which only results in internal backtracking. */
-export const FAIL = Symbol("fail");
+/** The parser failed to parse something (usually during speculative parsing), which only results in internal backtracking. */
+export const NO_MATCH = Symbol("no-match");
 
 /** The compiler encountered a non-fatal recoverable failure (usually during speculative parsing), which only results in internal backtracking. */
-export type RecoverableFail = typeof FAIL & { readonly __brand?: unique symbol };
+export type NoMatch = typeof NO_MATCH & { readonly __brand?: unique symbol };
 
 
 /** Indicates that a function may throw an `UnrecoverableError`. */
 export type Unrecoverable<Result> = Result | Result & { readonly __brand?: unique symbol };
-
-/**
- * Indicates that a function may either return a `RecoverableFail` *or* throw an `UnrecoverableError`.
- * 
- * This is used in potentially ambiguous cases. For instance, the user might have invoked an unknown incantation, in which case we might want to `RecoverableFail` and fallback to parsing it as LaTeX; on the other hand, if they invoked a valid incantation, but did not supply the required argument, that's a definite `UnrecoverableError`.
- */
-export type MaybeRecoverable<Result> = RecoverableFail | Unrecoverable<Result>;

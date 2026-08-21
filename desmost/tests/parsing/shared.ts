@@ -1,10 +1,10 @@
 import util from "node:util";
 
 import { DesmostParser, Ast } from "../../src/parser";
-import type { RecoverableFail } from "../../src/errors";
+import type { NoMatch } from "../../src/errors";
 
 
-export function assert_is_expression(result: Ast | RecoverableFail | null): asserts result is Ast.Expression
+export function assert_is_expression(result: Ast | NoMatch | null): asserts result is Ast.Expression
 {
   assert.isNotNull(result);
   
@@ -14,7 +14,7 @@ export function assert_is_expression(result: Ast | RecoverableFail | null): asse
   );
 }
 
-export function assert_is_invocation(result: Ast | RecoverableFail | null): asserts result is Ast.IncantationInvocation
+export function assert_is_invocation(result: Ast | NoMatch | null): asserts result is Ast.IncantationInvocation
 {
   assert.isNotNull(result);
 
@@ -24,7 +24,7 @@ export function assert_is_invocation(result: Ast | RecoverableFail | null): asse
   );
 }
 
-export function assert_is_invalid(result: Ast | RecoverableFail | null): asserts result is Ast.InvalidInvocation
+export function assert_is_invalid(result: Ast | NoMatch | null): asserts result is Ast.InvalidInvocation
 {
   assert.isNotNull(result);
 

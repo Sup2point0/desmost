@@ -1,5 +1,5 @@
-import { FAIL, UnrecoverableError } from "../errors";
-import type { RecoverableFail, Unrecoverable } from "../errors";
+import { NO_MATCH, UnrecoverableError } from "../errors";
+import type { NoMatch, Unrecoverable } from "../errors";
 
 
 const IGNORED_CHARACTERS = new Set([
@@ -10,7 +10,7 @@ const IGNORED_CHARACTERS = new Set([
 /**
  * A stateful lazy parser, providing core (non-Desmost-specific) methods for parsing.
  * 
- * Many methods come in `<verb>` and `try_<verb>` pairs. On parsing failure, the former throws an `UnrecoverableError`, but the latter instead backtracks and only returns a `RecoverableFail`. The former is for expected parses, while the latter is for speculative parsing.
+ * Many methods come in `<verb>` and `try_<verb>` pairs. On parsing failure, the former throws an `UnrecoverableError`, but the latter instead backtracks and only returns a `NoMatch`. The former is for expected parses, while the latter is for speculative parsing.
  */
 export class GenericParser
 {
@@ -86,9 +86,9 @@ export class GenericParser
    * 
    * Fails if the parser is the out-of-bounds *before* advancing.
    */
-  protected try_advance(): void | RecoverableFail
+  protected try_advance(): void | NoMatch
   {
-    if (this.out_of_bounds()) return FAIL;
+    if (this.out_of_bounds()) return NO_MATCH;
     this.#advance();
   }
 
@@ -133,14 +133,14 @@ export class GenericParser
   /**
    * Attempt to consume `raw`, backtracking if `raw` was not found.
    */
-  protected try_consume(raw: string): void | RecoverableFail
+  protected try_consume(raw: string): void | NoMatch
   {
     let init = this.i;
     let ii = 0;
 
     while (this.current === raw[ii]) {
       let r = this.try_advance();
-      if (r === FAIL) return FAIL;
+      if (r === NO_MATCH) return NO_MATCH;
 
       ii++;
       if (ii === raw.length) return;
@@ -148,7 +148,7 @@ export class GenericParser
     }
 
     this.i = init;
-    return FAIL;
+    return NO_MATCH;
   }
 
   /**
