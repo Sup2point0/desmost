@@ -2,7 +2,7 @@
 
 Welcome to Desmost!
 
-Here you’ll find information on how to [write](writing/) and [compile](compiling/) Desmost.
+Here you’ll find information on how to [write](writing/) and [compile](compiling/) Desmost. If you have questions, [FAQ](faq.md) may answer them.
 
 
 <br>
