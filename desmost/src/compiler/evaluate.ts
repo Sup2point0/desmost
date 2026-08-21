@@ -22,9 +22,7 @@ export function evaluate_global_incantation(
     }
     catch (e) {
       let msg = evaluate_error(e as Error, desmos, options);
-      if (msg != undefined) {
-        return msg;
-      }
+      return msg;
     }
   }
 

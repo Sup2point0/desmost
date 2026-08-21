@@ -1,6 +1,15 @@
 # Changelog
 
 
+<br>
+
+
+## v0.7.3
+
+### Fixes
+- When an error occurs in evaluating an incantation argument, correctly terminate evaluation for that block instead of passing along an invalid argument
+
+
 ## v0.7.2
 
 ### Fixes
