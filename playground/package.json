@@ -17,7 +17,7 @@
 
   "dependencies":
   {
-    "desmost": "^0.7",
+    "desmost": "latest",
     "prismjs": "^1.30",
     "svelte-persisted-store": "^0.12"
   },
