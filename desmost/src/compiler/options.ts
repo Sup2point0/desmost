@@ -92,12 +92,13 @@ export function fill_defaults(options: Partial<DesmostOptions> | undefined): Req
   out.errors ??= "surface";
   out.place_errors ??= "inline";
   out.error_prefix ??= "[DESMOST ERROR]\n";
+
+  out.prettify ??= true;
   
   out.ignore_comments ??= false;
   out.ignore_all_blanks ??= false;
-  out.ignore_trailing_blanks ??= false;
-
-  out.prettify ??= true;
+  out.keep_leading_blanks ??= false;
+  out.keep_trailing_blanks ??= false;
   out.debug ??= false;
 
   return out as Required<DesmostOptions>;
