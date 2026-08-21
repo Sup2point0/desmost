@@ -43,16 +43,19 @@ export function compile(
     return;
   }
 
-  let t_init = performance.now();
-  let num_blocks = 0;
-  let ast = [];
-
   let opts = fill_defaults(options);
+
+  if (opts.debug) {
+    var t_init = performance.now();
+    var num_blocks = 0;
+    var ast: Ast[] = [];
+  }
+
   let parser = new DesmostParser(source, opts);
   
   /* To aggregate errors at the start, we need a target to retroactively inject errors into */
   if (opts.place_errors === "start") {
-    desmos.setExpression({ id: "deferred-start", latex: "" });
+    desmos.setExpression({ id: "deferred-start", latex: " " });  // FIXME check if ` ` needed
   }
 
   let errors = [];
@@ -64,8 +67,8 @@ export function compile(
       if (r === null) break;
 
       if (opts.debug) {
-        num_blocks++;
-        ast.push(r);
+        num_blocks!++;
+        ast!.push(r);
       }
 
       let defer: string | void = undefined;
@@ -118,9 +121,9 @@ export function compile(
 
   if (opts.debug) {
     return {
-      duration: performance.now() - t_init,
-      num_blocks,
-      ast,
+      duration: performance.now() - t_init!,
+      num_blocks: num_blocks!,
+      ast: ast!,
     };
   }
 }
