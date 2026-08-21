@@ -104,6 +104,8 @@ export function compile(
           }
           else {
             flush_pending_blanks(desmos, pending_blanks);
+            pending_blanks = 0;
+            
             seen_non_blank = true;
             defer = evaluate_expr(r, desmos, opts);
             break;
