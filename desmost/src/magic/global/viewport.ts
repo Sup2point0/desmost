@@ -3,8 +3,8 @@ import { Incantation, ArgIncantation, type GLOBAL } from "../incantation";
 
 interface ViewportBounds
 {
-  left:   number; right: number;
-  bottom: number; top:   number;
+  left?:   number; right?: number;
+  bottom?: number; top?:   number;
 }
 
 
@@ -19,8 +19,16 @@ export class ViewportIncantation extends ArgIncantation<GLOBAL>
 
   apply(target: Desmos.Calculator, data: ViewportBounds)
   {
-    // FIXME broken?
-    // TODO validate bounds
-    target.setMathBounds(data);
+    let existing = target.graphpaperBounds.mathCoordinates;
+    console.log(`existing =`, existing);
+
+    let {
+      left   = existing.left,
+      right  = existing.right,
+      bottom = existing.bottom,
+      top    = existing.top,
+    } = data;
+
+    target.setMathBounds({ left, right, bottom, top });
   }
 }

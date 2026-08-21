@@ -8,6 +8,7 @@
 
 ### Fixes
 - When an error occurs in evaluating an incantation argument, correctly terminate evaluation for that block instead of passing along an invalid argument
+- Fix `/viewport` (Desmos API required all 4 fields, so now missing fields are filled in with the existing values)
 
 
 ## v0.7.2
