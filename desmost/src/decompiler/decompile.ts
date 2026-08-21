@@ -1,6 +1,7 @@
 import { emit_global_incantation, emit_expression } from "./emit";
+import { extract_settings, extract_viewport, extract_expression } from "./extract";
 
-import type { Ast } from "../parser";
+import { Ast } from "../parser";
 
 
 /**
@@ -8,32 +9,45 @@ import type { Ast } from "../parser";
  */
 export function decompile(desmos: Desmos.Calculator): string
 {
-  let { settings, viewport, exprs } = structured_decompile(desmos);
-  
-  return `${
-    emit_global_incantation(settings)
-  }${
-    emit_global_incantation(viewport)
-  }${
-    exprs.map(emit_expression).join("\n")
-  }`;
+  let { globals, locals } = desmos_to_ast(desmos);
+  return ast_to_text([...globals, ...locals]);
 }
 
-
-export function structured_decompile(desmos: Desmos.Calculator): DesmostDecompile
+/**
+ * Decompile `desmos` into a semi-structured AST.
+ */
+export function desmos_to_ast(desmos: Desmos.Calculator): {
+  globals: Ast.IncantationInvocation[];
+  locals: Ast.Expression[];
+}
 {
-  // TODO
+  return {
+    globals: [
+      extract_settings(desmos),
+      extract_viewport(desmos),
+    ],
+    locals: desmos.getExpressions().map(extract_expression),
+  };
 }
 
-
-export interface DesmostDecompile
+/**
+ * Emit the Desmost source code representation of `ast`.
+ */
+export function ast_to_source(ast: Ast[]): string
 {
-  /** The `/desmos` global incantation. */
-  settings?: Ast.IncantationInvocation;
+  return (
+    ast.map(each => {
+      switch (each.kind) {
+        case Ast.Kind.INCANTATION_INVOCATION:
+          return emit_global_incantation(each);
+        
+        case Ast.Kind.EXPRESSION:
+          return emit_expression(each);
 
-  /** The `/viewport` global incantation. */
-  viewport?: Ast.IncantationInvocation;
-
-  /** Expressions from the Desmos editor. */
-  exprs: Ast.Expression[];
+        default:
+          return "";
+      }
+    })
+    .join("\n")
+  );
 }

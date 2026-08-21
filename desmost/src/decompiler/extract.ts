@@ -6,7 +6,7 @@ import { DesmosIncantation, ViewportIncantation } from "../magic/global";
 /**
  * Extract a `/desmos` incantation from the settings of `desmos`.
  */
-export function extract_settings(desmos: Desmos.Calculator): Ast
+export function extract_settings(desmos: Desmos.Calculator): Ast.IncantationInvocation
 {
   return {
     kind: Ast.Kind.INCANTATION_INVOCATION,
@@ -19,11 +19,10 @@ export function extract_settings(desmos: Desmos.Calculator): Ast
   };
 }
 
-
 /**
  * Extract a `/viewport` incantation from the viewport bounds of `desmos`.
  */
-export function extract_viewport(desmos: Desmos.Calculator): Ast
+export function extract_viewport(desmos: Desmos.Calculator): Ast.IncantationInvocation
 {
   let { left, right, bottom, top } = desmos.graphpaperBounds.mathCoordinates;
 
@@ -38,8 +37,14 @@ export function extract_viewport(desmos: Desmos.Calculator): Ast
   };
 }
 
-
-export function extract_expression(expression: Desmos.ExpressionState): Ast
+/**
+ * Extract an expression and the local incantations that reproduce its state.
+ */
+export function extract_expression(expression: Desmos.ExpressionState): Ast.Expression
 {
-  // TODO
+  return {
+    kind: Ast.Kind.EXPRESSION,
+    data: expression,
+    incantations: [],  // TODO
+  };
 }

@@ -3,4 +3,4 @@ export type { DesmostDebug } from "./compiler/compile";
 
 export { Ast } from "./parser";
 
-export { structured_decompile, type DesmostDecompile } from "./decompiler/decompile";
+export { desmos_to_ast, ast_to_source } from "./decompiler/decompile";
