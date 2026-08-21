@@ -9,14 +9,22 @@ import { Ast } from "../parser";
  */
 export function decompile(desmos: Desmos.Calculator): string
 {
-	let { globals, locals } = desmos_to_ast(desmos);
-	return ast_to_text([...globals, ...locals]);
+	return ast_to_source(desmos_to_ast(desmos));
 }
 
 /**
- * Decompile `desmos` into a semi-structured AST.
+ * Decompile `desmos` into an AST.
  */
-export function desmos_to_ast(desmos: Desmos.Calculator): {
+export function desmos_to_ast(desmos: Desmos.Calculator): Ast[]
+{
+   let { globals, locals } = desmos_to_ast_structured(desmos);
+   return [...globals, ...locals];
+}
+
+/**
+ * Decompile `desmos` into a semi-structured AST (for incremental decompilation).
+ */
+export function desmos_to_ast_structured(desmos: Desmos.Calculator): {
 	globals: Ast.IncantationInvocation[];
 	locals: Ast.Expression[];
 }
