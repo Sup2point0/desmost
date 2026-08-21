@@ -15,15 +15,22 @@ export function extract_settings(
 {
    let defaults = blank.settings;
 
+   let arg_raw = stringify_json5(
+      desmos.settings,
+      (k, v) => (
+            v === defaults[k]
+         || k === "__observers"
+         || k === "guid"
+         || k === "randomSeed"
+         || k === "colors"
+      ) ? undefined : v,
+      "  ",
+   );
+
 	return {
 		kind: Ast.Kind.INCANTATION_INVOCATION,
 		incantation: new DesmosIncantation(),
-		arg_raw:
-         stringify_json5(
-            desmos.settings,
-            (key, value) => defaults[key] === value ? undefined : value,
-            "  ",
-         )
+		arg_raw,
 	};
 }
 
