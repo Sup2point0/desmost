@@ -5,6 +5,7 @@
 
 ### Fixes
 - `/label` enables `showLabel: true` by default
+- Prettification skips already-prettified `\left\{` and `\right\}`
 
 
 ## v0.7
