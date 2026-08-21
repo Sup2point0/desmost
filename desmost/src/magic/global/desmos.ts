@@ -12,9 +12,11 @@ export class DesmosIncantation extends ArgIncantation<GLOBAL>
 
   override apply(
     target: Desmos.Calculator,
-    data: Desmos.GraphConfiguration & Desmos.GraphSettings,
+    data?: Desmos.GraphConfiguration & Desmos.GraphSettings,
   ): void
   {
-    target.updateSettings(data);
+    if (data != undefined) {
+      target.updateSettings(data);
+    }
   }
 }
