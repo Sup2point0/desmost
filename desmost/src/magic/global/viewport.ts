@@ -20,7 +20,6 @@ export class ViewportIncantation extends ArgIncantation<GLOBAL>
 	apply(target: Desmos.Calculator, data: ViewportBounds)
 	{
 		let existing = target.graphpaperBounds.mathCoordinates;
-		console.log(`existing =`, existing);
 
 		let {
 			left   = existing.left,
