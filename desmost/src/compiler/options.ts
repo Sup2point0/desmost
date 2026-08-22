@@ -85,24 +85,27 @@ export interface DesmostOptions
 }
 
 
+export const DEFAULT_OPTIONS =
+{
+   errors: "surface",
+   place_errors: "inline",
+   error_prefix: "[DESMOST ERROR]\n",
+   prettify: true,
+   ignore_comments: false,
+   ignore_all_blanks: false,
+   keep_leading_blanks: false,
+   keep_trailing_blanks: false,
+   debug: false,
+};
+
+
 /**
  * Fill in `options` with Desmost's defaults to produce a complete `DesmostOptions` config.
  */
 export function fill_defaults(options: Partial<DesmostOptions> | undefined): Required<DesmostOptions>
 {
-	let out = Object.assign({}, options);
-	
-	out.errors ??= "surface";
-	out.place_errors ??= "inline";
-	out.error_prefix ??= "[DESMOST ERROR]\n";
-
-	out.prettify ??= true;
-	
-	out.ignore_comments ??= false;
-	out.ignore_all_blanks ??= false;
-	out.keep_leading_blanks ??= false;
-	out.keep_trailing_blanks ??= false;
-	out.debug ??= false;
-
-	return out as Required<DesmostOptions>;
+   return {
+      ...DEFAULT_OPTIONS,
+      ...options,
+   } as Required<DesmostOptions>;
 }
