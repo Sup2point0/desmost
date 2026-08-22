@@ -4,7 +4,7 @@ import { Incantation, ArgIncantation } from "../magic";
 
 export namespace Ast
 {
-	/** What kind of parse result this is. */
+	/** What kind of AST node this is. */
 	export enum Kind
 	{
 		EXPRESSION             = "Expression",
@@ -41,7 +41,7 @@ export namespace Ast
 	/**
 	 * An invalid invantation invocation that raised an error when parsed.
 	 * 
-	 * This will be propogated to the user as an extra Desmos text expression (unless they have `errors: false` configured).
+	 * This will be propogated to the user as an extra Desmos text expression (unless they have `errors: "suppress"` configured).
 	 */
 	export interface InvalidInvocation
 	{
@@ -52,7 +52,7 @@ export namespace Ast
 	}
 }
 
-/** An abstract object produced by parsing a block of source code. */
+/** An abstract object produced by the parser. */
 export type Ast =
 	| Ast.Expression
 	| Ast.IncantationInvocation
