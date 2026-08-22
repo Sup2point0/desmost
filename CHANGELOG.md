@@ -4,6 +4,12 @@
 <br>
 
 
+## Next (v0.8.1)
+
+### New
+- `sideEffects: false` in `package.json` to help bundlers tree-shake
+
+
 ## v0.8
 
 ### New
