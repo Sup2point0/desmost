@@ -74,7 +74,7 @@ This page documents all the incantations available in Desmost.
 [`/desmos`](#desmos)
     </td>
     <td>optional</td>
-    <td><code>Desmos.GraphConfiguration & Desmos.GraphSettings</code></td>
+    <td><code>DesmosSettings</code></td>
     <td>Set the configuration of the calculator via `Calculator.updateSettings()`.</td>
   </tr>
   <tr></tr>
