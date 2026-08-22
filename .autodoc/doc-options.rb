@@ -7,63 +7,63 @@ TARGET = ROOT / "docs/compiling/compiler-options.md"
 
 
 def main()
-   output = build_table(source: File.read(SOURCE))
-   text = File.read(TARGET)
-   text.gsub!(/(?<=<!-- autodoc\? -->\n).*?(?=\n<!-- autodoc\. -->)/ms, output)
-   File.write(TARGET, text)
+	output = build_table(source: File.read(SOURCE))
+	text = File.read(TARGET)
+	text.gsub!(/(?<=<!-- autodoc\? -->\n).*?(?=\n<!-- autodoc\. -->)/ms, output)
+	File.write(TARGET, text)
 end
 
 def build_table(source:)
-   contents = source.match(/(?<=interface DesmostOptions\n\{).+(?=\n\}\n\n)/ms)[0].strip
-   fields = contents.split("\n\n")
+	contents = source.match(/(?<=interface DesmostOptions\n\{).+(?=\n\}\n\n)/ms)[0].strip
+	fields = contents.split("\n\n")
 
-   data = fields.map { |text| extract_field(text:) }
-   rows = data.map { |data| build_table_row(*data) }
+	data = fields.map { |text| extract_field(text:) }
+	rows = data.map { |data| build_table_row(*data) }
 
-   return "
+	return "
 
 | Option | Values | Default | Description |
 | :----- | :----- | :------ | :---------- |
 #{rows.join("\n")}
 
-   ".strip
+	".strip
 end
 
 def extract_field(text:)
-   doc, src = text.strip.split(/\*\/\n +/)
-   ident, type = src.split("?: ")
+	doc, src = text.strip.split(/\*\/\n\s+/)
+	ident, type = src.split("?: ")
 
-   case type
-      when "boolean" then values = ["true", "false"]
-      else values = type.split(" | ")
-   end
+	case type
+		when "boolean" then values = ["true", "false"]
+		else values = type.split(" | ")
+	end
 
-   # remove comment structure
-   doc.gsub!(/  +\* ?/, "")
-   doc.sub!("/**", "")
-   doc.strip!
-   doc.gsub!("\n", "<br>")
+	# remove comment structure
+	doc.gsub!(/  +\* ?/, "")
+	doc.sub!("/**", "")
+	doc.strip!
+	doc.gsub!("\n", "<br>")
 
-   # puts "'#{doc}'"
+	# puts "'#{doc}'"
 
-   # extract default
-   default = doc.match(/(?<=Defaults to ).*?\./)&.[](0)
-   default ||= doc.match(/(?<=- ).+(?=\(default\))/)&.[](0)&.strip
-   default ||= "–"
-   if default.end_with?("`.")
-      default.chop!
-   end
-   
-   doc.gsub!(/((<br>){2})?Defaults to .*?\./, "")
+	# extract default
+	default = doc.match(/(?<=Defaults to ).*?\./)&.[](0)
+	default ||= doc.match(/(?<=- ).+(?=\(default\))/)&.[](0)&.strip
+	default ||= "–"
+	if default.end_with?("`.")
+		default.chop!
+	end
+	
+	doc.gsub!(/((<br>){2})?Defaults to .*?\./, "")
 
-   return [ident, values, default, doc]
+	return [ident, values, default, doc]
 end
 
 def build_table_row(ident, values, default, doc)
-   values = values.map { |v| "`#{v}`" }.join(" ")
-   doc.gsub!(/\n\n/, "<br><br>")
+	values = values.map { |v| "`#{v}`" }.join(" ")
+	doc.gsub!(/\n\n/, "<br><br>")
 
-   return "| **#{ident}** | #{values} | #{default} | #{doc} |"
+	return "| **#{ident}** | #{values} | #{default} | #{doc} |"
 end
 
 
