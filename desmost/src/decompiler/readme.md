@@ -13,7 +13,7 @@ The first 2 stages are closely intertwined, so they're merged into one `desmos_t
 Technically it'd be more performant to directly emit instead of constructing the intermediate AST, but doing it this way means:
 
 - We can access the AST for debug information (in Playground)
-- We can diff the AST instead of the source when doing incremenetal decompilatino in future
+- We can diff the AST instead of the source when doing incremenetal decompilation in future
 
 
 ## Extracting the AST

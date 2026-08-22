@@ -1,3 +1,10 @@
+/** The parser failed to parse something (usually during speculative parsing), which only results in internal backtracking. */
+export const NO_MATCH = Symbol("no-match");
+
+/** The compiler encountered a non-fatal recoverable failure (usually during speculative parsing), which only results in internal backtracking. */
+export type NoMatch = typeof NO_MATCH & { readonly __brand?: unique symbol };
+
+
 /**
  * The compiler encountered a fatal unrecoverable error, which will reach the end user.
  * 
@@ -26,13 +33,6 @@ export namespace UnrecoverableError
 	/** An incantation's argument couldn't be parsed. */
 	export class InvalidArgument extends UnrecoverableError {}
 }
-
-
-/** The parser failed to parse something (usually during speculative parsing), which only results in internal backtracking. */
-export const NO_MATCH = Symbol("no-match");
-
-/** The compiler encountered a non-fatal recoverable failure (usually during speculative parsing), which only results in internal backtracking. */
-export type NoMatch = typeof NO_MATCH & { readonly __brand?: unique symbol };
 
 
 /** Indicates that a function may throw an `UnrecoverableError`. */
