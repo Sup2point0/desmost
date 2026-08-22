@@ -4,6 +4,12 @@
 <br>
 
 
+## v0.8.2
+
+### New
+- Prettification handles `length()`, `and`, `or` Desmos keywords
+
+
 ## v0.8.1
 
 ### New
