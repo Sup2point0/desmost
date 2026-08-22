@@ -9,6 +9,9 @@
 ### New
 - `sideEffects: false` in `package.json` to help bundlers tree-shake
 
+### Fixes
+- Preserve comments in emitted `.js` so IDEs keep documentation tooltips
+
 
 ## v0.8
 
