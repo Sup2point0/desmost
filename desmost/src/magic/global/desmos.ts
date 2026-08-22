@@ -1,6 +1,9 @@
 import { Incantation, ArgIncantation, type GLOBAL } from "../incantation";
 
 
+type DesmosSettings = Desmos.GraphConfiguration & Desmos.GraphSettings
+
+
 export class DesmosIncantation extends ArgIncantation<GLOBAL>
 {
 	override readonly description
@@ -12,7 +15,7 @@ export class DesmosIncantation extends ArgIncantation<GLOBAL>
 
 	override apply(
 		target: Desmos.Calculator,
-		data?: Desmos.GraphConfiguration & Desmos.GraphSettings,
+		data?: DesmosSettings,
 	): void
 	{
 		if (data != undefined) {
