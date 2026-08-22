@@ -74,7 +74,7 @@ This page documents all the incantations available in Desmost.
 [`/desmos`](#desmos)
     </td>
     <td>optional</td>
-    <td>?</td>
+    <td><code>Desmos.GraphConfiguration & Desmos.GraphSettings</code></td>
     <td>Set the configuration of the calculator via `Calculator.updateSettings()`.</td>
   </tr>
   <tr></tr>
@@ -85,8 +85,8 @@ This page documents all the incantations available in Desmost.
     </td>
     <td>required</td>
     <td><pre lang="ts"><code>{
-<br>  left?: number; right?: number;
-<br>  bottom?: number; top?: number;
+<br>   left?: number; right?: number;
+<br>   bottom?: number; top?: number;
 <br>}</code></pre></td>
     <td>Set the bounds of the viewport via `Calculator.setMathBounds()`.</td>
   </tr>
@@ -145,7 +145,7 @@ This page documents all the incantations available in Desmost.
     </td>
     <td>required</td>
     <td><pre lang="ts"><code>{
-<br>  opacity: number;
+<br>   opacity: number;
 <br>}</code></pre></td>
     <td>Change fill styles for a rendered block.</td>
   </tr>
@@ -167,10 +167,10 @@ This page documents all the incantations available in Desmost.
     </td>
     <td>required</td>
     <td><pre lang="ts"><code>{
-<br>  text: string;
-<br>  show?: boolean;
-<br>  size?: number \| keyof typeof Desmos.LabelSizes;
-<br>  pos?: keyof typeof Desmos.LabelOrientations;
+<br>   text: string;
+<br>   show?: boolean;
+<br>   size?: number \| keyof typeof Desmos.LabelSizes;
+<br>   pos?: keyof typeof Desmos.LabelOrientations;
 <br>}</code></pre></td>
     <td>Label a block that evaluates to a point(s).</td>
   </tr>
@@ -182,9 +182,9 @@ This page documents all the incantations available in Desmost.
     </td>
     <td>required</td>
     <td><pre lang="ts"><code>{
-<br>  style?: keyof typeof Desmos.Styles;  // TODO allow raw enum
-<br>  width?: number;
-<br>  opacity?: number;
+<br>   style?: keyof typeof Desmos.Styles;  // TODO allow raw enum
+<br>   width?: number;
+<br>   opacity?: number;
 <br>}</code></pre></td>
     <td>Change line styles for a rendered block.</td>
   </tr>
@@ -206,9 +206,9 @@ This page documents all the incantations available in Desmost.
     </td>
     <td>required</td>
     <td><pre lang="ts"><code>{
-<br>  style?: keyof typeof Desmos.Styles;
-<br>  size?: number;
-<br>  opacity?: number;
+<br>   style?: keyof typeof Desmos.Styles;
+<br>   size?: number;
+<br>   opacity?: number;
 <br>}</code></pre></td>
     <td></td>
   </tr>
@@ -230,9 +230,9 @@ This page documents all the incantations available in Desmost.
     </td>
     <td>required</td>
     <td><pre lang="ts"><code>{
-<br>  min?: number \| string;
-<br>  max?: number \| string;
-<br>  step?: number \| string;
+<br>   min?: number \| string;
+<br>   max?: number \| string;
+<br>   step?: number \| string;
 <br>}</code></pre></td>
     <td>Set the bounds of the slider for a variable.</td>
   </tr>
