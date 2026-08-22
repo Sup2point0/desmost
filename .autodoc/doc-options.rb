@@ -39,7 +39,7 @@ def extract_field(text:)
 	end
 
 	# remove comment structure
-	doc.gsub!(/  +\* ?/, "")
+	doc.gsub!(/\t\s+\* ?/, "")
 	doc.sub!("/**", "")
 	doc.strip!
 	doc.gsub!("\n", "<br>")

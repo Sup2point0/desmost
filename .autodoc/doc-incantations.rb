@@ -65,6 +65,7 @@ def extract_incantation(text:)
 		if arg_type.nil?
 			arg_type = "?"
 		else
+         arg_type.gsub!("\t", "   ")
 			arg_type.gsub!(/\|/, "\\|")
 			arg_type.gsub!(/\n/, "\n<br>")
 			arg_type.gsub!(/: +/, ": ")
