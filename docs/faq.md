@@ -48,7 +48,7 @@ Desmost compilation has 2 parts: parsing the AST, and evaluating it (via the Des
 
 After parsing your source code, Desmost injects the results into the Desmos calculator via the `.setExpression()` method provided by the Desmos API. This method is surprisingly expensive – ostensibly because Desmos does a lot of internal recomputation and updates per call.[^set-expressions] This scales linearly with every additional expression to evaluate, so the more expressions, the more expensive.
 
-[^set-expressions]: And no, `.setExpressions()` is not more performant. **It’s just a wrapper around calling `.setExpression()` in a loop.**
+[^set-expressions]: And no, `.setExpressions()` is not more performant. **It’s just a wrapper around calling `.setExpression()` in a loop.** 💀
 
 You can see this for yourself in [Playground](https://sup2point0.github.io/desmost) (open **Debug** to see compile time). Even adding *blank lines* ups it by dozens of ms. Meanwhile, in unit tests with a dummy Desmos instance, compilation an average-length documents takes well under 2 ms. You see what I mean when I say it makes no difference to your users?
 
@@ -78,7 +78,9 @@ Personally, I find Desmos’s UI very pleasant, so I see no reason to seek an al
 
 ## Where does the `/incantation{}` syntax come from?
 
-Mate, are you havin a bubble bath? It’s LaTeX ofc! Only the `\` backslash is mirrored, to avoid confusing Desmost with LaTeX.
+Mate, are you havin a bubble bath?
+
+It’s LaTeX ofc! Except the `\` backslash is mirrored, to avoid confusing Desmost with LaTeX.
 
 
 <br>
@@ -107,9 +109,17 @@ From a practical standpoint, it’s also useful for people learning Desmost’s 
 <br>
 
 
+## Why is `::` the separator?
+
+TODO
+
+
+<br>
+
+
 ## Where does the name “incantation” come from?
 
-Calling them “commands” is boring. “Control sequence” is too long. DSLs are pretty magical, so hey, each one is a little incantation that transforms your calculator in some way ^v^
+Calling them “commands” is boring. “Control sequence” is too long. DSLs are pretty magical, so hey, each one is a little ‘incantation’ that transforms your calculator in some way ^v^
 
 
 <br>
