@@ -55,7 +55,8 @@ describe("enum literals", () =>
 	])
 	("bad", src => {
 		assert.throws(() => {
-			new ColourIncantation().evaluate_arg(src)
+			// @ts-expect-error: testing
+			new ColourIncantation().evaluate_arg(src, {})
 		});
 	})
 })

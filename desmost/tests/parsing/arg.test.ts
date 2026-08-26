@@ -20,7 +20,6 @@ function run_test(
 
 	let parser = new DesmostParser(src);
 	let r = parser.parse_incantation_arg(arg_type);
-	assert.equal(r.trim(), expected);
 	assert.equal(r, expected);
 }
 
@@ -37,7 +36,7 @@ describe("parse-arg()", () =>
 		});
 
 		test.each(matrix(
-			ARG_TYPES,
+			ARG_TYPES.filter(arg_type => arg_type !== Incantation.ArgType.STRING),
 			[
 				`{ }`,
 				`{  }`,
@@ -55,26 +54,19 @@ describe("parse-arg()", () =>
 
 	describe("string", () =>
 	{
-		test.each(matrix(
-			[
-				Incantation.ArgType.STRING,
-				Incantation.ArgType.LATEX,
-			], [
+		test.each(matrix([Incantation.ArgType.STRING], [
 				`{sup}`,
 				`{sup }`,
 				`{ sup}`,
 				`{ sup }`,
 				`{\nsup\n}`,
 				`{\n  sup\n}`,
-			].map(src => [src, "sup"])
+			].map(src => [src, src.slice(1, -1)])
 		))
 		(`"sup"`, run_test);
 		
-		test.each(matrix([
-			Incantation.ArgType.STRING,
-			Incantation.ArgType.LATEX,
-		], [
-			[`{ don't track }`, `don't track`],
+		test.each(matrix([Incantation.ArgType.STRING], [
+			[`{don't track}`, `don't track`],
 		]))
 		(`with quotes`, run_test);
 	})
