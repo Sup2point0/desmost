@@ -85,7 +85,7 @@ export abstract class ArgIncantation<
 			case Incantation.ArgType.ENUM:   return raw;
 			
 			case Incantation.ArgType.STRING:
-				return (options.dedent_text) ? dedent(raw).trim(): raw.trim();
+				return (options.dedent_text) ? dedent(raw): raw.trim();
 			
 			case Incantation.ArgType.OBJECT: {
 				try {

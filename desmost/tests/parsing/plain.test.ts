@@ -11,7 +11,7 @@ describe("preserves plain LaTeX", () =>
 {
 	test.each([
 		``,
-		`\n`,  // FIXME?
+		` `,
 	])
 	("empty", source =>
 	{

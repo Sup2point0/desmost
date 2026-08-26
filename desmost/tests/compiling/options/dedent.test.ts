@@ -25,8 +25,8 @@ ${' '.repeat(n)}World!
 	test("medium", () => {
 		const src = `
 /text{
-  Sup,
-    World!
+   Sup,
+      World!
 }
 		`.trim();
 
@@ -35,24 +35,23 @@ ${' '.repeat(n)}World!
 
 		let exprs = desmos.getExpressions();
 		assert.equal(exprs[0].type, "text");
-		assert.equal(exprs[0].text, "Sup,\n  World!");
+		assert.equal(exprs[0].text, "Sup,\n   World!");
 	});
 	
-	// FIXME
-// 	test.each([2, 5, 20, 100])
-// 	("tags", n => {
-// 		const src = `
-// /text{
-// ${'\t'.repeat(n)}Sup,
-// ${'\t'.repeat(n)}World!
-// }
-// 		`.trim();
+	test.each([2, 5, 20, 100])
+	("tags", n => {
+		const src = `
+/text{
+${'\t'.repeat(n)}Sup,
+${'\t'.repeat(n)}World!
+}
+		`.trim();
 
-// 		let desmos = testing_desmos();
-// 		compile(desmos, src, { dedent_text: false });
+		let desmos = testing_desmos();
+		compile(desmos, src, { dedent_text: true });
 
-// 		let exprs = desmos.getExpressions();
-// 		assert.equal(exprs[0].type, "text");
-// 		assert.equal(exprs[0].text, "Sup,\nWorld!");
-// 	});
+		let exprs = desmos.getExpressions();
+		assert.equal(exprs[0].type, "text");
+		assert.equal(exprs[0].text, "Sup,\nWorld!");
+	});
 })
