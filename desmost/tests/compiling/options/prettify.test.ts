@@ -15,7 +15,7 @@ function test_cases(name: string, cases: Array<[src: string, expected: string]>)
 }
 
 
-function preserve(cases: string[]): Array<[src: string, expected: string]>
+function preserve(...cases: string[]): Array<[src: string, expected: string]>
 {
 	return cases.map(src => [src, src]);
 }
@@ -46,7 +46,7 @@ describe("parentheses", () =>
 
 		describe("preserve", () =>
 		{
-			test_cases("1 line", preserve([
+			test_cases("1 line", preserve(
 				ltx`\left(`,
 				ltx`\right)`,
 				ltx`\left(\right)`,
@@ -55,7 +55,7 @@ describe("parentheses", () =>
 				ltx`f \left(x\right)`,
 				ltx`f\left( x \right)`,
 				ltx`f \left( x \right)`,
-			]));
+			));
 		})
 	})
 
@@ -77,11 +77,32 @@ describe("parentheses", () =>
 		
 		describe("preserve", () =>
 		{
-			test_cases("1 line", preserve([
+			test_cases("1 line", preserve(
 				ltx`\left\{`,
 				ltx`\right\}`,
 				ltx`\left\{\right\}`,
-			]));
+				ltx`\left\{x\right\}`,
+				ltx`\left\{ x \right\}`,
+			));
+
+			test_cases("with spaces", [
+				[ltx`\left \{ x \right\}`,  ltx`\left\{ x \right\}`],
+				[ltx`\left\{ x \right \}`,  ltx`\left\{ x \right\}`],
+				[ltx`\left \{ x \right \}`, ltx`\left\{ x \right\}`],
+				[ltx`\left \{x\right \}`,   ltx`\left\{x\right\}`],
+			]);
+		})
+	})
+
+	describe("{[()]}", () =>
+	{
+		describe("preserve", () =>
+		{
+			test_cases("1 line", preserve(
+				ltx`\left\{\left[\left(`,
+				ltx`\right)\right]\right\}`,
+				ltx`\left\{\left[\left( \right)\right]\right\}`,
+			));
 		})
 	})
 })

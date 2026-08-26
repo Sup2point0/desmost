@@ -30,6 +30,7 @@ is kinda ugly
 - `dedent_text` compile option to opt out of the above
 
 ### Fixes
+- Prettify handles whitespace between `\left (` (previously it only handled `\left(`)
 - `<Desmos>` checks `isIntersecting` before compiling
 - Decompiler emits `% ...` for single-line notes, and better formatted `/text{ ... }` for multi-line notes
 - Decompiler rejects tables with `[tables are currently unsupported]` instead of `?`

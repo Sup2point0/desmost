@@ -37,7 +37,9 @@ export function normalise_latex(latex: string): string
 export function prettify_latex(latex: string): string
 {
 	latex = latex.replaceAll(/(?<!\\left)(\(|\[|\\\{)/g, "\\left$1");
+	latex = latex.replaceAll(/(?:\\left\s?)+/g, "\\left");
 	latex = latex.replaceAll(/(?<!\\right)(\)|\]|\\\})/g, "\\right$1");
+	latex = latex.replaceAll(/(?:\\right\s?)+/g, "\\right");
 	latex = latex.replaceAll(/(:|,)(?!\\ ) */g, "$1\\ ");
 
 	latex = latex.replaceAll(
