@@ -47,7 +47,7 @@ onMount(() => {
 
 // TODO move into examples
 const WELCOME = String.raw `
-/text{ Welcome to Desmost! }
+% Welcome to Desmost!
 f(x) = x^2
 `;
 
