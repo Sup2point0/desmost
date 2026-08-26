@@ -11,7 +11,7 @@ export class TextIncantation extends ArgIncantation<EXPR>
 	override readonly requires_arg = true
 	override readonly arg_type     = Incantation.ArgType.STRING
 
-	override apply(target: Desmos.ExpressionState, data: string)
+	override apply(target: Desmos.ExpressionState, data: string): asserts target is Desmos.Note
 	{
 		target.type = "text";
 		// @ts-expect-error: previous assignment type-narrows

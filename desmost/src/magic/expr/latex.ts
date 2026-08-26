@@ -10,7 +10,7 @@ export class LatexIncantation extends ArgIncantation<EXPR>
 	override readonly requires_arg = true
 	override readonly arg_type     = Incantation.ArgType.LATEX
 
-	apply(target: Desmos.ExpressionState, data: string): void
+	apply(target: Desmos.ExpressionState, data: string): asserts target is Desmos.Expression
 	{
 		target.type = "expression";
 		// @ts-expect-error: previous assignment type-narrows
