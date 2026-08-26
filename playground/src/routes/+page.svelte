@@ -1,7 +1,6 @@
 <script lang="ts">
 
 import "#styles/essence.scss";
-import "#styles/prism.scss";
 
 // import { compile } from "../../../desmost/src";
 import { compile } from "desmost";
@@ -36,7 +35,6 @@ onMount(() => {
   blank = Desmos.GraphingCalculator(el_blank, { border: false });
   blank_state = blank.getState();
 
-  // @ts-expect-error: outdated types
   desmos.observeEvent("change", (_, e) => {
     if (e.isUserInitiated) {
       redecompile();
@@ -124,8 +122,9 @@ function redecompile()
   if (desmos == undefined) return;
 
   is_decompiling = true;
-  ast = desmos_to_ast(desmos, blank); 
-  source = ast_to_source(ast);
+  let ssast = desmos_to_ast(desmos, blank);
+  ast = [...ssast.globals, ...ssast.locals];
+  source = ast_to_source(ssast);
 
   /* NOTE: Finish 1 frame later to avoid triggering circular recompilation */
   requestAnimationFrame(() => { is_decompiling = false; });

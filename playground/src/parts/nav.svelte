@@ -18,7 +18,7 @@ let { is_compiling, recompile, is_decompiling, redecompile }: Props = $props();
 
 <nav>
   <div class="left">
-    <h1> Desmost <span>Playground</span> &ensp; <small>by Sup#2.0</small> </h1>
+    <h1> Desmost <span>Playground</span> &ensp;<small>by Sup#2.0</small> </h1>
 
     <button
       class:off={!$prefs.show_options}
@@ -89,8 +89,8 @@ nav {
 .left {
   h1 {
     min-width: max-content;
-    padding: $pad-vert 1.5rem;
-    margin-right: 1rem;
+    padding: $pad-vert 1.25rem;
+    margin-right: 0.6rem;
     @include font-ui;
     color: white;
     font-size: $font-size;
