@@ -2,6 +2,7 @@
 
 <script lang="ts">
 
+import Json5 from "json5";
 import Prism from "prismjs";
 
 import type { Ast } from "desmost/internal";
@@ -15,7 +16,7 @@ let { ast }: Props = $props();
 
 
 let json = $derived(
-  JSON.stringify(
+  Json5.stringify(
     ast,
     (key: string, value) => ["description"].includes(key) ? undefined : value,
     "  "

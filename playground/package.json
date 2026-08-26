@@ -18,6 +18,7 @@
   "dependencies":
   {
     "desmost": "latest",
+    "json5": "^2.2",
     "prismjs": "^1.30",
     "svelte-persisted-store": "^0.12"
   },

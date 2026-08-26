@@ -2,6 +2,8 @@
 
 <script lang="ts">
 
+import Json5 from "json5";
+
 interface Props {
   exprs: Desmos.ExpressionState[];
 }
@@ -30,7 +32,7 @@ function show_expr(expr: Desmos.ExpressionState)
     }
   }
 
-  let json = JSON.stringify(expr, undefined, "&emsp;");
+  let json = Json5.stringify(expr, undefined, "  ");
   
   if (!open && did_redact) {
     json = json.replaceAll("\n}", ",\n  ...\n}");
