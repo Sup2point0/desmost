@@ -1,5 +1,7 @@
 import Json5 from "json5";
+import dedent from "dedent";
 
+import type { DesmostOptions } from "../compiler";
 import { UnrecoverableError, type Unrecoverable } from "../errors";
 
 
@@ -76,7 +78,7 @@ export abstract class ArgIncantation<
 	 * 
 	 * Child incantation classes should override this method, though the defaults should cover most cases (except `ArgType.ENUM`).
 	 */
-	public evaluate_arg(raw: string): Unrecoverable<unknown>
+	public evaluate_arg(raw: string, options: DesmostOptions): Unrecoverable<unknown>
 	{
 		switch (this.arg_type) {
 			case Incantation.ArgType.STRING: return raw;
@@ -95,6 +97,16 @@ export abstract class ArgIncantation<
 		}
 	}
 }
+
+
+/** An incantation that affects the entire Desmos calculator state, like `/desmos` or `/viewport`. */
+export type GLOBAL = Incantation.Effect.GLOBAL;
+
+/** An incantation that affects only the expression immediately following it, like `/hide` or `/slider`. */
+export type LOCAL = Incantation.Effect.LOCAL;
+
+/** An incantation that produces an expression, like `/latex` or `/text`. */
+export type EXPR = Incantation.Effect.EXPR;
 
 
 export namespace Incantation
@@ -128,16 +140,3 @@ export namespace Incantation
 		OBJECT = "Object",
 	}
 }
-
-
-// == ALIASES == //
-
-/** An incantation that affects the entire Desmos calculator state, like `/desmos` or `/viewport`. */
-export type GLOBAL = Incantation.Effect.GLOBAL;
-
-/** An incantation that affects only the expression immediately following it, like `/hide` or `/slider`. */
-export type LOCAL = Incantation.Effect.LOCAL;
-
-/** An incantation that produces an expression, like `/latex` or `/text`. */
-export type EXPR = Incantation.Effect.EXPR;
-

@@ -1,5 +1,7 @@
-import { UnrecoverableError } from "../../errors";
 import { Incantation, ArgIncantation, type LOCAL } from "../incantation";
+
+import { UnrecoverableError } from "../../errors";
+import type { DesmostOptions } from "../../compiler";
 
 
 interface LabelOptions
@@ -30,9 +32,9 @@ export class LabelIncantation extends ArgIncantation<LOCAL>
 		if (data.pos  != undefined) target.labelOrientation = data.pos;
 	}
 
-	override evaluate_arg(raw: string): LabelOptions
+	override evaluate_arg(raw: string, options: DesmostOptions): LabelOptions
 	{
-		let out = super.evaluate_arg(raw) as LabelOptions;
+		let out = super.evaluate_arg(raw, options) as LabelOptions;
 
 		if (!("text" in out)) {
 			throw new UnrecoverableError.InvalidArgument(

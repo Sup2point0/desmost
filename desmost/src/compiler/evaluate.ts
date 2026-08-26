@@ -21,7 +21,7 @@ export function evaluate_global_incantation(
 
 	if ("arg_raw" in invocation && invocation.arg_raw != undefined) {
 		try {
-			data = invocation.incantation.evaluate_arg(invocation.arg_raw);
+			data = invocation.incantation.evaluate_arg(invocation.arg_raw, options);
 		}
 		catch (e) {
 			let msg = evaluate_error(e as Error, desmos, options);
@@ -57,7 +57,7 @@ export function evaluate_expr(
 
 		if ("arg_raw" in invocation && invocation.arg_raw != undefined) {
 			try {
-				data = invocation.incantation.evaluate_arg(invocation.arg_raw);
+				data = invocation.incantation.evaluate_arg(invocation.arg_raw, options);
 			}
 			catch (e) {
 				errors.push(format_error(e as Error, options));

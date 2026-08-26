@@ -16,9 +16,4 @@ export class LatexIncantation extends ArgIncantation<EXPR>
 		// @ts-expect-error: previous assignment type-narrows
 		target.latex = data === "" ? " " : data;
 	}
-
-	override evaluate_arg(data: string): string
-	{
-		return data;
-	}
 }

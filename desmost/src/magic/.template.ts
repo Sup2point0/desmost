@@ -1,5 +1,7 @@
 // import { Incantation, ArgIncantation, type GLOBAL, type LOCAL, type EXPR } from "../incantation";
 
+// import type { DesmostOptions } from "../../compiler";
+
 
 // export class ?Incantation extends ArgIncantation<?>
 // {
@@ -15,7 +17,7 @@
 //     // TODO
 //   }
 
-//   override evaluate_arg(raw: ?): ?
+//   override evaluate_arg(raw: ?, options: DesmostOptions): ?
 //   {
 //     // TODO
 //   }
