@@ -1,3 +1,5 @@
+import dedent from "dedent";
+
 import { format_error, normalise_latex, prettify_latex } from "./format";
 import type { DesmostOptions } from "./options";
 
@@ -32,7 +34,7 @@ export function evaluate_global_incantation(
 
 
 /**
- * Evaluate arguments (if any) to local incantation invocations on `expr`, then add `expr` to `desmos`.
+ * Evaluate local incantation invocations on `expr`, then add `expr` to `desmos`.
  */
 export function evaluate_expr(
 	expr: Ast.Expression,
@@ -76,6 +78,9 @@ export function evaluate_expr(
 		if (options.prettify) {
 			expr.data.latex = prettify_latex(expr.data.latex);
 		}
+	}
+	else if (expr.data.type === "text") {
+		expr.data.text = dedent(expr.data.text ?? "");
 	}
 
 	desmos.setExpression(expr.data);

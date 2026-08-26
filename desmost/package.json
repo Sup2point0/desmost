@@ -63,6 +63,7 @@
 
   "dependencies":
   {
+    "dedent": "^1.7",
     "json5": "^2.2"
   },
 
