@@ -27,7 +27,7 @@ Body    := (Block) (NEWLINE Block)*
 
 Block   := ""
          | Expression
-         | (LocalIncantation (NEWLINE)*)+ "::" Expression
+         | (LocalIncantation (NEWLINE)*)+ "::" (NEWLINE)* Expression
          | GlobalIncantation
 
 Expression := <latex>
