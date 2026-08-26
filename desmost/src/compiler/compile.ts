@@ -37,7 +37,11 @@ export function compile(
 	/** The Desmost source code to compile. */
 	source: string,
 
-	/** Compilation options. */
+	/**
+	 * Compilation options.
+	 * 
+	 * See {@linkcode DesmostOptions} for the options available.
+	*/
 	options?: Partial<DesmostOptions>,
 ): void | DesmostDebug
 {

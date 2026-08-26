@@ -2,7 +2,15 @@
 
 This module implements the Desmos -> Desmost decompiler.
 
-This decompiles a `Desmos.Calculator` instance into the *minimal* raw Desmost source code that could *completely* reproduce the calculator state. Decompilation happens through several lowering stages:
+This decompiles a `Desmos.Calculator` instance into the *minimal* raw Desmost source code that could *completely* reproduce the calculator state. In other words, we want this to hold:[^equality]
+
+[^equality]: Using value equality of ‘calculator state’.
+
+```ts
+compile(decompile(calc)) == calc
+```
+
+Decompilation happens through several lowering stages:
 
 ```hs
 Desmos.Calculator -> object[] -> Ast[] -> string

@@ -1,10 +1,28 @@
+import { compile } from "./compile";
+
+
 /**
  * Options to customise Desmost compilation.
  * 
- * To customise compilation, pass in a `DesmostOptions` object as the last argument to `compile()`:
+ * To customise compilation, pass in a `DesmostOptions` object as the last argument to {@linkcode compile()}:
  * 
  * ```ts
  * compile(calc, source, { errors: "crash" });
+ * ```
+ * 
+ * ## Decompilation
+ * 
+ * The same options can also be applied to decompilation:
+ * 
+ * ```ts
+ * decompile(calc, blank, { prettify: false });
+ * ```
+ * 
+ * Here, this means “decompile into source code that would reproduce `calc`, *when compiled with these options*”. As an identity:
+ * 
+ * ```ts
+ * let options = { ... };
+ * compile(_, decompile(calc, _ options), options) == calc  // (value equality)
  * ```
  */
 export interface DesmostOptions
