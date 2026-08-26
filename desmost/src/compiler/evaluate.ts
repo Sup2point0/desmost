@@ -14,7 +14,7 @@ import { is_latex } from "../desmos";
 export function evaluate_global_incantation(
 	invocation: Ast.IncantationInvocation,
 	desmos: Desmos.Calculator,
-	options: Required<DesmostOptions>,
+	options: DesmostOptions,
 ): Unrecoverable<void | string>
 {
 	let data = undefined;
@@ -39,7 +39,7 @@ export function evaluate_global_incantation(
 export function evaluate_expr(
 	expr: Ast.Expression,
 	desmos: Desmos.Calculator,
-	options: Required<DesmostOptions>,
+	options: DesmostOptions,
 ): Unrecoverable<void | string>
 {
 	let errors: string[] = [];
@@ -95,7 +95,7 @@ export function evaluate_expr(
 export function evaluate_error(
 	error: UnrecoverableError,
 	desmos: Desmos.Calculator,
-	options: Required<DesmostOptions>,
+	options: DesmostOptions,
 ): Unrecoverable<void | string>
 {
 	switch (options.errors) {

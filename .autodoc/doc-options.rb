@@ -31,7 +31,7 @@ end
 
 def extract_field(text:)
 	doc, src = text.strip.split(/\*\/\n\s+/)
-	ident, type = src.split("?: ")
+	ident, type = src.split(": ")
 
 	case type
 		when "boolean" then values = ["true", "false"]

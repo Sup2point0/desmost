@@ -38,7 +38,7 @@ export function compile(
 	source: string,
 
 	/** Compilation options. */
-	options?: DesmostOptions,
+	options?: Partial<DesmostOptions>,
 ): void | DesmostDebug
 {
 	if (desmos == undefined) {
