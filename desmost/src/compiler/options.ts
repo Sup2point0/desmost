@@ -92,7 +92,7 @@ export interface DesmostOptions
 }
 
 
-export const DEFAULT_OPTIONS =
+export const DEFAULT_OPTIONS: Required<DesmostOptions> =
 {
    errors: "surface",
    place_errors: "inline",
@@ -115,5 +115,5 @@ export function fill_defaults(options: Partial<DesmostOptions> | undefined): Req
    return {
       ...DEFAULT_OPTIONS,
       ...options,
-   } as Required<DesmostOptions>;
+   };
 }
