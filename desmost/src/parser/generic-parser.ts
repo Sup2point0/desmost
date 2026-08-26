@@ -49,14 +49,6 @@ export class GenericParser
 	}
 
 	/**
-	 * Get the character *after* the current one that the parser points at.
-	 */
-	protected next(): string | undefined
-	{
-		return this.source.at(this.i + 1);
-	}
-
-	/**
 	 * Peek a snippet of the upcoming source text.
 	 * 
 	 * Optionally start from the given `idx`.
@@ -64,7 +56,11 @@ export class GenericParser
 	public preview(idx?: number): string
 	{
 		idx ??= this.i;
-		return this.source.slice(idx, idx + 20) + "...";
+
+		return (
+			this.source.slice(idx, idx + 20).replaceAll("\n", " ")
+			+ (idx + 20 >= this.length ? "⏎" : "...")
+		);
 	}
 
 	/**
@@ -167,14 +163,18 @@ export class GenericParser
 	/**
 	 * Consume 0 or more whitespace characters.
 	 * 
-	 * Same as `.consume_spaces()`, but allows newlines.
+	 * Same as `.consume_spaces()`, but allows tabs and newlines.
 	 */
 	protected consume_whitespace(): void
 	{
 		/* NOTE: Callers should be able to assume this is safe to call even when at end of input, since it should just match 0 characters */
 		if (this.i >= this.length) return;
 
-		while (this.current === " " || this.current === "\n") {
+		while (
+			this.current === " "
+			|| this.current === "\n"
+			|| this.current === "\t"
+		) {
 			this.advance();
 		}
 	}
