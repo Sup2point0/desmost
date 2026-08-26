@@ -69,7 +69,7 @@ export function extract_expression(expression: Desmos.ExpressionState): Ast.Expr
 {
    let data;
 
-   // @ts-expect-error: outdated types
+   // @ts-expect-error: check type-narrows
    if (expression.latex?.trim() === "") {
       data = { latex: ` ` };
    } else {

@@ -33,13 +33,14 @@ export function emit_expression(expr?: Ast.Expression): string
       case "text":
          content = `/text{ ${expr.data.text} }`;
          break;
+      case "table":
+         content = "[unsupported]";
+         break;
       default:
-         // @ts-expect-error: outdated types
-         if (expr.data.latex?.trim() === "") {
-            content = "";
-         } else {
-            // @ts-expect-error: outdated types
+         if (expr.data.latex?.trim() !== "") {
             content = expr.data.latex ?? "?";
+         } else {
+            content = "";
          }
    }
 

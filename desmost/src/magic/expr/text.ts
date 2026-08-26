@@ -14,7 +14,7 @@ export class TextIncantation extends ArgIncantation<EXPR>
 	override apply(target: Desmos.ExpressionState, data: string)
 	{
 		target.type = "text";
-		// @ts-expect-error: outdated types
+		// @ts-expect-error: previous assignment type-narrows
 		target.text = data;
 	}
 }

@@ -11,7 +11,6 @@ export class AnimIncantation extends Incantation<LOCAL>
 	override apply(target: Desmos.ExpressionState)
 	{
 		super.require_expr_type(target.type, "expression");
-		// @ts-expect-error: outdated types
 		target.playing = true;
 	}
 }

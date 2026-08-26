@@ -3,8 +3,8 @@ import { Incantation, ArgIncantation, type LOCAL } from "../incantation";
 
 interface SliderBounds
 {
-	min?:  number | string;
-	max?:  number | string;
+	min:   number | string;
+	max:   number | string;
 	step?: number | string;
 }
 
@@ -21,7 +21,6 @@ export class SliderIncantation extends ArgIncantation<LOCAL>
 	override apply(target: Desmos.ExpressionState, data: SliderBounds)
 	{
 		super.require_expr_type(target.type, "expression");
-		// @ts-expect-error: outdated types
 		target.sliderBounds = data;
 	}
 }

@@ -13,7 +13,7 @@ export class LatexIncantation extends ArgIncantation<EXPR>
 	apply(target: Desmos.ExpressionState, data: string): void
 	{
 		target.type = "expression";
-		// @ts-expect-error: outdated types
+		// @ts-expect-error: previous assignment type-narrows
 		target.latex = data === "" ? " " : data;
 	}
 

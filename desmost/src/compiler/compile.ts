@@ -95,7 +95,7 @@ export function compile(
 					break;
 
 				case Ast.Kind.EXPRESSION:
-					// @ts-expect-error: outdated types
+					// @ts-expect-error: check type-narrows
 					if (r.data.latex === " ") {
 						if (opts.ignore_all_blanks) break;
 						if (!seen_non_blank && !opts.keep_leading_blanks) break;

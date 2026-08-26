@@ -3,6 +3,7 @@ import type { DesmostOptions } from "./options";
 
 import { Ast } from "../parser";
 import { UnrecoverableError, type Unrecoverable } from "../errors";
+import { is_latex } from "../desmos";
 
 
 /**
@@ -69,13 +70,10 @@ export function evaluate_expr(
 		desmos.setExpression({ type: "text", text: errors.join("\n\n") });
 	}
 
-	// @ts-expect-error: outdated types
-	if (expr.data.latex != undefined) {
-		// @ts-expect-error: outdated types
-		expr.data.latex = normalise_latex(expr.data.latex);
+	if (is_latex(expr.data)) {
+		expr.data.latex = normalise_latex(expr.data.latex!);
 
 		if (options.prettify) {
-			// @ts-expect-error: outdated types
 			expr.data.latex = prettify_latex(expr.data.latex);
 		}
 	}
