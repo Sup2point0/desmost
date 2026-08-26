@@ -1,6 +1,7 @@
 import { stringify_json5, prettify_source } from "./format";
 
 import { Ast } from "../parser";
+import { is_latex } from "../desmos";
 
 import { DesmosIncantation, ViewportIncantation } from "../magic/global";
 
@@ -79,7 +80,7 @@ export function extract_expression(expression: Desmos.ExpressionState): Ast.Expr
       );
    }
 
-   if ("latex" in data) {
+   if (is_latex(expression)) {
       data.latex = prettify_source(data.latex);
    }
 

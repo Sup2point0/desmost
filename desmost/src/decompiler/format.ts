@@ -3,7 +3,7 @@ export const stringify_json5: (typeof JSON.stringify) = (
 ) =>
 {
    return (
-      /// @ts-expect-error: random `null`??
+      // @ts-expect-error: random `null`??
       JSON.stringify(data, replacer, space)
       .slice(1, -1)  // strip surrounding {}
       .trim()
