@@ -4,6 +4,15 @@
 <br>
 
 
+## v0.9
+
+### Breaking
+- Update `@types/desmos` peer dependency `1.11` -> `1.12`
+
+
+<br>
+
+
 ## v0.8.2
 
 ### New
