@@ -79,7 +79,7 @@ export function evaluate_expr(
 			expr.data.latex = prettify_latex(expr.data.latex);
 		}
 	}
-	else if (expr.data.type === "text") {
+	else if (expr.data.type === "text" && options.dedent_text) {
 		expr.data.text = dedent(expr.data.text ?? "");
 	}
 

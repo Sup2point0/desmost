@@ -47,6 +47,13 @@ export interface DesmostOptions
 	prettify?: boolean
 
 	/**
+	 * Strip common indentation from `/text{}` blocks?
+	 * 
+	 * Defaults to `true`, meaning text is dedented.
+	 */
+	dedent_text?: boolean
+
+	/**
 	 * Should `%` LaTeX comments be ignored, instead of turned into text expressions (notes)?
 	 * 
 	 * Defaults to `false`, meaning comments are kept.
@@ -91,6 +98,7 @@ export const DEFAULT_OPTIONS =
    place_errors: "inline",
    error_prefix: "[DESMOST ERROR]\n",
    prettify: true,
+	dedent_text: true,
    ignore_comments: false,
    ignore_all_blanks: false,
    keep_leading_blanks: false,

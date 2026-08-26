@@ -10,6 +10,25 @@
 - Decompiler moved to `desmost/decompiler` scope (was `desmost`)
 - Update `@types/desmos` peer dependency `1.11` -> `1.12`
 
+### New
+- `/text{}` strips common indentation, allowing you to indent your text nicely:
+
+```hs
+-- before
+/text{
+this
+is kinda ugly
+}
+
+-- now
+/text{
+  much
+  better!
+}
+```
+
+- `dedent_text` compile option to opt out of the above
+
 ### Fixes
 - `<Desmos>` checks `isIntersecting` before compiling
 - Decompiler emits `% ...` for single-line notes, and better formatted `/text{ ... }` for multi-line notes
