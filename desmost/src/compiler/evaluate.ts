@@ -61,11 +61,17 @@ export function evaluate_expr(
 			}
 			catch (e) {
 				errors.push(format_error(e as Error, options));
+				// if it needs the arg, then we can't press on
 				if (invocation.incantation.requires_arg) continue;
 			}
 		}
 
-		invocation.incantation.apply(expr.data, data);
+		try {
+			invocation.incantation.apply(expr.data, data);
+		}
+		catch (e) {
+			errors.push(format_error(e as Error, options));
+		}
 	}
 	
 	if (errors.length > 0) {
