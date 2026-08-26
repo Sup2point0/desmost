@@ -31,14 +31,22 @@ export function emit_expression(expr?: Ast.Expression): string
 
    switch (expr.data.type) {
       case "text":
-         content = `/text{ ${expr.data.text} }`;
+         expr.data.text ??= "";
+
+         if (expr.data.text.includes("\n")) {
+            content = `/text{\n${expr.data.text}\n}`;
+         } else {
+            content = `% ${expr.data.text}`;
+         }
          break;
+      
       case "table":
-         content = "[unsupported]";
+         content = "[tables are currently unsupported]";
          break;
+      
       default:
          if (expr.data.latex?.trim() !== "") {
-            content = expr.data.latex ?? "?";
+            content = expr.data.latex ?? "[unsupported]";
          } else {
             content = "";
          }
