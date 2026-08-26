@@ -8,13 +8,11 @@ export const MEDIUM = ltx `
   expressions: true,
   settingsMenu: false,
 }
-/viewport{
-  left: -8, right: 8,
-}
+/viewport{left: -8, right: 8}
 
 /text{
-Definite Integral Calculator
-v1.0
+  Definite Integral Calculator
+  v1.0
 }
 
 % Enter your integrand here:
@@ -24,7 +22,7 @@ v1.0
 a = 0
 b = 1
 
-/text{ Your answer is: }
+% Your answer is:
 \int_{a}^{b} f(x) \ dx
 
 /secret
