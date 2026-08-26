@@ -72,6 +72,17 @@ export interface DesmostOptions
 	dedent_text: boolean
 
 	/**
+	 * Error if an incantation receives a `{}` object argument with unknown fields?
+	 * 
+	 * This also errors if an incantation receives an empty `{}` object.
+	 * 
+	 * For instance, `/label{position: LEFT}` is invalid; it should be `/label{pos: LEFT}`. With `check_args: false`, this silently no-ops; with `check_args: true`, it flags an error.
+	 * 
+	 * Defaults to `false`, meaning unknown arguments are ignored.
+	 */
+	check_args: boolean
+
+	/**
 	 * Should `%` LaTeX comments be ignored, instead of turned into text expressions (notes)?
 	 * 
 	 * Defaults to `false`, meaning comments are kept.
@@ -106,6 +117,7 @@ export interface DesmostOptions
 	 * 
 	 * Defaults to `false`, meaning `compile()` returns `void`.
 	 */
+	check_args: false,
 	debug: boolean
 }
 

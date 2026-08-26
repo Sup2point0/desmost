@@ -23,17 +23,17 @@ export abstract class Incantation<
 >
 {
 	/** Short user-facing description of what the incantation does. */
-	public abstract readonly description: string
+	abstract readonly description: string
 
 	/** The raw text sequence that matches this incantation, such as `viewport` or `hidden`. */
-	public abstract readonly identifier: string
+	abstract readonly identifier: string
 
 	/** An alternative `.identifier`, strictly for localisation purposes only. */
-	public readonly alias?: string
+	readonly alias?: string
 
 
 	/** Apply this incantation's effect to `target`, using the provided `data` if required. */
-	public abstract apply(
+	abstract apply(
 		target: Effect extends GLOBAL ? Desmos.Calculator : Desmos.ExpressionState,
 		data?: unknown,
 	): void
@@ -63,10 +63,10 @@ export abstract class ArgIncantation<
 	extends Incantation<Effect>
 {
 	/** Does this incantation always require an argument to be passed? */
-	public readonly requires_arg: boolean = true
+	readonly requires_arg: boolean = true
 
 	/** What type of argument does this incantation accept? */
-	public abstract readonly arg_type: Incantation.ArgType
+	abstract readonly arg_type: Incantation.ArgType
 
 
 	/**
@@ -77,8 +77,10 @@ export abstract class ArgIncantation<
 	 * ## Notes
 	 * 
 	 * Child incantation classes should override this method, though the defaults should cover most cases (except `ArgType.ENUM`).
+	 * 
+	 * Validity checks for missing or invalid values, incorrect types, and unknown fields should be performed here, so that `.apply()` can assume the data it receives is guaranteed to be valid.
 	 */
-	public evaluate_arg(raw: string, options: DesmostOptions): Unrecoverable<unknown>
+	evaluate_arg(raw: string, options: DesmostOptions): Unrecoverable<unknown>
 	{
 		switch (this.arg_type) {
 			case Incantation.ArgType.LATEX:  return raw;
