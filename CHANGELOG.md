@@ -7,6 +7,7 @@
 ## v0.9
 
 ### Breaking
+- Decompiler moved to `desmost/decompiler` scope (was `desmost`)
 - Update `@types/desmos` peer dependency `1.11` -> `1.12`
 
 ### Fixes

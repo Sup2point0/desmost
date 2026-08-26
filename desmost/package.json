@@ -36,6 +36,10 @@
     "./svelte": {
       "import": "./svelte/desmost.svelte"
     },
+    "./decompiler": {
+      "import": "./dist/decompiler/index.js",
+      "types": "./dist/decompiler/index.d.ts"
+    },
     "./internal": {
       "import": "./dist/index.internal.js",
       "types": "./dist/index.internal.d.ts"
