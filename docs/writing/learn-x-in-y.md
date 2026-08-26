@@ -16,7 +16,7 @@ y = x^3 - 1
 y = \int_{0}^{2\pi} e^x \sin{x} \ dx
 
 -- LaTeX comments become Desmos text expressions (“Add Note” in the GUI).
-% This is a sine wave.
+% this is a sine wave
 y = \sin(x)
 
 
@@ -30,31 +30,30 @@ y = \sin(x)
 
 
 -- Some incantations can accept an argument with additional options, enclosed in {} curly braces.
-/label{ Origin } :: (0, 0)
+/label{Origin} :: (0, 0)
    -- This point gets labelled "Origin"
 
 -- Arguments are either a single unquoted string, or a JavaScript object
-/slider{ min: -1, max: 1 } :: t = 0
+/slider{min: -1, max: 1} :: t = 0
    -- Sets slider bounds of t
 
+-- Enums can be referenced with a string or literally!
+/label{text: "origin", pos: "RIGHT"} :: (0, 0)
+/label{text: "origin", pos: RIGHT} :: (0, 0)
+
 -- Incantations and their arguments almost always have an identical interface to the actual Desmos API.
--- However, Desmost also provides a few useful pre-configured incantations with sensible defaults.
-y = \frac{1}{x}
-/asympt :: x = 0
-/asympt :: y = 0
-   -- Rendered as dotted lines with lower opacity!
 
 
 -- We can, naturally, stack multiple incantations in one block.
-/anim /slider{ min: 0, max: 1 } :: T = 0
+/anim /slider{min: 0, max: 1} :: T = 0
 
 -- To improve readability, we can break a block over multiple lines.
-/anim /slider{ min: 0, max: 1 }
+/anim /slider{min: 0, max: 1}
   :: T = 0
 
 -- or further:
 /anim
-/slider{ min: 0, max: 1 }
+/slider{min: 0, max: 1}
   :: T = 0
 
 -- or even further:
@@ -104,31 +103,29 @@ Putting it all together, here's what a full Desmost 'program' might look like:
   expressions: true,
   settingsMenu: false,
 }
-/viewport{
-  left: -8, right: 8,
-}
+/viewport{left: -8, right: 8}
 
 /text{
 Definite Integral Calculator
 v1.0
 }
 
-% Enter your integrand here:
-/colour{ BLUE } :: f(x) =
+% enter your integrand here:
+/colour{BLUE} :: f(x) =
 
-% Enter your integration bounds here:
+% enter your integration bounds here:
 a = 0
 b = 1
 
-/text{ Your answer is: }
+$ your answer is:
 \int_{a}^{b} f(x) \ dx
 
 /secret
-/colour{ BLUE }
+/colour{BLUE}
 /no-line
-/fill{ opacity: 0.2 }
+/fill{opacity: 0.2}
   :: /latex{
-    min(0, f(x))
+  min(0, f(x))
     \leq y
     \leq max(0, f(x))
   }

@@ -7,6 +7,14 @@ Desmost uses the [Desmos API<sup>↗</sup>](https://www.desmos.com/api/v1.12/doc
 ### Why do I need a `::` separator?
 Technically speaking, a separator is not necessary for Desmost to parse your source correctly! But from a practical standpoint, it’s useful for people learning the syntax to very clearly distinguish Desmost incantations from LaTeX.
 
+```hs
+-- a jumbled mess
+/colour{GREEN} /line{opacity: 0.5} \int_{0}^{t} \frac{1}{t} f(t) \ dt
+
+-- clear boundary between Desmost and LaTeX
+/colour{GREEN} /line{opacity: 0.5} :: \int_{0}^{t} \frac{1}{t} f(t) \ dt
+```
+
 ### Why is Desmost so slow?
 It’s not Desmost, it’s Desmos!
 

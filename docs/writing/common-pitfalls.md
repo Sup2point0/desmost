@@ -8,10 +8,10 @@ Nevertheless, you of course may encounter errors or difficulties. This page cove
 ### Remember the separator
 ```hs
 -- incorrect
-/slider{ step: 1 } A = 0
+/slider{step: 1} A = 0
 
 -- correct
-/slider{ step: 1 } :: A = 0
+/slider{step: 1} :: A = 0
 ```
 
 The separator helps Desmost determine where [local incantations](incantations.md#local-incantations) end and expression content starts.

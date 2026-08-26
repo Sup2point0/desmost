@@ -12,10 +12,10 @@ Incantations look like this:
 
 ```hs
 /dark-mode
-/latex{ y = x }
+/latex{y = x}
 
 /hide :: y = x
-/label{ text: "sup" } :: (0, 0)
+/label{text: "sup"} :: (0, 0)
 ```
 
 They consist of a `/` slash followed by an *identifier*. Certain incantations also accept an *argument*, enclosed in `{}` braces.
@@ -59,8 +59,8 @@ Global incantations modify the global state of the calculator. For instance, `/d
 
 ```hs
 /dark
-/desmos{ keypad: false }
-/viewport{ left: -8, right: 8 }
+/desmos{keypad: false}
+/viewport{left: -8, right: 8}
 ```
 
 Global incantations don’t produce or affect any expressions. You can only invoke 1 global incantation per block. You can use them anywhere in your source (although placing them all at the start probably makes the most sense).
@@ -81,7 +81,7 @@ Local incantations come before the expression, followed by a `::` separator.
 A block can have any number of local incantations, although you’ll rarely need more than 1 or 2.
 
 ```hs
-/no-line /colour{ BLUE } :: y \leq x^2
+/no-line /colour{BLUE} :: y \leq x^2
 ```
 
 
@@ -104,7 +104,7 @@ Incantations may accept an argument providing additional data. For instance, `/c
 
 ### Object
 ```hs
-/incantation{ field: value, field: value }
+/incantation{field: value, field: value}
 ```
 
 Incantations with multiple settings accept a JavaScript object as their argument. The fields are (almost always) mirrored with the Desmos API – for instance, in the API to create a slider you would do:
@@ -116,7 +116,7 @@ calc.setExpression({ latex: "t = 0", sliderBounds: { min: -1, max: 1 }});
 In Desmost:
 
 ```hs
-/slider{ min: -1, max: 1 } :: t = 0
+/slider{min: -1, max: 1} :: t = 0
 ```
 
 

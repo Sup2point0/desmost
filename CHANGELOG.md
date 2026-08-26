@@ -101,10 +101,13 @@
 
 ```svelte
 <!-- old -->
-<Desmost errors="crash" >
+<Desmost errors="crash" keep_trailing_blanks={true} width="90vw" lazy />
+
+<!-- new -->
+<Desmost options={{ errors: "crash", keep_trailing_blanks: true }} width="90vw" lazy />
 ```
 
-> This avoids confusion between compile options vs other Svelte parameters, and also avoids polluting the props with a huge (and growing) number of compile options.
+> This avoids confusion between compile options vs other Svelte parameters, and also avoids polluting the props with a (increasingly) large number of compile options.
 
 ### New
 - `<Desmost settings={}>` field for setting global Desmos defaults
@@ -166,7 +169,15 @@
 
 ### New
 - `ignore_blank_lines` compile option to strip all blank expressions from Desmos output
-- Object arguments to incantations can now use unquoted enum literals, like `/line{ style: DOTTED }` instead of `/line{ style: "DOTTED" }`
+- Object arguments to incantations can now use unquoted enum literals
+
+```hs
+-- before:
+/line{style: "DOTTED"} :: y = x
+
+-- now also:
+/line{style: DOTTED} :: y = x
+```
 
 ### Fixes
 - Format parser crash error messages properly

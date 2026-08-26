@@ -21,18 +21,18 @@
   <tr>
     <td>
       <pre lang="hs"><code>
-/viewport{ left: -5, right: 5 }
+/viewport{left: -5, right: 5}
 <br>
 % Drag the slider!
 A = 1
-f(x) = A \sin(x - t)
+f(x) = A \sin(x-t)
 <br>
 /label{
   text: "we love Desmos(t)!"
 } :: (0, f(0))
 <br>
 /anim
-/slider{ min: -10, max: 10 }
+/slider{min: -10, max: 10}
   :: t = 0
 </code></pre>
     </td>
@@ -87,7 +87,7 @@ compile(calc, "/text{ sup world! }", {
 ### Render
 Left up to you, in your framework of choice!
 
-But if you enjoy nice things, Desmost provides a [Svelte](https://svelte.dev) component for mass-compiling Desmost, intended to be used in conjunction with MDsveX:
+But if you enjoy nice things, Desmost provides a [Svelte<sup>↗</sup>](https://svelte.dev) component for mass-compiling Desmost, intended to be used in conjunction with [MDsveX<sup>↗</sup>](https://mdsvex.pngwn.io/):
 
 ```svelte
 <script>
@@ -161,7 +161,7 @@ Suppose you also want to customise the slider bounds. Just add another incantati
 ```hs
 % Welcome to Desmost!
 
-/anim /slider{ min: 0, max: 10 } :: a = 2
+/anim /slider{min: 0, max: 10} :: a = 2
 b = 3
 c = 5
 
@@ -178,7 +178,7 @@ This line is getting a little long, though. We can break it up over multiple lin
 % Welcome to Desmost!
 
 /anim
-/slider{ min: 0, max: 10 }
+/slider{min: 0, max: 10}
   :: a = 2
 b = 3
 c = 5
@@ -233,14 +233,14 @@ y = \sin{x}
 And here’s a saw wave:
 
 ```desmos
-/viewport{ left: -2*Math.PI, right: 2*Math.PI }
+/viewport{left: -2*Math.PI, right: 2*Math.PI}
 
-/slider{ min: 1, max: 40, step: 1 } :: N = 1
+/slider{min: 1, max: 40, step: 1} :: N = 1
 /latex{
   f(x) = \frac{2}{\pi} \sum_{n=0}^{N} \frac{
 }
 
-/anim-mono /slider{ min: 0, max: "2\\pi" }
+/anim-mono /slider{min: 0, max: "2\\pi"}
 ```
 ````
 
@@ -249,7 +249,7 @@ Exactly like how a ` ```math ` block renders into LaTeX, or a ` ```mermaid ` blo
 ### Keep the simple stuff simple
 We want simple stuff like this to work effortlessly:
 
-```math
+```latex
 p = 2
 q = 3
 p + q
