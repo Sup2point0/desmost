@@ -42,7 +42,6 @@ y = x
 		let exprs = desmos.getExpressions();
 
 		assert.equal(exprs.length, 1);
-		// @ts-expect-error: outdated types
 		assert.equal(exprs[0].latex, `y = x`);
 	})
 	
@@ -58,9 +57,7 @@ y = x^2
 		let exprs = desmos.getExpressions();
 
 		assert.equal(exprs.length, 2);
-		// @ts-expect-error: outdated types
 		assert.equal(exprs[0].latex, `y = x`);
-		// @ts-expect-error: outdated types
 		assert.equal(exprs[1].latex, `y = x^2`);
 	})
 	
@@ -77,11 +74,8 @@ y = x^2
 		let exprs = desmos.getExpressions();
 
 		assert.equal(exprs.length, 3);
-		// @ts-expect-error: outdated types
 		assert.equal(exprs[0].latex, `y = x`);
-		// @ts-expect-error: outdated types
 		assert.equal(exprs[1].latex, ` `);
-		// @ts-expect-error: outdated types
 		assert.equal(exprs[2].latex, `y = x^2`);
 	})
 })
@@ -101,9 +95,7 @@ y = x^2
 		let exprs = desmos.getExpressions();
 
 		assert.equal(exprs.length, 2);
-		// @ts-expect-error: outdated types
 		assert.equal(exprs[0].latex, `y = x`);
-		// @ts-expect-error: outdated types
 		assert.equal(exprs[1].latex, `y = x^2`);
 	})
 	
@@ -119,9 +111,7 @@ y = x^2
 
 		let exprs = desmos.getExpressions();
 		assert.equal(exprs.length, 2);
-		// @ts-expect-error: outdated types
 		assert.equal(exprs[0].latex, `y = x`);
-		// @ts-expect-error: outdated types
 		assert.equal(exprs[1].latex, `y = x^2`);
 	})
 	
@@ -140,11 +130,8 @@ r = 3
 
 		let exprs = desmos.getExpressions();
 		assert.equal(exprs.length, 3);
-		// @ts-expect-error: outdated types
 		assert.equal(exprs[0].latex, `p = 1`);
-		// @ts-expect-error: outdated types
 		assert.equal(exprs[1].latex, `q = 2`);
-		// @ts-expect-error: outdated types
 		assert.equal(exprs[2].latex, `r = 3`);
 	})
 })

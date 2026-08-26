@@ -40,7 +40,7 @@ export function assert_parses_blank_line(parser: DesmostParser)
 	let r = parser.parse_next();
 	assert.isNotNull(r);
 	assert_is_expression(r);
-	// @ts-expect-error: outdated types
+	// @ts-expect-error: assertion type-narrows
 	assert.equal(r.data.latex, " ");
 	assert.deepEqual(r.incantations, []);
 }

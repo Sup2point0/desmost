@@ -38,7 +38,6 @@ test("medium", () =>
 	r = parser.parse_next();
 	assert_is_expression(r);
 	assert.equal(r.data.type, "text");
-	// @ts-expect-error: outdated types
 	assert.equal(r.data.text, "Definite Integral Calculator\nv1.0");
 	assert.deepEqual(r.incantations, []);
 
@@ -48,14 +47,12 @@ test("medium", () =>
 	r = parser.parse_next();
 	assert_is_expression(r);
 	assert.equal(r.data.type, "text");
-	// @ts-expect-error: outdated types
 	assert.equal(r.data.text, "Enter your integrand here:");
 	assert.deepEqual(r.incantations, []);
 
 	// /colour{ BLUE } :: f(x) =
 	r = parser.parse_next();
 	assert_is_expression(r);
-	// @ts-expect-error: outdated types
 	assert.equal(r.data.latex, `f(x) =`);
 	assert.equal(r.incantations.length, 1);
 
@@ -65,20 +62,17 @@ test("medium", () =>
 	r = parser.parse_next();
 	assert_is_expression(r);
 	assert.equal(r.data.type, "text");
-	// @ts-expect-error: outdated types
 	assert.equal(r.data.text, "Enter your integration bounds here:");
 	assert.deepEqual(r.incantations, []);
 
 	// a = 0
 	r = parser.parse_next();
 	assert_is_expression(r);
-	// @ts-expect-error: outdated types
 	assert.equal(r.data.latex, `a = 0`);
 
 	// b = 1
 	r = parser.parse_next();
 	assert_is_expression(r);
-	// @ts-expect-error: outdated types
 	assert.equal(r.data.latex, `b = 1`);
 
 	assert_parses_blank_line(parser);
@@ -87,14 +81,12 @@ test("medium", () =>
 	r = parser.parse_next();
 	assert_is_expression(r);
 	assert.equal(r.data.type, "text");
-	// @ts-expect-error: outdated types
 	assert.equal(r.data.text, "Your answer is:");
 	assert.deepEqual(r.incantations, []);
 
 	// \int_{a}^{b} f(x) \ dx
 	r = parser.parse_next();
 	assert_is_expression(r);
-	// @ts-expect-error: outdated types
 	assert.equal(r.data.latex, ltx `\int_{a}^{b} f(x) \ dx`);
 
 	assert_parses_blank_line(parser);
@@ -103,7 +95,6 @@ test("medium", () =>
 	r = parser.parse_next();
 	assert_is_expression(r);
 
-	// @ts-expect-error: outdated types
 	assert.equal(r.data.latex, ltx `
     min(0, f(x))
     \leq y

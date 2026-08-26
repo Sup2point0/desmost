@@ -10,9 +10,7 @@ test("/latex", () => {
 	let r = parser.parse_next() as Ast.Expression;
 
 	assert_is_expression(r);
-	// @ts-expect-error: outdated types
 	assert.isNotEmpty(r.data.latex);
-	// @ts-expect-error: outdated types
 	assert.equal(r.data.latex, "y = x^2")
 	assert.deepEqual(r.incantations, []);
 })
@@ -32,7 +30,6 @@ test("/colour", () => {
 	let r = parser.parse_next() as Ast.Expression;
 
 	assert_is_expression(r);
-	// @ts-expect-error: outdated types
 	assert.equal(r.data.latex, `y = x^2`);
 	assert.equal(r.incantations.length, 1);
 	

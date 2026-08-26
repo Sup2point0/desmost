@@ -20,7 +20,6 @@ describe("preserves plain LaTeX", () =>
 		
 		assert_is_expression(r);
 		assert.equal(r.kind, Ast.Kind.EXPRESSION);
-		// @ts-expect-error: outdated types
 		assert.equal(r.data.latex, " ");
 	})
 

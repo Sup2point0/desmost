@@ -16,7 +16,6 @@ describe("parse-next", () =>
 		let r = parser.parse_next();
 
 		assert_is_expression(r);
-		// @ts-expect-error: outdated types
 		assert.equal(r.data.latex, `y = x^2`);
 	})
 
@@ -32,7 +31,6 @@ describe("parse-next", () =>
 		let r = parser.parse_next();
 		
 		assert_is_expression(r);
-		// @ts-expect-error: outdated types
 		assert.equal(r.data.latex, `y = x^2`);
 	})
 
@@ -47,7 +45,6 @@ describe("parse-next", () =>
 		let r = parser.parse_next();
 		
 		assert_is_expression(r);
-		// @ts-expect-error: outdated types
 		assert.equal(r.data.latex, `y = x^2`);
 	})
 

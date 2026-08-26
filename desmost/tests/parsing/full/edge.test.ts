@@ -119,7 +119,6 @@ describe("spaces", () =>
 
 		let r = parser.parse_next();
 		assert_is_expression(r);
-		// @ts-expect-error: outdated types
 		assert.equal(r.data.latex, "y = x");
 	})
 
@@ -134,7 +133,6 @@ describe("spaces", () =>
 		assert_parses_blank_line(parser);
 		let r = parser.parse_next();
 		assert_is_expression(r);
-		// @ts-expect-error: outdated types
 		assert.equal(r.data.latex, "y = x");
 	})
 
@@ -148,7 +146,6 @@ describe("spaces", () =>
 
 		let r = parser.parse_next();
 		assert_is_expression(r);
-		// @ts-expect-error: outdated types
 		assert.equal(r.data.latex, "y = x");
 	})
 
@@ -164,11 +161,9 @@ describe("spaces", () =>
 		assert_parses_blank_line(parser);
 		r = parser.parse_next();
 		assert_is_expression(r);
-		// @ts-expect-error: outdated types
 		assert.equal(r.data.latex, "y = x");
 		r = parser.parse_next();
 		assert_is_expression(r);
-		// @ts-expect-error: outdated types
 		assert.equal(r.data.latex, "y = x^2");
 		r = parser.parse_next();
 		assert.isNull(r);

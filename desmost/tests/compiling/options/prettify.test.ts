@@ -10,7 +10,6 @@ function test_cases(name: string, cases: Array<[src: string, expected: string]>)
 		compile(desmos, src);
 
 		let exprs = desmos.getExpressions();
-		// @ts-expect-error: outdated types
 		assert.equal(exprs[0].latex, expected);
 	});
 }

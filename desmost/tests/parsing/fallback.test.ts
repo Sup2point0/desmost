@@ -12,6 +12,5 @@ test.each([
 	let parser = new DesmostParser(src);
 	let r = parser.parse_next();
 	assert_is_expression(r);
-	// @ts-expect-error: outdated types
 	assert.equal(r.data.latex, src);
 })
