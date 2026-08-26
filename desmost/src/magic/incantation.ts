@@ -81,9 +81,11 @@ export abstract class ArgIncantation<
 	public evaluate_arg(raw: string, options: DesmostOptions): Unrecoverable<unknown>
 	{
 		switch (this.arg_type) {
-			case Incantation.ArgType.STRING: return raw;
 			case Incantation.ArgType.LATEX:  return raw;
 			case Incantation.ArgType.ENUM:   return raw;
+			
+			case Incantation.ArgType.STRING:
+				return (options.dedent_text) ? dedent(raw).trim(): raw.trim();
 			
 			case Incantation.ArgType.OBJECT: {
 				try {

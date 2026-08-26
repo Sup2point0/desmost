@@ -468,20 +468,26 @@ export class DesmostParser extends GenericParser
 		}
 
 		/* NOTE: Cut in by 1 on both sides to exclude {} braces */
-		let out = utils.chars(this.source, init + 1, this.i - 1);
+		let raw = utils.chars(this.source, init + 1, this.i - 1);
 		
 		for (let [i, j] of utils.reversing(utils.paired(indices_to_insert_quotes))) {
 			i -= init + 1;
 			j -= init + 1;
 
-			let value = out.slice(i, j).join("");
+			let value = raw.slice(i, j).join("");
 			if (["true", "false", "null", "undefined"].includes(value)) continue;
 			
-			out.splice(j, 0, `"`);
-			out.splice(i, 0, `"`);
+			raw.splice(j, 0, `"`);
+			raw.splice(i, 0, `"`);
 		}
 
-		return out.join("").trim();
+		let out = raw.join("");
+
+		if (arg_type !== Incantation.ArgType.STRING) {
+			out = out.trim();
+		}
+
+		return out;
 	}
 }
 
