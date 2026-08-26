@@ -1,6 +1,9 @@
 # Fervently Anticipated Questions
 
 
+<br>
+
+
 ### Why did you create Desmost? / Who even needs this?
 
 See [Rationale](../RATIONALE.md). Also hey man, we can create cool things for fun, not everything has to be useful or profitable!
@@ -9,25 +12,25 @@ See [Rationale](../RATIONALE.md). Also hey man, we can create cool things for fu
 <br>
 
 
-## Why doesn’t Desmost render the Desmos calculator for me? / Why does `compile()` need an existing `Desmos.Calculator` instance to be passed in?
+## Why doesn’t Desmost render the Desmos calculator for me?
 
 TLDR: That stuff’s messy, and you’ll most likely want to do it yourself.
 
-Desmost only handles the focused job of compiling text to a calculator state. Stuff like rendering, mounting to the DOM will vary depending on your context and web framework of choice.
+Desmost only handles the focused job of compiling text to a calculator state. Stuff like rendering, mounting to the DOM, etc. will vary depending on your context and web framework of choice.
 
-Desmost is like `rustc`, `gcc`, etc. It’s just 1 file in, 1 calculator out. Connecting that with other stuff is left to you with `cargo` and `make` ;)
+Desmost is like `rustc`, `gcc`, etc. It’s just 1 file in, 1 calculator out. Connecting that with other stuff is left to you with `cargo` and `make`.
 
-That said, I use SvelteKit and MDsveX, so Desmost provides a nicely encapsulated Svelte component for that use case.
+That said, I use SvelteKit and MDsveX, so Desmost provides a nicely encapsulated Svelte component for that use case ;)
 
 
 <br>
 
 
-## Why does Desmost only work client-side in the browser? / Why can’t I use Desmost server-side?
+## Why does Desmost only work client-side in the browser, and not server-side?
 
 Desmost uses the [Desmos API<sup>↗</sup>](https://www.desmos.com/api/v1.12/docs/index.html), and the Desmos API (currently) must be included in your webpage via `<script src="..."></script>`. This only works client-side in the browser.
 
-Also, constructing a `Desmos.GraphingCalculator(element)` requires a DOM `element` to mount it into. That’s only possible in the actual browser!
+You’ll realise this yourself when you try to call `compile(calc, src)`. You need to pass in a Desmos calculator instance `calc`. To construct that `Desmos.GraphingCalculator(element)`, you need both the Desmos API to access `Desmos`, and a DOM `element` to mount the calculator into. These both require the browser!
 
 So unfortunately, no server-side Desmost =(
 
@@ -63,9 +66,32 @@ You could, but the bottleneck is still evaluation, you wouldn’t really be gain
 <br>
 
 
+## Can I use Desmost to develop in Desmos?
+
+Well, you’d probably want incremental compilation for that, and I haven’t implemented that yet. If your project is large recompilations will probably become prohibitively expensive.
+
+Personally, I find Desmos’s UI very pleasant, so I see no reason to seek an alternative =)
+
+
+<br>
+
+
+## Where does the `/incantation{}` syntax come from?
+
+Mate, are you havin a bubble bath? It’s LaTeX ofc! Only the `\` backslash is mirrored, to avoid confusing Desmost with LaTeX.
+
+
+<br>
+
+
 ## Why do I need a `::` separator?
 
 Technically speaking, a separator is not necessary for Desmost to parse your source correctly! But it does make error recovery from unclosed brackets significantly easier.
+
+```hs
+/label{ text: "This argument wasn’t fi :: (0, 0)
+-- Now we can keep (0, 0) and keep parsing, instead of completely imploding
+```
 
 From a practical standpoint, it’s also useful for people learning Desmost’s syntax to have a very clear marker separating Desmost from LaTeX.
 
@@ -76,5 +102,24 @@ From a practical standpoint, it’s also useful for people learning Desmost’s 
 -- clear boundary between Desmost and LaTeX!
 /colour{GREEN} /line{opacity: 0.5} :: \int_{0}^{t} \frac{1}{t} f(t) \ dt
 ```
+
+
+<br>
+
+
+## Where does the name “incantation” come from?
+
+Calling them “commands” is boring. “Control sequence” is too long. DSLs are pretty magical, so hey, each one is a little incantation that transforms your calculator in some way ^v^
+
+
+<br>
+
+
+## Why didn’t you write Desmost in Rust?
+
+The Desmos API is JavaScript, so interfacing with it in JavaScript (TypeScript) makes the most sense, no?
+
+And sure, speed is speed, but for our expected input sizes, Rust would be overkill. The bottleneck is Desmos, not Desmost!
+
 
 <br>
