@@ -13,16 +13,13 @@ interface Props {
 let { exprs }: Props = $props();
 
 
-let open = $state(false);
-
-
-function show_expr(expr: Desmos.ExpressionState)
+function show_expr(expression: Desmos.ExpressionState & { open: boolean })
 {
-  expr = { ...expr };
+  let expr = { ...expression };
 
   let did_redact = false;
 
-  if (!open) {
+  if (!expression.open) {
     for (let [key, value] of Object.entries(expr)) {
       if (
         value === ""
@@ -36,7 +33,7 @@ function show_expr(expr: Desmos.ExpressionState)
 
   let json = Json5.stringify(expr, undefined, "  ");
   
-  if (!open && did_redact) {
+  if (!expression.open && did_redact) {
     json = json.replaceAll("\n}", ",\n  ...\n}");
   }
 
@@ -49,9 +46,9 @@ function show_expr(expr: Desmos.ExpressionState)
 
 
 <ul>
-  {#each exprs as expr}
-    <li onclick={() => { open = !open; }}>
-      <pre lang="js"><code>{@html show_expr(expr) }</code></pre>
+  {#each exprs as expr, i}
+    <li onclick={() => { expr.open = !expr.open; }}>
+      <pre lang="js"><code>{i + 1}: {@html show_expr(expr) }</code></pre>
     </li>
   {/each}
 </ul>
@@ -93,6 +90,12 @@ ul {
     color: black;
     font-size: 90%;
     line-height: 1.4;
+
+    :global(.token.property) { color: $col-blue; }
+    :global(.token.string) { color: $col-red; }
+    :global(.token.boolean) { color: $col-orange; font-style: italic; }
+    :global(.token.operator) { color: rgb(black, 40%); }
+    :global(.token.punctuation) { color: rgb(black, 40%); }
   }
 }
 
