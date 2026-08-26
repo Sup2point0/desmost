@@ -10,6 +10,7 @@
 - Update `@types/desmos` peer dependency `1.11` -> `1.12`
 
 ### Fixes
+- `<Desmos>` checks `isIntersecting` before compiling
 - Decompiler emits `% ...` for single-line notes, and better formatted `/text{ ... }` for multi-line notes
 - Decompiler rejects tables with `[tables are currently unsupported]` instead of `?`
 - Decompiler rejects other expressions with `[unsupported]` instead of `?`

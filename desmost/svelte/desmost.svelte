@@ -141,9 +141,11 @@ onMount(() =>
       inject(el_desmos, source.textContent);
     }
     else {
-      let observer = new IntersectionObserver(() => {
-        inject(el_desmos, source.textContent);
-        observer.disconnect();
+      let observer = new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting) {
+          inject(el_desmos, source.textContent);
+          observer.disconnect();
+        }
       });
       observer.observe(el_desmos);
       lazy_observers.push(observer);
