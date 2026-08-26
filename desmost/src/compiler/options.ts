@@ -58,6 +58,15 @@ export interface DesmostOptions
 	error_prefix: string
 
 	/**
+	 * Show all the available diagnostics for errors, including hints and debug information?
+	 * 
+	 * Defaults to `true`, meaning all output is shown.
+	 * 
+	 * You may wish to disable this if you know what you’re doing and find the walls of text overwhelming.
+	 */
+	expand_errors: boolean
+
+	/**
 	 * Prettify LaTeX output so it renders nicely in the Desmos editor?
 	 * 
 	 * Defaults to `true`, meaning LaTeX is prettified.
@@ -117,7 +126,6 @@ export interface DesmostOptions
 	 * 
 	 * Defaults to `false`, meaning `compile()` returns `void`.
 	 */
-	check_args: false,
 	debug: boolean
 }
 
@@ -127,8 +135,10 @@ export const DEFAULT_OPTIONS: DesmostOptions =
    errors: "surface",
    place_errors: "inline",
    error_prefix: "[DESMOST ERROR]\n",
+	expand_errors: true,
    prettify: true,
 	dedent_text: true,
+	check_args: false,
    ignore_comments: false,
    ignore_all_blanks: false,
    keep_leading_blanks: false,

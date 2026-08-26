@@ -28,6 +28,7 @@ is kinda ugly
 ```
 
 - `dedent_text` compile option to opt out of the above
+- `check_args` compile option to error when incantations are passed unknown arguments
 
 ### Fixes
 - Tabs are treated as whitespace

@@ -1,3 +1,5 @@
+import dedent from "dedent";
+
 import type { DesmostOptions } from "./options";
 
 import { UnrecoverableError } from "../errors";
@@ -11,8 +13,21 @@ export function format_error(
 	let prefix = options.error_prefix;
 	let sep = (prefix === "" || prefix.endsWith("\n")) ? "" : " ";
 
-	return `${prefix}${sep}${e.name}: ${e.message}`;
 	// TODO maybe include stack? (configurable?)
+	let display = `${prefix}${sep}${e.name}: ${e.message}`;
+
+	if (e.details != undefined && options.expand_errors) {
+		display += "\n";
+
+		if (e.details.hint != undefined) {
+			display += `\nHint: ${e.details.hint}`;
+		}
+		if (e.details.flagged_by != undefined) {
+			display += `\n\n[Flagged by: \`${e.details.flagged_by}\`]`;
+		}
+	}
+
+	return display;
 }
 
 
