@@ -3,6 +3,8 @@
 <script lang="ts">
 
 import Json5 from "json5";
+import Prism from "prismjs";
+
 
 interface Props {
   exprs: Desmos.ExpressionState[];
@@ -38,7 +40,9 @@ function show_expr(expr: Desmos.ExpressionState)
     json = json.replaceAll("\n}", ",\n  ...\n}");
   }
 
-  return json.replaceAll("\n", "<br>");
+  let highlighted = Prism.highlight(json, Prism.languages.javascript, "javascript");
+  
+  return highlighted;
 }
 
 </script>

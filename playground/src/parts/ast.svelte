@@ -88,6 +88,12 @@ li {
     line-height: 1.4;
     word-break: break-all;
     white-space: pre-wrap;
+
+    :global(.token.property) { color: #ff60ff; }
+    :global(.token.string) { color: #fff1c7; }
+    :global(.token.boolean) { color: #c7c7ff; font-style: italic; }
+    :global(.token.operator) { color: $col-blue-inv; }
+    :global(.token.punctuation) { color: rgb(white, 90%); }
   }
 }
 

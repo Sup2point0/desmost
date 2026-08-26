@@ -1,8 +1,0 @@
-@use 'mixins/colours' as *;
-
-
-.token.property { color: #ff60ff; }
-.token.string { color: #fff1c7; }
-.token.boolean { color: #c7c7ff; font-style: italic; }
-.token.operator { color: $col-blue-inv; }
-.token.punctuation { color: rgb(white, 90%); }
