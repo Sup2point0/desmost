@@ -1,4 +1,4 @@
-export { fill_defaults, DEFAULT_OPTIONS } from "./options";
+export { DEFAULT_OPTIONS } from "./options";
 export type { DesmostDebug } from "./compiler/compile";
 
 export { Ast } from "./parser";
