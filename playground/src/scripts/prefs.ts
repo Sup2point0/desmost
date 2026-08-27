@@ -14,7 +14,6 @@ interface PlaygroundPrefs
 
 const DEFAULTS: PlaygroundPrefs = {
   show_options: false,
-  debug: false,
   frac_x: 0.5,
   frac_y: 0.6,
 };
