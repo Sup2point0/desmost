@@ -169,8 +169,8 @@ This page documents all the incantations available in Desmost.
     <td><pre lang="ts"><code>{
 <br>   text: string;
 <br>   show?: boolean;
-<br>   size?: number \| keyof typeof Desmos.LabelSizes;
-<br>   pos?: keyof typeof Desmos.LabelOrientations;
+<br>   size?: number;
+<br>   pos?: "ABOVE" \| "BELOW" \| "LEFT" \| "RIGHT" \| "ABOVE_LEFT" \| "ABOVE_RIGHT" \| "BELOW_LEFT" \| "BELOW_RIGHT";
 <br>}</code></pre></td>
     <td>Label a block that evaluates to a point(s).</td>
   </tr>
