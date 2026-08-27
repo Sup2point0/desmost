@@ -16,11 +16,29 @@ import { options } from "#scripts/options";
 
 <form>
   <section>
+    <input id="expand-errors" type="checkbox" bind:checked={$options.expand_errors} />
+
+    <label for="expand-errors">
+      <h3> Expand Errors </h3>
+      <p> Show all details for errors? </p>
+    </label>
+  </section>
+
+  <section>
     <input id="prettify" type="checkbox" bind:checked={$options.prettify} />
 
     <label for="prettify">
       <h3> Prettify </h3>
       <p> Prettify LaTeX output for Desmos? </p>
+    </label>
+  </section>
+  
+  <section>
+    <input id="check-args" type="checkbox" bind:checked={$options.check_args} />
+
+    <label for="check-args">
+      <h3> Check Arguments </h3>
+      <p> Error when an incantation receives unknown fields or an empty argument? </p>
     </label>
   </section>
   
