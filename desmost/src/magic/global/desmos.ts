@@ -1,5 +1,8 @@
 import { Incantation, ArgIncantation, type GLOBAL } from "../incantation";
 
+import { UnrecoverableError, type Unrecoverable } from "../../errors";
+import type { DesmostOptions } from "../../compiler";
+
 
 type DesmosSettings = Desmos.GraphConfiguration & Desmos.GraphSettings
 
@@ -7,7 +10,7 @@ type DesmosSettings = Desmos.GraphConfiguration & Desmos.GraphSettings
 export class DesmosIncantation extends ArgIncantation<GLOBAL>
 {
 	override readonly description
-		= "Set the configuration of the calculator via `Calculator.updateSettings()`."
+		= "Tweak calculator settings via `Calculator.updateSettings()`."
 	
 	override readonly identifier   = "desmos"
 	override readonly requires_arg = false
@@ -21,5 +24,24 @@ export class DesmosIncantation extends ArgIncantation<GLOBAL>
 		if (data != undefined) {
 			target.updateSettings(data);
 		}
+	}
+
+	override evaluate_arg(raw: string, options: DesmostOptions): Unrecoverable<DesmosSettings>
+	{
+		let out = super.evaluate_arg(raw, options) as DesmosSettings;
+
+		if (options.check_args) {
+			if (Object.keys(out).length === 0) {
+				throw new UnrecoverableError.MissingInput(
+					`/${this.identifier} received empty settings`,
+					{
+						hint: `Provide settings like \`/desmos{expressionsCollapsed: true}\``,
+						extra: [`Use just /desmos (without \`{}\`) if you want it as an indicator`],
+					}
+				);
+			}
+		}
+		
+		return out;
 	}
 }

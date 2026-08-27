@@ -43,9 +43,10 @@ export class ViewportIncantation extends ArgIncantation<GLOBAL>
 		if (options.check_args) {
 			if (Object.keys(out).length === 0) {
 				throw new UnrecoverableError.InvalidArgument(
-					`/${this.identifier} received no viewport bounds`,
+					`/${this.identifier} received empty viewport bounds`,
 					{
-						hint: `Provide \`{ left, right, bottom, top \``,
+						hint: `Provide bounds like \`/viewport{left: -8, right: 8}\``,
+						extra: [`Missing bounds are kept as their defaults`],
 						flagged_by: "check_args",
 					}
 				);
