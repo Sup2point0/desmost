@@ -1,16 +1,13 @@
 import { persisted } from "svelte-persisted-store";
 
 import type { DesmostOptions } from "desmost";
-import { fill_defaults } from "desmost/internal";
-
-
-const DEFAULTS = fill_defaults({});
+import { DEFAULT_OPTIONS } from "../../../desmost/src/index.internal";
 
 
 /** Currently set compiler options. */
 export const options = persisted<DesmostOptions>(
   "desmost.playground.options",
-  DEFAULTS,
+  DEFAULT_OPTIONS,
   {
     serializer: {
       stringify: JSON.stringify,
@@ -18,7 +15,7 @@ export const options = persisted<DesmostOptions>(
       parse: raw => {
         let data = JSON.parse(raw);
 
-        for (let [key, value] of Object.entries(DEFAULTS)) {
+        for (let [key, value] of Object.entries(DEFAULT_OPTIONS)) {
           if (!Object.hasOwn(data, key) || data[key] == undefined) {
             data[key] = value;
           }
