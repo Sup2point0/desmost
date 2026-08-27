@@ -14,7 +14,7 @@ compile(calc, source, {
 Options configure things like error handling, checks and formatting. All settings are optional with sensible defaults that should cover most use cases.
 
 > [!Note]
-> The rest of these docs is auto-generated directly from [`options.ts`](../../desmost/src/compiler/options.ts) in the source code, so they’re always up-to-date!
+> The rest of this page is auto-generated directly from [`options.ts`](../../desmost/src/compiler/options.ts) in the source code, so it’s always up-to-date!
 
 
 <br>
@@ -28,14 +28,14 @@ Options configure things like error handling, checks and formatting. All setting
 | **errors** | `"surface"` `"crash"` `"suppress"` | `surface` | How should errors be displayed? |
 | **place_errors** | `"inline"` `"end"` `"start"` | `inline` | Where should errors be placed? |
 | **error_prefix** | `string` | [DESMOST ERROR]. | The prefix to prepend to error blocks. |
-| **expand_errors** | `true` `false` | `true` – all output is shown. | Show all the available diagnostics for errors, including hints and debug information? |
-| **check_args** | `true` `false` | `true` – arguments are checked. | Error if an incantation receives a `{}` object argument with unknown fields, or no fields at all? |
-| **prettify** | `true` `false` | `true` – LaTeX is prettified. | Prettify LaTeX output so it renders nicely in the Desmos editor? |
-| **dedent_text** | `true` `false` | `true` – text is dedented. | Strip common indentation from `/text{}` blocks? |
-| **ignore_comments** | `true` `false` | `false` – comments are kept. | Should `%` LaTeX comments be ignored, instead of turned into text blocks (notes)? |
-| **ignore_all_blanks** | `true` `false` | `false` – blank lines are recognised. | Should all line breaks be ignored, instead of kept as blank expressions? |
-| **keep_leading_blanks** | `true` `false` | `false` – leading blank lines are ignored. | Should trailing blank lines at the start of the source be kept as blank expressions? |
-| **keep_trailing_blanks** | `true` `false` | `false` – trailing blank lines are ignored. | Should trailing blank lines at the end of the source be kept as blank expressions? |
+| **expand_errors** | `true` `false` | `true` | Show all the available diagnostics for errors, including hints and debug information? |
+| **check_args** | `true` `false` | `true` | Error if an incantation receives a `{}` object argument with unknown fields, or no fields at all? |
+| **prettify** | `true` `false` | `true` | Prettify LaTeX output so it renders nicely in the Desmos editor? |
+| **dedent_text** | `true` `false` | `true` | Strip common indentation from `/text{}` blocks? |
+| **ignore_comments** | `true` `false` | `false` | Should `%` LaTeX comments be ignored, instead of turned into text blocks (notes)? |
+| **ignore_all_blanks** | `true` `false` | `false` | Should all line breaks be ignored, instead of kept as blank expressions? |
+| **keep_leading_blanks** | `true` `false` | `false` | Should trailing blank lines at the start of the source be kept as blank expressions? |
+| **keep_trailing_blanks** | `true` `false` | `false` | Should trailing blank lines at the end of the source be kept as blank expressions? |
 | **debug** | `true` `false` | `false` – `compile()` returns `void` | Return debug diagnostics from `compile()`? |
 <!-- autodoc. (1) -->
 
@@ -46,6 +46,10 @@ Options configure things like error handling, checks and formatting. All setting
 ## Options
 
 <!-- autodoc? (2) -->
+
+
+<br>
+
 
 ### `errors`
 
@@ -214,9 +218,5 @@ Should trailing blank lines at the end of the source be kept as blank expression
 Return debug diagnostics from `compile()`?
 
 This includes the unevaluated AST and performance diagnostics. Relevant types are exposed from `desmost/internal`, but beware that these are implementation details and unstable.
-
-
-<br>
-
 
 <!-- autodoc. (2) -->

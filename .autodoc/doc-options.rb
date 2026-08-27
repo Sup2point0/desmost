@@ -64,6 +64,7 @@ end
 
 def build_table_row(ident, values, default, doc)
 	values = values.map { |v| "`#{v}`" }.join(" ")
+	default = default.sub(/`[^`]*$/, "`")  # FIXME
 	doc = doc[0..doc.index("\n")].rstrip
 
 	return "| **#{ident}** | #{values} | #{default} | #{doc} |"
@@ -77,15 +78,15 @@ def build_details(fields:)
 		ident, values, default, doc = field
 
 		out += """
+
+<br>
+
+
 ### `#{ident}`
 
 > Default: #{default}
 
 #{doc}
-
-
-<br>
-
 """
 	end
 
