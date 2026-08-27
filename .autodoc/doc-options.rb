@@ -2,19 +2,19 @@ require "pathname"
 
 
 ROOT = Pathname(__dir__).parent
-SOURCE = ROOT / "desmost/src/compiler/options.ts"
+SOURCE = ROOT / "desmost/src/options.ts"
 TARGET = ROOT / "docs/compiling/compiler-options.md"
 
 
 def main()
 	output = build_table(source: File.read(SOURCE))
 	text = File.read(TARGET)
-	text.gsub!(/(?<=<!-- autodoc\? -->\n).*?(?=\n<!-- autodoc\. -->)/ms, output)
+	text.gsub!(/(?<=<!-- autodoc\? -->\n).*?(?=\n<!-- autodoc\. -->)/m, output)
 	File.write(TARGET, text)
 end
 
 def build_table(source:)
-	contents = source.match(/(?<=interface DesmostOptions\n\{).+(?=\n\}\n\n)/ms)[0].strip
+	contents = source.match(/(?<=interface DesmostOptions\n\{).+(?=\n\}\n\n)/m)[0].strip
 	fields = contents.split("\n\n")
 
 	data = fields.map { |text| extract_field(text:) }
