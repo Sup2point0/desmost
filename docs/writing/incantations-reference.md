@@ -75,7 +75,7 @@ This page documents all the incantations available in Desmost.
     </td>
     <td>optional</td>
     <td><code>DesmosSettings</code></td>
-    <td>Set the configuration of the calculator via `Calculator.updateSettings()`.</td>
+    <td>Tweak calculator settings via `Calculator.updateSettings()`.</td>
   </tr>
   <tr></tr>
 <tr>
@@ -182,7 +182,7 @@ This page documents all the incantations available in Desmost.
     </td>
     <td>required</td>
     <td><pre lang="ts"><code>{
-<br>   style?: keyof typeof Desmos.Styles;  // TODO allow raw enum
+<br>   style?: keyof typeof Desmos.Styles;
 <br>   width?: number;
 <br>   opacity?: number;
 <br>}</code></pre></td>
