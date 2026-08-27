@@ -40,7 +40,7 @@ f(x) = A \sin(x-t)
       <a href="https://sup2point0.github.io/desmost">
         <img
           width="600"
-          src=".assets/demo.png"
+          src=".github/demo.png"
           alt="“Desmos(t) is awesome!”, but in a fully-fledged Desmos graphing calculator embed"
         />
       </a>
@@ -273,7 +273,7 @@ Desmost only handles what it needs to care about to work. You don’t need a LaT
 ## Generative AI
 
 <a href="https://brainmade.org">
-  <img align="right" height="40" src=".assets/brainmade-black.svg" />
+  <img align="right" height="40" src=".github/brainmade-black.svg" />
 </a>
 
 Every bug, typo and inefficiency was lovingly crafted by hand <3
