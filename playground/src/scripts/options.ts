@@ -1,7 +1,7 @@
 import { persisted } from "svelte-persisted-store";
 
+import { DEFAULT_OPTIONS } from "desmost/internal";
 import type { DesmostOptions } from "desmost";
-import { DEFAULT_OPTIONS } from "../../../desmost/src/index.internal";
 
 
 /** Currently set compiler options. */
