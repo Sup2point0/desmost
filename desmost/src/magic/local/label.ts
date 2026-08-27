@@ -12,6 +12,13 @@ interface LabelOptions
 	pos?: keyof typeof Desmos.LabelOrientations;
 }
 
+const VALID_FIELDS = ["text", "show", "size", "pos"];
+
+const VALID_POSITIONS = [
+	"ABOVE", "BELOW", "LEFT", "RIGHT",
+	"ABOVE_LEFT", "ABOVE_RIGHT", "BELOW_LEFT", "BELOW_RIGHT",
+];
+
 
 export class LabelIncantation extends ArgIncantation<LOCAL>
 {
@@ -36,27 +43,47 @@ export class LabelIncantation extends ArgIncantation<LOCAL>
 	{
 		let out = super.evaluate_arg(raw, options) as LabelOptions;
 
-		if (!("text" in out)) {
-			throw new UnrecoverableError.InvalidArgument(
-				`/label requires a \`text\` argument, such as: \`/label{ text: "sup world!" }\``
-			);
+		if (options.check_args) {
+			super.require_nonempty(out, `/label received empty argument`, {
+				hint: `You can provide [${VALID_FIELDS.join(", ")}]`,
+				flagged_by: "check_args",
+			});
+
+			if (!("text" in out)) {
+				throw new UnrecoverableError.MissingInput(
+					`/label is missing label text`,
+					{
+						hint: `Provide text for the label: \`/label{text: "sup world!"}\``,
+						flagged_by: "check_args",
+					}
+				);
+			}
+
+			super.require_known(out, VALID_FIELDS);
 		}
 
 		if (typeof out.pos != "undefined") {
-			let pos = out.pos.trim().toUpperCase();
+			let pos = out.pos.trim().toUpperCase().replaceAll("-", "_");
 
-			switch (pos) {
-				case "ABOVE":
-				case "BELOW":
-				case "LEFT":
-				case "RIGHT":
-					out.pos = pos;
-					break;
-				
-				default:
+			if (VALID_POSITIONS.includes(pos)) {
+				// @ts-expect-error: validated
+				out.pos = pos;
+			}
+			else {
+				// @ts-expect-error: indexing
+				let orientation = Desmos.LabelOrientations[pos];
+
+				if (options.check_args && orientation == undefined) {
 					throw new UnrecoverableError.InvalidArgument(
-						`/label: Invalid label position: ${pos}`
+						`/label received invalid label position: ${pos}`,
+						{
+							hint: `Valid label positions are ${VALID_POSITIONS.join(", ")}`,
+							flagged_by: "check_args"
+						}
 					);
+				}
+				
+				out.pos = orientation;
 			}
 		}
 
