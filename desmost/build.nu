@@ -4,10 +4,17 @@ def main [] {
   tsc-alias -p ./tsconfig.build.json
 }
 
+def prepare-npm [] {
+  cp ../LICENCE                     LICENCE
+  mkdir .assets
+  cp ../.github/demo.png            '.assets/demo.png'
+  cp ../.github/brainmade-black.svg '.assets/brainmade-black.svg'
+}
+
 def "main full" [] {
   rm -rf dist
   main
-  cp ../LICENCE LICENCE
+  prepare-npm
   echo "built!"
 }
 
