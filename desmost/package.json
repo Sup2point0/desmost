@@ -56,9 +56,7 @@
 
     "check":    "npx oxlint src",
 
-    "doc":      "cd ../.autodoc && rake",
-
-    "prepublishOnly": "npm run test && npm run doc && npm run buildx"
+    "prepublishOnly": "nu build.nu pre-publish"
   },
 
   "dependencies":
