@@ -1,6 +1,6 @@
 import dedent from "dedent";
 
-import type { DesmostOptions } from "./options";
+import type { DesmostOptions } from "../options";
 
 import { UnrecoverableError } from "../errors";
 

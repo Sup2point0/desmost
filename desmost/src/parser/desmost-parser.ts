@@ -1,7 +1,7 @@
 import { GenericParser } from "./generic-parser";
 import { Ast } from "./ast";
 
-import type { DesmostOptions } from "../compiler";
+import type { DesmostOptions } from "../options";
 import { NO_MATCH, UnrecoverableError } from "../errors";
 import type { NoMatch, Unrecoverable } from "../errors";
 import * as utils from "../utils";

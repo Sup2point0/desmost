@@ -1,7 +1,7 @@
 import dedent from "dedent";
 
 import { format_error, normalise_latex, prettify_latex } from "./format";
-import type { DesmostOptions } from "./options";
+import type { DesmostOptions } from "../options";
 
 import { Ast } from "../parser";
 import { UnrecoverableError, type Unrecoverable } from "../errors";

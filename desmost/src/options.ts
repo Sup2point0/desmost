@@ -1,4 +1,4 @@
-import { compile } from "./compile";
+import { compile } from "./compiler/compile";
 
 
 /**
@@ -70,6 +70,8 @@ export interface DesmostOptions
 	 * This also errors if an incantation receives an empty `{}` object.
 	 * 
 	 * For instance, `/label{position: LEFT}` is invalid; it should be `/label{pos: LEFT}`. With `check_args: false`, this silently no-ops; with `check_args: true`, it flags an error.
+	 * 
+	 * Desmost doesn’t remove unknown fields, it just passes them directly to the Desmos API. If you know what you’re doing and a field you know exists isn’t supported by Desmos, you can disable this to avoid erroring.
 	 * 
 	 * Defaults to `true`, meaning arguments are checked.
 	 */

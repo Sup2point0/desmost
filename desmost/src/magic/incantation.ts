@@ -1,7 +1,7 @@
 import Json5 from "json5";
 import dedent from "dedent";
 
-import type { DesmostOptions } from "../compiler";
+import type { DesmostOptions } from "../options";
 import { UnrecoverableError, type Unrecoverable } from "../errors";
 
 

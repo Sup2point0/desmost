@@ -1,6 +1,6 @@
-import { type DesmostOptions, fill_defaults } from "./options";
 import { evaluate_global_incantation, evaluate_expr, evaluate_error } from "./evaluate";
 
+import { type DesmostOptions, fill_defaults } from "../options";
 import { DesmostParser, Ast } from "../parser";
 
 

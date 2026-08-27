@@ -1,7 +1,7 @@
 import { Incantation, ArgIncantation, type LOCAL } from "../incantation";
 
 import { UnrecoverableError } from "../../errors";
-import type { DesmostOptions } from "../../compiler";
+import type { DesmostOptions } from "../../options";
 
 
 interface LabelOptions

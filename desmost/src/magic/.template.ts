@@ -1,6 +1,6 @@
 // import { Incantation, ArgIncantation, type GLOBAL, type LOCAL, type EXPR } from "../incantation";
 
-// import type { DesmostOptions } from "../../compiler";
+// import type { DesmostOptions } from "../../options";
 // import { UnrecoverableError, type Unrecoverable } from "../../errors";
 
 

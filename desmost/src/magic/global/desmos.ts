@@ -1,7 +1,7 @@
 import { Incantation, ArgIncantation, type GLOBAL } from "../incantation";
 
 import { UnrecoverableError, type Unrecoverable } from "../../errors";
-import type { DesmostOptions } from "../../compiler";
+import type { DesmostOptions } from "../../options";
 
 
 type DesmosSettings = Desmos.GraphConfiguration & Desmos.GraphSettings
