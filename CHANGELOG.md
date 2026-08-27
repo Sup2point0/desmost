@@ -4,6 +4,15 @@
 <br>
 
 
+
+## v0.9.1
+
+### Fixes
+- `/label{}` accepts `ABOVE_LEFT`, `ABOVE_RIGHT`, `BELOW_LEFT`, `BELOW_RIGHT` for `pos:`
+  - Note these are not explicitly documented in the Desmos API, but do work (last I checked)
+  - If you’ve used Desmos a lot these positions are probably familiar to you (since the UI lets you pick from 8 directions, not 4)
+
+
 ## v0.9
 
 ### Breaking
@@ -29,6 +38,7 @@ is kinda ugly
 ```
 
 - `dedent_text` compile option for the above (enabled by default)
+- Enums will *try* to evaluate against the Desmos API (e.g. `/label{pos: ABOVE_RIGHT}` will try `Desmos.LabelOrientations["ABOVE_RIGHT"]`, which will work), and only error if *that’s* `undefined`.
 
 ### Fixes
 - Tabs are treated as whitespace

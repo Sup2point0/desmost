@@ -66,15 +66,13 @@ export interface DesmostOptions
 	expand_errors: boolean
 
 	/**
-	 * Error if an incantation receives a `{}` object argument with unknown fields?
+	 * Error if an incantation receives a `{}` object argument with unknown fields, or no fields at all?
 	 * 
-	 * This also errors if an incantation receives an empty `{}` object.
-	 * 
-	 * For instance, `/label{position: LEFT}` is invalid; it should be `/label{pos: LEFT}`. With `check_args: false`, this silently no-ops; with `check_args: true`, it flags an error.
+	 * For instance, `/label{position: LEFT}` is invalid; it should be `/label{pos: LEFT}`. With `check_args: false`, this silently no-ops.
 	 * 
 	 * Desmost doesn’t remove unknown fields, it just passes them directly to the Desmos API. If you know what you’re doing and a field you know exists isn’t supported by Desmos, you can disable this to avoid erroring.
 	 * 
-	 * Defaults to `true`, meaning arguments are checked.
+	 * Defaults to `true`, meaning arguments are checked. The Desmos API happily accepts and ignores invalid fields, so Desmost provides a safety net for you ;)
 	 */
 	check_args: boolean
 

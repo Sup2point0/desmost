@@ -8,8 +8,8 @@ interface LabelOptions
 {
 	text: string;
 	show?: boolean;
-	size?: number | keyof typeof Desmos.LabelSizes;
-	pos?: keyof typeof Desmos.LabelOrientations;
+	size?: number;
+	pos?: "ABOVE" | "BELOW" | "LEFT" | "RIGHT" | "ABOVE_LEFT" | "ABOVE_RIGHT" | "BELOW_LEFT" | "BELOW_RIGHT";
 }
 
 const VALID_FIELDS = ["text", "show", "size", "pos"];
@@ -36,6 +36,7 @@ export class LabelIncantation extends ArgIncantation<LOCAL>
 		target.showLabel = data.show ?? true;
 		// @ts-expect-error: outdated types
 		if (data.size != undefined) target.labelSize = data.size;
+		// @ts-expect-error: outdated types
 		if (data.pos  != undefined) target.labelOrientation = data.pos;
 	}
 
