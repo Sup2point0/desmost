@@ -103,12 +103,15 @@ export abstract class ArgIncantation<
 
 	protected require_nonempty(
 		arg: object,
-		msg: string,
-		info: UnrecoverableError.Info,
+		msg?: string,
+		info?: UnrecoverableError.Info,
 	): Unrecoverable<void>
 	{
 		if (Object.entries(arg).length === 0) {
-			throw new UnrecoverableError.MissingInput(msg, info);
+			throw new UnrecoverableError.MissingInput(
+				msg ?? `/${this.identifier} received an empty argument {}`,
+				info,
+			);
 		}
 	}
 
