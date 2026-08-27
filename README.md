@@ -41,7 +41,7 @@ f(x) = A \sin(x-t)
         <img
           width="600"
           src=".github/demo.png"
-          alt="“Desmos(t) is awesome!”, but in a fully-fledged Desmos graphing calculator embed"
+          alt="“We love Desmos(t)!”, but in a fully-fledged Desmos graphing calculator embed"
         />
       </a>
     </td>

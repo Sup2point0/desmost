@@ -4,8 +4,11 @@
 
 A tiny DSL for compiling LaTeX to Desmos.
 
+
+<br>
+
+
 <table>
-  <tr></tr>
   <tr>
     <th> You write this: </th>
     <th> and Desmost gives you this: </th>
@@ -43,10 +46,16 @@ f(x) = A \sin(x-t)
 In other words, it’s like HTML+CSS but for Desmos. Write your content in LaTeX (alongside your Markdown!) with Desmost syntax where you need it, and Desmost will turn it into a Desmos calculator embed for you.
 
 
+<br>
+
+
 ## Requirements
 
 - Desmos API v1.12
 - Desmost only works **in the browser**, because the Desmos API can only be included via a `<script>` tag
+
+
+<br>
 
 
 ## Usage
@@ -91,5 +100,5 @@ This will replace all ` ```desmos ` blocks from your Markdown source with Desmos
 
 
 <a href="https://brainmade.org">
-  <img align="right" height="80" src=".github/brainmade-black.svg" />
+  <img height="40" src=".github/brainmade-black.svg" />
 </a>
