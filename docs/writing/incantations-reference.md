@@ -125,7 +125,7 @@ This page documents all the incantations available in Desmost.
     </td>
     <td>required</td>
     <td><code>DesmosColour</code></td>
-    <td></td>
+    <td>Change the colour of a rendered expression, such as a line, region, polygon, etc.</td>
   </tr>
   <tr></tr>
 <tr>
@@ -230,8 +230,8 @@ This page documents all the incantations available in Desmost.
     </td>
     <td>required</td>
     <td><pre lang="ts"><code>{
-<br>   min?: number \| string;
-<br>   max?: number \| string;
+<br>   min: number \| string;
+<br>   max: number \| string;
 <br>   step?: number \| string;
 <br>}</code></pre></td>
     <td>Set the bounds of the slider for a variable.</td>

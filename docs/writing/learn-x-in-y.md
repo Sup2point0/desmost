@@ -106,8 +106,8 @@ Putting it all together, here's what a full Desmost 'program' might look like:
 /viewport{left: -8, right: 8}
 
 /text{
-Definite Integral Calculator
-v1.0
+  Definite Integral Calculator
+  v1.0
 }
 
 % enter your integrand here:
@@ -125,7 +125,7 @@ $ your answer is:
 /no-line
 /fill{opacity: 0.2}
   :: /latex{
-  min(0, f(x))
+    min(0, f(x))
     \leq y
     \leq max(0, f(x))
   }

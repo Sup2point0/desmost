@@ -11,6 +11,8 @@ The parser is split into `DesmostParser` and `GenericParser`.
 
 The parser is stateful, tracking its current position in the source text with its `.i` field.
 
+`parse_next()` is the only method consumers need to be aware of, the rest is implementation detail. Would love to make them `private`, unfortunately we need them public for unit testing ;)
+
 
 ## Backtracking
 

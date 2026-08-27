@@ -11,7 +11,7 @@ compile(calc, source, {
 });
 ```
 
-All settings are optional with sensible defaults that should cover most use cases. *Most* boolean-valued options default to `false` for simplicity.
+All settings are optional with sensible defaults that should cover most use cases.
 
 
 ## Options
@@ -26,6 +26,7 @@ All settings are optional with sensible defaults that should cover most use case
 | **place_errors** | `"inline"` `"end"` `"start"` | `inline` | Where should errors be placed?<br><br>- `inline` (default): Alongside or in place of the expression that produced it.<br>- `end`: All aggregated at the end of the Desmos expressions list.<br>- `start`: All aggregated at the start of the Desmos expressions list. |
 | **error_prefix** | `string` | `[DESMOST ERROR]\n` | The prefix to prepend to error blocks.<br><br>Provide a `""` blank string if you wish for no prefix to be added. |
 | **prettify** | `true` `false` | `true`, meaning LaTeX is prettified. | Prettify LaTeX output so it renders nicely in the Desmos editor? |
+| **dedent_text** | `true` `false` | `true`, meaning text is dedented. | Strip common indentation from `/text{}` blocks? |
 | **ignore_comments** | `true` `false` | `false`, meaning comments are kept. | Should `%` LaTeX comments be ignored, instead of turned into text expressions (notes)? |
 | **ignore_all_blanks** | `true` `false` | `false`, meaning all blank lines are kept. | Should all line breaks be ignored, instead of kept as blank expressions? |
 | **keep_leading_blanks** | `true` `false` | `false`, meaning leading blank lines are ignored. | Should trailing blank lines at the start of the source be kept as blank expressions? |
