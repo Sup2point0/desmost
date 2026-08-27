@@ -6,6 +6,7 @@ on:
     paths:
       - '.github/workflows/deploy.yml'
       - 'playground/package-lock.json'
+      - 'desmost/package.json'
 
 jobs:
   build:
