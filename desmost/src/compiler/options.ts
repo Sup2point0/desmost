@@ -61,10 +61,19 @@ export interface DesmostOptions
 	 * Show all the available diagnostics for errors, including hints and debug information?
 	 * 
 	 * Defaults to `true`, meaning all output is shown.
-	 * 
-	 * You may wish to disable this if you know what you’re doing and find the walls of text overwhelming.
 	 */
 	expand_errors: boolean
+
+	/**
+	 * Error if an incantation receives a `{}` object argument with unknown fields?
+	 * 
+	 * This also errors if an incantation receives an empty `{}` object.
+	 * 
+	 * For instance, `/label{position: LEFT}` is invalid; it should be `/label{pos: LEFT}`. With `check_args: false`, this silently no-ops; with `check_args: true`, it flags an error.
+	 * 
+	 * Defaults to `true`, meaning arguments are checked.
+	 */
+	check_args: boolean
 
 	/**
 	 * Prettify LaTeX output so it renders nicely in the Desmos editor?
@@ -79,17 +88,6 @@ export interface DesmostOptions
 	 * Defaults to `true`, meaning text is dedented.
 	 */
 	dedent_text: boolean
-
-	/**
-	 * Error if an incantation receives a `{}` object argument with unknown fields?
-	 * 
-	 * This also errors if an incantation receives an empty `{}` object.
-	 * 
-	 * For instance, `/label{position: LEFT}` is invalid; it should be `/label{pos: LEFT}`. With `check_args: false`, this silently no-ops; with `check_args: true`, it flags an error.
-	 * 
-	 * Defaults to `false`, meaning unknown arguments are ignored.
-	 */
-	check_args: boolean
 
 	/**
 	 * Should `%` LaTeX comments be ignored, instead of turned into text expressions (notes)?

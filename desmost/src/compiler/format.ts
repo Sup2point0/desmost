@@ -16,14 +16,17 @@ export function format_error(
 	// TODO maybe include stack? (configurable?)
 	let display = `${prefix}${sep}${e.name}: ${e.message}`;
 
-	if (e.details != undefined && options.expand_errors) {
+	if (e.info != undefined && options.expand_errors) {
 		display += "\n";
 
-		if (e.details.hint != undefined) {
-			display += `\nHint: ${e.details.hint}`;
+		if (e.info.hint != undefined) {
+			display += `\nHint: ${e.info.hint}`;
 		}
-		if (e.details.flagged_by != undefined) {
-			display += `\n\n[Flagged by: \`${e.details.flagged_by}\`]`;
+		for (let extra of e.info.extra ?? []) {
+			display += `\n› ${extra}`;
+		}
+		if (e.info.flagged_by != undefined) {
+			display += `\n\n[Flagged by: \`${e.info.flagged_by}\`]`;
 		}
 	}
 

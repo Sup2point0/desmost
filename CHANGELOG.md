@@ -11,6 +11,7 @@
 - Update `@types/desmos` peer dependency `1.11` -> `1.12`
 
 ### New
+- `check_args` compile option to error when incantations are passed unknown arguments, or an empty argument (enabled by default)
 - `/text{}` strips common indentation, allowing you to indent your text nicely:
 
 ```hs
@@ -27,8 +28,7 @@ is kinda ugly
 }
 ```
 
-- `dedent_text` compile option to opt out of the above
-- `check_args` compile option to error when incantations are passed unknown arguments
+- `dedent_text` compile option for the above (enabled by default)
 
 ### Fixes
 - Tabs are treated as whitespace
