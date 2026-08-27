@@ -100,6 +100,37 @@ export abstract class ArgIncantation<
 			}
 		}
 	}
+
+	protected require_nonempty(
+		arg: object,
+		msg: string,
+		info: UnrecoverableError.Info,
+	): Unrecoverable<void>
+	{
+		if (Object.entries(arg).length === 0) {
+			throw new UnrecoverableError.MissingInput(msg, info);
+		}
+	}
+
+	protected require_known(
+		arg: object,
+		valid_fields: string[],
+		info?: UnrecoverableError.Info,
+	): Unrecoverable<void>
+	{
+		// TODO accumulate
+		for (let field of Object.keys(arg)) {
+			if (!valid_fields.includes(field)) {
+				throw new UnrecoverableError.InvalidArgument(
+					`/${this.identifier} received invalid field: ${field}`,
+					{
+						hint: `Valid fields are [${valid_fields.join(", ")}]`,
+						...info,
+					}
+				);
+			}
+		}
+	}
 }
 
 
