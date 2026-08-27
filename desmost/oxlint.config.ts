@@ -42,7 +42,7 @@ export default defineConfig({
 		"no-unreachable-loop": true,
 		"no-unused-expressions": false,
 		"no-unused-labels": false,
-		"no-unused-vars": ["error", { argsIgnorePattern: "(^_|^params$)", varsIgnorePattern: "^_" }],
+		"no-unused-vars": ["error", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
 		"no-useless-assignment": true,
 		"no-var": false,
 		"object-shorthand": "warn",

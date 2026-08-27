@@ -1,3 +1,6 @@
+export const LINE = '—'.repeat(10);
+
+
 export function* reversing<T>(items: ArrayLike<T>): Generator<T>
 {
 	for (let i = items.length - 1; i >= 0; i--) {

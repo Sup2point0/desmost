@@ -10,8 +10,6 @@ export class DarkModeIncantation extends Incantation<GLOBAL>
 
 	apply(target: Desmos.Calculator)
 	{
-		target.updateSettings({
-			invertedColors: true,
-		});
+		target.updateSettings({ invertedColors: true });
 	}
 }

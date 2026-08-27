@@ -47,7 +47,7 @@ export abstract class Incantation<
 		if ((actual ?? "expression") !== required)
 		{
 			throw new UnrecoverableError.IllegalIncantation(
-				`/${this.identifier} can only applied to ${required === "expression" ? "latex" : required} expressions, but target block has type: ${actual}`
+				`/${this.identifier} can only applied to ${required === "expression" ? "latex" : required} blocks, but target block has type: ${actual}`
 			);
 		}
 	}

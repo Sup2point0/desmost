@@ -1,3 +1,4 @@
+import { LINE } from "./utils";
 import { compile } from "./compiler/compile";
 
 
@@ -134,7 +135,7 @@ export const DEFAULT_OPTIONS: DesmostOptions =
 {
    errors: "surface",
    place_errors: "inline",
-   error_prefix: "[DESMOST ERROR]\n",
+   error_prefix: `[DESMOST ERROR]\n${LINE}\n`,
 	expand_errors: true,
    prettify: true,
 	dedent_text: true,
