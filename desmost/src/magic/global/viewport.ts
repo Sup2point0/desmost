@@ -46,7 +46,7 @@ export class ViewportIncantation extends ArgIncantation<GLOBAL>
 					`/${this.identifier} received empty viewport bounds`,
 					{
 						hint: `Provide bounds like \`/viewport{left: -8, right: 8}\``,
-						extra: [`Missing bounds are kept as their defaults`],
+						note: `Missing bounds are kept as their defaults`,
 						flagged_by: "check_args",
 					}
 				);

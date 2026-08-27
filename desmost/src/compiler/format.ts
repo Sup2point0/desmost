@@ -1,8 +1,7 @@
-import dedent from "dedent";
-
 import type { DesmostOptions } from "../options";
 
 import { UnrecoverableError } from "../errors";
+import { LINE } from "../utils";
 
 
 export function format_error(
@@ -17,17 +16,11 @@ export function format_error(
 	let display = `${prefix}${sep}${e.name}: ${e.message}`;
 
 	if (e.info != undefined && options.expand_errors) {
-		display += "\n";
+		display += `\n${LINE}`;
 
-		if (e.info.hint != undefined) {
-			display += `\nHint: ${e.info.hint}`;
-		}
-		for (let extra of e.info.extra ?? []) {
-			display += `\n› ${extra}`;
-		}
-		if (e.info.flagged_by != undefined) {
-			display += `\n\n[Flagged by: \`${e.info.flagged_by}\`]`;
-		}
+		if (e.info.hint != undefined)       display += `\nHint: ${e.info.hint}`;
+		if (e.info.note != undefined)       display += `\n${LINE}\nNote: ${e.info.note}`;
+		if (e.info.flagged_by != undefined) display += `\n${LINE}\nFlagged by: \`${e.info.flagged_by}\``;
 	}
 
 	return display;

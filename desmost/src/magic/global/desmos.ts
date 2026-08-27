@@ -36,7 +36,7 @@ export class DesmosIncantation extends ArgIncantation<GLOBAL>
 					`/${this.identifier} received empty settings`,
 					{
 						hint: `Provide settings like \`/desmos{expressionsCollapsed: true}\``,
-						extra: [`Use just /desmos (without \`{}\`) if you want it as an indicator`],
+						note: `Use just /desmos (without \`{}\`) if you want it as an indicator`,
 					}
 				);
 			}

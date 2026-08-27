@@ -20,7 +20,7 @@ export namespace UnrecoverableError
 	export interface Info
 	{
 		hint?: string,
-		extra?: string[],
+		note?: string,
 		flagged_by?: string,
 	}
 
