@@ -14,7 +14,7 @@ def main()
 end
 
 def build_table(source:)
-	contents = source.match(/(?<=interface DesmostOptions\n\{).+(?=\n\}\n\n)/m)[0].strip
+	contents = source.match(/(?<=interface DesmostOptions\n\{).+(?=\n\}\n$)/m)[0].strip
 	fields = contents.split("\n\n")
 
 	data = fields.map { |text| extract_field(text:) }
