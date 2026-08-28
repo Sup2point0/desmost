@@ -67,7 +67,7 @@ def build_table_row(ident, values, default, doc)
 	default = default.sub(/`[^`]*$/, "`")  # FIXME
 	doc = doc[0..doc.index("\n")].rstrip
 
-	return "| **#{ident}** | #{values} | #{default} | #{doc} |"
+	return "| [#{ident}](##{ident}) | #{values} | #{default} | #{doc} |"
 end
 
 
@@ -76,17 +76,26 @@ def build_details(fields:)
 
 	fields.each do |field|
 		ident, values, default, doc = field
+		values = values.map { |v| "`#{v}`" }.join(" ")
 
 		out += """
+## `#{ident}`
+
+<table>
+  <tr>
+    <th> Values </th>
+	 <td> #{values} </td>
+  </tr>
+  <tr>
+    <th> Default </th>
+	 <th> #{default} </th>
+  </tr>
+</table>
+
+#{doc}
 
 <br>
 
-
-### `#{ident}`
-
-> Default: #{default}
-
-#{doc}
 """
 	end
 

@@ -14,7 +14,7 @@ compile(calc, source, {
 Options configure things like error handling, checks and formatting. All settings are optional with sensible defaults that should cover most use cases.
 
 > [!Note]
-> The rest of this page is auto-generated directly from [`options.ts`](../../desmost/src/compiler/options.ts) in the source code, so it’s always up-to-date!
+> The rest of this page is auto-generated directly from [`options.ts`](../../desmost/src/options.ts) in the source code, so it’s always up-to-date!
 
 
 <br>
@@ -25,35 +25,38 @@ Options configure things like error handling, checks and formatting. All setting
 <!-- autodoc? (1) -->
 | Option | Values | Default | Description |
 | :----- | :----- | :------ | :---------- |
-| **errors** | `"surface"` `"crash"` `"suppress"` | `surface` | How should errors be displayed? |
-| **place_errors** | `"inline"` `"end"` `"start"` | `inline` | Where should errors be placed? |
-| **error_prefix** | `string` | [DESMOST ERROR]. | The prefix to prepend to error blocks. |
-| **expand_errors** | `true` `false` | `true` | Show all the available diagnostics for errors, including hints and debug information? |
-| **check_args** | `true` `false` | `true` | Error if an incantation receives a `{}` object argument with unknown fields, or no fields at all? |
-| **prettify** | `true` `false` | `true` | Prettify LaTeX output so it renders nicely in the Desmos editor? |
-| **dedent_text** | `true` `false` | `true` | Strip common indentation from `/text{}` blocks? |
-| **ignore_comments** | `true` `false` | `false` | Should `%` LaTeX comments be ignored, instead of turned into text blocks (notes)? |
-| **ignore_all_blanks** | `true` `false` | `false` | Should all line breaks be ignored, instead of kept as blank expressions? |
-| **keep_leading_blanks** | `true` `false` | `false` | Should trailing blank lines at the start of the source be kept as blank expressions? |
-| **keep_trailing_blanks** | `true` `false` | `false` | Should trailing blank lines at the end of the source be kept as blank expressions? |
-| **debug** | `true` `false` | `false` – `compile()` returns `void` | Return debug diagnostics from `compile()`? |
+| [errors](#errors) | `"surface"` `"crash"` `"suppress"` | `surface` | How should errors be displayed? |
+| [place_errors](#place_errors) | `"inline"` `"end"` `"start"` | `inline` | Where should errors be placed? |
+| [error_prefix](#error_prefix) | `string` | [DESMOST ERROR]. | The prefix to prepend to error blocks. |
+| [expand_errors](#expand_errors) | `true` `false` | `true` | Show all the available diagnostics for errors, including hints and debug information? |
+| [check_args](#check_args) | `true` `false` | `true` | Error if an incantation receives a `{}` object argument with unknown fields, or no fields at all? |
+| [prettify](#prettify) | `true` `false` | `true` | Prettify LaTeX output so it renders nicely in the Desmos editor? |
+| [dedent_text](#dedent_text) | `true` `false` | `true` | Strip common indentation from `/text{}` blocks? |
+| [ignore_comments](#ignore_comments) | `true` `false` | `false` | Should `%` LaTeX comments be ignored, instead of turned into text blocks (notes)? |
+| [ignore_all_blanks](#ignore_all_blanks) | `true` `false` | `false` | Should all line breaks be ignored, instead of kept as blank expressions? |
+| [keep_leading_blanks](#keep_leading_blanks) | `true` `false` | `false` | Should trailing blank lines at the start of the source be kept as blank expressions? |
+| [keep_trailing_blanks](#keep_trailing_blanks) | `true` `false` | `false` | Should trailing blank lines at the end of the source be kept as blank expressions? |
+| [debug](#debug) | `true` `false` | `false` – `compile()` returns `void` | Return debug diagnostics from `compile()`? |
 <!-- autodoc. (1) -->
 
 
 <br>
 
 
-## Options
-
 <!-- autodoc? (2) -->
 
+## `errors`
 
-<br>
-
-
-### `errors`
-
-> Default: `surface`
+<table>
+  <tr>
+    <th> Values </th>
+	 <td> `"surface"` `"crash"` `"suppress"` </td>
+  </tr>
+  <tr>
+    <th> Default </th>
+	 <th> `surface` </th>
+  </tr>
+</table>
 
 How should errors be displayed?
 
@@ -65,13 +68,21 @@ How should errors be displayed?
 
 - `suppress`: Silently fail on the frontend (if you wish to give the illusion that everything is fine!).
 
-
 <br>
 
 
-### `place_errors`
+## `place_errors`
 
-> Default: `inline`
+<table>
+  <tr>
+    <th> Values </th>
+	 <td> `"inline"` `"end"` `"start"` </td>
+  </tr>
+  <tr>
+    <th> Default </th>
+	 <th> `inline` </th>
+  </tr>
+</table>
 
 Where should errors be placed?
 
@@ -79,35 +90,59 @@ Where should errors be placed?
 - `end`: All aggregated at the end of the Desmos expressions list.
 - `start`: All aggregated at the start of the Desmos expressions list.
 
-
 <br>
 
 
-### `error_prefix`
+## `error_prefix`
 
-> Default: [DESMOST ERROR].
+<table>
+  <tr>
+    <th> Values </th>
+	 <td> `string` </td>
+  </tr>
+  <tr>
+    <th> Default </th>
+	 <th> [DESMOST ERROR]. </th>
+  </tr>
+</table>
 
 The prefix to prepend to error blocks.
 
 Provide a `""` blank string if you wish for no prefix to be added.
 
-
 <br>
 
 
-### `expand_errors`
+## `expand_errors`
 
-> Default: `true` – all output is shown.
+<table>
+  <tr>
+    <th> Values </th>
+	 <td> `true` `false` </td>
+  </tr>
+  <tr>
+    <th> Default </th>
+	 <th> `true` – all output is shown. </th>
+  </tr>
+</table>
 
 Show all the available diagnostics for errors, including hints and debug information?
 
-
 <br>
 
 
-### `check_args`
+## `check_args`
 
-> Default: `true` – arguments are checked.
+<table>
+  <tr>
+    <th> Values </th>
+	 <td> `true` `false` </td>
+  </tr>
+  <tr>
+    <th> Default </th>
+	 <th> `true` – arguments are checked. </th>
+  </tr>
+</table>
 
 Error if an incantation receives a `{}` object argument with unknown fields, or no fields at all?
 
@@ -115,25 +150,41 @@ For instance, `/label{position: LEFT}` is invalid; it should be `/label{pos: LEF
 
 Desmost doesn’t remove unknown fields, it just passes them directly to the Desmos API. If you know what you’re doing and a field you know exists isn’t supported by Desmos, you can disable this to avoid erroring. The Desmos API happily accepts and ignores invalid fields, so Desmost provides a safety net for you ;)
 
-
 <br>
 
 
-### `prettify`
+## `prettify`
 
-> Default: `true` – LaTeX is prettified.
+<table>
+  <tr>
+    <th> Values </th>
+	 <td> `true` `false` </td>
+  </tr>
+  <tr>
+    <th> Default </th>
+	 <th> `true` – LaTeX is prettified. </th>
+  </tr>
+</table>
 
 Prettify LaTeX output so it renders nicely in the Desmos editor?
 
 This means you can keep your source code much neater. It handles stuff like converting `()` –> `\left(\right)`, `x, y` –> `x,\ y`, `min(x, y)` –> `\operatorname{min}\left(x,\ y\right)`, and more!
 
-
 <br>
 
 
-### `dedent_text`
+## `dedent_text`
 
-> Default: `true` – text is dedented.
+<table>
+  <tr>
+    <th> Values </th>
+	 <td> `true` `false` </td>
+  </tr>
+  <tr>
+    <th> Default </th>
+	 <th> `true` – text is dedented. </th>
+  </tr>
+</table>
 
 Strip common indentation from `/text{}` blocks?
 
@@ -146,13 +197,21 @@ This allows you to indent content for readability:
 }
 ```
 
-
 <br>
 
 
-### `ignore_comments`
+## `ignore_comments`
 
-> Default: `false` – comments are kept.
+<table>
+  <tr>
+    <th> Values </th>
+	 <td> `true` `false` </td>
+  </tr>
+  <tr>
+    <th> Default </th>
+	 <th> `false` – comments are kept. </th>
+  </tr>
+</table>
 
 Should `%` LaTeX comments be ignored, instead of turned into text blocks (notes)?
 
@@ -161,13 +220,21 @@ Should `%` LaTeX comments be ignored, instead of turned into text blocks (notes)
 y = x
 ```
 
-
 <br>
 
 
-### `ignore_all_blanks`
+## `ignore_all_blanks`
 
-> Default: `false` – blank lines are recognised.
+<table>
+  <tr>
+    <th> Values </th>
+	 <td> `true` `false` </td>
+  </tr>
+  <tr>
+    <th> Default </th>
+	 <th> `false` – blank lines are recognised. </th>
+  </tr>
+</table>
 
 Should all line breaks be ignored, instead of kept as blank expressions?
 
@@ -179,13 +246,21 @@ Should all line breaks be ignored, instead of kept as blank expressions?
 
 This takes precedence over `keep_leading_blanks` and `keep_trailing_blanks`.
 
-
 <br>
 
 
-### `keep_leading_blanks`
+## `keep_leading_blanks`
 
-> Default: `false` – leading blank lines are ignored.
+<table>
+  <tr>
+    <th> Values </th>
+	 <td> `true` `false` </td>
+  </tr>
+  <tr>
+    <th> Default </th>
+	 <th> `false` – leading blank lines are ignored. </th>
+  </tr>
+</table>
 
 Should trailing blank lines at the start of the source be kept as blank expressions?
 
@@ -197,26 +272,45 @@ This is disabled by default so line breaks after global incantations don’t mes
 % I don’t have a blank block above me, yay
 ```
 
-
 <br>
 
 
-### `keep_trailing_blanks`
+## `keep_trailing_blanks`
 
-> Default: `false` – trailing blank lines are ignored.
+<table>
+  <tr>
+    <th> Values </th>
+	 <td> `true` `false` </td>
+  </tr>
+  <tr>
+    <th> Default </th>
+	 <th> `false` – trailing blank lines are ignored. </th>
+  </tr>
+</table>
 
 Should trailing blank lines at the end of the source be kept as blank expressions?
 
-
 <br>
 
 
-### `debug`
+## `debug`
 
-> Default: `false` – `compile()` returns `void`
+<table>
+  <tr>
+    <th> Values </th>
+	 <td> `true` `false` </td>
+  </tr>
+  <tr>
+    <th> Default </th>
+	 <th> `false` – `compile()` returns `void` </th>
+  </tr>
+</table>
 
 Return debug diagnostics from `compile()`?
 
 This includes the unevaluated AST and performance diagnostics. Relevant types are exposed from `desmost/internal`, but beware that these are implementation details and unstable.
+
+<br>
+
 
 <!-- autodoc. (2) -->

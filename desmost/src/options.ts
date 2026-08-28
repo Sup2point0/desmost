@@ -83,7 +83,7 @@ export interface DesmostOptions
 	/**
 	 * The prefix to prepend to error blocks.
 	 * 
-	 * Defaults to [DESMOST ERROR].
+	 * Defaults to `"[DESMOST ERROR]"`.
 	 * 
 	 * Provide a `""` blank string if you wish for no prefix to be added.
 	 */
