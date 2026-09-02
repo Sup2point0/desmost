@@ -32,12 +32,10 @@ describe("/viewport", () =>
 {
 	test("no arg", () => {
 		let parser = new DesmostParser(`/viewport`);
-		let r = parser.try_parse_global_incantation();
-		
-		assert.isNotEmpty(parser.errors);
-		assert.isTrue(parser.errors.at(-1) instanceof DesmostError.MissingInput);
-		assert.deepEqual(r.incantation, new ViewportIncantation());
-		assert.isUndefined(r.arg_raw);
+		assert.throws(
+			() => parser.try_parse_global_incantation(),
+			DesmostError.MissingInput,
+		);
 	})
 	
 	test("with arg", () => {

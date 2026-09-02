@@ -1,6 +1,7 @@
+import { DesmostError } from "../../src/errors";
 import { DesmostParser } from "../../src/parser";
 
-import { is_expr, is_invalid, parses_block } from "./shared";
+import { is_expr, parses_block } from "./shared";
 
 
 describe("parse-next", () =>
@@ -53,12 +54,7 @@ describe("parse-next", () =>
 	])
 	("global (invalid)", src => {
 		let parser = new DesmostParser(src);
-		let r = parser.parse_next();
-
-		assert.isDefined(r);
-		let { blocks, errors } = r;
-		assert.isNotEmpty(errors);
-		assert.isNotEmpty(blocks);
+		assert.throws(() => parser.parse_next(), DesmostError.MissingInput);
 	})
 
 	test.each([

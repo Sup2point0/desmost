@@ -61,7 +61,6 @@ export class DesmostParser extends GenericParser
 			// comment
 			if (this.options?.ignore_comments) {
 				this.parse_line();
-				this.consume_end_of_block();
 			}
 			else {
 				blocks.push(this.parse_comment());
@@ -72,7 +71,9 @@ export class DesmostParser extends GenericParser
 
 			if ("global" in r) {
 				// 1 global
-				blocks.push(r.global);
+				if (r.global !== null) {
+					blocks.push(r.global);
+				}
 			}
 			else {
 				// 1+ locals + 1 expr
@@ -109,8 +110,8 @@ export class DesmostParser extends GenericParser
 	 */
 	parse_pre_sep():
 		Unrecoverable<
-		| { global: Ast.IncantationInvocation<GLOBAL> | Ast.InvalidInvocation | null }
-		| { local: Array<Ast.IncantationInvocation<LOCAL> | Ast.InvalidInvocation | null> }
+		| { global: Ast.IncantationInvocation<GLOBAL> | Ast.InvalidInvocation }
+		| { local: Array<Ast.IncantationInvocation<LOCAL> | Ast.InvalidInvocation> }
 		>
 	{
 		// 1 global incantation
@@ -211,10 +212,7 @@ export class DesmostParser extends GenericParser
 	/**
 	 * Attempt to parse a global incantation invocation.
 	 */
-	try_parse_global_incantation():
-		| Ast.IncantationInvocation<GLOBAL>
-		| NoMatch
-		| null
+	try_parse_global_incantation(): Unrecoverable<Ast.IncantationInvocation<GLOBAL> | NoMatch>
 	{
 		let init = this.i;
 
@@ -233,17 +231,17 @@ export class DesmostParser extends GenericParser
 				data = this.parse_incantation_arg(incantation.arg_type);
 			}
 			else if (incantation.requires_arg) {
-				this.errors.push(new DesmostError.MissingInput(
+				throw new DesmostError.MissingInput(
 					`No argument provided for /${incantation.identifier}, which requires an argument of type: \`${incantation.arg_type}\``
-				));
+				);
 			}
 		}
 
 		this.consume_spaces();
 
-		// @ts-expect-error: FIXME
 		return {
 			kind: Ast.Kind.INCANTATION_INVOCATION,
+			// @ts-expect-error: FIXME
 			incantation,
 			arg_raw: data,
 		};
@@ -252,10 +250,7 @@ export class DesmostParser extends GenericParser
 	/**
 	 * Attempt to parse a local incantation invocation.
 	 */
-	try_parse_local_incantation():
-		| Ast.IncantationInvocation<LOCAL>
-		| NoMatch
-		| null
+	try_parse_local_incantation(): Unrecoverable<Ast.IncantationInvocation<LOCAL> | NoMatch>
 	{
 		let init = this.i;
 
@@ -274,17 +269,17 @@ export class DesmostParser extends GenericParser
 				arg_raw = this.parse_incantation_arg(incantation.arg_type);
 			}
 			else if (incantation.requires_arg) {
-				this.errors.push(new DesmostError.MissingInput(
+				throw new DesmostError.MissingInput(
 					`No argument provided for /${incantation.identifier}, which requires an argument of type: \`${incantation.arg_type}\``
-				));
+				);
 			}
 		}
 
 		this.consume_whitespace();
 
-		// @ts-expect-error: FIXME
 		return {
 			kind: Ast.Kind.INCANTATION_INVOCATION,
+			// @ts-expect-error: FIXME
 			incantation,
 			arg_raw,
 		};
