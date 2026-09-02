@@ -136,7 +136,7 @@ export class GenericParser
 
 		while (this.current === raw[ii]) {
 			let r = this.try_advance();
-			if (r === NO_MATCH) return NO_MATCH;  // FIXME?
+			if (r === NO_MATCH) break;
 
 			ii++;
 			if (ii === raw.length) return;
