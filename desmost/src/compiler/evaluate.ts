@@ -4,7 +4,7 @@ import { format_error, normalise_latex, prettify_latex } from "./format";
 import type { DesmostOptions } from "../options";
 
 import { Ast } from "../parser";
-import { UnrecoverableError, type Unrecoverable } from "../errors";
+import { DesmostError, type Unrecoverable } from "../errors";
 import { is_latex } from "../desmos";
 
 
@@ -99,7 +99,7 @@ export function evaluate_expr(
  * If the user set `place_errors: start` or `place_errors: end`, this returns the formatted error message for deferred aggregation.
  */
 export function evaluate_error(
-	error: UnrecoverableError,
+	error: DesmostError,
 	desmos: Desmos.Calculator,
 	options: DesmostOptions,
 ): Unrecoverable<void | string>

@@ -1,6 +1,6 @@
 import { Incantation, ArgIncantation, type GLOBAL } from "../incantation";
 
-import { UnrecoverableError, type Unrecoverable } from "../../errors";
+import { DesmostError, type Unrecoverable } from "../../errors";
 import type { DesmostOptions } from "../../options";
 
 
@@ -32,7 +32,7 @@ export class DesmosIncantation extends ArgIncantation<GLOBAL>
 
 		if (options.check_args) {
 			if (Object.keys(out).length === 0) {
-				throw new UnrecoverableError.MissingInput(
+				throw new DesmostError.MissingInput(
 					`/${this.identifier} received empty settings`,
 					{
 						hint: `Provide settings like \`/desmos{expressionsCollapsed: true}\``,

@@ -1,7 +1,7 @@
 // import { Incantation, ArgIncantation, type GLOBAL, type LOCAL, type EXPR } from "../incantation";
 
 // import type { DesmostOptions } from "../../options";
-// import { UnrecoverableError, type Unrecoverable } from "../../errors";
+// import { DesmostError, type Unrecoverable } from "../../errors";
 
 
 // export class ?Incantation extends ArgIncantation<?>

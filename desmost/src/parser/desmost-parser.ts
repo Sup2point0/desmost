@@ -2,7 +2,7 @@ import { GenericParser } from "./generic-parser";
 import { Ast } from "./ast";
 
 import type { DesmostOptions } from "../options";
-import { NO_MATCH, UnrecoverableError } from "../errors";
+import { NO_MATCH, DesmostError } from "../errors";
 import type { NoMatch, Unrecoverable } from "../errors";
 import * as utils from "../utils";
 
@@ -45,7 +45,7 @@ export class DesmostParser extends GenericParser
 	 * `block: null` could be ignored content like comments, or it could be a parse that couldn't recover and so failed to produce a block.
 	 */
 	public parse_next():
-		Unrecoverable<{ block: Ast | null, errors: UnrecoverableError[] } | undefined>
+		Unrecoverable<{ block: Ast | null, errors: DesmostError[] } | undefined>
 	{
 		this.errors = [];
 
@@ -215,8 +215,8 @@ export class DesmostParser extends GenericParser
 	 */
 	try_parse_global_incantation():
 		| Ast.IncantationInvocation<GLOBAL>
-		| Ast.InvalidInvocation
 		| NoMatch
+		| null
 	{
 		let init = this.i;
 
@@ -235,13 +235,10 @@ export class DesmostParser extends GenericParser
 				data = this.parse_incantation_arg(incantation.arg_type);
 			}
 			else if (incantation.requires_arg) {
-				return {
-					kind: Ast.Kind.INVALID_INCANTATION,
-					incantation,
-					error: new UnrecoverableError.MissingInput(
-						`No argument provided for /${incantation.identifier}, which requires an argument of type: \`${incantation.arg_type}\``
-					)
-				};
+				this.errors.push(new DesmostError.MissingInput(
+					`No argument provided for /${incantation.identifier}, which requires an argument of type: \`${incantation.arg_type}\``
+				));
+				return null;
 			}
 		}
 
@@ -260,8 +257,8 @@ export class DesmostParser extends GenericParser
 	 */
 	try_parse_local_incantation():
 		| Ast.IncantationInvocation<LOCAL>
-		| Ast.InvalidInvocation
 		| NoMatch
+		| null
 	{
 		let init = this.i;
 
@@ -280,13 +277,10 @@ export class DesmostParser extends GenericParser
 				arg_raw = this.parse_incantation_arg(incantation.arg_type);
 			}
 			else if (incantation.requires_arg) {
-				return {
-					kind: Ast.Kind.INVALID_INCANTATION,
-					incantation,
-					error: new UnrecoverableError.MissingInput(
-						`No argument provided for /${incantation.identifier}, which requires an argument of type: \`${incantation.arg_type}\``
-					)
-				};
+				this.errors.push(new DesmostError.MissingInput(
+					`No argument provided for /${incantation.identifier}, which requires an argument of type: \`${incantation.arg_type}\``
+				));
+				return null;
 			}
 		}
 
@@ -549,7 +543,7 @@ class ContextStack
 		}
 	}
 
-	/** Backtrack until `ctx` is popped. */
+	/** If `ctx` is in the context stack, backtrack until it is popped, returning `true` if so. */
 	force_pop(ctx: Ctx, options?: StackOperationOptions): boolean
 	{
 		if (this.#should_skip(options)) return false;

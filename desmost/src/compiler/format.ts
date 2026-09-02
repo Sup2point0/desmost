@@ -1,11 +1,11 @@
 import type { DesmostOptions } from "../options";
 
-import { UnrecoverableError } from "../errors";
+import { DesmostError } from "../errors";
 import { LINE } from "../utils";
 
 
 export function format_error(
-	e: UnrecoverableError,
+	e: DesmostError,
 	options: DesmostOptions,
 ): string
 {

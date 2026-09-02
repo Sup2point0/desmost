@@ -1,16 +1,16 @@
-import { NO_MATCH, UnrecoverableError } from "../errors";
+import { NO_MATCH, DesmostError } from "../errors";
 import type { NoMatch, Unrecoverable } from "../errors";
 
 
 const IGNORED_CHARACTERS = new Set([
-	"\r",
+	'\r',
 ]);
 
 
 /**
  * A stateful lazy parser, providing core (non-Desmost-specific) methods for parsing.
  * 
- * Many methods come in `<verb>` and `try_<verb>` pairs. On parsing failure, the former throws an `UnrecoverableError`, but the latter instead backtracks and only returns a `NoMatch`. The former is for expected parses, while the latter is for speculative parsing.
+ * Many methods come in `<verb>` and `try_<verb>` pairs. On parsing failure, the former throws an `DesmostError`, but the latter instead backtracks and only returns a `NoMatch`. The former is for expected parses, while the latter is for speculative parsing.
  */
 export class GenericParser
 {
@@ -24,7 +24,7 @@ export class GenericParser
 	protected readonly length: number;
 
 	/** Accumulated errors in the current block being parsed. */
-	protected errors: UnrecoverableError[];
+	protected errors: DesmostError[];
 
 
 	/** Create a parser for parsing `source`. */
@@ -70,12 +70,12 @@ export class GenericParser
 	/**
 	 * Advance to the next character, skipping ignored characters.
 	 * 
-	 * Errors if the parser is the out-of-bounds *before* advancing.
+	 * Errors if the parser is already out-of-bounds *before* advancing.
 	 */
 	protected advance(error_msg?: string): Unrecoverable<void>
 	{
 		if (this.out_of_bounds()) {
-			throw new UnrecoverableError.UnexpectedEnd(error_msg ?? "Unexpected end of input");
+			throw new DesmostError.UnexpectedEnd(error_msg ?? "Unexpected end of input");
 		}
 
 		this.#advance();
@@ -108,7 +108,7 @@ export class GenericParser
 	protected consume(raw: string, error_msg?: string): Unrecoverable<void>
 	{
 		if (this.out_of_bounds()) {
-			throw new UnrecoverableError.UnexpectedEnd(
+			throw new DesmostError.UnexpectedEnd(
 				`Unexpected end of input while trying to consume: \`${raw}\``
 			);
 		}
@@ -125,7 +125,7 @@ export class GenericParser
 			if (ii === raw.length) return;
 		}
 
-		throw new UnrecoverableError.UnexpectedInput(
+		throw new DesmostError.UnexpectedInput(
 			error_msg ?? `Expected: \`${raw}\`, but found: \`${this.preview(init)}\``
 		);
 	}

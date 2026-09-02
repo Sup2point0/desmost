@@ -1,5 +1,5 @@
 import { DesmostParser } from "../../../src/parser"
-import { UnrecoverableError } from "../../../src/errors";
+import { DesmostError } from "../../../src/errors";
 
 import { DesmosIncantation } from "../../../src/magic/global/desmos";
 import { ViewportIncantation } from "../../../src/magic/global/viewport";
@@ -37,7 +37,7 @@ describe("/viewport", () =>
 		assert_is_invalid(r);
 		assert.deepEqual(r.incantation, new ViewportIncantation());
 		assert.isUndefined(r.arg_raw);
-		assert.isTrue(r.error instanceof UnrecoverableError.MissingInput);
+		assert.isTrue(r.error instanceof DesmostError.MissingInput);
 	})
 	
 	test("with arg", () => {

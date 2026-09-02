@@ -1,4 +1,4 @@
-import { UnrecoverableError } from "../errors";
+import { DesmostError } from "../errors";
 import { Incantation, ArgIncantation } from "../magic";
 
 
@@ -48,7 +48,7 @@ export namespace Ast
 		kind: Kind.INVALID_INCANTATION
 		incantation: Incantation
 		arg_raw?: string
-		error: UnrecoverableError
+		error: DesmostError
 	}
 }
 

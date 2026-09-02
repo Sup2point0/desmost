@@ -1,6 +1,6 @@
 import { Incantation, ArgIncantation, type GLOBAL } from "../incantation";
 
-import { UnrecoverableError, type Unrecoverable } from "../../errors";
+import { DesmostError, type Unrecoverable } from "../../errors";
 import type { DesmostOptions } from "../../options";
 
 
@@ -42,7 +42,7 @@ export class ViewportIncantation extends ArgIncantation<GLOBAL>
 
 		if (options.check_args) {
 			if (Object.keys(out).length === 0) {
-				throw new UnrecoverableError.InvalidArgument(
+				throw new DesmostError.InvalidArgument(
 					`/${this.identifier} received empty viewport bounds`,
 					{
 						hint: `Provide bounds like \`/viewport{left: -8, right: 8}\``,
@@ -57,7 +57,7 @@ export class ViewportIncantation extends ArgIncantation<GLOBAL>
 			if (invalid_keys.length > 0) {
 				let plural = invalid_keys.length > 1 ? "fields" : "field";
 
-				throw new UnrecoverableError.InvalidArgument(
+				throw new DesmostError.InvalidArgument(
 					`/${this.identifier} received invalid ${plural}: [${invalid_keys.join(", ")}]`,
 					{
 						hint: `Valid fields are: [${VALID_KEYS.join(", ")}]`,

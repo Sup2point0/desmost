@@ -10,9 +10,9 @@ export type NoMatch = typeof NO_MATCH & { readonly __brand?: unique symbol };
  * 
  * It's not *literally* unrecoverable in the sense that it will crash the compiler completely, but it means there are no further fallbacks to try.
  */
-export class UnrecoverableError extends Error
+export class DesmostError extends Error
 {
-	info?: UnrecoverableError.Info;
+	info?: DesmostError.Info;
 
 	constructor(msg: string, name: string) {
 		super(msg);
@@ -20,7 +20,7 @@ export class UnrecoverableError extends Error
 	}
 }
 
-export namespace UnrecoverableError
+export namespace DesmostError
 {
 	export interface Info
 	{
@@ -30,37 +30,37 @@ export namespace UnrecoverableError
 	}
 
 	/** The parser unexpectedly reached the end of its entire input source code. */
-	export class UnexpectedEnd extends UnrecoverableError {
-		constructor(msg: string, override info?: Info) { super(msg, "Unexpected End"); }
+	export class UnexpectedEnd extends DesmostError {
+		constructor(msg: string, override info?: Info) { super(msg, "Unexpected End of Input"); }
 	}
 
 	/** The parser did not receive input that it expected. */
-	export class MissingInput extends UnrecoverableError {
+	export class MissingInput extends DesmostError {
 		constructor(msg: string, override info?: Info) { super(msg, "Missing Input"); }
 	}
 
 	/** The parser received input that did not match what it expected. */
-	export class UnexpectedInput extends UnrecoverableError {
+	export class UnexpectedInput extends DesmostError {
 		constructor(msg: string, override info?: Info) { super(msg, "Unexpected Input"); }
 	}
 
 	/** The parser received excess input that it did not expect. */
-	export class ExcessInput extends UnrecoverableError {
+	export class ExcessInput extends DesmostError {
 		constructor(msg: string, override info?: Info) { super(msg, "Excess Input"); }
 	}
 
 	/** An incantation can't be applied here. */
-	export class IllegalIncantation extends UnrecoverableError {
+	export class IllegalIncantation extends DesmostError {
 		constructor(msg: string, override info?: Info) { super(msg, "Illegal Incantation"); }
 	}
 
-	/** An incantation's argument couldn't be parsed. */
-	export class InvalidArgument extends UnrecoverableError {
+	/** An incantation's argument is invalid - could be a parsing, evaluation or validation failure. */
+	export class InvalidArgument extends DesmostError {
 		constructor(msg: string, override info?: Info) { super(msg, "Invalid Argument"); }
 	}
 }
 
-/** Indicates that a function may throw an `UnrecoverableError`. */
+/** Indicates that a function may throw an `DesmostError`. */
 export type Unrecoverable<Result>
 	= Result
 	| Result & { readonly __brand?: unique symbol };

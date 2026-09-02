@@ -1,7 +1,7 @@
 import { Incantation, ArgIncantation, type LOCAL } from "../incantation";
 
 import { DesmosColour } from "../../desmos";
-import { UnrecoverableError } from "../../errors";
+import { DesmostError } from "../../errors";
 import type { DesmostOptions } from "../../options";
 
 
@@ -31,7 +31,7 @@ export class ColourIncantation extends ArgIncantation<LOCAL>
 			case "ORANGE": return DesmosColour.ORANGE;
 			case "BLACK":  return DesmosColour.BLACK;
 			default:
-				throw new UnrecoverableError(
+				throw new DesmostError(
 					`Invalid colour: \`${data}\``
 				);
 		}

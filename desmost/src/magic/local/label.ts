@@ -1,6 +1,6 @@
 import { Incantation, ArgIncantation, type LOCAL } from "../incantation";
 
-import { UnrecoverableError } from "../../errors";
+import { DesmostError } from "../../errors";
 import type { DesmostOptions } from "../../options";
 
 
@@ -51,7 +51,7 @@ export class LabelIncantation extends ArgIncantation<LOCAL>
 			});
 
 			if (!("text" in out)) {
-				throw new UnrecoverableError.MissingInput(
+				throw new DesmostError.MissingInput(
 					`/label is missing label text`,
 					{
 						hint: `Provide text for the label: \`/label{text: "sup world!"}\``,
@@ -75,7 +75,7 @@ export class LabelIncantation extends ArgIncantation<LOCAL>
 				let orientation = Desmos.LabelOrientations[pos];
 
 				if (options.check_args && orientation == undefined) {
-					throw new UnrecoverableError.InvalidArgument(
+					throw new DesmostError.InvalidArgument(
 						`/label received invalid label position: ${pos}`,
 						{
 							hint: `Valid label positions are ${VALID_POSITIONS.join(", ")}`,

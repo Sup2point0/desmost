@@ -2,7 +2,7 @@ import Json5 from "json5";
 import dedent from "dedent";
 
 import type { DesmostOptions } from "../options";
-import { UnrecoverableError, type Unrecoverable } from "../errors";
+import { DesmostError, type Unrecoverable } from "../errors";
 
 
 /**
@@ -46,7 +46,7 @@ export abstract class Incantation<
 	{
 		if ((actual ?? "expression") !== required)
 		{
-			throw new UnrecoverableError.IllegalIncantation(
+			throw new DesmostError.IllegalIncantation(
 				`/${this.identifier} can only applied to ${required === "expression" ? "latex" : required} blocks, but target block has type: ${actual}`
 			);
 		}
@@ -95,7 +95,7 @@ export abstract class ArgIncantation<
 				}
 				catch (e) {
 					// @ts-expect-error: fine
-					throw new UnrecoverableError.InvalidArgument(e.message);
+					throw new DesmostError.InvalidArgument(e.message);
 				}
 			}
 		}
@@ -104,11 +104,11 @@ export abstract class ArgIncantation<
 	protected require_nonempty(
 		arg: object,
 		msg?: string,
-		info?: UnrecoverableError.Info,
+		info?: DesmostError.Info,
 	): Unrecoverable<void>
 	{
 		if (Object.entries(arg).length === 0) {
-			throw new UnrecoverableError.MissingInput(
+			throw new DesmostError.MissingInput(
 				msg ?? `/${this.identifier} received an empty argument {}`,
 				info,
 			);
@@ -118,13 +118,13 @@ export abstract class ArgIncantation<
 	protected require_known(
 		arg: object,
 		valid_fields: string[],
-		info?: UnrecoverableError.Info,
+		info?: DesmostError.Info,
 	): Unrecoverable<void>
 	{
 		// TODO accumulate
 		for (let field of Object.keys(arg)) {
 			if (!valid_fields.includes(field)) {
-				throw new UnrecoverableError.InvalidArgument(
+				throw new DesmostError.InvalidArgument(
 					`/${this.identifier} received invalid field: ${field}`,
 					{
 						hint: `Valid fields are [${valid_fields.join(", ")}]`,
