@@ -14,17 +14,17 @@ const IGNORED_CHARACTERS = new Set([
  */
 export class GenericParser
 {
-	/** The source code this parser is parsing. */
-	protected readonly source: string;
+	/** The source code to parse. */
+	protected readonly source: string
 
 	/** The current position in the source code the parser is pointing to. */
-	protected i: number = 0;
+	protected i: number = 0
 
 	/** The number of characters in the source code. */
-	protected readonly length: number;
+	protected readonly length: number
 
 	/** Accumulated errors in the current block being parsed. */
-	errors: DesmostError[];
+	errors: DesmostError[]
 
 
 	/** Create a parser for parsing `source`. */

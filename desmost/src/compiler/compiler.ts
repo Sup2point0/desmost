@@ -21,23 +21,34 @@ export class DesmostCompiler
 {
 	private desmos: Desmos.Calculator
 
+	/** The source code to compile. */
 	private source: string
 
 	private options: DesmostOptions
 
 	private parser: DesmostParser
 
+	/** Accumulated errors awaiting evaluation. */
 	private errors: DesmostError[] = []
 
-	/** Keep track of whether we're still evaluating leading blank expressions, which might be ignored. */
+	/**
+	 * Have we only seen blank lines so far?
+	 * 
+	 * This is used for excluding leading blanks.
+	 */
 	private seen_non_blank = false
 
-	/** The number of pending blank expressions to add. */
+	/**
+	 * The number of pending blank expressions to add.
+	 * 
+	 * This is used to excluding trailing blanks.
+	 */
 	private pending_blanks: number = 0
 
 	private debug: DesmostDebug | null = null
 
 
+	/** Create a compiler for compiling `source` into `desmos`. */
 	constructor(
 		desmos: Desmos.Calculator,
 		source: string,
@@ -51,6 +62,9 @@ export class DesmostCompiler
 	}
 
 
+	/**
+	 * Run the compiler to completion.
+	 */
 	public compile(): Unrecoverable<void | DesmostDebug>
 	{
 		if (this.options.debug) {
@@ -103,7 +117,7 @@ export class DesmostCompiler
 	}
 
 	/**
-	 * Compile the next block, returning `true` if compilation has finished.
+	 * Compile only the next block, returning `true` if compilation has finished.
 	 */
 	compile_next(): Unrecoverable<boolean>
 	{

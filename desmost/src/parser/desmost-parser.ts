@@ -110,22 +110,35 @@ export class DesmostParser extends GenericParser
 	 */
 	parse_pre_sep():
 		Unrecoverable<
-		| { global: Ast.IncantationInvocation<GLOBAL> | Ast.InvalidInvocation }
-		| { local: Array<Ast.IncantationInvocation<LOCAL> | Ast.InvalidInvocation> }
+		| { global: Ast.IncantationInvocation<GLOBAL> | null }
+		| { local:  Ast.IncantationInvocation<LOCAL>[] }
 		>
 	{
 		// 1 global incantation
-		let r = this.try_parse_global_incantation();
+		try {
+			let r = this.try_parse_global_incantation();
 
-		if (r !== NO_MATCH) {
-			return { global: r };
+			if (r !== NO_MATCH) {
+				return { global: r };
+			}
+		}
+		catch (e) {
+			this.errors.push(e as Error);
+			return { global: null };
 		}
 
 		// 1+ local incantations
 		let incantations = [];
 
 		while (this.current === "/") {
-			let invocation = this.try_parse_local_incantation();
+			try {
+				var invocation = this.try_parse_local_incantation();
+			}
+			catch (e) {
+				this.errors.push(e as Error);
+				continue;
+			}
+
 			if (invocation === NO_MATCH) break;
 			incantations.push(invocation);
 		}
@@ -241,7 +254,6 @@ export class DesmostParser extends GenericParser
 
 		return {
 			kind: Ast.Kind.INCANTATION_INVOCATION,
-			// @ts-expect-error: FIXME
 			incantation,
 			arg_raw: data,
 		};
@@ -279,7 +291,6 @@ export class DesmostParser extends GenericParser
 
 		return {
 			kind: Ast.Kind.INCANTATION_INVOCATION,
-			// @ts-expect-error: FIXME
 			incantation,
 			arg_raw,
 		};
