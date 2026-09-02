@@ -1,6 +1,6 @@
 import { DesmostParser } from "../../src/parser";
 
-import { assert_is_expression } from "./shared";
+import { is_expr, parses_block } from "./shared";
 
 
 test.each([
@@ -10,7 +10,8 @@ test.each([
 ])
 ("/invalid incantation falls back to LaTeX", src => {
 	let parser = new DesmostParser(src);
-	let r = parser.parse_next();
-	assert_is_expression(r);
+	let r = parses_block(parser);
+	
+	is_expr(r);
 	assert.equal(r.data.latex, src);
 })

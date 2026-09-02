@@ -1,27 +1,26 @@
 import { DesmostParser, Ast } from "../../../src/parser";
 
-import { assert_is_expression, assert_parses_blank_line } from "../shared";
+import { is_expr, parses_block, parses_blank } from "../shared";
 
 
 test("empty", () =>
 {
 	let parser = new DesmostParser(``);
-	assert_parses_blank_line(parser);
+	parses_blank(parser);
 	let r = parser.parse_next();
-	assert.isNull(r);
-})
+	assert.isUndefined(r);
+});
 
 
 test("re-call", () =>
 {
 	let parser = new DesmostParser(``);
-	assert_parses_blank_line(parser);
+	parses_blank(parser);
 	
 	for (let i = 0; i < 3; i++) {
-		let r = parser.parse_next();
-		assert.isNull(r);
+		assert.isUndefined(parser.parse_next());
 	}
-})
+});
 
 
 describe("blank lines", () =>
@@ -32,14 +31,12 @@ y = x
 
 y = x^2
 		`.trim());
-		let r: Ast | null;
 
 		parser.parse_next();
-		assert_parses_blank_line(parser);
+		parses_blank(parser);
 		parser.parse_next();
-		r = parser.parse_next();
-		assert.isNull(r);
-	})
+		assert.isUndefined(parser.parse_next());
+	});
 	
 	test.each([2, 5, 20, 100])
 	("inline blanks", n => {
@@ -48,62 +45,52 @@ y = x
 ${"\n".repeat(n)}
 y = x^2
 		`.trim());
-		let r: Ast | null;
 
 		parser.parse_next();
 		for (let i = 0; i < n + 1; i++) {
-			assert_parses_blank_line(parser);
+			parses_blank(parser);
 		}
 		parser.parse_next();
-		r = parser.parse_next();
-		assert.isNull(r);
-	})
+		assert.isUndefined(parser.parse_next());
+	});
 
 	test("leading blank", () => {
 		let parser = new DesmostParser(`\ny = x`);
-		let r: Ast | null;
 
-		assert_parses_blank_line(parser);
+		parses_blank(parser);
 		parser.parse_next();
-		r = parser.parse_next();
-		assert.isNull(r);
-	})
+		assert.isUndefined(parser.parse_next());
+	});
 
 	test("leading blanks", () => {
 		let parser = new DesmostParser(`\n\n\ny = x`);
-		let r: Ast | null;
 
-		assert_parses_blank_line(parser);
-		assert_parses_blank_line(parser);
-		assert_parses_blank_line(parser);
+		parses_blank(parser);
+		parses_blank(parser);
+		parses_blank(parser);
 		parser.parse_next();
-		r = parser.parse_next();
-		assert.isNull(r);
-	})
+		assert.isUndefined(parser.parse_next());
+	});
 
 	test("trailing blank", () =>
 	{
 		let parser = new DesmostParser(`y = x\n`);
-		let r: Ast | null;
 
 		parser.parse_next();
-		assert_parses_blank_line(parser);
-		r = parser.parse_next();
-		assert.isNull(r);
-	})
+		parses_blank(parser);
+		assert.isUndefined(parser.parse_next());
+	});
 
 	test("trailing blanks", () =>
 	{
 		let parser = new DesmostParser(`y = x\n\n\n`);
-		let r: Ast | null;
 
 		parser.parse_next();
-		assert_parses_blank_line(parser);
-		assert_parses_blank_line(parser);
-		assert_parses_blank_line(parser);
-		r = parser.parse_next();
-		assert.isNull(r);
-	})
+		parses_blank(parser);
+		parses_blank(parser);
+		parses_blank(parser);
+		assert.isUndefined(parser.parse_next());
+	});
 })
 
 
@@ -117,10 +104,10 @@ describe("spaces", () =>
 	("leading spaces", src => {
 		let parser = new DesmostParser(src);
 
-		let r = parser.parse_next();
-		assert_is_expression(r);
+		let r = parses_block(parser);
+		is_expr(r);
 		assert.equal(r.data.latex, "y = x");
-	})
+	});
 
 	test.each([
 		`\n  y = x`,
@@ -130,11 +117,11 @@ describe("spaces", () =>
 	("leading spaces (with blanks)", src => {
 		let parser = new DesmostParser(src);
 
-		assert_parses_blank_line(parser);
-		let r = parser.parse_next();
-		assert_is_expression(r);
+		parses_blank(parser);
+		let r = parses_block(parser);
+		is_expr(r);
 		assert.equal(r.data.latex, "y = x");
-	})
+	});
 
 	test.each([
 		`y = x  `,
@@ -144,10 +131,10 @@ describe("spaces", () =>
 	("trailing spaces", src => {
 		let parser = new DesmostParser(src);
 
-		let r = parser.parse_next();
-		assert_is_expression(r);
+		let r = parses_block(parser);
+		is_expr(r);
 		assert.equal(r.data.latex, "y = x");
-	})
+	});
 
 	test.each([
 		`\ny = x  \ny = x^2`,
@@ -156,16 +143,15 @@ describe("spaces", () =>
 	])
 	("trailing spaces (with blanks)", src => {
 		let parser = new DesmostParser(src);
-		let r: Ast | null;
+		let r: Ast;
 		
-		assert_parses_blank_line(parser);
-		r = parser.parse_next();
-		assert_is_expression(r);
+		parses_blank(parser);
+		r = parses_block(parser);
+		is_expr(r);
 		assert.equal(r.data.latex, "y = x");
-		r = parser.parse_next();
-		assert_is_expression(r);
+		r = parses_block(parser);
+		is_expr(r);
 		assert.equal(r.data.latex, "y = x^2");
-		r = parser.parse_next();
-		assert.isNull(r);
-	})
+		assert.isUndefined(parser.parse_next());
+	});
 })

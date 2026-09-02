@@ -6,7 +6,7 @@ import {
 	GLOBAL_INCANTATIONS, LOCAL_INCANTATIONS, EXPR_INCANTATIONS,
 } from "../../src/magic";
 
-import { assert_is_expression, assert_is_invocation } from "./shared";
+import { is_expr, is_invoc } from "./shared";
 
 
 describe("try-parse-global-incantation()", () =>
@@ -18,7 +18,7 @@ describe("try-parse-global-incantation()", () =>
 		let parser = new DesmostParser(`/${incantation.identifier}`);
 		let r = parser.try_parse_global_incantation();
 		
-		assert_is_invocation(r);
+		is_invoc(r);
 		assert.equal(r.kind, Ast.Kind.INCANTATION_INVOCATION);
 		assert.equal(r.incantation, incantation);
 	})
@@ -30,7 +30,7 @@ describe("try-parse-global-incantation()", () =>
 		let parser = new DesmostParser(`/${incantation.identifier}`);
 		let r = parser.try_parse_global_incantation();
 		
-		assert_is_invocation(r);
+		is_invoc(r);
 		assert.equal(r.kind, Ast.Kind.INCANTATION_INVOCATION);
 		assert.equal(r.incantation, incantation);
 	})
@@ -52,7 +52,7 @@ describe("try-parse-local-incantation()", () =>
 		let parser = new DesmostParser(`/${incantation.identifier}`);
 		let r = parser.try_parse_local_incantation();
 		
-		assert_is_invocation(r);
+		is_invoc(r);
 		assert.equal(r.kind, Ast.Kind.INCANTATION_INVOCATION);
 		assert.equal(r.incantation, incantation);
 	})
@@ -74,7 +74,7 @@ describe("try-parse-expr-incantation()", () =>
 		let parser = new DesmostParser(`/${incantation.identifier}{ sup }`);
 		let r = parser.try_parse_expr_incantation();
 		
-		assert_is_expression(r);
+		is_expr(r);
 	})
 
 	test.each(GLOBAL_INCANTATIONS)

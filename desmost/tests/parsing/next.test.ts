@@ -1,6 +1,6 @@
 import { DesmostParser } from "../../src/parser";
 
-import { assert_is_expression, assert_is_invalid } from "./shared";
+import { is_expr, is_invalid, parses_block } from "./shared";
 
 
 describe("parse-next", () =>
@@ -13,9 +13,9 @@ describe("parse-next", () =>
 	])
 	("basic", src => {
 		let parser = new DesmostParser(src);
-		let r = parser.parse_next();
+		let r = parses_block(parser);
 
-		assert_is_expression(r);
+		is_expr(r);
 		assert.equal(r.data.latex, `y = x^2`);
 	})
 
@@ -28,9 +28,9 @@ describe("parse-next", () =>
 	])
 	("leading line breaks", src => {
 		let parser = new DesmostParser(src);
-		let r = parser.parse_next();
+		let r = parses_block(parser);
 		
-		assert_is_expression(r);
+		is_expr(r);
 		assert.equal(r.data.latex, `y = x^2`);
 	})
 
@@ -42,9 +42,9 @@ describe("parse-next", () =>
 	])
 	("trailing line breaks", src => {
 		let parser = new DesmostParser(src);
-		let r = parser.parse_next();
+		let r = parses_block(parser);
 		
-		assert_is_expression(r);
+		is_expr(r);
 		assert.equal(r.data.latex, `y = x^2`);
 	})
 
@@ -54,7 +54,11 @@ describe("parse-next", () =>
 	("global (invalid)", src => {
 		let parser = new DesmostParser(src);
 		let r = parser.parse_next();
-		assert_is_invalid(r);
+
+		assert.isDefined(r);
+		let { blocks, errors } = r;
+		assert.isNotEmpty(errors);
+		assert.isNotEmpty(blocks);
 	})
 
 	test.each([

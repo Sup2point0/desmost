@@ -1,5 +1,5 @@
 import { DesmostParser } from "../../src/parser"
-import { assert_is_expression } from "./shared";
+import { is_expr, parses_block } from "./shared";
 
 describe("%", () =>
 {
@@ -12,9 +12,9 @@ describe("%", () =>
 	])
 	("basic", (src, expected) => {
 		let parser = new DesmostParser(src);
-		let r = parser.parse_next();
+		let r = parses_block(parser);
 
-		assert_is_expression(r);
+		is_expr(r);
 		assert.equal(r.data.type, "text");
 		// @ts-expect-error
 		assert.equal(r.data.text, expected);

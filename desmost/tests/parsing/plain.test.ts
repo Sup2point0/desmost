@@ -1,7 +1,7 @@
 import { DesmostParser, Ast } from "../../src/parser";
 
 import { ltx } from "../shared";
-import { assert_is_expression } from "./shared";
+import { is_expr, parses_block } from "./shared";
 
 
 /**
@@ -16,9 +16,9 @@ describe("preserves plain LaTeX", () =>
 	("empty", source =>
 	{
 		let parser = new DesmostParser(source);
-		let r = parser.parse_next();
+		let r = parses_block(parser);
 		
-		assert_is_expression(r);
+		is_expr(r);
 		assert.equal(r.kind, Ast.Kind.EXPRESSION);
 		assert.equal(r.data.latex, " ");
 	})
@@ -31,9 +31,9 @@ describe("preserves plain LaTeX", () =>
 	("basic", source =>
 	{
 		let parser = new DesmostParser(source);
-		let r = parser.parse_next();
+		let r = parses_block(parser);
 		
-		assert_is_expression(r);
+		is_expr(r);
 		assert.deepEqual((r as Ast.Expression).data, { latex: source })
 	})
 
@@ -44,9 +44,9 @@ describe("preserves plain LaTeX", () =>
 	("with escapes", source =>
 	{
 		let parser = new DesmostParser(source);
-		let r = parser.parse_next();
+		let r = parses_block(parser);
 		
-		assert_is_expression(r);
+		is_expr(r);
 		assert.deepEqual((r as Ast.Expression).data, { latex: source })
 	})
 })

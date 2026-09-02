@@ -2,14 +2,14 @@ import { ViewportIncantation } from "../../../src/magic/global/viewport";
 import { ColourIncantation } from "../../../src/magic/local/colour";
 
 import { DesmostParser, Ast } from "../../../src/parser";
-import { assert_is_expression, assert_is_invocation } from "../shared";
+import { is_expr, is_invoc, parses_block } from "../shared";
 
 
 test("/latex", () => {
 	let parser = new DesmostParser(`/latex{ y = x^2 }`);
-	let r = parser.parse_next() as Ast.Expression;
+	let r = parses_block(parser);
 
-	assert_is_expression(r);
+	is_expr(r);
 	assert.isNotEmpty(r.data.latex);
 	assert.equal(r.data.latex, "y = x^2")
 	assert.deepEqual(r.incantations, []);
@@ -17,9 +17,9 @@ test("/latex", () => {
 
 test("/viewport", () => {
 	let parser = new DesmostParser(`/viewport{ left: -1, right: 1 }`);
-	let r = parser.parse_next();
+	let r = parses_block(parser);
 
-	assert_is_invocation(r);
+	is_invoc(r);
 	assert.equal(r.kind, Ast.Kind.INCANTATION_INVOCATION);
 	assert.deepEqual(r.incantation, new ViewportIncantation());
 	assert.deepEqual(r.arg_raw, "left: -1, right: 1");
@@ -27,9 +27,9 @@ test("/viewport", () => {
 
 test("/colour", () => {
 	let parser = new DesmostParser(`/colour{ BLUE } :: y = x^2`);
-	let r = parser.parse_next() as Ast.Expression;
+	let r = parses_block(parser);
 
-	assert_is_expression(r);
+	is_expr(r);
 	assert.equal(r.data.latex, `y = x^2`);
 	assert.equal(r.incantations.length, 1);
 	

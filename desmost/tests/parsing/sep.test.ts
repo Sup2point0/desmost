@@ -12,8 +12,7 @@ describe("parse-sep", () =>
 		let parser = new DesmostParser(src);
 
 		parser.parse_sep();
-		let r = parser.parse_next();
-		assert.isNull(r);
+		assert.isUndefined(parser.parse_next());
 	})
 
 	test.each([
@@ -26,7 +25,6 @@ describe("parse-sep", () =>
 		let parser = new DesmostParser(src);
 
 		parser.parse_sep();
-		let r = parser.parse_next();
-		assert.isNull(r);
+		assert.isUndefined(parser.parse_next());
 	})
 })
