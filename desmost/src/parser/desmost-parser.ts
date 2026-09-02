@@ -32,11 +32,11 @@ export class DesmostParser extends GenericParser
 	 * This returns:
 	 * 
 	 * ```ts
-	 * // an AST block + any errors encountered
-	 * { block: Ast, errors: [...] }
+	 * // an AST block(s) + any errors encountered
+	 * { blocks: Ast[], errors: [...] }
 	 * 
 	 * // ignored block + any errors encountered
-	 * { block: null, errors: [...] }
+	 * { blocks: [], errors: [...] }
 	 * 
 	 * // parser has reached the end of the source
 	 * undefined
@@ -45,7 +45,7 @@ export class DesmostParser extends GenericParser
 	 * `block: null` could be ignored content like comments, or it could be a parse that couldn't recover and so failed to produce a block.
 	 */
 	public parse_next():
-		Unrecoverable<{ block: Ast | null, errors: DesmostError[] } | undefined>
+		Unrecoverable<{ blocks: Ast[], errors: DesmostError[] } | undefined>
 	{
 		this.errors = [];
 
@@ -55,7 +55,7 @@ export class DesmostParser extends GenericParser
 			return undefined;
 		}
 
-		let block: Ast | null = null;
+		let blocks = [];
 
 		if (this.current === "%") {
 			// comment
@@ -64,7 +64,7 @@ export class DesmostParser extends GenericParser
 				this.consume_end_of_block();
 			}
 			else {
-				block = this.parse_comment();
+				blocks.push(this.parse_comment());
 			}
 		}
 		else if (this.current === "/") {
@@ -72,7 +72,7 @@ export class DesmostParser extends GenericParser
 
 			if ("global" in r) {
 				// 1 global
-				block = r.global;
+				blocks.push(r.global);
 			}
 			else {
 				// 1+ locals + 1 expr
@@ -82,21 +82,23 @@ export class DesmostParser extends GenericParser
 					this.parse_sep();
 				}
 
-				block = this.parse_post_sep();
+				let block = this.parse_post_sep();
 
 				for (let invocation of incantations) {
 					block.incantations.push(invocation);
 				}
+
+				blocks.push(block);
 			}
 		}
 		else {
 			// 1 expr
-			block = this.parse_post_sep();
+			blocks.push(this.parse_post_sep());
 		}
 
 		this.consume_end_of_block();
 
-		return { block, errors: this.errors };
+		return { blocks, errors: this.errors };
 	}
 
 	/**
@@ -107,18 +109,14 @@ export class DesmostParser extends GenericParser
 	 */
 	parse_pre_sep():
 		Unrecoverable<
-		| { global: Ast.IncantationInvocation<GLOBAL> | Ast.InvalidInvocation }
-		| { local: Array<Ast.IncantationInvocation<LOCAL> | Ast.InvalidInvocation> }
+		| { global: Ast.IncantationInvocation<GLOBAL> | Ast.InvalidInvocation | null }
+		| { local: Array<Ast.IncantationInvocation<LOCAL> | Ast.InvalidInvocation | null> }
 		>
 	{
 		// 1 global incantation
 		let r = this.try_parse_global_incantation();
 
 		if (r !== NO_MATCH) {
-			this.consume_end_of_block(
-				`Received excess input after global incantation /${r.incantation.identifier}`
-			);
-
 			return { global: r };
 		}
 
@@ -238,7 +236,6 @@ export class DesmostParser extends GenericParser
 				this.errors.push(new DesmostError.MissingInput(
 					`No argument provided for /${incantation.identifier}, which requires an argument of type: \`${incantation.arg_type}\``
 				));
-				return null;
 			}
 		}
 
@@ -280,7 +277,6 @@ export class DesmostParser extends GenericParser
 				this.errors.push(new DesmostError.MissingInput(
 					`No argument provided for /${incantation.identifier}, which requires an argument of type: \`${incantation.arg_type}\``
 				));
-				return null;
 			}
 		}
 

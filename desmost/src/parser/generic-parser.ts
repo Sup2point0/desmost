@@ -24,7 +24,7 @@ export class GenericParser
 	protected readonly length: number;
 
 	/** Accumulated errors in the current block being parsed. */
-	protected errors: DesmostError[];
+	errors: DesmostError[];
 
 
 	/** Create a parser for parsing `source`. */
