@@ -1,6 +1,15 @@
 export const LINE = '—'.repeat(10);
 
 
+/**
+ * Is `expr` a Desmos LaTeX expression (as opposed to a note or table)?
+ */
+export function is_latex(expr: Desmos.ExpressionState): expr is Desmos.Expression
+{
+	return (expr.type === undefined || expr.type === "expression");
+}
+
+
 export function* reversing<T>(items: ArrayLike<T>): Generator<T>
 {
 	for (let i = items.length - 1; i >= 0; i--) {

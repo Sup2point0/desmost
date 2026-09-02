@@ -5,7 +5,7 @@ import { format_error, normalise_latex, prettify_latex } from "./format";
 import type { DesmostOptions } from "../options";
 import { DesmostError, type Unrecoverable } from "../errors";
 import { DesmostParser, Ast } from "../parser";
-import { is_latex } from "../desmos";
+import { is_latex } from "../utils";
 
 
 /** Debug diagnostics returned from `compile()`. */

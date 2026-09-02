@@ -1,7 +1,7 @@
 import { stringify_json5, prettify_source } from "./format";
 
 import { Ast } from "../parser";
-import { is_latex } from "../desmos";
+import { is_latex } from "../utils";
 
 import { DesmosIncantation, ViewportIncantation } from "../magic/global";
 
