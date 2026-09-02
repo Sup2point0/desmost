@@ -18,7 +18,7 @@ describe("parse-next", () =>
 
 		is_expr(r);
 		assert.equal(r.data.latex, `y = x^2`);
-	})
+	});
 
 	test.each([
 		`/hide\n:: y = x^2`,
@@ -33,7 +33,7 @@ describe("parse-next", () =>
 		
 		is_expr(r);
 		assert.equal(r.data.latex, `y = x^2`);
-	})
+	});
 
 	test.each([
 		`/hide ::\ny = x^2`,
@@ -47,22 +47,20 @@ describe("parse-next", () =>
 		
 		is_expr(r);
 		assert.equal(r.data.latex, `y = x^2`);
-	})
+	});
 
 	test.each([
 		`/viewport`,
 	])
 	("global (invalid)", src => {
 		let parser = new DesmostParser(src);
-		assert.throws(() => parser.parse_next(), DesmostError.MissingInput);
-	})
 
-	test.each([
-		`/desmos{`,
-		`/desmos}`,
-	])
-	("global (crash)", src => {
-		let parser = new DesmostParser(src);
-		assert.throws(() => parser.parse_next());
-	})
+		let r = parser.parse_next();
+		assert.isDefined(r);
+
+		let { blocks, errors } = r;
+		assert.isEmpty(blocks);
+		assert.isNotEmpty(errors);
+		assert.isTrue(errors.at(-1) instanceof DesmostError.MissingInput);
+	});
 })

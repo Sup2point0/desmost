@@ -1,9 +1,7 @@
 import { compile } from "../../src";
 
-import { ColourIncantation } from "../../src/magic/local/colour";
-
 import { testing_desmos } from "../shared";
-import { assert_no_errors } from "./shared";
+import { assert_has_errors, assert_no_errors } from "./shared";
 
 
 function compiles(src: string)
@@ -54,9 +52,8 @@ describe("enum literals", () =>
 		`/line{ value: UNKNOWN } :: y = x`,
 	])
 	("bad", src => {
-		assert.throws(() => {
-			// @ts-expect-error: testing
-			new ColourIncantation().evaluate_arg(src, {})
-		});
+		let desmos = testing_desmos();
+		compile(desmos, src);
+		assert_has_errors(desmos);
 	})
 })
