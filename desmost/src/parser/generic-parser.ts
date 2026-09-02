@@ -15,13 +15,16 @@ const IGNORED_CHARACTERS = new Set([
 export class GenericParser
 {
 	/** The source code this parser is parsing. */
-	protected source: string;
+	protected readonly source: string;
 
 	/** The current position in the source code the parser is pointing to. */
 	protected i: number = 0;
 
 	/** The number of characters in the source code. */
-	protected length: number;
+	protected readonly length: number;
+
+	/** Accumulated errors in the current block being parsed. */
+	protected errors: UnrecoverableError[];
 
 
 	/** Create a parser for parsing `source`. */
@@ -29,6 +32,7 @@ export class GenericParser
 	{
 		this.source = source;
 		this.length = source.length;
+		this.errors = [];
 	}
 
 

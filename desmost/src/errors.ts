@@ -13,6 +13,11 @@ export type NoMatch = typeof NO_MATCH & { readonly __brand?: unique symbol };
 export class UnrecoverableError extends Error
 {
 	info?: UnrecoverableError.Info;
+
+	constructor(msg: string, name: string) {
+		super(msg);
+		this.name = name;
+	}
 }
 
 export namespace UnrecoverableError
@@ -26,35 +31,36 @@ export namespace UnrecoverableError
 
 	/** The parser unexpectedly reached the end of its entire input source code. */
 	export class UnexpectedEnd extends UnrecoverableError {
-		constructor(msg: string, override info?: Info) { super(msg); this.name = "Unexpected End"; }
+		constructor(msg: string, override info?: Info) { super(msg, "Unexpected End"); }
 	}
 
 	/** The parser did not receive input that it expected. */
 	export class MissingInput extends UnrecoverableError {
-		constructor(msg: string, override info?: Info) { super(msg); this.name = "Missing Input"; }
+		constructor(msg: string, override info?: Info) { super(msg, "Missing Input"); }
 	}
 
 	/** The parser received input that did not match what it expected. */
 	export class UnexpectedInput extends UnrecoverableError {
-		constructor(msg: string, override info?: Info) { super(msg); this.name = "Unexpected Input"; }
+		constructor(msg: string, override info?: Info) { super(msg, "Unexpected Input"); }
 	}
 
 	/** The parser received excess input that it did not expect. */
 	export class ExcessInput extends UnrecoverableError {
-		constructor(msg: string, override info?: Info) { super(msg); this.name = "Excess Input"; }
+		constructor(msg: string, override info?: Info) { super(msg, "Excess Input"); }
 	}
 
 	/** An incantation can't be applied here. */
 	export class IllegalIncantation extends UnrecoverableError {
-		constructor(msg: string, override info?: Info) { super(msg); this.name = "Illegal Incantation"; }
+		constructor(msg: string, override info?: Info) { super(msg, "Illegal Incantation"); }
 	}
 
 	/** An incantation's argument couldn't be parsed. */
 	export class InvalidArgument extends UnrecoverableError {
-		constructor(msg: string, override info?: Info) { super(msg); this.name = "Invalid Argument"; }
+		constructor(msg: string, override info?: Info) { super(msg, "Invalid Argument"); }
 	}
 }
 
-
 /** Indicates that a function may throw an `UnrecoverableError`. */
-export type Unrecoverable<Result> = Result | Result & { readonly __brand?: unique symbol };
+export type Unrecoverable<Result>
+	= Result
+	| Result & { readonly __brand?: unique symbol };

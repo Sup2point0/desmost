@@ -27,56 +27,76 @@ export class DesmostParser extends GenericParser
 	// == TOP-LEVEL == //
 
 	/**
-	 * Parse the next semantic block of source code, producing an `Ast` object, or `null` if the parser has successfully reached the end of the source code.
+	 * Parse the next semantic block of source code.
+	 * 
+	 * This returns:
+	 * 
+	 * ```ts
+	 * // an AST block + any errors encountered
+	 * { block: Ast, errors: [...] }
+	 * 
+	 * // ignored block + any errors encountered
+	 * { block: null, errors: [...] }
+	 * 
+	 * // parser has reached the end of the source
+	 * undefined
+	 * ```
+	 * 
+	 * `block: null` could be ignored content like comments, or it could be a parse that couldn't recover and so failed to produce a block.
 	 */
-	public parse_next(): Ast | null
+	public parse_next():
+		Unrecoverable<{ block: Ast | null, errors: UnrecoverableError[] } | undefined>
 	{
+		this.errors = [];
+
 		this.consume_spaces();
 
 		if (this.out_of_bounds()) {
-			return null;
+			return undefined;
 		}
 
+		let block: Ast | null = null;
+
 		if (this.current === "%") {
+			// comment
 			if (this.options?.ignore_comments) {
-				// ignore comment
 				this.parse_line();
 				this.consume_end_of_block();
-				return this.parse_next();
 			}
 			else {
-				// comment
-				var expr = this.parse_comment();
+				block = this.parse_comment();
 			}
 		}
 		else if (this.current === "/") {
 			let r = this.parse_pre_sep();
 
-			// 1 global
 			if ("global" in r) {
-				return r.global;
+				// 1 global
+				block = r.global;
 			}
+			else {
+				// 1+ locals + 1 expr
+				let incantations = r.local;
 
-			// 1+ locals + 1 expr
-			let incantations = r.local;
+				if (incantations.length > 0) {
+					this.parse_sep();
+				}
 
-			if (incantations.length > 0) {
-				this.parse_sep();
-			}
+				block = this.parse_post_sep();
 
-			var expr = this.parse_post_sep();
-
-			for (let invocation of incantations) {
-				expr.incantations.push(invocation);
+				for (let invocation of incantations) {
+					block.incantations.push(invocation);
+				}
 			}
 		}
 		else {
 			// 1 expr
-			var expr = this.parse_post_sep();
+			block = this.parse_post_sep();
 		}
 
 		this.consume_end_of_block();
-		return expr;
+
+		return { block, errors: this.errors };
 	}
 
 	/**
