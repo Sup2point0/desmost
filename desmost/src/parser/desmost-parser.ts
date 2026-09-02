@@ -429,7 +429,7 @@ export class DesmostParser extends GenericParser
 			// This handles \\ double escape perfectly fine, since the first negates the second
 			if (stack.try_pop(Ctx.ESCAPE)) {
 				this.advance(
-					`Unexpected end of input while parsing incantation argument, stack: ${stack.debug()}`
+					`While parsing incantation argument, stack: ${stack.debug()}`
 				);
 			}
 			
@@ -479,7 +479,7 @@ export class DesmostParser extends GenericParser
 			}
 
 			this.advance(
-				`Unexpected end of input while parsing incantation argument, stack: ${JSON.stringify(stack)}`
+				`While parsing incantation argument, stack: ${JSON.stringify(stack)}`
 			);
 		}
 

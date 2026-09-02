@@ -75,7 +75,7 @@ export class GenericParser
 	protected advance(error_msg?: string): Unrecoverable<void>
 	{
 		if (this.out_of_bounds()) {
-			throw new DesmostError.UnexpectedEnd(error_msg ?? "Unexpected end of input");
+			throw new DesmostError.UnexpectedEnd(error_msg ?? "");
 		}
 
 		this.#advance();
@@ -109,7 +109,7 @@ export class GenericParser
 	{
 		if (this.out_of_bounds()) {
 			throw new DesmostError.UnexpectedEnd(
-				`Unexpected end of input while trying to consume: \`${raw}\``
+				`While trying to consume: \`${raw}\``
 			);
 		}
 
@@ -118,7 +118,7 @@ export class GenericParser
 
 		while (this.current === raw[ii]) {
 			this.advance(
-				`Unexpected end of input while trying to consume: \`${raw}\`, at: \`${this.preview(init)}\``
+				`While trying to consume: \`${raw}\`, at: \`${this.preview(init)}\``
 			);
 
 			ii++;
