@@ -65,7 +65,7 @@ export class DesmostCompiler
 	/**
 	 * Run the compiler to completion.
 	 */
-	public compile(): Unrecoverable<void | DesmostDebug>
+	public compile(): void | DesmostDebug
 	{
 		if (this.options.debug) {
 			this.debug = {
@@ -104,7 +104,11 @@ export class DesmostCompiler
 			- If it's `inline`, we shouldn't have any accumulated errors at all, but if we do, then the end is where they should be anyway.
 		*/
 		if (this.errors.length > 0) {
-			this.desmos.setExpression({ id: "deferred", type: "text", text: this.errors.join("\n\n") });
+			this.desmos.setExpression({
+				id: "deferred",
+				type: "text",
+				text: this.errors.map(err => format_error(err, this.options)).join("\n\n"),
+			});
 		} else {
 			this.desmos.removeExpression({ id: "deferred" });
 		}
@@ -126,14 +130,25 @@ export class DesmostCompiler
 
 		let { blocks, errors } = result;
 
-		let block = blocks[0];  // TODO future foreach
+		for (let block of blocks) {
+			this.compile_block(block);
+		}
 
-		if (this.options.debug && block !== null) {
+		for (let error of errors) {
+			this.evaluate_error(error);
+		}
+
+		return false;
+	}
+
+	compile_block(block: Ast): void
+	{
+		if (this.options.debug) {
 			this.debug!.num_blocks++;
 			this.debug!.ast.push(block);
 		}
-		
-		if (block !== null) switch (block.kind)
+
+		switch (block.kind)
 		{
 			case Ast.Kind.INCANTATION_INVOCATION:
 				this.evaluate_global_incantation(block);
@@ -144,24 +159,19 @@ export class DesmostCompiler
 				if (block.data.latex === " ") {
 					if (this.options.ignore_all_blanks) break;
 					if (!this.seen_non_blank && !this.options.keep_leading_blanks) break;
+
 					this.pending_blanks++;
 					break;
 				}
 				else {
 					this.flush_pending_blanks();
 					this.pending_blanks = 0;
-					
 					this.seen_non_blank = true;
+
 					this.evaluate_expr(block);
 					break;
 				}
 		}
-
-		for (let error of errors) {
-			this.evaluate_error(error);
-		}
-
-		return false;
 	}
 
 

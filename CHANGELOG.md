@@ -4,6 +4,16 @@
 <br>
 
 
+## Next (v0.10.0)
+
+### New
+- Improved error handling system
+  - Multiple errors can now be reported at once
+  - Parser is better at recovering from errors
+
+### Fixes
+- Remove leftover empty placeholder expression when `place_errors: "start"` with no errors
+
 
 ## v0.9.1
 
