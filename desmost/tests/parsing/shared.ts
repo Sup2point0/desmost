@@ -24,16 +24,6 @@ export function is_invoc(result: Ast | NoMatch | null): asserts result is Ast.In
 	);
 }
 
-export function is_invalid(result: Ast | NoMatch | null): asserts result is Ast.InvalidInvocation
-{
-	assert.isNotNull(result);
-
-	assert.equal(
-		(result as Ast).kind, Ast.Kind.INVALID_INCANTATION,
-		`received: ${util.inspect(result)}`
-	);
-}
-
 
 export function parses_block(parser: DesmostParser): Ast
 {

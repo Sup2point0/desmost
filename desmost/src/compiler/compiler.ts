@@ -179,11 +179,6 @@ export class DesmostCompiler
 	evaluate_expr(expr: Ast.Expression): Unrecoverable<void>
 	{
 		for (let invocation of expr.incantations) {
-			if (invocation.kind === Ast.Kind.INVALID_INCANTATION) {
-				this.evaluate_error(invocation.error);
-				continue;
-			}
-
 			let data = undefined;
 
 			if ("arg_raw" in invocation && invocation.arg_raw != undefined) {

@@ -4,7 +4,7 @@ import { DesmostError } from "../../../src/errors";
 import { DesmosIncantation } from "../../../src/magic/global/desmos";
 import { ViewportIncantation } from "../../../src/magic/global/viewport";
 
-import { is_invoc, is_invalid } from "../shared";
+import { is_invoc } from "../shared";
 
 
 describe("/desmos", () =>

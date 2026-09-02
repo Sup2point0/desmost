@@ -9,7 +9,6 @@ export namespace Ast
 	{
 		EXPRESSION             = "Expression",
 		INCANTATION_INVOCATION = "Incantation-Invocation",
-		INVALID_INCANTATION    = "Invalid-Incantation",
 	}
 
 	
@@ -18,10 +17,7 @@ export namespace Ast
 	{
 		kind: Kind.EXPRESSION
 		data: Desmos.ExpressionState
-		incantations: Array<
-			| IncantationInvocation<Incantation.Effect.LOCAL>
-			| InvalidInvocation
-			>
+		incantations: IncantationInvocation<Incantation.Effect.LOCAL>[]
 	}
 
 
@@ -30,31 +26,16 @@ export namespace Ast
 		| {
 			kind: Kind.INCANTATION_INVOCATION
 			incantation: Incantation<Effect>
-			arg_raw: undefined
 		}
 		| {
 			kind: Kind.INCANTATION_INVOCATION
 			incantation: ArgIncantation<Effect>
 			arg_raw: string | undefined
 		};
-
-	/**
-	 * An invalid invantation invocation that raised an error when parsed.
-	 * 
-	 * This will be propogated to the user as an extra Desmos text expression (unless they have `errors: "suppress"` configured).
-	 */
-	export interface InvalidInvocation
-	{
-		kind: Kind.INVALID_INCANTATION
-		incantation: Incantation
-		arg_raw?: string
-		error: DesmostError
-	}
 }
 
 /** An abstract object produced by the parser. */
 export type Ast =
 	| Ast.Expression
 	| Ast.IncantationInvocation
-	| Ast.InvalidInvocation
 ;
