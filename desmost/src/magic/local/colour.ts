@@ -1,8 +1,10 @@
 import { Incantation, ArgIncantation, type LOCAL } from "../incantation";
 
-import { DesmosColour } from "../../desmos";
 import { DesmostError } from "../../errors";
 import type { DesmostOptions } from "../../options";
+
+
+const VALID_COLOURS = ["RED", "BLUE", "GREEN", "PURPLE", "ORANGE", "BLACK"];
 
 
 export class ColourIncantation extends ArgIncantation<LOCAL>
@@ -23,17 +25,25 @@ export class ColourIncantation extends ArgIncantation<LOCAL>
 
 	override evaluate_arg(data: string, options: DesmostOptions): DesmosColour
 	{
-		switch (data.trim().toUpperCase()) {
-			case "RED":    return DesmosColour.RED;
-			case "BLUE":   return DesmosColour.BLUE;
-			case "GREEN":  return DesmosColour.GREEN;
-			case "PURPLE": return DesmosColour.PURPLE;
-			case "ORANGE": return DesmosColour.ORANGE;
-			case "BLACK":  return DesmosColour.BLACK;
-			default:
-				throw new DesmostError(
-					`Invalid colour: \`${data}\``
+		let colour = data.trim().toUpperCase();
+
+		if (VALID_COLOURS.includes(colour)) {
+			return Desmos.Colors[colour as keyof typeof Desmos.Colors];
+		}
+		else {
+			let internal = Desmos.Colors[colour as keyof typeof Desmos.Colors];
+
+			if (options.check_args && internal == undefined) {
+				throw new DesmostError.InvalidArgument(
+					`/colour received invalid colour: \`${data}\``,
+					{
+						hint: `Valid colours are ${VALID_COLOURS.join(", ")}`,
+							flagged_by: "check_args"
+					}
 				);
+			}
+
+			return internal;
 		}
 	}
 }
