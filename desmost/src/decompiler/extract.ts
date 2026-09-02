@@ -19,6 +19,7 @@ export function extract_settings(
    let arg_raw = stringify_json5(
       desmos.settings,
       (k, v) => (
+            // @ts-expect-error: weird
             v === defaults[k]
          || k === "__observers"
          || k === "guid"
@@ -50,6 +51,7 @@ export function extract_viewport(
 
    let arg_raw = stringify_json5(
       { left, right, bottom, top },
+      /// @ts-expect-error: weird
       (k, v) => v === defaults[k] ? undefined : v,
       "  ",
    );

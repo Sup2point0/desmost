@@ -4,6 +4,9 @@ import { DesmostError } from "../../errors";
 import type { DesmostOptions } from "../../options";
 
 
+type DesmosColourName = keyof typeof Desmos.Colors;
+type DesmosColour = (typeof Desmos.Colors)[DesmosColourName];
+
 const VALID_COLOURS = ["RED", "BLUE", "GREEN", "PURPLE", "ORANGE", "BLACK"];
 
 
@@ -28,10 +31,10 @@ export class ColourIncantation extends ArgIncantation<LOCAL>
 		let colour = data.trim().toUpperCase();
 
 		if (VALID_COLOURS.includes(colour)) {
-			return Desmos.Colors[colour as keyof typeof Desmos.Colors];
+			return Desmos.Colors[colour as DesmosColourName];
 		}
 		else {
-			let internal = Desmos.Colors[colour as keyof typeof Desmos.Colors];
+			let internal = Desmos.Colors[colour as DesmosColourName];
 
 			if (options.check_args && internal == undefined) {
 				throw new DesmostError.InvalidArgument(

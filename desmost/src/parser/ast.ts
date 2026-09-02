@@ -1,4 +1,3 @@
-import { DesmostError } from "../errors";
 import { Incantation, ArgIncantation } from "../magic";
 
 

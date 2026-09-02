@@ -2,7 +2,7 @@ import { emit_global_incantation, emit_expression } from "./emit";
 import { extract_settings, extract_viewport, extract_expression } from "./extract";
 
 import { Ast } from "../parser";
-import type { DesmostOptions } from "../compiler";
+import type { DesmostOptions } from "../options";
 
 
 export interface SemiStructuredAst

@@ -1,7 +1,7 @@
 import { Incantation, ArgIncantation, type LOCAL } from "../incantation";
 
 import type { DesmostOptions } from "../../options";
-import { type Unrecoverable } from "../../errors";
+import type { Unrecoverable } from "../../errors";
 
 
 interface LineOptions

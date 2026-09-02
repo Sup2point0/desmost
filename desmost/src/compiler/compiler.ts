@@ -267,7 +267,7 @@ export class DesmostCompiler
 		}
 	}
 
-	flush_pending_blanks()
+	flush_pending_blanks(): void
 	{
 		for (let i = 0; i < this.pending_blanks; i++) {
 			this.desmos.setExpression({ latex: ` ` });
