@@ -152,10 +152,36 @@ export class DesmostParser extends GenericParser
 	parse_sep(): Fallible<void>
 	{
 		this.consume_whitespace();
-		this.consume("::", {
-			msg: `Expected \`::\` separator between local incantations and expression, but found: \`${this.preview()}\``,
-			// TODO hint
-		});
+		
+		try {
+			this.consume("::", {
+				msg:  `Expected \`::\` separator between local incantations and expression, but found: \`${this.preview()}\``,
+				hint: `Use \`/incantation :: ${this.preview()}\``,
+			});
+		}
+		catch (e) {
+			if (!this.peek_line().includes("::")) throw e;
+
+			let init = this.i;
+
+			while (this.current !== ":" || this.peek() !== ":") {
+				this.advance();
+			}
+
+			const peek = 7;
+			const start = "...".length + Math.round(1.5 * peek);
+
+			this.errors.push(new DesmostError.ExcessInput({
+				msg: `While consuming \`::\` separator`,
+				show: {
+					text: `...${this.source.slice(init - peek, this.i + peek)}...`,
+					span: new utils.Range(start, start + this.i - init)
+				}
+			}));
+
+			this.consume("::");
+		}
+
 		this.consume_whitespace();
 	}
 
@@ -433,7 +459,7 @@ export class DesmostParser extends GenericParser
 			// If the last character was an escape, we don't care at all what the next character is!
 			// This handles \\ double escape perfectly fine, since the first negates the second
 			if (stack.try_pop(Ctx.ESCAPE)) {
-				this.advance({ while: `Parsing incantation argument`, debug: stack.debug() });
+				this.advance({ msg: `While parsing incantation argument`, debug: stack.debug() });
 			}
 			
 			let top = stack.top;
@@ -481,7 +507,7 @@ export class DesmostParser extends GenericParser
 				}
 			}
 
-			this.advance({ while: `Parsing incantation argument`, debug: stack.debug() });
+			this.advance({ msg: `While parsing incantation argument`, debug: stack.debug() });
 		}
 
 		/* NOTE: Cut in by 1 on both sides to exclude {} braces */

@@ -52,8 +52,21 @@ export class GenericParser
 		return this.source.at(this.i);
 	}
 
+	protected peek(): string | undefined
+	{
+		return this.source.at(this.i + 1);
+	}
+
 	/**
-	 * Peek a snippet of the upcoming source text.
+	 * Peek the rest of the content in the current line.
+	 */
+	protected peek_line(): string
+	{
+		return this.source.slice(this.i, this.source.indexOf("\n", this.i));
+	}
+
+	/**
+	 * Peek a snippet of the upcoming source text for display purposes.
 	 * 
 	 * Optionally start from the given `idx`.
 	 */
@@ -109,8 +122,10 @@ export class GenericParser
 	{
 		if (this.out_of_bounds()) {
 			throw new DesmostError.UnexpectedEnd({
-				msg:   `\`${this.preview(this.i - 10)}\``,
-				while: `Trying to consume: \`${raw}\``
+				msg: `While trying to consume: \`${raw}\``,
+				show: {
+					text: this.preview(this.i - 5),
+				}
 			});
 		}
 
@@ -119,7 +134,7 @@ export class GenericParser
 
 		while (this.current === raw[ii]) {
 			this.advance({
-				while: `Trying to consume: \`${raw}\``,
+				msg: `While trying to consume: \`${raw}\``,
 				show: {
 					text: `\`${this.preview(init)}\``,
 				},

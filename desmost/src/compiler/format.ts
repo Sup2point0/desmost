@@ -15,11 +15,23 @@ export function format_error(
 	// TODO maybe include stack? (configurable?)
 	let display = `${prefix}${sep}${e.name}: ${e.message}`;
 
-	if (e.data != undefined && options.expand_errors) {
-		display += `\n${LINE}`;
+	if (e.data == undefined) {
+		return display;
+	}
 
-		if (e.data.while != undefined) display += `\nWhile: ${e.data.while}`;
-		if (e.data.hint  != undefined) display += `\nHint: ${e.data.hint}`;
+	if (e.data.show != undefined) {
+		display += `\n${LINE}\n`;
+		display += e.data.show.text;
+
+		if (e.data.show.span != undefined) {
+			display += `\n`;
+			display += ' '.repeat(e.data.show.span.start);
+			display += '^'.repeat(e.data.show.span.length);
+		}
+	}
+
+	if (options.expand_errors) {
+		if (e.data.hint  != undefined) display += `\n${LINE}\nHint: ${e.data.hint}`;
 		if (e.data.note  != undefined) display += `\n${LINE}\nNote: ${e.data.note}`;
 	}
 

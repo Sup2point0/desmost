@@ -1,3 +1,6 @@
+import type { Range } from "./utils";
+
+
 /** The parser failed to parse something (usually during speculative parsing), which only results in internal backtracking. */
 export const NO_MATCH = Symbol("no-match");
 
@@ -32,7 +35,7 @@ export namespace DesmostError
 
 		show?: {
 			text:  string
-			span?: [number, number]
+			span?: Range
 		}
 	}
 

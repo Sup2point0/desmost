@@ -51,11 +51,24 @@ export function chars(s: string, start?: number, stop?: number): string[]
 
 export class Range
 {
+	/** The lower bound of the range (inclusive). */
+	public readonly start: number;
+
+	/** The upper bound of the range (exclusive). */
+	public readonly stop: number;
+
 	constructor(
-		protected start: number, 
-		protected stop: number,
+		start: number, 
+		stop: number,
 	)
-	{}
+	{
+		this.start = Math.min(start, stop);
+		this.stop  = Math.max(start, stop);
+	}
+
+	get length(): number {
+		return this.stop - this.start + 1;
+	}
 
 	*map<T>(callback: (n: number) => T): Generator<T>
 	{
