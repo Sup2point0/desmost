@@ -97,7 +97,7 @@ export abstract class ArgIncantation<
 				}
 				catch (e) {
 					// @ts-expect-error: fine
-					throw new DesmostError.InvalidArgument(e.message);
+					throw new DesmostError.InvalidArgument({ msg: e.message });
 				}
 			}
 		}
