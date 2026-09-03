@@ -76,7 +76,8 @@ def build_details(fields:)
 
 	fields.each do |field|
 		ident, values, default, doc = field
-		values = values.map { |v| "`#{v}`" }.join(" ")
+		values = values.map { |v| "<code>#{v}</code>" }.join(" ")
+		default = default.gsub(/`([^`]+?)`/, "<code>\\1</code>")
 
 		out += """
 ## `#{ident}`
@@ -88,7 +89,7 @@ def build_details(fields:)
   </tr>
   <tr>
     <th> Default </th>
-	 <th> #{default} </th>
+	 <td> #{default} </td>
   </tr>
 </table>
 

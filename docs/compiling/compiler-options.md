@@ -27,7 +27,7 @@ Options configure things like error handling, checks and formatting. All setting
 | :----- | :----- | :------ | :---------- |
 | [errors](#errors) | `"surface"` `"crash"` `"suppress"` | `surface` | How should errors be displayed? |
 | [place_errors](#place_errors) | `"inline"` `"end"` `"start"` | `inline` | Where should errors be placed? |
-| [error_prefix](#error_prefix) | `string` | [DESMOST ERROR]. | The prefix to prepend to error blocks. |
+| [error_prefix](#error_prefix) | `string` | `"[DESMOST ERROR]"` | The prefix to prepend to error blocks. |
 | [expand_errors](#expand_errors) | `true` `false` | `true` | Show all the available diagnostics for errors, including hints and debug information? |
 | [check_args](#check_args) | `true` `false` | `true` | Error if an incantation receives a `{}` object argument with unknown fields, or no fields at all? |
 | [prettify](#prettify) | `true` `false` | `true` | Prettify LaTeX output so it renders nicely in the Desmos editor? |
@@ -50,11 +50,11 @@ Options configure things like error handling, checks and formatting. All setting
 <table>
   <tr>
     <th> Values </th>
-	 <td> `"surface"` `"crash"` `"suppress"` </td>
+	 <td> <code>"surface"</code> <code>"crash"</code> <code>"suppress"</code> </td>
   </tr>
   <tr>
     <th> Default </th>
-	 <th> `surface` </th>
+	 <td> <code>surface</code> </td>
   </tr>
 </table>
 
@@ -76,11 +76,11 @@ How should errors be displayed?
 <table>
   <tr>
     <th> Values </th>
-	 <td> `"inline"` `"end"` `"start"` </td>
+	 <td> <code>"inline"</code> <code>"end"</code> <code>"start"</code> </td>
   </tr>
   <tr>
     <th> Default </th>
-	 <th> `inline` </th>
+	 <td> <code>inline</code> </td>
   </tr>
 </table>
 
@@ -98,11 +98,11 @@ Where should errors be placed?
 <table>
   <tr>
     <th> Values </th>
-	 <td> `string` </td>
+	 <td> <code>string</code> </td>
   </tr>
   <tr>
     <th> Default </th>
-	 <th> [DESMOST ERROR]. </th>
+	 <td> <code>"[DESMOST ERROR]"</code> </td>
   </tr>
 </table>
 
@@ -118,11 +118,11 @@ Provide a `""` blank string if you wish for no prefix to be added.
 <table>
   <tr>
     <th> Values </th>
-	 <td> `true` `false` </td>
+	 <td> <code>true</code> <code>false</code> </td>
   </tr>
   <tr>
     <th> Default </th>
-	 <th> `true` – all output is shown. </th>
+	 <td> <code>true</code> – all output is shown. </td>
   </tr>
 </table>
 
@@ -136,11 +136,11 @@ Show all the available diagnostics for errors, including hints and debug informa
 <table>
   <tr>
     <th> Values </th>
-	 <td> `true` `false` </td>
+	 <td> <code>true</code> <code>false</code> </td>
   </tr>
   <tr>
     <th> Default </th>
-	 <th> `true` – arguments are checked. </th>
+	 <td> <code>true</code> – arguments are checked. </td>
   </tr>
 </table>
 
@@ -158,11 +158,11 @@ Desmost doesn’t remove unknown fields, it just passes them directly to the Des
 <table>
   <tr>
     <th> Values </th>
-	 <td> `true` `false` </td>
+	 <td> <code>true</code> <code>false</code> </td>
   </tr>
   <tr>
     <th> Default </th>
-	 <th> `true` – LaTeX is prettified. </th>
+	 <td> <code>true</code> – LaTeX is prettified. </td>
   </tr>
 </table>
 
@@ -178,11 +178,11 @@ This means you can keep your source code much neater. It handles stuff like conv
 <table>
   <tr>
     <th> Values </th>
-	 <td> `true` `false` </td>
+	 <td> <code>true</code> <code>false</code> </td>
   </tr>
   <tr>
     <th> Default </th>
-	 <th> `true` – text is dedented. </th>
+	 <td> <code>true</code> – text is dedented. </td>
   </tr>
 </table>
 
@@ -205,11 +205,11 @@ This allows you to indent content for readability:
 <table>
   <tr>
     <th> Values </th>
-	 <td> `true` `false` </td>
+	 <td> <code>true</code> <code>false</code> </td>
   </tr>
   <tr>
     <th> Default </th>
-	 <th> `false` – comments are kept. </th>
+	 <td> <code>false</code> – comments are kept. </td>
   </tr>
 </table>
 
@@ -228,11 +228,11 @@ y = x
 <table>
   <tr>
     <th> Values </th>
-	 <td> `true` `false` </td>
+	 <td> <code>true</code> <code>false</code> </td>
   </tr>
   <tr>
     <th> Default </th>
-	 <th> `false` – blank lines are recognised. </th>
+	 <td> <code>false</code> – blank lines are recognised. </td>
   </tr>
 </table>
 
@@ -254,11 +254,11 @@ This takes precedence over `keep_leading_blanks` and `keep_trailing_blanks`.
 <table>
   <tr>
     <th> Values </th>
-	 <td> `true` `false` </td>
+	 <td> <code>true</code> <code>false</code> </td>
   </tr>
   <tr>
     <th> Default </th>
-	 <th> `false` – leading blank lines are ignored. </th>
+	 <td> <code>false</code> – leading blank lines are ignored. </td>
   </tr>
 </table>
 
@@ -280,11 +280,11 @@ This is disabled by default so line breaks after global incantations don’t mes
 <table>
   <tr>
     <th> Values </th>
-	 <td> `true` `false` </td>
+	 <td> <code>true</code> <code>false</code> </td>
   </tr>
   <tr>
     <th> Default </th>
-	 <th> `false` – trailing blank lines are ignored. </th>
+	 <td> <code>false</code> – trailing blank lines are ignored. </td>
   </tr>
 </table>
 
@@ -298,11 +298,11 @@ Should trailing blank lines at the end of the source be kept as blank expression
 <table>
   <tr>
     <th> Values </th>
-	 <td> `true` `false` </td>
+	 <td> <code>true</code> <code>false</code> </td>
   </tr>
   <tr>
     <th> Default </th>
-	 <th> `false` – `compile()` returns `void` </th>
+	 <td> <code>false</code> – <code>compile()</code> returns <code>void</code> </td>
   </tr>
 </table>
 
