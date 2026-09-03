@@ -45,19 +45,16 @@ export class LabelIncantation extends ArgIncantation<LOCAL>
 		let out = super.evaluate_arg(raw, options) as LabelOptions;
 
 		if (options.check_args) {
-			super.require_nonempty(out, `/label received empty argument`, {
+			super.require_nonempty(out, {
+				msg:  `/label received empty argument`,
 				hint: `You can provide [${VALID_FIELDS.join(", ")}]`,
-				flagged_by: "check_args",
 			});
 
 			if (!("text" in out)) {
-				throw new DesmostError.MissingInput(
-					`/label is missing label text`,
-					{
-						hint: `Provide text for the label: \`/label{text: "sup world!"}\``,
-						flagged_by: "check_args",
-					}
-				);
+				throw new DesmostError.MissingInput({
+					msg:  `/label is missing label text`,
+					hint: `Provide text for the label: \`/label{text: "sup world!"}\``,
+				});
 			}
 
 			super.require_known(out, VALID_FIELDS);
@@ -75,13 +72,10 @@ export class LabelIncantation extends ArgIncantation<LOCAL>
 				let orientation = Desmos.LabelOrientations[pos];
 
 				if (options.check_args && orientation == undefined) {
-					throw new DesmostError.InvalidArgument(
-						`/label received invalid label position: ${pos}`,
-						{
-							hint: `Valid label positions are ${VALID_POSITIONS.join(", ")}`,
-							flagged_by: "check_args"
-						}
-					);
+					throw new DesmostError.InvalidArgument({
+						msg:  `/label received invalid label position: ${pos}`,
+						hint: `Valid label positions are ${VALID_POSITIONS.join(", ")}`,
+					});
 				}
 				
 				out.pos = orientation;

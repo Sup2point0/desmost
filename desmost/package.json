@@ -54,7 +54,8 @@
     "test":     "vitest run",
       "testw":  "vitest",
 
-    "check":    "npx oxlint src",
+    "check":    "npx tsc --noEmit -p tsconfig.build.json",
+    "lint":     "npx oxlint src",
 
     "doc":      "cd ../.autodoc && rake",
 

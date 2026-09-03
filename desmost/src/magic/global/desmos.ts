@@ -32,13 +32,11 @@ export class DesmosIncantation extends ArgIncantation<GLOBAL>
 
 		if (options.check_args) {
 			if (Object.keys(out).length === 0) {
-				throw new DesmostError.MissingInput(
-					`/${this.identifier} received empty settings`,
-					{
-						hint: `Provide settings like \`/desmos{expressionsCollapsed: true}\``,
-						note: `Use just /desmos (without \`{}\`) if you want it as an indicator`,
-					}
-				);
+				throw new DesmostError.MissingInput({
+					msg:  `/desmos received empty settings`,
+					hint: `Provide settings like \`/desmos{expressionsCollapsed: true}\``,
+					note: `Use just /desmos (without \`{}\`) if you want it as an indicator`,
+				});
 			}
 		}
 		

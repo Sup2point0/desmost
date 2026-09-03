@@ -42,14 +42,11 @@ export class ViewportIncantation extends ArgIncantation<GLOBAL>
 
 		if (options.check_args) {
 			if (Object.keys(out).length === 0) {
-				throw new DesmostError.InvalidArgument(
-					`/${this.identifier} received empty viewport bounds`,
-					{
-						hint: `Provide bounds like \`/viewport{left: -8, right: 8}\``,
-						note: `Missing bounds are kept as their defaults`,
-						flagged_by: "check_args",
-					}
-				);
+				throw new DesmostError.InvalidArgument({
+					msg:  `/${this.identifier} received empty viewport bounds`,
+					hint: `Provide bounds like \`/viewport{left: -8, right: 8}\``,
+					note: `Missing bounds are kept as their defaults`,
+				});
 			}
 
 			let invalid_keys = Object.keys(out).filter(key => !VALID_KEYS.includes(key));
@@ -57,13 +54,10 @@ export class ViewportIncantation extends ArgIncantation<GLOBAL>
 			if (invalid_keys.length > 0) {
 				let plural = invalid_keys.length > 1 ? "fields" : "field";
 
-				throw new DesmostError.InvalidArgument(
-					`/${this.identifier} received invalid ${plural}: [${invalid_keys.join(", ")}]`,
-					{
-						hint: `Valid fields are: [${VALID_KEYS.join(", ")}]`,
-						flagged_by: "check_args",
-					}
-				);
+				throw new DesmostError.InvalidArgument({
+					msg:  `/${this.identifier} received invalid ${plural}: [${invalid_keys.join(", ")}]`,
+					hint: `Valid fields are: [${VALID_KEYS.join(", ")}]`,
+				});
 			}
 		}
 

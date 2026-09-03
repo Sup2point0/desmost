@@ -152,9 +152,10 @@ export class DesmostParser extends GenericParser
 	parse_sep(): Unrecoverable<void>
 	{
 		this.consume_whitespace();
-		this.consume("::",
-			`Expected \`::\` separator between local incantations and expression, but found: \`${this.preview()}\``
-		);
+		this.consume("::", {
+			msg: `Expected \`::\` separator between local incantations and expression, but found: \`${this.preview()}\``,
+			// TODO hint
+		});
 		this.consume_whitespace();
 	}
 
@@ -244,9 +245,10 @@ export class DesmostParser extends GenericParser
 				data = this.parse_incantation_arg(incantation.arg_type);
 			}
 			else if (incantation.requires_arg) {
-				throw new DesmostError.MissingInput(
-					`No argument provided for /${incantation.identifier}, which requires an argument of type: \`${incantation.arg_type}\``
-				);
+				throw new DesmostError.MissingInput({
+					msg:  `No argument provided for /${incantation.identifier}`,
+					hint: `/${incantation.identifier} requires an argument of type: \`${incantation.arg_type}\``,
+				});
 			}
 		}
 
@@ -258,6 +260,8 @@ export class DesmostParser extends GenericParser
 			arg_raw: data,
 		};
 	}
+
+	// TODO remove duplication
 
 	/**
 	 * Attempt to parse a local incantation invocation.
@@ -281,9 +285,10 @@ export class DesmostParser extends GenericParser
 				arg_raw = this.parse_incantation_arg(incantation.arg_type);
 			}
 			else if (incantation.requires_arg) {
-				throw new DesmostError.MissingInput(
-					`No argument provided for /${incantation.identifier}, which requires an argument of type: \`${incantation.arg_type}\``
-				);
+				throw new DesmostError.MissingInput({
+					msg:  `No argument provided for /${incantation.identifier}`,
+					hint: `/${incantation.identifier} requires an argument of type: \`${incantation.arg_type}\``,
+				});
 			}
 		}
 
@@ -414,9 +419,9 @@ export class DesmostParser extends GenericParser
 	{
 		let init = this.i;
 
-		this.consume("{",
-			`Expected \`{\` to start incantation argument, but found: \`${this.preview()}\``
-		);
+		this.consume("{", {
+			msg: `Expected \`{\` to start incantation argument, but found: \`${this.preview()}\``
+		});
 
 		/** The context stack to keep track of when the closing `}` is encountered. */
 		let stack = new ContextStack();
@@ -428,9 +433,7 @@ export class DesmostParser extends GenericParser
 			// If the last character was an escape, we don't care at all what the next character is!
 			// This handles \\ double escape perfectly fine, since the first negates the second
 			if (stack.try_pop(Ctx.ESCAPE)) {
-				this.advance(
-					`While parsing incantation argument, stack: ${stack.debug()}`
-				);
+				this.advance({ while: `Parsing incantation argument`, debug: stack.debug() });
 			}
 			
 			let top = stack.top;
@@ -478,9 +481,7 @@ export class DesmostParser extends GenericParser
 				}
 			}
 
-			this.advance(
-				`While parsing incantation argument, stack: ${JSON.stringify(stack)}`
-			);
+			this.advance({ while: `Parsing incantation argument`, debug: stack.debug() });
 		}
 
 		/* NOTE: Cut in by 1 on both sides to exclude {} braces */

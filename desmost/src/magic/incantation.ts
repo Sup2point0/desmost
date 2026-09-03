@@ -46,9 +46,11 @@ export abstract class Incantation<
 	{
 		if ((actual ?? "expression") !== required)
 		{
-			throw new DesmostError.IllegalIncantation(
-				`/${this.identifier} can only applied to ${required === "expression" ? "latex" : required} blocks, but target block has type: ${actual}`
-			);
+			let req = required === "expression" ? "latex" : required;
+
+			throw new DesmostError.IllegalIncantation({
+				msg: `/${this.identifier} can only applied to ${req} blocks, but target block has type: ${actual}`,
+			});
 		}
 	}
 }
@@ -103,34 +105,31 @@ export abstract class ArgIncantation<
 
 	protected require_nonempty(
 		arg: object,
-		msg?: string,
-		info?: DesmostError.Info,
+		error_data?: DesmostError.Data,
 	): Unrecoverable<void>
 	{
 		if (Object.entries(arg).length === 0) {
-			throw new DesmostError.MissingInput(
-				msg ?? `/${this.identifier} received an empty argument {}`,
-				info,
-			);
+			throw new DesmostError.MissingInput({
+				msg: `/${this.identifier} received an empty argument {}`,
+				...error_data
+			});
 		}
 	}
 
 	protected require_known(
 		arg: object,
 		valid_fields: string[],
-		info?: DesmostError.Info,
+		error_data?: DesmostError.Data,
 	): Unrecoverable<void>
 	{
 		// TODO accumulate
 		for (let field of Object.keys(arg)) {
 			if (!valid_fields.includes(field)) {
-				throw new DesmostError.InvalidArgument(
-					`/${this.identifier} received invalid field: ${field}`,
-					{
-						hint: `Valid fields are [${valid_fields.join(", ")}]`,
-						...info,
-					}
-				);
+				throw new DesmostError.InvalidArgument({
+					msg:  `/${this.identifier} received invalid field: ${field}`,
+					hint: `Valid fields are [${valid_fields.join(", ")}]`,
+					...error_data,
+				});
 			}
 		}
 	}

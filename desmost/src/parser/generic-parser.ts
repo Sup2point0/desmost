@@ -72,10 +72,10 @@ export class GenericParser
 	 * 
 	 * Errors if the parser is already out-of-bounds *before* advancing.
 	 */
-	protected advance(error_msg?: string): Unrecoverable<void>
+	protected advance(error_data?: DesmostError.Data): Unrecoverable<void>
 	{
 		if (this.out_of_bounds()) {
-			throw new DesmostError.UnexpectedEnd(error_msg ?? "");
+			throw new DesmostError.UnexpectedEnd(error_data ?? {});
 		}
 
 		this.#advance();
@@ -105,29 +105,34 @@ export class GenericParser
 	/**
 	 * Consume `raw`, erroring if `raw` was not found.
 	 */
-	protected consume(raw: string, error_msg?: string): Unrecoverable<void>
+	protected consume(raw: string, error_data?: DesmostError.Data): Unrecoverable<void>
 	{
 		if (this.out_of_bounds()) {
-			throw new DesmostError.UnexpectedEnd(
-				`While trying to consume: \`${raw}\``
-			);
+			throw new DesmostError.UnexpectedEnd({
+				msg:   `\`${this.preview(this.i - 10)}\``,
+				while: `Trying to consume: \`${raw}\``
+			});
 		}
 
 		let init = this.i;
 		let ii = 0;
 
 		while (this.current === raw[ii]) {
-			this.advance(
-				`While trying to consume: \`${raw}\`, at: \`${this.preview(init)}\``
-			);
+			this.advance({
+				while: `Trying to consume: \`${raw}\``,
+				show: {
+					text: `\`${this.preview(init)}\``,
+				},
+			});
 
 			ii++;
 			if (ii === raw.length) return;
 		}
 
-		throw new DesmostError.UnexpectedInput(
-			error_msg ?? `Expected: \`${raw}\`, but found: \`${this.preview(init)}\``
-		);
+		throw new DesmostError.UnexpectedInput({
+			msg: `Expected: \`${raw}\`, but found: \`${this.preview(init)}\``,
+			...error_data,
+		});
 	}
 
 	/**
@@ -183,14 +188,15 @@ export class GenericParser
 		}
 	}
 
-	protected consume_end_of_block(error_msg?: string): Unrecoverable<void>
+	protected consume_end_of_block(error_data?: DesmostError.Data): Unrecoverable<void>
 	{
 		if (this.i >= this.length) return;
 
 		this.consume_spaces();
 
-		this.consume("\n",
-			error_msg ?? `Expected end of block, but found: \`${this.preview()}\``
-		);
+		this.consume("\n", {
+			msg: `Expected a newline at the end of a block, but found: \`${this.preview()}\``,
+			...error_data
+		});
 	}
 }

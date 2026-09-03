@@ -12,51 +12,58 @@ export type NoMatch = typeof NO_MATCH & { readonly __brand?: unique symbol };
  */
 export class DesmostError extends Error
 {
-	info?: DesmostError.Info;
+	data?: DesmostError.Data;
 
-	constructor(msg: string, name: string) {
+	constructor(msg: string | undefined, name: string) {
 		super(msg);
-		this.name = name;
+      this.name = name;
 	}
 }
 
 export namespace DesmostError
 {
-	export interface Info
+	export interface Data
 	{
-		hint?: string,
-		note?: string,
-		flagged_by?: string,
+		msg?:   string
+		while?: string
+		hint?:  string
+		note?:  string
+		debug?: string
+
+		show?: {
+			text:  string
+			span?: [number, number]
+		}
 	}
 
-	/** The parser unexpectedly reached the end of its entire input source code. */
+	/** The parser unexpectedly reached the end of its source. */
 	export class UnexpectedEnd extends DesmostError {
-		constructor(msg: string, override info?: Info) { super(msg, "Unexpected End of Input"); }
+		constructor(override data: Data) { super(data.msg, "Unexpected End of Source"); }
 	}
 
 	/** The parser did not receive input that it expected. */
 	export class MissingInput extends DesmostError {
-		constructor(msg: string, override info?: Info) { super(msg, "Missing Input"); }
+		constructor(override data: Data) { super(data.msg, "Missing Input"); }
 	}
 
 	/** The parser received input that did not match what it expected. */
 	export class UnexpectedInput extends DesmostError {
-		constructor(msg: string, override info?: Info) { super(msg, "Unexpected Input"); }
+		constructor(override data: Data) { super(data.msg, "Unexpected Input"); }
 	}
 
 	/** The parser received excess input that it did not expect. */
 	export class ExcessInput extends DesmostError {
-		constructor(msg: string, override info?: Info) { super(msg, "Excess Input"); }
+		constructor(override data: Data) { super(data.msg, "Excess Input"); }
 	}
 
 	/** An incantation can't be applied here. */
 	export class IllegalIncantation extends DesmostError {
-		constructor(msg: string, override info?: Info) { super(msg, "Illegal Incantation"); }
+		constructor(override data: Data) { super(data.msg, "Illegal Incantation"); }
 	}
 
 	/** An incantation's argument is invalid - could be a parsing, evaluation or validation failure. */
 	export class InvalidArgument extends DesmostError {
-		constructor(msg: string, override info?: Info) { super(msg, "Invalid Argument"); }
+		constructor(override data: Data) { super(data.msg, "Invalid Argument"); }
 	}
 }
 

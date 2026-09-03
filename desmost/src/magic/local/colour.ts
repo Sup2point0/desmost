@@ -37,13 +37,10 @@ export class ColourIncantation extends ArgIncantation<LOCAL>
 			let internal = Desmos.Colors[colour as DesmosColourName];
 
 			if (options.check_args && internal == undefined) {
-				throw new DesmostError.InvalidArgument(
-					`/colour received invalid colour: \`${data}\``,
-					{
-						hint: `Valid colours are ${VALID_COLOURS.join(", ")}`,
-							flagged_by: "check_args"
-					}
-				);
+				throw new DesmostError.InvalidArgument({
+					msg:  `/colour received invalid colour: \`${data}\``,
+					hint: `Valid colours are ${VALID_COLOURS.join(", ")}`,
+				});
 			}
 
 			return internal;
