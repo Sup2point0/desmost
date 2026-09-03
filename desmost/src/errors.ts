@@ -67,7 +67,7 @@ export namespace DesmostError
 	}
 }
 
-/** Indicates that a function may throw an `DesmostError`. */
-export type Unrecoverable<Result>
+/** Indicates that a function may throw a `DesmostError`. */
+export type Fallible<Result>
 	= Result
 	| Result & { readonly __brand?: unique symbol };

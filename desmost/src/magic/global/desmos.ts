@@ -1,6 +1,6 @@
 import { Incantation, ArgIncantation, type GLOBAL } from "../incantation";
 
-import { DesmostError, type Unrecoverable } from "../../errors";
+import { DesmostError, type Fallible } from "../../errors";
 import type { DesmostOptions } from "../../options";
 
 
@@ -26,7 +26,7 @@ export class DesmosIncantation extends ArgIncantation<GLOBAL>
 		}
 	}
 
-	override evaluate_arg(raw: string, options: DesmostOptions): Unrecoverable<DesmosSettings>
+	override evaluate_arg(raw: string, options: DesmostOptions): Fallible<DesmosSettings>
 	{
 		let out = super.evaluate_arg(raw, options) as DesmosSettings;
 

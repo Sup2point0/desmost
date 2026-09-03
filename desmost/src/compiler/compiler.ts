@@ -3,7 +3,7 @@ import dedent from "dedent";
 import { format_error, normalise_latex, prettify_latex } from "./format";
 
 import type { DesmostOptions } from "../options";
-import { DesmostError, type Unrecoverable } from "../errors";
+import { DesmostError, type Fallible } from "../errors";
 import { DesmostParser, Ast } from "../parser";
 import { is_latex } from "../utils";
 
@@ -123,7 +123,7 @@ export class DesmostCompiler
 	/**
 	 * Compile only the next block, returning `true` if compilation has finished.
 	 */
-	compile_next(): Unrecoverable<boolean>
+	compile_next(): Fallible<boolean>
 	{
 		let result = this.parser.parse_next();
 		if (result === undefined) return true;
@@ -180,7 +180,7 @@ export class DesmostCompiler
 	/**
 	 * Evaluate arguments (if any) to a global incantation `invocation`, then apply the incantation to `desmos`.
 	 */
-	evaluate_global_incantation(invocation: Ast.IncantationInvocation): Unrecoverable<void>
+	evaluate_global_incantation(invocation: Ast.IncantationInvocation): Fallible<void>
 	{
 		let data = undefined;
 
@@ -200,7 +200,7 @@ export class DesmostCompiler
 	/**
 	 * Evaluate local incantation invocations on `expr`, then add `expr` to `desmos`.
 	 */
-	evaluate_expr(expr: Ast.Expression): Unrecoverable<void>
+	evaluate_expr(expr: Ast.Expression): Fallible<void>
 	{
 		for (let invocation of expr.incantations) {
 			let data = undefined;
@@ -241,7 +241,7 @@ export class DesmostCompiler
 	/**
 	 * Handle a `DesmostError`, respecting the user's options.
 	 */
-	evaluate_error(error: DesmostError): Unrecoverable<void | string>
+	evaluate_error(error: DesmostError): Fallible<void | string>
 	{
 		switch (this.options.errors) {
 			case "crash":

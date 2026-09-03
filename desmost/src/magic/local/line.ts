@@ -1,7 +1,7 @@
 import { Incantation, ArgIncantation, type LOCAL } from "../incantation";
 
 import type { DesmostOptions } from "../../options";
-import type { Unrecoverable } from "../../errors";
+import type { Fallible } from "../../errors";
 
 
 interface LineOptions
@@ -32,7 +32,7 @@ export class LineIncantation extends ArgIncantation<LOCAL>
 		if (data.opacity != undefined) target.lineOpacity = data.opacity;
 	}
 
-	override evaluate_arg(raw: string, options: DesmostOptions): Unrecoverable<LineOptions>
+	override evaluate_arg(raw: string, options: DesmostOptions): Fallible<LineOptions>
 	{
 		let out = super.evaluate_arg(raw, options) as LineOptions;
 

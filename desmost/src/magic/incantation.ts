@@ -2,7 +2,7 @@ import Json5 from "json5";
 import dedent from "dedent";
 
 import type { DesmostOptions } from "../options";
-import { DesmostError, type Unrecoverable } from "../errors";
+import { DesmostError, type Fallible } from "../errors";
 
 
 /**
@@ -82,7 +82,7 @@ export abstract class ArgIncantation<
 	 * 
 	 * Validity checks for missing or invalid values, incorrect types, and unknown fields should be performed here, so that `.apply()` can assume the data it receives is guaranteed to be valid.
 	 */
-	evaluate_arg(raw: string, options: DesmostOptions): Unrecoverable<unknown>
+	evaluate_arg(raw: string, options: DesmostOptions): Fallible<unknown>
 	{
 		switch (this.arg_type) {
 			case Incantation.ArgType.LATEX:  return raw;
@@ -106,7 +106,7 @@ export abstract class ArgIncantation<
 	protected require_nonempty(
 		arg: object,
 		error_data?: DesmostError.Data,
-	): Unrecoverable<void>
+	): Fallible<void>
 	{
 		if (Object.entries(arg).length === 0) {
 			throw new DesmostError.MissingInput({
@@ -120,7 +120,7 @@ export abstract class ArgIncantation<
 		arg: object,
 		valid_fields: string[],
 		error_data?: DesmostError.Data,
-	): Unrecoverable<void>
+	): Fallible<void>
 	{
 		// TODO accumulate
 		for (let field of Object.keys(arg)) {

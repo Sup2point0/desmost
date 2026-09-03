@@ -1,7 +1,7 @@
 // import { Incantation, ArgIncantation, type GLOBAL, type LOCAL, type EXPR } from "../incantation";
 
 // import type { DesmostOptions } from "../../options";
-// import { DesmostError, type Unrecoverable } from "../../errors";
+// import { DesmostError, type Fallible } from "../../errors";
 
 
 // export class ?Incantation extends ArgIncantation<?>
@@ -18,7 +18,7 @@
 // 		// TODO
 // 	}
 
-// 	override evaluate_arg(raw: ?, options: DesmostOptions): Unrecoverable<?>
+// 	override evaluate_arg(raw: ?, options: DesmostOptions): Fallible<?>
 // 	{
 // 		let out = super.evaluate_arg(raw, options) as ?;
 

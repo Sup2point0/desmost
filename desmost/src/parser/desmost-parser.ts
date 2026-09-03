@@ -3,7 +3,7 @@ import { Ast } from "./ast";
 
 import type { DesmostOptions } from "../options";
 import { NO_MATCH, DesmostError } from "../errors";
-import type { NoMatch, Unrecoverable } from "../errors";
+import type { NoMatch, Fallible } from "../errors";
 import * as utils from "../utils";
 
 import {
@@ -45,7 +45,7 @@ export class DesmostParser extends GenericParser
 	 * `block: null` could be ignored content like comments, or it could be a parse that couldn't recover and so failed to produce a block.
 	 */
 	public parse_next():
-		Unrecoverable<{ blocks: Ast[], errors: DesmostError[] } | undefined>
+		Fallible<{ blocks: Ast[], errors: DesmostError[] } | undefined>
 	{
 		this.errors = [];
 
@@ -109,7 +109,7 @@ export class DesmostParser extends GenericParser
 	 * - 1+ local incantations
 	 */
 	parse_pre_sep():
-		Unrecoverable<
+		Fallible<
 		| { global: Ast.IncantationInvocation<GLOBAL> | null }
 		| { local:  Ast.IncantationInvocation<LOCAL>[] }
 		>
@@ -149,7 +149,7 @@ export class DesmostParser extends GenericParser
 	/**
 	 * Parse the Desmost `::` separator.
 	 */
-	parse_sep(): Unrecoverable<void>
+	parse_sep(): Fallible<void>
 	{
 		this.consume_whitespace();
 		this.consume("::", {
@@ -165,7 +165,7 @@ export class DesmostParser extends GenericParser
 	 * - 1 line of LaTeX
 	 * - 1 expression incantation
 	 */
-	parse_post_sep(): Unrecoverable<Ast.Expression>
+	parse_post_sep(): Fallible<Ast.Expression>
 	{
 		this.consume_spaces();
 
@@ -194,7 +194,7 @@ export class DesmostParser extends GenericParser
 		}
 	}
 
-	parse_comment(): Unrecoverable<Ast.Expression>
+	parse_comment(): Fallible<Ast.Expression>
 	{
 		this.advance();
 		let text = this.parse_line();
@@ -212,7 +212,7 @@ export class DesmostParser extends GenericParser
 	/**
 	 * Parse a single line of arbitrary text.
 	 */
-	parse_line(): Unrecoverable<string>
+	parse_line(): Fallible<string>
 	{
 		let init = this.i;
 
@@ -226,7 +226,7 @@ export class DesmostParser extends GenericParser
 	/**
 	 * Attempt to parse a global incantation invocation.
 	 */
-	try_parse_global_incantation(): Unrecoverable<Ast.IncantationInvocation<GLOBAL> | NoMatch>
+	try_parse_global_incantation(): Fallible<Ast.IncantationInvocation<GLOBAL> | NoMatch>
 	{
 		let init = this.i;
 
@@ -266,7 +266,7 @@ export class DesmostParser extends GenericParser
 	/**
 	 * Attempt to parse a local incantation invocation.
 	 */
-	try_parse_local_incantation(): Unrecoverable<Ast.IncantationInvocation<LOCAL> | NoMatch>
+	try_parse_local_incantation(): Fallible<Ast.IncantationInvocation<LOCAL> | NoMatch>
 	{
 		let init = this.i;
 
@@ -304,7 +304,7 @@ export class DesmostParser extends GenericParser
 	/**
 	 * Attempt to parse an expression incantation invocation.
 	 */
-	try_parse_expr_incantation(): Unrecoverable<Ast.Expression | NoMatch>
+	try_parse_expr_incantation(): Fallible<Ast.Expression | NoMatch>
 	{
 		let init = this.i;
 
@@ -415,7 +415,7 @@ export class DesmostParser extends GenericParser
 		 * - JavaScript object: The above, plus balanced string quotes.
 		 */
 		arg_type: Incantation.ArgType,
-	): Unrecoverable<string>
+	): Fallible<string>
 	{
 		let init = this.i;
 

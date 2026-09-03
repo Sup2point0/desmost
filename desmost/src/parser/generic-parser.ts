@@ -1,5 +1,5 @@
 import { NO_MATCH, DesmostError } from "../errors";
-import type { NoMatch, Unrecoverable } from "../errors";
+import type { NoMatch, Fallible } from "../errors";
 
 
 const IGNORED_CHARACTERS = new Set([
@@ -72,7 +72,7 @@ export class GenericParser
 	 * 
 	 * Errors if the parser is already out-of-bounds *before* advancing.
 	 */
-	protected advance(error_data?: DesmostError.Data): Unrecoverable<void>
+	protected advance(error_data?: DesmostError.Data): Fallible<void>
 	{
 		if (this.out_of_bounds()) {
 			throw new DesmostError.UnexpectedEnd(error_data ?? {});
@@ -105,7 +105,7 @@ export class GenericParser
 	/**
 	 * Consume `raw`, erroring if `raw` was not found.
 	 */
-	protected consume(raw: string, error_data?: DesmostError.Data): Unrecoverable<void>
+	protected consume(raw: string, error_data?: DesmostError.Data): Fallible<void>
 	{
 		if (this.out_of_bounds()) {
 			throw new DesmostError.UnexpectedEnd({
@@ -188,7 +188,7 @@ export class GenericParser
 		}
 	}
 
-	protected consume_end_of_block(error_data?: DesmostError.Data): Unrecoverable<void>
+	protected consume_end_of_block(error_data?: DesmostError.Data): Fallible<void>
 	{
 		if (this.i >= this.length) return;
 

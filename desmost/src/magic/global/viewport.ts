@@ -1,6 +1,6 @@
 import { Incantation, ArgIncantation, type GLOBAL } from "../incantation";
 
-import { DesmostError, type Unrecoverable } from "../../errors";
+import { DesmostError, type Fallible } from "../../errors";
 import type { DesmostOptions } from "../../options";
 
 
@@ -36,7 +36,7 @@ export class ViewportIncantation extends ArgIncantation<GLOBAL>
 		target.setMathBounds({ left, right, bottom, top });
 	}
 
-	override evaluate_arg(raw: string, options: DesmostOptions): Unrecoverable<ViewportBounds>
+	override evaluate_arg(raw: string, options: DesmostOptions): Fallible<ViewportBounds>
 	{
 		let out = super.evaluate_arg(raw, options) as ViewportBounds;
 

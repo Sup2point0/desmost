@@ -61,6 +61,7 @@ export default defineConfig({
 		"typescript/no-require-imports": true,
 		"typescript/no-unnecessary-condition": true,
 		"typescript/no-unnecessary-type-assertion": true,
+		"typescript/no-unnecessary-type-parameters": false,
 		"typescript/no-unsafe-call": true,
 		"typescript/no-unsafe-function-type": true,
 		"typescript/no-unsafe-return": true,
