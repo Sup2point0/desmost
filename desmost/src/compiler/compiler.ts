@@ -187,13 +187,12 @@ export class DesmostCompiler
 		if ("arg_raw" in invocation && invocation.arg_raw != undefined) {
 			try {
 				data = invocation.incantation.evaluate_arg(invocation.arg_raw, this.options);
+				invocation.incantation.apply(this.desmos, data);
 			}
 			catch (e) {
 				this.evaluate_error(e as Error);
 			}
 		}
-
-		invocation.incantation.apply(this.desmos, data);
 	}
 
 
