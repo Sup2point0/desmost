@@ -4,6 +4,12 @@
 <br>
 
 
+## v0.10.1
+
+### Fixes
+- Fix handling of enum literals with `-` and `_` (e.g. `ABOVE_RIGHT`)
+
+
 ## v0.10
 
 ### New

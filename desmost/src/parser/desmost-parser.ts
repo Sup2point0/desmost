@@ -431,7 +431,7 @@ export class DesmostParser extends GenericParser
 					stack.push(Ctx.ENUM);
 					indices_to_insert_quotes.push(this.i);
 				}
-				else if (top === Ctx.ENUM && this.current?.match(/[^a-zA-Z]/)) {
+				else if (top === Ctx.ENUM && this.current?.match(/[^a-zA-Z-_]/)) {
 					stack.pop();
 					indices_to_insert_quotes.push(this.i);
 
