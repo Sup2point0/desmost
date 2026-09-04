@@ -67,7 +67,7 @@ export class Range
 	}
 
 	get length(): number {
-		return this.stop - this.start + 1;
+		return this.stop - this.start;
 	}
 
 	*map<T>(callback: (n: number) => T): Generator<T>
