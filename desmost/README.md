@@ -35,7 +35,7 @@ f(x) = A \sin(x-t)
       <a href="https://sup2point0.github.io/desmost">
         <img
           width="600"
-          src=".assets/demo.png"
+          src=".github/demo.png"
           alt="“Desmos(t) is awesome!”, but in a fully-fledged Desmos graphing calculator embed"
         />
       </a>
@@ -100,5 +100,5 @@ This will replace all ` ```desmos ` blocks from your Markdown source with Desmos
 
 
 <a href="https://brainmade.org">
-  <img height="40" src=".assets/brainmade-black.svg" />
+  <img height="40" src=".github/brainmade-black.svg" />
 </a>

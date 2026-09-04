@@ -8,6 +8,7 @@
 
 ### Fixes
 - Fix handling of enum literals with `-` and `_` (e.g. `ABOVE_RIGHT`)
+- Tabs are *actually* treated as whitespace
 
 
 ## v0.10
