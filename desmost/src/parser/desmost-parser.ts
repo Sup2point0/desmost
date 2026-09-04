@@ -116,7 +116,7 @@ export class DesmostParser extends GenericParser
 	{
 		// 1 global incantation
 		try {
-			let r = this.try_parse_incantation(GLOBAL_INCANTATIONS);
+			let r = this.try_parse_incantation(Object.values(GLOBAL_INCANTATIONS));
 
 			if (r !== NO_MATCH) {
 				this.eat_whitespace();
@@ -133,7 +133,7 @@ export class DesmostParser extends GenericParser
 
 		while (this.current === "/") {
 			try {
-				var invocation = this.try_parse_incantation(LOCAL_INCANTATIONS);
+				var invocation = this.try_parse_incantation(Object.values(LOCAL_INCANTATIONS));
 			}
 			catch (e) {
 				this.errors.push(e as Error);
@@ -310,7 +310,10 @@ export class DesmostParser extends GenericParser
 			return NO_MATCH;
 		}
 
-		let incantation = EXPR_INCANTATIONS.find(inc => inc.identifier === ident || inc.alias === ident);
+		let incantation =	
+			Object.values(EXPR_INCANTATIONS)
+			.find(inc => inc.identifier === ident || inc.alias === ident);
+		
 		if (incantation == undefined) {
 			this.i = init;
 			return NO_MATCH;

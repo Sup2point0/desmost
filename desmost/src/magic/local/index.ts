@@ -13,17 +13,18 @@ import { SecretIncantation } from "./secret";
 import { SliderIncantation } from "./slider";
 
 
-export const LOCAL_INCANTATIONS: Incantation<LOCAL>[] =
-[
-	new AnimIncantation(),
-	new ColourIncantation(),
-	new DashedIncantation(),
-	new FillIncantation(),
-	new HideIncantation(),
-	new LabelIncantation(),
-	new LineIncantation(),
-	new NoLineIncantation(),
-	new PointIncantation(),
-	new SecretIncantation(),
-	new SliderIncantation(),
-];
+export const LOCAL_INCANTATIONS =
+{
+	anim:    new AnimIncantation(),
+	colour:  new ColourIncantation(),
+	dashed:  new DashedIncantation(),
+	fill:    new FillIncantation(),
+	hide:    new HideIncantation(),
+	label:   new LabelIncantation(),
+	line:    new LineIncantation(),
+	no_line: new NoLineIncantation(),
+	point:   new PointIncantation(),
+	secret:  new SecretIncantation(),
+	slider:  new SliderIncantation(),
+
+} satisfies Record<string, Incantation<LOCAL>>;
