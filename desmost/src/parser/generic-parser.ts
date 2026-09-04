@@ -119,7 +119,7 @@ export class GenericParser
 	/**
 	 * Consume `raw`, erroring if `raw` was not found.
 	 */
-	protected consume(raw: string, error_data?: DesmostError.Data): Fallible<void>
+	protected eat(raw: string, error_data?: DesmostError.Data): Fallible<void>
 	{
 		if (this.out_of_bounds()) {
 			throw new DesmostError.UnexpectedEnd({
@@ -154,7 +154,7 @@ export class GenericParser
 	/**
 	 * Attempt to consume `raw`, backtracking if `raw` was not found.
 	 */
-	protected try_consume(raw: string): void | NoMatch
+	protected try_eat(raw: string): void | NoMatch
 	{
 		let init = this.i;
 		let ii = 0;
@@ -172,7 +172,7 @@ export class GenericParser
 		return NO_MATCH;
 	}
 
-	protected try_consume_identifier(): string | NoMatch
+	protected try_eat_identifier(): string | NoMatch
 	{
 		let init = this.i;
 
@@ -189,9 +189,9 @@ export class GenericParser
 	}
 
 	/**
-	 * Consume 0 or more space characters.
+	 * Consume 0 or more space or tab characters.
 	 */
-	protected consume_spaces(): void
+	protected eat_whitespaces(): void
 	{
 		/* NOTE: Callers should be able to assume this is safe to call even when at end of input, since it should just match 0 characters */
 		if (this.out_of_bounds()) return;
@@ -206,7 +206,7 @@ export class GenericParser
 	 * 
 	 * Same as `.consume_spaces()`, but allows tabs and newlines.
 	 */
-	protected consume_whitespace(): void
+	protected eat_newlines(): void
 	{
 		/* NOTE: Callers should be able to assume this is safe to call even when at end of input, since it should just match 0 characters */
 		if (this.i >= this.length) return;
@@ -220,13 +220,13 @@ export class GenericParser
 		}
 	}
 
-	protected consume_end_of_block(error_data?: DesmostError.Data): Fallible<void>
+	protected eat_end_of_block(error_data?: DesmostError.Data): Fallible<void>
 	{
 		if (this.i >= this.length) return;
 
-		this.consume_spaces();
+		this.eat_whitespaces();
 
-		this.consume("\n", {
+		this.eat("\n", {
 			msg: `Expected a newline at the end of a block, but found: \`${this.preview()}\``,
 			...error_data
 		});

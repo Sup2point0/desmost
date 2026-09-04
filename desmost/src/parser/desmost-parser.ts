@@ -49,7 +49,7 @@ export class DesmostParser extends GenericParser
 	{
 		this.errors = [];
 
-		this.consume_spaces();
+		this.eat_whitespaces();
 
 		if (this.out_of_bounds()) {
 			return undefined;
@@ -97,7 +97,7 @@ export class DesmostParser extends GenericParser
 			blocks.push(this.parse_post_sep());
 		}
 
-		this.consume_end_of_block();
+		this.eat_end_of_block();
 
 		return { blocks, errors: this.errors };
 	}
@@ -119,7 +119,7 @@ export class DesmostParser extends GenericParser
 			let r = this.try_parse_incantation(GLOBAL_INCANTATIONS);
 
 			if (r !== NO_MATCH) {
-				this.consume_spaces();
+				this.eat_whitespaces();
 				return { global: r };
 			}
 		}
@@ -142,7 +142,7 @@ export class DesmostParser extends GenericParser
 
 			if (invocation === NO_MATCH) break;
 			incantations.push(invocation);
-			this.consume_whitespace();
+			this.eat_newlines();
 		}
 
 		return { locals: incantations };
@@ -153,10 +153,10 @@ export class DesmostParser extends GenericParser
 	 */
 	parse_sep(): Fallible<void>
 	{
-		this.consume_whitespace();
+		this.eat_newlines();
 		
 		try {
-			this.consume("::", {
+			this.eat("::", {
 				msg:  `Expected \`::\` separator between local incantations and expression, but found: \`${this.preview()}\``,
 				hint: `Use \`/incantation :: ${this.preview()}\``,
 			});
@@ -181,10 +181,10 @@ export class DesmostParser extends GenericParser
 				}
 			}));
 
-			this.consume("::");
+			this.eat("::");
 		}
 
-		this.consume_whitespace();
+		this.eat_newlines();
 	}
 
 	/**
@@ -195,7 +195,7 @@ export class DesmostParser extends GenericParser
 	 */
 	parse_post_sep(): Fallible<Ast.Expression>
 	{
-		this.consume_spaces();
+		this.eat_whitespaces();
 
 		switch (this.current) {
 			// empty block
@@ -260,9 +260,9 @@ export class DesmostParser extends GenericParser
 	{
 		let init = this.i;
 
-		if (this.try_consume("/") === NO_MATCH) return NO_MATCH;
+		if (this.try_eat("/") === NO_MATCH) return NO_MATCH;
 
-		let ident = this.try_consume_identifier();
+		let ident = this.try_eat_identifier();
 		if (ident === NO_MATCH) {
 			this.i = init;
 			return NO_MATCH;
@@ -302,9 +302,9 @@ export class DesmostParser extends GenericParser
 	{
 		let init = this.i;
 
-		if (this.try_consume("/") === NO_MATCH) return NO_MATCH;
+		if (this.try_eat("/") === NO_MATCH) return NO_MATCH;
 
-		let ident = this.try_consume_identifier();
+		let ident = this.try_eat_identifier();
 		if (ident === NO_MATCH) {
 			this.i = init;
 			return NO_MATCH;
@@ -398,7 +398,7 @@ export class DesmostParser extends GenericParser
 	{
 		let init = this.i;
 
-		this.consume("{", {
+		this.eat("{", {
 			msg: `Expected \`{\` to start incantation argument, but found: \`${this.preview()}\``
 		});
 
