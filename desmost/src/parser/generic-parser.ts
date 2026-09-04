@@ -90,7 +90,6 @@ export class GenericParser
 		if (this.out_of_bounds()) {
 			throw new DesmostError.UnexpectedEnd(error_data ?? {});
 		}
-
 		this.#advance();
 	}
 
@@ -101,7 +100,9 @@ export class GenericParser
 	 */
 	protected try_advance(): void | NoMatch
 	{
-		if (this.out_of_bounds()) return NO_MATCH;
+		if (this.out_of_bounds()) {
+			return NO_MATCH;
+		}
 		this.#advance();
 	}
 
@@ -169,6 +170,22 @@ export class GenericParser
 
 		this.i = init;
 		return NO_MATCH;
+	}
+
+	protected try_consume_identifier(): string | NoMatch
+	{
+		let init = this.i;
+
+		while (/[a-zA-Z-]/.test(this.current ?? "")) {
+			let r = this.try_advance();
+
+			if (r === NO_MATCH) {
+				this.i = init;
+				return NO_MATCH;
+			}
+		}
+
+		return this.source.slice(init, this.i);
 	}
 
 	/**

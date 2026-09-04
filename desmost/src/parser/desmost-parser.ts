@@ -77,7 +77,7 @@ export class DesmostParser extends GenericParser
 			}
 			else {
 				// 1+ locals + 1 expr
-				let incantations = r.local;
+				let incantations = r.locals;
 
 				if (incantations.length > 0) {
 					this.parse_sep();
@@ -111,14 +111,15 @@ export class DesmostParser extends GenericParser
 	parse_pre_sep():
 		Fallible<
 		| { global: Ast.IncantationInvocation<GLOBAL> | null }
-		| { local:  Ast.IncantationInvocation<LOCAL>[] }
+		| { locals: Ast.IncantationInvocation<LOCAL>[] }
 		>
 	{
 		// 1 global incantation
 		try {
-			let r = this.try_parse_global_incantation();
+			let r = this.try_parse_incantation(GLOBAL_INCANTATIONS);
 
 			if (r !== NO_MATCH) {
+				this.consume_spaces();
 				return { global: r };
 			}
 		}
@@ -132,7 +133,7 @@ export class DesmostParser extends GenericParser
 
 		while (this.current === "/") {
 			try {
-				var invocation = this.try_parse_local_incantation();
+				var invocation = this.try_parse_incantation(LOCAL_INCANTATIONS);
 			}
 			catch (e) {
 				this.errors.push(e as Error);
@@ -141,9 +142,10 @@ export class DesmostParser extends GenericParser
 
 			if (invocation === NO_MATCH) break;
 			incantations.push(invocation);
+			this.consume_whitespace();
 		}
 
-		return { local: incantations };
+		return { locals: incantations };
 	}
 
 	/**
@@ -250,56 +252,24 @@ export class DesmostParser extends GenericParser
 	}
 
 	/**
-	 * Attempt to parse a global incantation invocation.
+	 * Attempt to parse an incantation invocation allowed by `incantations`.
 	 */
-	try_parse_global_incantation(): Fallible<Ast.IncantationInvocation<GLOBAL> | NoMatch>
+	try_parse_incantation<Effect extends Incantation.Effect>(
+		incantations: Incantation<Effect>[],
+	): Fallible<Ast.IncantationInvocation<Effect> | NoMatch>
 	{
 		let init = this.i;
 
 		if (this.try_consume("/") === NO_MATCH) return NO_MATCH;
 
-		let incantation = this.try_parse_identifier(GLOBAL_INCANTATIONS);
-		if (incantation === NO_MATCH) {
+		let ident = this.try_consume_identifier();
+		if (ident === NO_MATCH) {
 			this.i = init;
 			return NO_MATCH;
 		}
 
-		let data = undefined;
-
-		if (incantation instanceof ArgIncantation) {
-			if (this.current === "{") {
-				data = this.parse_incantation_arg(incantation.arg_type);
-			}
-			else if (incantation.requires_arg) {
-				throw new DesmostError.MissingInput({
-					msg:  `No argument provided for /${incantation.identifier}`,
-					hint: `/${incantation.identifier} requires an argument of type: \`${incantation.arg_type}\``,
-				});
-			}
-		}
-
-		this.consume_spaces();
-
-		return {
-			kind: Ast.Kind.INCANTATION_INVOCATION,
-			incantation,
-			arg_raw: data,
-		};
-	}
-
-	// TODO remove duplication
-
-	/**
-	 * Attempt to parse a local incantation invocation.
-	 */
-	try_parse_local_incantation(): Fallible<Ast.IncantationInvocation<LOCAL> | NoMatch>
-	{
-		let init = this.i;
-
-		if (this.try_consume("/") === NO_MATCH) return NO_MATCH;
-
-		let incantation = this.try_parse_identifier(LOCAL_INCANTATIONS);
-		if (incantation === NO_MATCH) {
+		let incantation = incantations.find(inc => inc.identifier === ident || inc.alias === ident);
+		if (incantation == undefined) {
 			this.i = init;
 			return NO_MATCH;
 		}
@@ -318,8 +288,6 @@ export class DesmostParser extends GenericParser
 			}
 		}
 
-		this.consume_whitespace();
-
 		return {
 			kind: Ast.Kind.INCANTATION_INVOCATION,
 			incantation,
@@ -336,13 +304,19 @@ export class DesmostParser extends GenericParser
 
 		if (this.try_consume("/") === NO_MATCH) return NO_MATCH;
 
-		let incantation = this.try_parse_identifier(EXPR_INCANTATIONS);
-		if (incantation === NO_MATCH) {
-			// TODO maybe flag to user
+		let ident = this.try_consume_identifier();
+		if (ident === NO_MATCH) {
 			this.i = init;
 			return NO_MATCH;
 		}
 
+		let incantation = EXPR_INCANTATIONS.find(inc => inc.identifier === ident || inc.alias === ident);
+		if (incantation == undefined) {
+			this.i = init;
+			return NO_MATCH;
+		}
+
+		/* NOTE: All expression incantations currently require arguments, and all for the foreseeable future will too */
 		let arg_raw = this.parse_incantation_arg((incantation as ArgIncantation<EXPR>).arg_type);
 
 		let data = {};
@@ -353,27 +327,6 @@ export class DesmostParser extends GenericParser
 			data,
 			incantations: [],
 		};
-	}
-
-	/**
-	 * Attempt to parse an incantation identifier.
-	 */
-	try_parse_identifier<Effect extends Incantation.Effect>(
-		incantations: Incantation<Effect>[]
-	): Incantation<Effect> | NoMatch
-	{
-		for (let incantation of incantations) {
-			// yeah the duplication here is a little meh, unfortunately needing `return` means we can't extract it into a helper
-			let r = this.try_consume(incantation.identifier);
-			if (r !== NO_MATCH) return incantation;
-
-			if (incantation.alias != undefined) {
-				let r = this.try_consume(incantation.alias);
-				if (r !== NO_MATCH) return incantation;
-			}
-		}
-
-		return NO_MATCH;
 	}
 
 	/**
