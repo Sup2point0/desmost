@@ -1,17 +1,32 @@
+import { DEFAULT_OPTIONS, type DesmostOptions } from "../options";
+import { Incantation } from "../magic";
 import type { Ast } from "../parser";
+import { prettify_source } from "./format";
 
 
 /**
  * Emit the source code for a global incantation `invocation`.
  */
-export function emit_global_incantation(invocation?: Ast.IncantationInvocation): string
+export function emit_global_incantation(
+   invocation: Ast.IncantationInvocation,
+   options: DesmostOptions,
+): string
 {
 	if (invocation == undefined) return "";
 
    let ident = invocation.incantation.identifier;
-   let arg_raw = invocation.arg_raw;
-	
-   return `/${ident}{\n  ${arg_raw}\n}`;
+
+   if ("arg_raw" in invocation) {
+      let arg_raw = invocation.arg_raw;
+
+      if (invocation.incantation.arg_type === Incantation.ArgType.OBJECT) {
+         return `/${ident}{\n  ${arg_raw}\n}`;
+      } else {
+         return `/${ident}{${arg_raw}}`;
+      }
+   } else {
+      return `/${ident}`
+   }
 }
 
 
