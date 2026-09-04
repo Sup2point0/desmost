@@ -12,7 +12,7 @@ describe("/desmos", () =>
 {
 	test("no arg", () => {
 		let parser = new DesmostParser(`/desmos`);
-		let r = parser.try_parse_incantation(GLOBAL_INCANTATIONS);
+		let r = parser.try_parse_incantation(Object.values(GLOBAL_INCANTATIONS));
 		
 		is_invoc(r);
 		assert.deepEqual(r.incantation, new DesmosIncantation());
@@ -21,7 +21,7 @@ describe("/desmos", () =>
 	
 	test("with arg", () => {
 		let parser = new DesmostParser(`/desmos{ keypad: false, expressionsCollapsed: true }`);
-		let r = parser.try_parse_incantation(GLOBAL_INCANTATIONS);
+		let r = parser.try_parse_incantation(Object.values(GLOBAL_INCANTATIONS));
 		
 		is_invoc(r);
 		assert.deepEqual(r.incantation, new DesmosIncantation());
@@ -34,14 +34,14 @@ describe("/viewport", () =>
 	test("no arg", () => {
 		let parser = new DesmostParser(`/viewport`);
 		assert.throws(
-			() => parser.try_parse_incantation(GLOBAL_INCANTATIONS),
+			() => parser.try_parse_incantation(Object.values(GLOBAL_INCANTATIONS)),
 			DesmostError.MissingInput,
 		);
 	})
 	
 	test("with arg", () => {
 		let parser = new DesmostParser(`/viewport{ left: -1, right: 1 }`);
-		let r = parser.try_parse_incantation(GLOBAL_INCANTATIONS);
+		let r = parser.try_parse_incantation(Object.values(GLOBAL_INCANTATIONS));
 
 		is_invoc(r);
 		assert.deepEqual(r.incantation, new ViewportIncantation());
