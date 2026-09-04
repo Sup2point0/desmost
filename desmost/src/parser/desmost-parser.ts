@@ -49,7 +49,7 @@ export class DesmostParser extends GenericParser
 	{
 		this.errors = [];
 
-		this.eat_whitespaces();
+		this.eat_whitespace();
 
 		if (this.out_of_bounds()) {
 			return undefined;
@@ -119,7 +119,7 @@ export class DesmostParser extends GenericParser
 			let r = this.try_parse_incantation(GLOBAL_INCANTATIONS);
 
 			if (r !== NO_MATCH) {
-				this.eat_whitespaces();
+				this.eat_whitespace();
 				return { global: r };
 			}
 		}
@@ -195,7 +195,7 @@ export class DesmostParser extends GenericParser
 	 */
 	parse_post_sep(): Fallible<Ast.Expression>
 	{
-		this.eat_whitespaces();
+		this.eat_whitespace();
 
 		switch (this.current) {
 			// empty block

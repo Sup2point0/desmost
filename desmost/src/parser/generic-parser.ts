@@ -191,12 +191,12 @@ export class GenericParser
 	/**
 	 * Consume 0 or more space or tab characters.
 	 */
-	protected eat_whitespaces(): void
+	protected eat_whitespace(): void
 	{
 		/* NOTE: Callers should be able to assume this is safe to call even when at end of input, since it should just match 0 characters */
 		if (this.out_of_bounds()) return;
 
-		while (this.current === " ") {
+		while (this.current === ' ' || this.current === '\t') {
 			this.advance();
 		}
 	}
@@ -212,9 +212,9 @@ export class GenericParser
 		if (this.i >= this.length) return;
 
 		while (
-			this.current === " "
-			|| this.current === "\n"
-			|| this.current === "\t"
+			this.current === ' '
+			|| this.current === '\n'
+			|| this.current === '\t'
 		) {
 			this.advance();
 		}
@@ -224,7 +224,7 @@ export class GenericParser
 	{
 		if (this.i >= this.length) return;
 
-		this.eat_whitespaces();
+		this.eat_whitespace();
 
 		this.eat("\n", {
 			msg: `Expected a newline at the end of a block, but found: \`${this.preview()}\``,
