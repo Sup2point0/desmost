@@ -4,6 +4,7 @@ import { ltx } from "../shared";
 export const HARD = ltx `
 
 /desmos
+
 /viewport{left:-1,
   right: 1}
 

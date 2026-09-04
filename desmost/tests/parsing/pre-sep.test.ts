@@ -13,10 +13,10 @@ describe("parse-pre-sep", () =>
 		let parser = new DesmostParser(`/hide`);
 		let r = parser.parse_pre_sep();
 
-		assert.isDefined(r.local);
-		assert.equal(r.local.length, 1);
-		assert.deepEqual(r.local[0].incantation, new HideIncantation);
-		assert.isUndefined(r.local[0].arg_raw);
+		assert.isDefined(r.locals);
+		assert.equal(r.locals.length, 1);
+		assert.deepEqual(r.locals[0].incantation, new HideIncantation);
+		assert.isUndefined(r.locals[0].arg_raw);
 	})
 
 	"1 local with arg"

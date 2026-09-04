@@ -9,14 +9,14 @@ import {
 import { is_expr, is_invoc } from "./shared";
 
 
-describe("try-parse-global-incantation()", () =>
+describe("try-parse-incantation<GLOBAL>()", () =>
 {
 	test.each(GLOBAL_INCANTATIONS)
 	("without arg", incantation => {
 		if (incantation instanceof ArgIncantation) return;
 		
 		let parser = new DesmostParser(`/${incantation.identifier}`);
-		let r = parser.try_parse_global_incantation();
+		let r = parser.try_parse_incantation(GLOBAL_INCANTATIONS);
 		
 		is_invoc(r);
 		assert.equal(r.kind, Ast.Kind.INCANTATION_INVOCATION);
@@ -28,7 +28,7 @@ describe("try-parse-global-incantation()", () =>
 		if (incantation instanceof ArgIncantation) return;
 		
 		let parser = new DesmostParser(`/${incantation.identifier}`);
-		let r = parser.try_parse_global_incantation();
+		let r = parser.try_parse_incantation(GLOBAL_INCANTATIONS);
 		
 		is_invoc(r);
 		assert.equal(r.kind, Ast.Kind.INCANTATION_INVOCATION);
@@ -38,19 +38,19 @@ describe("try-parse-global-incantation()", () =>
 	test.each(LOCAL_INCANTATIONS)
 	("invalid identifier", incantation => {
 		let parser = new DesmostParser(`/${incantation.identifier}`);
-		let r = parser.try_parse_global_incantation();
+		let r = parser.try_parse_incantation(GLOBAL_INCANTATIONS);
 		assert.equal(r, NO_MATCH);
 	})
 })
 
-describe("try-parse-local-incantation()", () =>
+describe("try-parse-incantation<LOCAL>()", () =>
 {
 	test.each(LOCAL_INCANTATIONS)
 	("with arg", incantation => {
 		if (incantation instanceof ArgIncantation) return;
 		
 		let parser = new DesmostParser(`/${incantation.identifier}`);
-		let r = parser.try_parse_local_incantation();
+		let r = parser.try_parse_incantation(LOCAL_INCANTATIONS);
 		
 		is_invoc(r);
 		assert.equal(r.kind, Ast.Kind.INCANTATION_INVOCATION);
@@ -60,7 +60,7 @@ describe("try-parse-local-incantation()", () =>
 	test.each(EXPR_INCANTATIONS)
 	("invalid identifier", incantation => {
 		let parser = new DesmostParser(`/${incantation.identifier}`);
-		let r = parser.try_parse_local_incantation();
+		let r = parser.try_parse_incantation(LOCAL_INCANTATIONS);
 		assert.equal(r, NO_MATCH);
 	})
 })
