@@ -7,28 +7,29 @@ import { assert_has_errors } from "../shared";
 /**
  * Test that compiling `src` fails gracefully, meaning it still flags errors, but finishes parsing to the end.
  */
-function run_test(src: string)
+function test_cases(name: string, cases: string[])
 {
-	let desmos = testing_desmos();
-	compile(desmos, src + "\ndone");
-	assert_has_errors(desmos);
+	test.each(cases)(name, src => {
+		let desmos = testing_desmos();
+		compile(desmos, src + "\ndone");
+		assert_has_errors(desmos);
 
-	let exprs = desmos.getExpressions();
-	assert.equal(exprs.at(-1)!.latex, `done`);
+		let exprs = desmos.getExpressions();
+		assert.equal(exprs.at(-1)!.latex, `done`);
+	});
 }
 
 
 describe("excess input", () =>
 {
-	test.each([
+	test_cases("1 line", [
 		`/hide extra :: x`,
 		`/colour{BLUE} extra :: x`,
 		`/line{opacity: 0.5} extra :: x`,
 		`/line{opacity: 0.5, extra} extra :: x`,
-	])
-	("1 line", run_test);
+	]);
 	
-	test.each([
+	test_cases("multi line", [
 		`/hide extra :: x\n/hide :: y`,
 		`/hide extra :: x \n/hide :: y`,
 		`/hide extra :: x\n /hide :: y`,
@@ -38,19 +39,17 @@ describe("excess input", () =>
 		`/hide\n extra :: x`,  `/hide\n extra ::\nx`,
 		`/hide \n extra :: x`, `/hide \n extra ::\nx`,
 		`/hide \n extra :: x`, `/hide \n extra ::\nx`,
-	])
-	("multi line", run_test);
+	]);
 })
 
 describe("missing input", () =>
 {
-	test.each([
+	test_cases("1 line", [
 		`/viewport`,
 		`/colour :: x`,
-	])
-	("1 line", run_test);
+	]);
 
-	test.each([
+	test_cases("multi line", [
 		`/viewport\nx`,
 		`/viewport \nx`,
 		`/viewport\n x`,
@@ -62,6 +61,5 @@ describe("missing input", () =>
 		`/colour \n/no-line\n :: x`,
 		`/colour\n /no-line \n:: x`,
 		`/colour \n /no-line \n :: x`,
-	])
-	("multi line", run_test);
+	]);
 })
