@@ -5,6 +5,8 @@ import { GLOBAL_INCANTATIONS, LOCAL_INCANTATIONS } from "../magic";
 import type { LOCAL } from "../magic";
 
 
+// TODO move to `Incantation` classes
+
 /**
  * Extract a `/desmos` incantation from the settings of `desmos`.
  */

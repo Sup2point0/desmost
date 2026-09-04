@@ -141,6 +141,13 @@ export abstract class ArgIncantation<
 			}
 		}
 	}
+
+	protected emit_arg(data: object): string
+	{
+		let defined = Object.fromEntries(Object.entries(data).filter((k, v) => v != undefined));
+		
+		return Json5.stringify(defined).slice(1, -1);
+	}
 }
 
 

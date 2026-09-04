@@ -32,7 +32,7 @@ export class SliderIncantation extends ArgIncantation<LOCAL>
 			return {
 				kind: Ast.Kind.INCANTATION_INVOCATION,
 				incantation: slider,
-				arg_raw: JSON.stringify(target.sliderBounds),
+				arg_raw: super.emit_arg(target.sliderBounds),
 			};
 		}
 	}
