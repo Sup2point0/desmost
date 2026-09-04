@@ -100,5 +100,5 @@ This will replace all ` ```desmos ` blocks from your Markdown source with Desmos
 
 
 <a href="https://brainmade.org">
-  <img height="40" src=".github/brainmade-black.svg" />
+  <img height="40" src=".assets/brainmade-black.svg" />
 </a>
