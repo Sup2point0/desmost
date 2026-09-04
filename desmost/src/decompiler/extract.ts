@@ -82,10 +82,6 @@ export function extract_expression(expression: Desmos.ExpressionState): Ast.Expr
       );
    }
 
-   if (is_latex(expression)) {
-      data.latex = prettify_source(data.latex);
-   }
-
 	return {
 		kind: Ast.Kind.EXPRESSION,
 		data,

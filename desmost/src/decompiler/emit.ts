@@ -33,7 +33,10 @@ export function emit_global_incantation(
 /**
  * Emit the source code for an `expr`.
  */
-export function emit_expression(expr?: Ast.Expression): string
+export function emit_expression(
+   expr: Ast.Expression,
+   options: DesmostOptions,
+): string
 {
 	if (expr == undefined) return "";
 
@@ -48,23 +51,24 @@ export function emit_expression(expr?: Ast.Expression): string
       case "text":
          expr.data.text ??= "";
 
-         if (expr.data.text.includes("\n")) {
-            content = `/text{\n${expr.data.text}\n}`;
-         } else {
-            content = `% ${expr.data.text}`;
-         }
+         content = (
+              expr.data.text.startsWith(DEFAULT_OPTIONS.error_prefix) ? `% [invalid]`
+            : expr.data.text.includes("\n") ? `/text{\n${expr.data.text}\n}`
+            :                                 `% ${expr.data.text}`
+         );
          break;
       
       case "table":
-         content = "[tables are currently unsupported]";
+         content = "% [tables are currently unsupported]";
          break;
       
       default:
-         if (expr.data.latex?.trim() !== "") {
-            content = expr.data.latex ?? "[unsupported]";
-         } else {
-            content = "";
-         }
+         content = (
+              expr.data.latex?.trim() === "" ? ""
+            : expr.data.latex == undefined ? "% [unsupported]"
+            : options.prettify             ? prettify_source(expr.data.latex)
+            :                                expr.data.latex
+         );
    }
 
    return `${locals.join(" ")}${sep}${content}`;
