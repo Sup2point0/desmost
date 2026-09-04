@@ -105,4 +105,29 @@ describe("parentheses", () =>
 			));
 		})
 	})
+
+	describe(",", () =>
+	{
+		describe("replace", () =>
+		{
+			test_cases("1 line", [
+				[ltx`1,2`, ltx`1,\ 2`],
+				[ltx`1, 2`, ltx`1,\ 2`],
+				[ltx`1,2,3`, ltx`1,\ 2,\ 3`],
+				[ltx`1, 2, 3`, ltx`1,\ 2,\ 3`],
+				[ltx`1, 2, 3`, ltx`1,\ 2,\ 3`],
+			]);
+		})
+	})
+
+	describe(":", () =>
+	{
+		describe("replace", () =>
+		{
+			test_cases("1 line", [
+				[ltx`y:x`, ltx`y:\ x`],
+				[ltx`y: x`, ltx`y:\ x`],
+			]);
+		})
+	})
 })
