@@ -49,7 +49,7 @@ export abstract class Incantation<
 			let req = required === "expression" ? "latex" : required;
 
 			throw new DesmostError.IllegalIncantation({
-				msg: `/${this.identifier} can only applied to ${req} blocks, but target block has type: ${actual}`,
+				msg: `/${this.identifier} can only applied to \`${req}\` blocks, but target block has type: \`${actual}\``,
 			});
 		}
 	}

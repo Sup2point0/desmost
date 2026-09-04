@@ -28,7 +28,6 @@ export namespace DesmostError
 	export interface Data
 	{
 		msg?:   string
-		while?: string
 		hint?:  string
 		note?:  string
 		debug?: string
