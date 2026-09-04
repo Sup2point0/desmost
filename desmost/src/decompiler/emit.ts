@@ -1,7 +1,8 @@
-import { DEFAULT_OPTIONS, type DesmostOptions } from "../options";
-import { Incantation } from "../magic";
-import type { Ast } from "../parser";
 import { prettify_source } from "./format";
+
+import { DEFAULT_OPTIONS, type DesmostOptions } from "../options";
+import { Incantation, LOCAL_INCANTATIONS } from "../magic";
+import type { Ast } from "../parser";
 
 
 /**
@@ -40,8 +41,7 @@ export function emit_expression(
 {
 	if (expr == undefined) return "";
 
-	// TODO
-   let locals: string[] = [];
+   let locals: string[] = emit_locals(expr.data);
 
    let sep = expr.incantations.length > 0 ? " :: " : "";
    
@@ -71,5 +71,27 @@ export function emit_expression(
          );
    }
 
-   return `${locals.join(" ")}${sep}${content}`;
+   return `${locals.join(locals.length >= 3 ? '\n' : ' ')}${sep}${content}`;
+}
+
+
+export function emit_locals(
+   expr: Desmos.ExpressionState,
+): string[]
+{
+   let out = [];
+
+   switch (expr.type) {
+      case "text": break;
+      case "table": break;
+      default:
+         out.push(emit_colour(expr));
+   }
+
+   return out.filter(each => each != undefined);
+}
+
+
+function emit_colour(expr: Desmos.Expression) {
+   return `/${LOCAL_INCANTATIONS.colour.identifier}{${expr.color}}`;
 }
