@@ -122,9 +122,9 @@ function redecompile()
   if (desmos == undefined) return;
 
   is_decompiling = true;
-  let ssast = desmos_to_ast(desmos, blank);
+  let ssast = desmos_to_ast(desmos, blank, $options);
   ast = [...ssast.globals, ...ssast.locals];
-  source = ast_to_source(ssast);
+  source = ast_to_source(ssast, $options);
 
   /* NOTE: Finish 1 frame later to avoid triggering circular recompilation */
   requestAnimationFrame(() => { is_decompiling = false; });
