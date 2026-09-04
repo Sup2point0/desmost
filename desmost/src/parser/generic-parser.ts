@@ -111,8 +111,8 @@ export class GenericParser
 		this.i++;
 
 		// @ts-expect-error: `this.current == undefined` is a true negative
-		if (IGNORED_CHARACTERS.has(this.current)) {
-			this.advance();
+		while (IGNORED_CHARACTERS.has(this.current)) {
+			this.i++;
 		}
 	}
 
