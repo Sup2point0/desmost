@@ -4,6 +4,16 @@
 <br>
 
 
+## Next Major (v0.11)
+
+### New
+- Decompiler extracts local incantations
+- `decompile(source, blank?, options?)` accepts an `options?` field to match decompilation against compile options
+  - For instance, if you have `prettify: true`, the decompiler will emit `f(x)` instead of `f\left(x\right)` (since `prettify: true` means the compiler going the other way would repair it).
+
+
+<br>
+
 ## v0.10.1
 
 ### Fixes
