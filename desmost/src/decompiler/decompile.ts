@@ -1,6 +1,7 @@
 import { emit_global_incantation, emit_expression } from "./emit";
 import { extract_settings, extract_viewport, extract_expression } from "./extract";
 
+import { fill_defaults } from "../options";
 import { Ast } from "../parser";
 import type { DesmostOptions } from "../options";
 
@@ -34,13 +35,20 @@ export function decompile(
 	options?: Partial<DesmostOptions>,
 ): string
 {
-	return ast_to_source(desmos_to_ast(desmos, blank ?? desmos));
+	let opts = fill_defaults(options);
+	let ast = desmos_to_ast(desmos, blank ?? desmos, opts);
+	let src = ast_to_source(ast, opts);
+	return src;
 }
 
 /**
  * Decompile `desmos` into a semi-structured AST.
  */
-export function desmos_to_ast(desmos: Desmos.Calculator, blank: Desmos.Calculator): SemiStructuredAst
+export function desmos_to_ast(
+	desmos: Desmos.Calculator,
+	blank: Desmos.Calculator,
+	options: DesmostOptions,
+): SemiStructuredAst
 {
 	return {
 		globals: [
@@ -54,11 +62,11 @@ export function desmos_to_ast(desmos: Desmos.Calculator, blank: Desmos.Calculato
 /**
  * Emit the Desmost source code representation of `ast`.
  */
-export function ast_to_source(ast: SemiStructuredAst): string
+export function ast_to_source(ast: SemiStructuredAst, options: DesmostOptions): string
 {
 	return (
-      ast.globals.map(emit_global_incantation).join("\n")
+        ast.globals.map(inc => emit_global_incantation(inc, options)).join("\n")
       + "\n\n"
-      + ast.locals.map(emit_expression).join("\n")
+      + ast.locals.map(expr => emit_expression(expr, options)).join("\n")
 	);
 }
