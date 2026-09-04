@@ -1,7 +1,8 @@
 import { Incantation, ArgIncantation, type LOCAL } from "../incantation";
 
-import { DesmostError } from "../../errors";
 import type { DesmostOptions } from "../../options";
+import { DesmostError } from "../../errors";
+import { Ast } from "../../parser";
 
 
 type DesmosColourName = keyof typeof Desmos.Colors;
@@ -46,4 +47,15 @@ export class ColourIncantation extends ArgIncantation<LOCAL>
 			return internal;
 		}
 	}
+	
+	override extract(target: Desmos.Expression): Ast.IncantationInvocation<LOCAL>
+	{
+		return {
+			kind: Ast.Kind.INCANTATION_INVOCATION,
+			incantation: colour,
+			arg_raw: target.color,  // FIXME use name
+		};
+	}
 }
+
+export const colour = new ColourIncantation();

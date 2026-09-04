@@ -1,22 +1,27 @@
 import { Incantation, ArgIncantation, type LOCAL } from "../incantation";
 
-import { DesmostError } from "../../errors";
 import type { DesmostOptions } from "../../options";
+import { DesmostError } from "../../errors";
+import { Ast } from "../../parser";
 
 
 interface LabelOptions
 {
-	text: string;
-	show?: boolean;
-	size?: number;
-	pos?: "ABOVE" | "BELOW" | "LEFT" | "RIGHT" | "ABOVE_LEFT" | "ABOVE_RIGHT" | "BELOW_LEFT" | "BELOW_RIGHT";
+	text:  string
+	show?: boolean
+	size?: number
+	pos?:
+		| "default"
+		| "above" | "below" | "left" | "right"
+		| "above_left" | "above_right" | "below_left" | "below_right"
 }
 
 const VALID_FIELDS = ["text", "show", "size", "pos"];
 
 const VALID_POSITIONS = [
-	"ABOVE", "BELOW", "LEFT", "RIGHT",
-	"ABOVE_LEFT", "ABOVE_RIGHT", "BELOW_LEFT", "BELOW_RIGHT",
+	"default",
+	"above", "below", "left", "right",
+	"above_left", "above_right", "below_left", "below_right",
 ];
 
 
@@ -61,7 +66,7 @@ export class LabelIncantation extends ArgIncantation<LOCAL>
 		}
 
 		if (typeof out.pos != "undefined") {
-			let pos = out.pos.trim().toUpperCase().replaceAll("-", "_");
+			let pos = out.pos.trim().toLowerCase().replaceAll("-", "_");
 
 			if (VALID_POSITIONS.includes(pos)) {
 				// @ts-expect-error: validated
@@ -84,4 +89,23 @@ export class LabelIncantation extends ArgIncantation<LOCAL>
 
 		return out;
 	}
+		
+	override extract(target: Desmos.Expression): Ast.IncantationInvocation<LOCAL> | void
+	{
+		if (target.label) {
+			return {
+				kind: Ast.Kind.INCANTATION_INVOCATION,
+				incantation: label,
+				// TODO filter defined?
+				arg_raw: JSON.stringify({
+					text: target.label,
+					show: target.showLabel,
+					size: target.labelSize,
+					pos:  target.labelOrientation,
+				}),
+			};
+		}
+	}
 }
+
+export const label = new LabelIncantation();

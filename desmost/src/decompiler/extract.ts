@@ -98,66 +98,8 @@ function extract_locals(expr: Desmos.ExpressionState): Ast.IncantationInvocation
 function extract_locals_expr(expr: Desmos.Expression): Ast.IncantationInvocation<LOCAL>[]
 {
    return (
-      [
-         extract_anim(expr),
-         extract_colour(expr),
-         extract_dashed(expr),
-         extract_fill(expr),
-         extract_hide(expr),
-         extract_label(expr),
-         extract_line(expr),
-         extract_no_line(expr),
-         extract_point(expr),
-         extract_secret(expr),
-         extract_slider(expr),
-      ]
+      Object.values(LOCAL_INCANTATIONS)
+      .map(inc => inc.extract(expr))
       .filter(each => each != undefined)
-      .map(inv => (
-         { ...inv, kind: Ast.Kind.INCANTATION_INVOCATION } as Ast.IncantationInvocation<LOCAL>
-      ))
-   );
-}
-
-const extract_anim    = expr => expr.playing && { incantation: LOCAL_INCANTATIONS.anim };
-const extract_hide    = expr => expr.hidden  && { incantation: LOCAL_INCANTATIONS.hide };
-const extract_no_line = expr => expr.lines   && { incantation: LOCAL_INCANTATIONS.no_line };
-const extract_secret  = expr => expr.secret  && { incantation: LOCAL_INCANTATIONS.secret };
-
-const extract_colour = expr => ({
-   incantation: LOCAL_INCANTATIONS.colour,
-   arg_raw: expr.color,  // FIXME use name
-});
-const extract_dashed  = expr => expr.lineStyle === Desmos.Styles.DASHED && {
-   incantation: LOCAL_INCANTATIONS.dashed,
-};
-const extract_fill = expr => null && {
-   incantation: LOCAL_INCANTATIONS.fill,
-};
-const extract_label = expr => expr.label && {
-   incantation: LOCAL_INCANTATIONS.label,
-   arg_raw: JSON.stringify(filter_defined({
-      text: expr.label,
-      show: expr.showLabel ? undefined : false,
-      size: expr.labelSize,
-      pos: expr.labelOrientation,
-   })),
-};
-const extract_line = expr => null && {
-   incantation: LOCAL_INCANTATIONS.line,
-};
-const extract_point = expr => null && {
-   incantation: LOCAL_INCANTATIONS.point,
-};
-const extract_slider = expr => expr.sliderBounds && {
-   incantation: LOCAL_INCANTATIONS.slider,
-   arg_raw: JSON.stringify(filter_defined(expr.sliderBounds)),
-};
-
-
-/** Keep only values in `obj` that have a truthy value. */
-function filter_defined(obj: object): unknown
-{
-   return Object.fromEntries(
-      Object.entries(obj).filter((key, value) => Boolean(value))
    );
 }

@@ -1,5 +1,7 @@
 import { Incantation, type LOCAL } from "../incantation";
 
+import { Ast } from "../../parser";
+
 
 export class HideIncantation extends Incantation<LOCAL>
 {
@@ -13,4 +15,16 @@ export class HideIncantation extends Incantation<LOCAL>
 		super.require_expr_type(target.type, "expression");
 		target.hidden = true;
 	}
+		
+	override extract(target: Desmos.Expression): Ast.IncantationInvocation<LOCAL> | void
+	{
+		if (target.hidden) {
+			return {
+				kind: Ast.Kind.INCANTATION_INVOCATION,
+				incantation: hide,
+			};
+		}
+	}
 }
+
+export const hide = new HideIncantation();

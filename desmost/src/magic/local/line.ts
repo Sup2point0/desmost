@@ -2,6 +2,7 @@ import { Incantation, ArgIncantation, type LOCAL } from "../incantation";
 
 import type { DesmostOptions } from "../../options";
 import type { Fallible } from "../../errors";
+import { Ast } from "../../parser";
 
 
 interface LineOptions
@@ -43,4 +44,11 @@ export class LineIncantation extends ArgIncantation<LOCAL>
 
 		return out;
 	}
+	
+	override extract(target: Desmos.Expression): Ast.IncantationInvocation<LOCAL> | void
+	{
+		// TODO
+	}
 }
+
+export const line = new LineIncantation();

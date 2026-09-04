@@ -2,6 +2,7 @@
 
 // import type { DesmostOptions } from "../../options";
 // import { DesmostError, type Fallible } from "../../errors";
+// import { Ast } from "../../parser";
 
 
 // export class ?Incantation extends ArgIncantation<?>
@@ -28,4 +29,11 @@
 
 // 		return out;
 // 	}
+
+// 	override extract(target: ?): Ast.IncantationInvocation<?> | undefined
+// 	{
+// 		// TODO
+// 	}
 // }
+
+// export const ? = new ?Incantation();

@@ -1,5 +1,7 @@
 import { Incantation, ArgIncantation, type LOCAL } from "../incantation";
 
+import { Ast } from "../../parser";
+
 
 interface PointStyles
 {
@@ -26,4 +28,11 @@ export class PointIncantation extends ArgIncantation<LOCAL>
 		if (data.size    != undefined)  target.pointSize    = data.size;
 		if (data.opacity != undefined)  target.pointOpacity = data.opacity;
 	}
+
+	override extract(target: Desmos.Expression): Ast.IncantationInvocation<LOCAL> | void
+	{
+		// TODO
+	}
 }
+
+export const point = new PointIncantation();

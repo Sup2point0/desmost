@@ -2,6 +2,7 @@ import Json5 from "json5";
 import dedent from "dedent";
 
 import type { DesmostOptions } from "../options";
+import type { Ast } from "../parser";
 import { DesmostError, type Fallible } from "../errors";
 
 
@@ -18,9 +19,7 @@ import { DesmostError, type Fallible } from "../errors";
  * 
  * Incantations that accept an argument derive from `ArgIncantation`.
  */
-export abstract class Incantation<
-	Effect extends Incantation.Effect = Incantation.Effect
->
+export abstract class Incantation<Effect extends Incantation.Effect = Incantation.Effect>
 {
 	/** Short user-facing description of what the incantation does. */
 	abstract readonly description: string
@@ -53,6 +52,15 @@ export abstract class Incantation<
 			});
 		}
 	}
+
+	/**
+	 * Extract the AST representation of this incantation from `target`.
+	 * 
+	 * (The opposite of {@linkcode apply()}.)
+	*/
+	abstract extract(
+		target: Effect extends GLOBAL ? Desmos.Calculator : Desmos.ExpressionState,
+	): Ast.IncantationInvocation<Effect> | void
 }
 
 

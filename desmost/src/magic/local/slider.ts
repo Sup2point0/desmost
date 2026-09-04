@@ -1,5 +1,7 @@
 import { Incantation, ArgIncantation, type LOCAL } from "../incantation";
 
+import { Ast } from "../../parser";
+
 
 interface SliderBounds
 {
@@ -23,4 +25,17 @@ export class SliderIncantation extends ArgIncantation<LOCAL>
 		super.require_expr_type(target.type, "expression");
 		target.sliderBounds = data;
 	}
+		
+	override extract(target: Desmos.Expression): Ast.IncantationInvocation<LOCAL> | void
+	{
+		if (target.sliderBounds != undefined) {
+			return {
+				kind: Ast.Kind.INCANTATION_INVOCATION,
+				incantation: slider,
+				arg_raw: JSON.stringify(target.sliderBounds),
+			};
+		}
+	}
 }
+
+export const slider = new SliderIncantation();

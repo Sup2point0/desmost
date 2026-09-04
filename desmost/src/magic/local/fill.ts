@@ -1,5 +1,7 @@
 import { Incantation, ArgIncantation, type LOCAL } from "../incantation";
 
+import { Ast } from "../../parser";
+
 
 interface FillOptions
 {
@@ -21,4 +23,11 @@ export class FillIncantation extends ArgIncantation<LOCAL>
 		super.require_expr_type(target.type, "expression");
 		target.fillOpacity = data.opacity;
 	}
+
+	override extract(target: Desmos.Expression): Ast.IncantationInvocation<LOCAL> | void
+	{
+		// TODO
+	}
 }
+
+export const fill = new FillIncantation();
