@@ -4,15 +4,19 @@
 <br>
 
 
-## Next (v0.10.0)
+## v0.10
 
 ### New
-- Improved error handling system
+- Greatly improved error handling and error recovery!
   - Multiple errors can now be reported at once
-  - Parser is better at recovering from errors
+  - Parser can now recover from excess or missing input
+  - Errors provide more useful information to help you figure out what’s gone wrong
 
 ### Fixes
 - Remove leftover empty placeholder expression when `place_errors: "start"` with no errors
+
+
+<br>
 
 
 ## v0.9.1
