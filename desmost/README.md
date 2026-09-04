@@ -2,6 +2,10 @@
 
 [**Docs**](https://github.com/Sup2point0/desmost/tree/main/docs) &ensp;·&ensp; [**Changelog**](https://github.com/Sup2point0/desmost/blob/main/CHANGELOG.md) &ensp;·&ensp; [**Learn**](https://github.com/Sup2point0/desmost/blob/main/docs/writing/learn-x-in-y.md) &ensp;·&ensp; [**Playground**](https://sup2point0.github.io/desmost)
 
+<a href="https://brainmade.org">
+  <img align="right" height="40" src=".github/brainmade-black.svg" />
+</a>
+
 A tiny DSL for compiling LaTeX to Desmos.
 
 
@@ -9,6 +13,7 @@ A tiny DSL for compiling LaTeX to Desmos.
 
 
 <table>
+  <tr></tr>
   <tr>
     <th> You write this: </th>
     <th> and Desmost gives you this: </th>
@@ -97,8 +102,3 @@ This will replace all ` ```desmos ` blocks from your Markdown source with Desmos
 
 
 <br>
-
-
-<a href="https://brainmade.org">
-  <img height="40" src=".github/brainmade-black.svg" />
-</a>
