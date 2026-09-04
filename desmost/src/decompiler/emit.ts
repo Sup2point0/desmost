@@ -43,11 +43,26 @@ export function emit_expression(
    
    switch (expr.data.type) {
       case "text":
-         var content = (
-              expr.data.text?.startsWith(DEFAULT_OPTIONS.error_prefix) ? `% [invalid]`
-            : expr.data.text?.includes("\n") ? `/text{\n${expr.data.text}\n}`
-            :                                  `% ${expr.data.text ?? ""}`
-         );
+         if (expr.data.text?.startsWith(DEFAULT_OPTIONS.error_prefix)) {
+            var content = `% [invalid]`;
+         }
+         else if (expr.data.text?.includes("\n")) {
+            if (options.prettify) {
+               let indented = (
+                  expr.data.text
+                  .split("\n")
+                  .map(line => `  ${line}`)
+                  .join("\n")
+               );
+               var content = `/text{\n${indented}\n}`;
+            }
+            else {
+               var content = `/text{\n${expr.data.text}\n}`
+            }
+         }
+         else {
+            var content = `% ${expr.data.text ?? ""}`;
+         }
          break;
       
       case "table":
