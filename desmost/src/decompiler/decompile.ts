@@ -36,8 +36,10 @@ export function decompile(
 ): string
 {
 	let opts = fill_defaults(options);
+	
 	let ast = desmos_to_ast(desmos, blank ?? desmos, opts);
 	let src = ast_to_source(ast, opts);
+
 	return src;
 }
 

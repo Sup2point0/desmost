@@ -1,9 +1,8 @@
-import { stringify_json5, prettify_source } from "./format";
+import { stringify_json5 } from "./format";
 
 import { Ast } from "../parser";
-import { is_latex } from "../utils";
-
-import { DesmosIncantation, ViewportIncantation } from "../magic/global";
+import { GLOBAL_INCANTATIONS, LOCAL_INCANTATIONS } from "../magic";
+import type { LOCAL } from "../magic";
 
 
 /**
@@ -33,7 +32,7 @@ export function extract_settings(
 
 	return {
 		kind: Ast.Kind.INCANTATION_INVOCATION,
-		incantation: new DesmosIncantation(),
+		incantation: GLOBAL_INCANTATIONS.desmos,
 		arg_raw,
 	};
 }
@@ -60,7 +59,7 @@ export function extract_viewport(
 
 	return {
 		kind: Ast.Kind.INCANTATION_INVOCATION,
-		incantation: new ViewportIncantation(),
+		incantation: GLOBAL_INCANTATIONS.viewport,
 		arg_raw,
 	};
 }
@@ -68,16 +67,16 @@ export function extract_viewport(
 /**
  * Extract an expression and the local incantations that reproduce its state.
  */
-export function extract_expression(expression: Desmos.ExpressionState): Ast.Expression
+export function extract_expression(expr: Desmos.ExpressionState): Ast.Expression
 {
    let data;
 
    // @ts-expect-error: check type-narrows
-   if (expression.latex?.trim() === "") {
+   if (expr.latex?.trim() === "") {
       data = { latex: ` ` };
    } else {
       data = Object.fromEntries(
-         Object.entries(expression)
+         Object.entries(expr)
          .filter(([key, value]) => !is_insignificant(key, value))
       );
    }
@@ -85,15 +84,36 @@ export function extract_expression(expression: Desmos.ExpressionState): Ast.Expr
 	return {
 		kind: Ast.Kind.EXPRESSION,
 		data,
-		incantations: [],  // TODO
+		incantations: extract_locals(expr),
 	};
 }
-
 
 function is_insignificant(key: string, value: any): boolean
 {
    return (
          value === ""
       || typeof value === "object" && Object.values(value).every(v => v === "")
+   );
+}
+
+function extract_locals(expr: Desmos.ExpressionState): Ast.IncantationInvocation<LOCAL>[]
+{
+   /* NOTE: Currently only LaTeX expressions can have local incantations applied to them, this will change in future */
+   switch (expr.type) {
+      case "text": return [];
+      case "table": return [];
+      default: return extract_locals_expr(expr);
+   }
+}
+
+function extract_locals_expr(expr: Desmos.Expression): Ast.IncantationInvocation<LOCAL>[]
+{
+   return [
+      {
+         incantation: LOCAL_INCANTATIONS.colour,
+         arg_raw: expr.color,  // FIXME use name
+      },
+   ].map(
+      inv => ({ ...inv, kind: Ast.Kind.INCANTATION_INVOCATION })
    );
 }
