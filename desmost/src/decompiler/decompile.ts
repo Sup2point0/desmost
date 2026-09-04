@@ -1,4 +1,4 @@
-import { emit_global_incantation, emit_expression } from "./emit";
+import { emit_incantation, emit_expression } from "./emit";
 import { extract_settings, extract_viewport, extract_expression } from "./extract";
 
 import { fill_defaults } from "../options";
@@ -36,7 +36,7 @@ export function decompile(
 ): string
 {
 	let opts = fill_defaults(options);
-	
+
 	let ast = desmos_to_ast(desmos, blank ?? desmos, opts);
 	let src = ast_to_source(ast, opts);
 
@@ -67,7 +67,7 @@ export function desmos_to_ast(
 export function ast_to_source(ast: SemiStructuredAst, options: DesmostOptions): string
 {
 	return (
-        ast.globals.map(inc => emit_global_incantation(inc, options)).join("\n")
+        ast.globals.map(inc => emit_incantation(inc, options)).join("\n")
       + "\n\n"
       + ast.locals.map(expr => emit_expression(expr, options)).join("\n")
 	);

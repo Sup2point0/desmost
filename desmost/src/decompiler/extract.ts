@@ -64,56 +64,65 @@ export function extract_viewport(
 	};
 }
 
+
 /**
  * Extract an expression and the local incantations that reproduce its state.
  */
 export function extract_expression(expr: Desmos.ExpressionState): Ast.Expression
 {
-   let data;
-
-   // @ts-expect-error: check type-narrows
-   if (expr.latex?.trim() === "") {
-      data = { latex: ` ` };
-   } else {
-      data = Object.fromEntries(
-         Object.entries(expr)
-         .filter(([key, value]) => !is_insignificant(key, value))
-      );
-   }
-
 	return {
 		kind: Ast.Kind.EXPRESSION,
-		data,
+		data: (
+         expr.latex?.trim() === "" ? { latex: ` ` }
+         : {
+            type:  expr.type,
+            latex: expr.latex,
+            text:  expr.text,
+         } as Desmos.ExpressionState
+      ),
 		incantations: extract_locals(expr),
 	};
-}
-
-function is_insignificant(key: string, value: any): boolean
-{
-   return (
-         value === ""
-      || typeof value === "object" && Object.values(value).every(v => v === "")
-   );
 }
 
 function extract_locals(expr: Desmos.ExpressionState): Ast.IncantationInvocation<LOCAL>[]
 {
    /* NOTE: Currently only LaTeX expressions can have local incantations applied to them, this will change in future */
-   switch (expr.type) {
-      case "text": return [];
+   switch (expr.type)
+   {
+      case "text":  return [];
       case "table": return [];
-      default: return extract_locals_expr(expr);
+      default:      return (expr.latex?.trim() === "") ? [] : extract_locals_expr(expr);
    }
 }
 
 function extract_locals_expr(expr: Desmos.Expression): Ast.IncantationInvocation<LOCAL>[]
 {
-   return [
-      {
-         incantation: LOCAL_INCANTATIONS.colour,
-         arg_raw: expr.color,  // FIXME use name
-      },
-   ].map(
-      inv => ({ ...inv, kind: Ast.Kind.INCANTATION_INVOCATION })
+   return (
+      [
+         extract_colour(expr),
+         extract_slider(expr),
+      ]
+      .filter(each => each != undefined)
+      .map(inv => (
+         { ...inv, kind: Ast.Kind.INCANTATION_INVOCATION } as Ast.IncantationInvocation<LOCAL>
+      ))
+   );
+}
+
+const extract_colour = (expr: Desmos.Expression) => ({
+   incantation: LOCAL_INCANTATIONS.colour,
+   arg_raw: expr.color,  // FIXME use name
+});
+const extract_slider = (expr: Desmos.Expression) => expr.sliderBounds && {
+   incantation: LOCAL_INCANTATIONS.slider,
+   arg_raw: JSON.stringify(defined_entries(expr.sliderBounds)),
+};
+
+
+function defined_entries(obj: object): unknown
+{
+   return Object.fromEntries(
+      Object.entries(obj)
+      .filter((key, value) => value != undefined)
    );
 }

@@ -8,7 +8,7 @@ import type { Ast } from "../parser";
 /**
  * Emit the source code for a global incantation `invocation`.
  */
-export function emit_global_incantation(
+export function emit_incantation(
    invocation: Ast.IncantationInvocation,
    options: DesmostOptions,
 ): string
@@ -41,33 +41,29 @@ export function emit_expression(
 {
 	if (expr == undefined) return "";
    
-   let content;
-
    switch (expr.data.type) {
       case "text":
-         expr.data.text ??= "";
-
-         content = (
-              expr.data.text.startsWith(DEFAULT_OPTIONS.error_prefix) ? `% [invalid]`
-            : expr.data.text.includes("\n") ? `/text{\n${expr.data.text}\n}`
-            :                                 `% ${expr.data.text}`
+         var content = (
+              expr.data.text?.startsWith(DEFAULT_OPTIONS.error_prefix) ? `% [invalid]`
+            : expr.data.text?.includes("\n") ? `/text{\n${expr.data.text}\n}`
+            :                                  `% ${expr.data.text ?? ""}`
          );
          break;
       
       case "table":
-         content = "% [tables are currently unsupported]";
+         var content = "% [tables are currently unsupported]";
          break;
       
       default:
-         content = (
+         var content = (
               expr.data.latex?.trim() === "" ? ""
-            : expr.data.latex == undefined ? "% [unsupported]"
-            : options.prettify             ? prettify_source(expr.data.latex)
-            :                                expr.data.latex
+            : expr.data.latex == undefined   ? "% [unsupported]"
+            : options.prettify               ? prettify_source(expr.data.latex)
+            :                                  expr.data.latex
          );
    }
 
-   let locals = expr.incantations;
+   let locals = expr.incantations.map(inc => emit_incantation(inc, options));
    let sep = locals.length > 0 ? " :: " : "";
    let space = locals.length >= 3 ? '\n' : ' ';
 
