@@ -9,92 +9,92 @@ import type { Ast } from "desmost/internal";
 
 
 interface Props {
-  ast: Ast[];
+	ast: Ast[];
 }
 
 let { ast }: Props = $props();
 
 
 let json = $derived(
-  Json5.stringify(
-    ast,
-    (key: string, value) => ["description"].includes(key) ? undefined : value,
-    "  "
-  )
+	Json5.stringify(
+		ast,
+		(key: string, value) => ["description"].includes(key) ? undefined : value,
+		"  "
+	)
 );
 
 let highlighted = $derived(
-  Prism.highlight(json, Prism.languages.javascript, "javascript")
+	Prism.highlight(json, Prism.languages.javascript, "javascript")
 );
 
 </script>
 
 
 <div class="panel">
-  <header>
-    <h2> Compiled AST </h2>
-  </header>
+	<header>
+		<h2> Compiled AST </h2>
+	</header>
 
-  <ul>
-    <li>
-      <pre lang="js"><code>{@html highlighted}</code></pre>
-    </li>
-  </ul>
+	<ul>
+		<li>
+			<pre lang="js"><code>{@html highlighted}</code></pre>
+		</li>
+	</ul>
 </div>
 
 
 <style lang="scss">
 
 .panel {
-  z-index: 2;
-  background: #002;
-  border-top: 0.5px solid rgb(white, 30%);
-  box-shadow: -4px -4px 8px rgb(black, 80%);
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: $col-orange #002;
+	z-index: 2;
+	background: #002;
+	border-top: 0.5px solid rgb(white, 30%);
+	box-shadow: -4px -4px 8px rgb(black, 80%);
+	overflow-y: auto;
+	scrollbar-width: thin;
+	scrollbar-color: $col-orange #002;
 }
 
 ul {
-  padding: 0 0.5rem;
+	padding: 0 0.5rem;
 }
 
 header {
-  padding: 0.5rem 1rem;
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-between;
-  position: sticky;
-  top: 0;
-  background: #002;
+	padding: 0.5rem 1rem;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+	position: sticky;
+	top: 0;
+	background: #002;
 
-  h2 {
-    @include font-code;
-    color: rgb(white, 50%);
-    font-size: 80%;
-    font-weight: normal;
-  }
+	h2 {
+		@include font-code;
+		color: rgb(white, 50%);
+		font-size: 80%;
+		font-weight: normal;
+	}
 }
 
 li {
-  pre {
-    padding: 0.5rem;
-  }
+	pre {
+		padding: 0.5rem;
+	}
 
-  code {
-    @include font-code;
-    color: white;
-    font-size: 90%;
-    line-height: 1.4;
-    word-break: break-all;
-    white-space: pre-wrap;
+	code {
+		@include font-code;
+		color: white;
+		font-size: 90%;
+		line-height: 1.4;
+		word-break: break-all;
+		white-space: pre-wrap;
 
-    :global(.token.property) { color: #ff60ff; }
-    :global(.token.string) { color: #fff1c7; }
-    :global(.token.boolean) { color: #c7c7ff; font-style: italic; }
-    :global(.token.operator) { color: $col-blue-inv; }
-    :global(.token.punctuation) { color: rgb(white, 90%); }
-  }
+		:global(.token.property) { color: #ff60ff; }
+		:global(.token.string) { color: #fff1c7; }
+		:global(.token.boolean) { color: #c7c7ff; font-style: italic; }
+		:global(.token.operator) { color: $col-blue-inv; }
+		:global(.token.punctuation) { color: rgb(white, 90%); }
+	}
 }
 
 </style>
