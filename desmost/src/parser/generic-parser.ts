@@ -189,28 +189,24 @@ export class GenericParser
 	}
 
 	/**
-	 * Consume 0 or more space or tab characters.
+	 * Consume 0 or more space or tab characters (but not newlines).
+	 * 
+	 * This is always safe to call, and will match 0 characters if the parser is out of bounds.
 	 */
 	protected eat_whitespace(): void
 	{
-		/* NOTE: Callers should be able to assume this is safe to call even when at end of input, since it should just match 0 characters */
-		if (this.out_of_bounds()) return;
-
 		while (this.current === ' ' || this.current === '\t') {
 			this.advance();
 		}
 	}
 
 	/**
-	 * Consume 0 or more whitespace characters.
+	 * Consume 0 or more whitespace characters (including newlines).
 	 * 
-	 * Same as `.consume_spaces()`, but allows tabs and newlines.
+	 * This is always safe to call, and will match 0 characters if the parser is out of bounds.
 	 */
 	protected eat_newlines(): void
 	{
-		/* NOTE: Callers should be able to assume this is safe to call even when at end of input, since it should just match 0 characters */
-		if (this.i >= this.length) return;
-
 		while (
 			this.current === ' '
 			|| this.current === '\n'
