@@ -26,7 +26,15 @@ export class FillIncantation extends ArgIncantation<LOCAL>
 
 	override extract(target: Desmos.Expression): Ast.IncantationInvocation<LOCAL> | void
 	{
-		// TODO
+		if (target.fillOpacity != undefined) {
+			return {
+				kind: Ast.Kind.INCANTATION_INVOCATION,
+				incantation: fill,
+				arg_raw: super.emit_object_arg({
+					opacity: target.fillOpacity,
+				}),
+			};
+		}
 	}
 }
 

@@ -31,7 +31,22 @@ export class PointIncantation extends ArgIncantation<LOCAL>
 
 	override extract(target: Desmos.Expression): Ast.IncantationInvocation<LOCAL> | void
 	{
-		// TODO
+		if (
+				target.pointStyle   != undefined
+			|| target.pointSize    != undefined
+			|| target.pointOpacity != undefined
+		)
+		{
+			return {
+				kind: Ast.Kind.INCANTATION_INVOCATION,
+				incantation: point,
+				arg_raw: super.emit_object_arg({
+					style:   target.pointStyle,
+					size:    target.pointSize,
+					opacity: target.pointOpacity,
+				}),
+			};
+		}
 	}
 }
 

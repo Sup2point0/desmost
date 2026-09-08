@@ -47,7 +47,21 @@ export class LineIncantation extends ArgIncantation<LOCAL>
 	
 	override extract(target: Desmos.Expression): Ast.IncantationInvocation<LOCAL> | void
 	{
-		// TODO
+		if (
+				target.lineStyle   != undefined
+			|| target.lineWidth   != undefined
+			|| target.lineOpacity != undefined
+		) {
+			return {
+				kind: Ast.Kind.INCANTATION_INVOCATION,
+				incantation: line,
+				arg_raw: super.emit_object_arg({
+					style:   target.lineStyle,
+					width:   target.lineWidth,
+					opacity: target.lineOpacity,
+				}),
+			};
+		}
 	}
 }
 

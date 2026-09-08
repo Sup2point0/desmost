@@ -96,7 +96,7 @@ export class LabelIncantation extends ArgIncantation<LOCAL>
 			return {
 				kind: Ast.Kind.INCANTATION_INVOCATION,
 				incantation: label,
-				arg_raw: super.emit_arg({
+				arg_raw: super.emit_object_arg({
 					text: target.label,
 					show: target.showLabel,
 					size: target.labelSize,
