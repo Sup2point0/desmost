@@ -23,6 +23,15 @@ import { options } from "#scripts/options";
 			<p> Show all details for errors? </p>
 		</label>
 	</section>
+	
+	<section>
+		<input id="check-args" type="checkbox" bind:checked={$options.check_args} />
+
+		<label for="check-args">
+			<h3> Check Arguments </h3>
+			<p> Error when an incantation receives unknown fields or an empty argument? </p>
+		</label>
+	</section>
 
 	<section>
 		<input id="prettify" type="checkbox" bind:checked={$options.prettify} />
@@ -32,13 +41,13 @@ import { options } from "#scripts/options";
 			<p> Prettify LaTeX output for Desmos? </p>
 		</label>
 	</section>
-	
-	<section>
-		<input id="check-args" type="checkbox" bind:checked={$options.check_args} />
 
-		<label for="check-args">
-			<h3> Check Arguments </h3>
-			<p> Error when an incantation receives unknown fields or an empty argument? </p>
+	<section>
+		<input id="dedent" type="checkbox" bind:checked={$options.dedent_text} />
+
+		<label for="dedent">
+			<h3> Dedent Text </h3>
+			<p> Remove common indentation from <code>/text</code> content? </p>
 		</label>
 	</section>
 	
