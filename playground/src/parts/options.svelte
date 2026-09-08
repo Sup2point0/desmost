@@ -16,6 +16,36 @@ import { options } from "#scripts/options";
 
 <form>
 	<section>
+		<input type="checkbox" style:visibility="hidden" />
+
+		<label for="errors">
+			<h3> Error Handling </h3>
+			<p> How should errors be handled? </p>
+		</label>
+		
+		<select id="errors" bind:value={$options.errors}>
+			<option value="surface">Surface</option>
+			<option value="crash">Crash</option>
+			<option value="suppress">Suppress</option>
+		</select>
+	</section>
+	
+	<section>
+		<input type="checkbox" style:visibility="hidden" />
+
+		<label for="place-errors">
+			<h3> Error Placement </h3>
+			<p> Where should errors be placed? </p>
+		</label>
+		
+		<select id="place-errors" bind:value={$options.place_errors}>
+			<option value="inline">Inline</option>
+			<option value="end">End</option>
+			<option value="start">Start</option>
+		</select>
+	</section>
+
+	<section>
 		<input id="expand-errors" type="checkbox" bind:checked={$options.expand_errors} />
 
 		<label for="expand-errors">
@@ -142,6 +172,14 @@ section {
 	&:hover p {
 		color: white;
 	}
+}
+
+select {
+	height: max-content;
+	padding: 0.1em 0.2em;
+	@include font-ui;
+	font-size: 100%;
+	outline: none;
 }
 
 </style>
