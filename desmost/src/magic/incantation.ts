@@ -21,14 +21,17 @@ import { DesmostError, type Fallible } from "../errors";
  */
 export abstract class Incantation<Effect extends Incantation.Effect = Incantation.Effect>
 {
-	/** Short user-facing description of what the incantation does. */
-	abstract readonly description: string
+	/** Whether the incantation is a global, local or expression incantation. */
+	abstract readonly effect: Effect
 
 	/** The raw text sequence that matches this incantation, such as `viewport` or `hidden`. */
 	abstract readonly identifier: string
 
 	/** An alternative `.identifier`, strictly for localisation purposes only. */
 	readonly alias?: string
+
+	/** Short user-facing description of what the incantation does. */
+	abstract readonly description: string
 
 
 	/** Apply this incantation's effect to `target`, using the provided `data` if required. */
