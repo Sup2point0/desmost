@@ -92,7 +92,7 @@ export class LabelIncantation extends ArgIncantation<LOCAL>
 		
 	override extract(target: Desmos.Expression): Ast.IncantationInvocation<LOCAL> | void
 	{
-		if (target.label) {
+		if (target.label || target.showLabel) {
 			return {
 				kind: Ast.Kind.INCANTATION_INVOCATION,
 				incantation: label,
