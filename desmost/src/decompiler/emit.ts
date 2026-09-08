@@ -11,6 +11,7 @@ import type { Ast } from "../parser";
 export function emit_incantation(
    invocation: Ast.IncantationInvocation,
    options: DesmostOptions,
+   _?: { expand: boolean },
 ): string
 {
 	if (invocation == undefined) return "";
@@ -20,7 +21,7 @@ export function emit_incantation(
    if ("arg_raw" in invocation) {
       let arg_raw = invocation.arg_raw;
 
-      if (invocation.incantation.arg_type === Incantation.ArgType.OBJECT) {
+      if (_?.expand && invocation.incantation.arg_type === Incantation.ArgType.OBJECT) {
          return `/${ident}{\n  ${arg_raw}\n}`;
       } else {
          return `/${ident}{${arg_raw}}`;
@@ -79,8 +80,9 @@ export function emit_expression(
    }
 
    let locals = expr.incantations.map(inc => emit_incantation(inc, options));
-   let sep = locals.length > 0 ? " :: " : "";
-   let space = locals.length >= 3 ? '\n' : ' ';
+
+   let sep = (locals.length > 0) ? " :: " : "";
+   let space = (locals.length >= 3  ) ? '\n' : ' ';
 
    return `${locals.join(space)}${sep}${content}`;
 }
