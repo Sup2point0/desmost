@@ -320,7 +320,7 @@ export class DesmostParser extends GenericParser
 		}
 
 		/* NOTE: All expression incantations currently require arguments, and all for the foreseeable future will too */
-		let arg_raw = this.parse_incantation_arg((incantation as ArgIncantation<EXPR>).arg_type);
+		let arg_raw = this.parse_incantation_arg(incantation.arg_type);
 
 		let data = {};
 		incantation.apply(data, arg_raw);
