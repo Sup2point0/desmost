@@ -68,7 +68,7 @@ export function ast_to_source(ast: SemiStructuredAst, options: DesmostOptions): 
 {
 	return (
         ast.globals.map(inc => emit_incantation(inc, options)).join("\n")
-      + "\n\n"
+      + options.keep_leading_blanks ? "\n" : "\n\n"
       + ast.locals.map(expr => emit_expression(expr, options)).join("\n")
 	);
 }
