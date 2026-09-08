@@ -32,9 +32,9 @@ export class PointIncantation extends ArgIncantation<LOCAL>
 	override extract(target: Desmos.Expression): Ast.IncantationInvocation<LOCAL> | void
 	{
 		if (
-				target.pointStyle   != undefined
-			|| target.pointSize    != undefined
-			|| target.pointOpacity != undefined
+				target.pointStyle && target.pointStyle !== Desmos.Styles.POINT
+			|| target.pointSize
+			|| target.pointOpacity
 		)
 		{
 			return {

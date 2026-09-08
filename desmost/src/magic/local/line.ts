@@ -48,9 +48,9 @@ export class LineIncantation extends ArgIncantation<LOCAL>
 	override extract(target: Desmos.Expression): Ast.IncantationInvocation<LOCAL> | void
 	{
 		if (
-				(target.lineStyle  != undefined && target.lineStyle != Desmos.Styles.SOLID)
-			|| target.lineWidth   != undefined
-			|| target.lineOpacity != undefined
+				target.lineStyle !== Desmos.Styles.SOLID
+			|| target.lineWidth
+			|| target.lineOpacity
 		) {
 			return {
 				kind: Ast.Kind.INCANTATION_INVOCATION,
