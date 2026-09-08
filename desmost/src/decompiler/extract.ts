@@ -1,7 +1,5 @@
-import { stringify_json5 } from "./format";
-
 import { Ast } from "../parser";
-import { GLOBAL_INCANTATIONS, LOCAL_INCANTATIONS } from "../magic";
+import { LOCAL_INCANTATIONS } from "../magic";
 import type { LOCAL } from "../magic";
 
 
