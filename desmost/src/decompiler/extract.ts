@@ -93,15 +93,16 @@ function extract_locals(expr: Desmos.ExpressionState): Ast.IncantationInvocation
    {
       case "text":  return [];
       case "table": return [];
-      default:      return (expr.latex?.trim() === "") ? [] : extract_locals_expr(expr);
+      default:
+         if (expr.latex?.trim() === "") {
+            return [];
+         }
+         else {
+            return (
+               Object.values(LOCAL_INCANTATIONS)
+               .map(inc => inc.extract(expr))
+               .filter(each => each != undefined)
+            );
+         }
    }
-}
-
-function extract_locals_expr(expr: Desmos.Expression): Ast.IncantationInvocation<LOCAL>[]
-{
-   return (
-      Object.values(LOCAL_INCANTATIONS)
-      .map(inc => inc.extract(expr))
-      .filter(each => each != undefined)
-   );
 }
