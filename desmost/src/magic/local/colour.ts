@@ -14,8 +14,8 @@ const VALID_COLOURS = ["RED", "BLUE", "GREEN", "PURPLE", "ORANGE", "BLACK"];
 export class ColourIncantation extends ArgIncantation<LOCAL>
 {
 	override readonly effect       = Incantation.Effect.LOCAL
-	override readonly identifier   = "color"
-	override readonly alias        = "colour"
+	override readonly identifier   = "colour"
+	override readonly alias        = "color"
 	override readonly requires_arg = true
 	override readonly arg_type     = Incantation.ArgType.ENUM
 	override readonly description
