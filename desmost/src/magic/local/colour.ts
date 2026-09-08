@@ -13,13 +13,13 @@ const VALID_COLOURS = ["RED", "BLUE", "GREEN", "PURPLE", "ORANGE", "BLACK"];
 
 export class ColourIncantation extends ArgIncantation<LOCAL>
 {
-	override readonly description
-		= "Change the colour of a rendered expression, such as a line, region, polygon, etc."
-
+	override readonly effect       = Incantation.Effect.LOCAL
 	override readonly identifier   = "color"
 	override readonly alias        = "colour"
 	override readonly requires_arg = true
 	override readonly arg_type     = Incantation.ArgType.ENUM
+	override readonly description
+		= "Change the colour of a rendered expression, such as a line, region, polygon, etc."
 
 	override apply(target: Desmos.ExpressionState, data: DesmosColour)
 	{

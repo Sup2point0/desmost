@@ -17,10 +17,7 @@ export class DesmosIncantation extends ArgIncantation<GLOBAL>
 	override readonly requires_arg = false
 	override readonly arg_type     = Incantation.ArgType.OBJECT
 
-	override apply(
-		target: Desmos.Calculator,
-		data?: DesmosSettings,
-	): void
+	override apply(target: Desmos.Calculator, data?: DesmosSettings): void
 	{
 		if (data != undefined) {
 			target.updateSettings(data);

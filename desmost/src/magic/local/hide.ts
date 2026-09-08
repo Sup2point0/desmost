@@ -5,10 +5,10 @@ import { Ast } from "../../parser";
 
 export class HideIncantation extends Incantation<LOCAL>
 {
+	override readonly effect       = Incantation.Effect.LOCAL
+	override readonly identifier = "hide"
 	override readonly description
 		= "Hide rendering for a block. This includes graphs, points, polygons, etc."
-	
-	override readonly identifier = "hide"
 
 	apply(target: Desmos.ExpressionState)
 	{

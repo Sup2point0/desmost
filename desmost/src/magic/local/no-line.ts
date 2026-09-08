@@ -5,10 +5,10 @@ import { Ast } from "../../parser";
 
 export class NoLineIncantation extends Incantation<LOCAL>
 {
+	override readonly effect       = Incantation.Effect.LOCAL
+	override readonly identifier = "no-line"
 	override readonly description
 		= "Disable rendering lines for a block."
-	
-	override readonly identifier = "no-line"
 
 	override apply(target: Desmos.ExpressionState)
 	{

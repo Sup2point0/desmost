@@ -27,12 +27,12 @@ const VALID_POSITIONS = [
 
 export class LabelIncantation extends ArgIncantation<LOCAL>
 {
-	override readonly description
-		= "Label a block that evaluates to a point(s)."
-
+	override readonly effect       = Incantation.Effect.LOCAL
 	override readonly identifier   = "label"
 	override readonly requires_arg = true
 	override readonly arg_type     = Incantation.ArgType.OBJECT
+	override readonly description
+		= "Label a block that evaluates to a point(s)."
 
 	override apply(target: Desmos.ExpressionState, data: LabelOptions)
 	{

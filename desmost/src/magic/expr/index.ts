@@ -1,12 +1,10 @@
 import { ArgIncantation, type EXPR } from "../incantation";
 
-import { LatexIncantation } from "./latex";
-import { TextIncantation } from "./text";
+import { latex } from "./latex";
+import { text  } from "./text";
 
 
-export const EXPR_INCANTATIONS =
-{
-	latex: new LatexIncantation(),
-	text:  new TextIncantation(),
-
+export const EXPR_INCANTATIONS = {
+	latex,
+	text,
 } satisfies Record<string, ArgIncantation<EXPR>>;

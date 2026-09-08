@@ -4,10 +4,10 @@ import { Ast } from "../../parser";
 
 export class AnimIncantation extends Incantation<LOCAL>
 {
+	override readonly effect       = Incantation.Effect.LOCAL
+	override readonly identifier = "anim"
 	override readonly description
 		= `Animate the slider of a block.`
-	
-	override readonly identifier = "anim"
 
 	override apply(target: Desmos.ExpressionState)
 	{

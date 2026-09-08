@@ -5,10 +5,10 @@ import { Ast } from "../../parser";
 
 export class DashedIncantation extends Incantation<LOCAL>
 {
+	override readonly effect       = Incantation.Effect.LOCAL
+	override readonly identifier = "dashed"
 	override readonly description
 		= "Render a block as a dashed line."
-	
-	override readonly identifier = "dashed"
 
 	override apply(target: Desmos.ExpressionState)
 	{

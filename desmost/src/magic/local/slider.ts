@@ -13,12 +13,12 @@ interface SliderBounds
 
 export class SliderIncantation extends ArgIncantation<LOCAL>
 {
-	override readonly description
-		= "Set the bounds of the slider for a variable."
-	
+	override readonly effect       = Incantation.Effect.LOCAL
 	override readonly identifier   = "slider"
 	override readonly requires_arg = true
 	override readonly arg_type     = Incantation.ArgType.OBJECT
+	override readonly description
+		= "Set the bounds of the slider for a variable."
 
 	override apply(target: Desmos.ExpressionState, data: SliderBounds)
 	{

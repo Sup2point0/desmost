@@ -13,12 +13,12 @@ interface PointStyles
 
 export class PointIncantation extends ArgIncantation<LOCAL>
 {
-	override readonly description
-		= ""
-	
+	override readonly effect       = Incantation.Effect.LOCAL
 	override readonly identifier   = "point"
 	override readonly requires_arg = true
 	override readonly arg_type     = Incantation.ArgType.OBJECT
+	override readonly description
+		= ""
 
 	override apply(target: Desmos.ExpressionState, data: Partial<PointStyles>)
 	{

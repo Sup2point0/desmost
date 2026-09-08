@@ -1,15 +1,15 @@
 import { Incantation, ArgIncantation, type EXPR } from "../incantation";
 
 
-export class TextIncantation extends ArgIncantation<EXPR>
+class TextIncantation extends ArgIncantation<EXPR>
 {
-	override readonly description
-		= "Produce a text expression (“Add Note” in the Desmos GUI)."
-	
+	override readonly effect       = Incantation.Effect.EXPR
 	override readonly identifier   = "text"
 	override readonly alias        = "note"
 	override readonly requires_arg = true
 	override readonly arg_type     = Incantation.ArgType.STRING
+	override readonly description
+		= "Produce a text expression (“Add Note” in the Desmos GUI)."
 
 	override apply(target: Desmos.ExpressionState, data: string): asserts target is Desmos.Note
 	{
@@ -17,4 +17,8 @@ export class TextIncantation extends ArgIncantation<EXPR>
 		// @ts-expect-error: previous assignment type-narrows
 		target.text = data;
 	}
+
+	// TODO extract
 }
+
+export const text = new TextIncantation();

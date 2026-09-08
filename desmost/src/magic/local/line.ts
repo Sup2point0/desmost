@@ -17,12 +17,12 @@ const VALID_FIELDS = ["style", "width", "opacity"];
 
 export class LineIncantation extends ArgIncantation<LOCAL>
 {
-	override readonly description
-		= "Change line styles for a rendered block."
-
+	override readonly effect       = Incantation.Effect.LOCAL
 	override readonly identifier   = "line"
 	override readonly requires_arg = true
 	override readonly arg_type     = Incantation.ArgType.OBJECT
+	override readonly description
+		= "Change line styles for a rendered block."
 
 	override apply(target: Desmos.ExpressionState, data: LineOptions)
 	{

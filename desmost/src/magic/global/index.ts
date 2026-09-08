@@ -2,12 +2,11 @@ import { Incantation, type GLOBAL } from "../incantation";
 
 import { desmos   } from "./desmos";
 import { viewport } from "./viewport";
-import { DarkModeIncantation } from "./dark-mode";
+import { dark     } from "./dark";
 
 
-export const GLOBAL_INCANTATIONS =
-{
+export const GLOBAL_INCANTATIONS = {
 	desmos,
 	viewport,
-	dark: new DarkModeIncantation(),
+	dark,
 } satisfies Record<string, Incantation<GLOBAL>>;
