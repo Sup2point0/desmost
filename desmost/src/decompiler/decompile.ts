@@ -14,7 +14,9 @@ export interface SemiStructuredAst
 
 
 /**
- * Decompile Desmos into raw Desmost source code.
+ * Decompile Desmos into Desmost.
+ * 
+ * This extracts relevant state from the given `desmos` calculator instance, emitting the minimal raw source code that would reconstruct that calculator instance.
  * 
  * The caller must also supply a `blank` calculator instance. This is used as a reference for default field values, so that emitted incantations like `/desmos{}` don't get filled with a huge amount of noise.
  */
@@ -31,7 +33,11 @@ export function decompile(
 	 */
 	blank?: Desmos.Calculator,
 
-	// TODO doc
+	/**
+	 * Decompilation options.
+	 * 
+	 * See {@linkcode DesmostOptions} for available options.
+	 */
 	options?: Partial<DesmostOptions>,
 ): string
 {

@@ -30,7 +30,7 @@ export function compile(
 	/**
 	 * Compilation options.
 	 * 
-	 * See {@linkcode DesmostOptions} for the options available.
+	 * See {@linkcode DesmostOptions} for available options.
 	*/
 	options?: Partial<DesmostOptions>,
 ): void | DesmostDebug
