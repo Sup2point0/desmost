@@ -12,6 +12,9 @@
   - For instance, if you have `prettify: true`, the decompiler will emit `f(x)` instead of `f\left(x\right)` (since `prettify: true` means the compiler going the other way would repair it).
 - `prettify` handles `min` and `max`
 
+### Fixes
+- Critical errors properly clear calculator state
+- Fix `place_errors: start`
 
 
 <br>

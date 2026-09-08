@@ -77,7 +77,7 @@ export class DesmostCompiler
 
 		/* To aggregate errors at the start, we need a target to retroactively inject errors into */
 		if (this.options.place_errors === "start") {
-			this.desmos.setExpression({ id: "deferred", latex: " " });  // FIXME check if ` ` needed
+			this.desmos.setExpression({ id: "desmost-deferred", type: "text", text: "" });
 		}
 
 		/* The compiler is lazy, parsing and evaluating one block at a time (as opposed to first parsing the entire AST). We don't need the whole AST, so this saves memory. */
@@ -88,13 +88,13 @@ export class DesmostCompiler
 			while (!done) {
 				done = this.compile_next();
 			}
+
+			if (this.options.keep_trailing_blanks) {
+				this.flush_pending_blanks();
+			}
 		}
 		catch (e) {
-			this.errors.push(e as Error);  // FIXME Should probably override as critical
-		}
-
-		if (this.options.keep_trailing_blanks) {
-			this.flush_pending_blanks();
+			this.evaluate_error(e as Error);
 		}
 
 		/* NOTE: No need to check `options.place_errors`!
@@ -105,12 +105,12 @@ export class DesmostCompiler
 		*/
 		if (this.errors.length > 0) {
 			this.desmos.setExpression({
-				id: "deferred",
+				id: "desmost-deferred",
 				type: "text",
-				text: this.errors.map(err => format_error(err, this.options)).join("\n\n"),
+				text: this.errors.map(err => format_error(err, this.options)).join(`\n\n`),
 			});
 		} else {
-			this.desmos.removeExpression({ id: "deferred" });
+			this.desmos.removeExpression({ id: "desmost-deferred" });
 		}
 
 		if (this.options.debug) {
@@ -244,6 +244,7 @@ export class DesmostCompiler
 	{
 		switch (this.options.errors) {
 			case "crash":
+				this.desmos.setBlank();
 				throw error;
 
 			case "suppress":
