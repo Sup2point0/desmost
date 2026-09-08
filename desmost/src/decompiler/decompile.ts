@@ -1,9 +1,9 @@
 import { emit_incantation, emit_expression } from "./emit";
-import { extract_settings, extract_viewport, extract_expression } from "./extract";
+import { extract_expression } from "./extract";
 
-import { fill_defaults } from "../options";
+import { fill_defaults, type DesmostOptions } from "../options";
 import { Ast } from "../parser";
-import type { DesmostOptions } from "../options";
+import { GLOBAL_INCANTATIONS } from "../magic";
 
 
 export interface SemiStructuredAst
@@ -60,9 +60,9 @@ export function desmos_to_ast(
 {
 	return {
 		globals: [
-			extract_settings(desmos, blank),
-			extract_viewport(desmos, blank),
-		].filter(x => x != null),
+			GLOBAL_INCANTATIONS.desmos.extract(desmos, blank),
+			GLOBAL_INCANTATIONS.viewport.extract(desmos, blank),
+		].filter(x => x != undefined),
 		locals: desmos.getExpressions().map(extract_expression),
 	};
 }

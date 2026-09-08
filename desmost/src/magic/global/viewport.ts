@@ -2,6 +2,7 @@ import { Incantation, ArgIncantation, type GLOBAL } from "../incantation";
 
 import { DesmostError, type Fallible } from "../../errors";
 import type { DesmostOptions } from "../../options";
+import { Ast } from "../../parser";
 
 
 interface ViewportBounds
@@ -63,4 +64,32 @@ export class ViewportIncantation extends ArgIncantation<GLOBAL>
 
 		return out;
 	}
+
+	override extract(
+		target: Desmos.Calculator,
+		blank: Desmos.Calculator,
+	): Ast.IncantationInvocation<Incantation.Effect.GLOBAL> | void
+	{
+		let { left, right, bottom, top } = target.graphpaperBounds.mathCoordinates;
+		let bounds = { left, right, bottom, top };
+		
+		let defaults = blank.graphpaperBounds.mathCoordinates;
+
+		for (let [key, val] of Object.entries(bounds)) {
+			if (Math.abs(val - defaults[key]) < 0.001) {
+				delete bounds[key];
+			}
+		}
+
+		let arg_raw = super.emit_object_arg(bounds);
+		if (arg_raw.trim() === "") return;
+
+		return {
+			kind: Ast.Kind.INCANTATION_INVOCATION,
+			incantation: viewport,
+			arg_raw,
+		};
+	}
 }
+
+export const viewport = new ViewportIncantation();

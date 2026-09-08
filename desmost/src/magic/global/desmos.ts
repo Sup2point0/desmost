@@ -1,7 +1,8 @@
 import { Incantation, ArgIncantation, type GLOBAL } from "../incantation";
 
-import { DesmostError, type Fallible } from "../../errors";
 import type { DesmostOptions } from "../../options";
+import { DesmostError, type Fallible } from "../../errors";
+import { Ast } from "../../parser";
 
 
 type DesmosSettings = Desmos.GraphConfiguration & Desmos.GraphSettings
@@ -42,4 +43,36 @@ export class DesmosIncantation extends ArgIncantation<GLOBAL>
 		
 		return out;
 	}
+
+	override extract(
+		target: Desmos.Calculator,
+		blank: Desmos.Calculator,
+	): Ast.IncantationInvocation<Incantation.Effect.GLOBAL> | void
+	{
+		let settings = { ...target.settings };
+		let defaults = blank.settings;
+
+		for (let [key, val] of Object.entries(settings)) {
+			if (
+					val === defaults[key]
+				|| key === "__observers"
+				|| key === "guid"
+				|| key === "randomSeed"
+				|| key === "colors"
+			) {
+				delete settings[key];
+			}
+		}
+
+		let arg_raw = super.emit_object_arg(settings);
+		if (arg_raw.trim() === "") return;
+
+		return {
+			kind: Ast.Kind.INCANTATION_INVOCATION,
+			incantation: desmos,
+			arg_raw,
+		};
+	}
 }
+
+export const desmos = new DesmosIncantation();

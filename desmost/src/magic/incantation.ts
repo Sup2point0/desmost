@@ -60,6 +60,7 @@ export abstract class Incantation<Effect extends Incantation.Effect = Incantatio
 	*/
 	abstract extract(
 		target: Effect extends GLOBAL ? Desmos.Calculator : Desmos.ExpressionState,
+		blank?: Effect extends GLOBAL ? Desmos.Calculator : never,
 	): Ast.IncantationInvocation<Effect> | void
 }
 
