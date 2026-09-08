@@ -66,7 +66,7 @@ export function prettify_latex(latex: string): string
 	latex = latex.replaceAll(/(:|,)(?!\\ ) */g, "$1\\ ");
 
 	latex = latex.replaceAll(
-		/(?<=[^\w]|^)\\?(length|mean|median|count|total|repeat|join|sort|shuffle|unique|mod|ceil|floor|round|sign) ?(?=\(|\\left\()/g,
+		/(?<=[^\w]|^)\\?(length|mean|median|min|max|count|total|repeat|join|sort|shuffle|unique|mod|ceil|floor|round|sign) ?(?=\(|\\left\()/g,
 		"\\operatorname{$1}"
 	);
 

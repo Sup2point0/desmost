@@ -111,9 +111,9 @@ describe("parentheses", () =>
 		describe("replace", () =>
 		{
 			test_cases("1 line", [
-				[ltx`1,2`, ltx`1,\ 2`],
-				[ltx`1, 2`, ltx`1,\ 2`],
-				[ltx`1,2,3`, ltx`1,\ 2,\ 3`],
+				[ltx`1,2`,     ltx`1,\ 2`],
+				[ltx`1, 2`,    ltx`1,\ 2`],
+				[ltx`1,2,3`,   ltx`1,\ 2,\ 3`],
 				[ltx`1, 2, 3`, ltx`1,\ 2,\ 3`],
 				[ltx`1, 2, 3`, ltx`1,\ 2,\ 3`],
 			]);
@@ -127,6 +127,31 @@ describe("parentheses", () =>
 			test_cases("1 line", [
 				[ltx`y:x`, ltx`y:\ x`],
 				[ltx`y: x`, ltx`y:\ x`],
+			]);
+		})
+	})
+})
+
+describe("functions", () =>
+{
+	describe("min/max", () =>
+	{
+		describe("replace", () =>
+		{
+			test_cases("1 line", [
+				[ltx`min()`, ltx`\operatorname{min}\left(\right)`],
+				[ltx`min(x)`, ltx`\operatorname{min}\left(x\right)`],
+				[ltx`min(x, y)`, ltx`\operatorname{min}\left(x,\ y\right)`],
+				[ltx`max(x, y)`, ltx`\operatorname{max}\left(x,\ y\right)`],
+			]);
+		})
+
+		describe("preserve", () =>
+		{
+			test_cases("1 line", [
+				[ltx`\operatorname{min}`, ltx`\operatorname{min}`],
+				[ltx`\operatorname{min}(x)`, ltx`\operatorname{min}\left(x\right)`],
+				[ltx`\operatorname{min}(x, y)`, ltx`\operatorname{min}\left(x,\ y\right)`],
 			]);
 		})
 	})
