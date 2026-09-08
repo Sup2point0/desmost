@@ -11,17 +11,17 @@ interface LabelOptions
 	show?: boolean
 	size?: number
 	pos?:
-		| "default"
-		| "above" | "below" | "left" | "right"
-		| "above_left" | "above_right" | "below_left" | "below_right"
+		| "DEFAULT"
+		| "ABOVE" | "BELOW" | "LEFT" | "RIGHT"
+		| "ABOVE_LEFT" | "ABOVE_RIGHT" | "BELOW_LEFT" | "BELOW_RIGHT"
 }
 
 const VALID_FIELDS = ["text", "show", "size", "pos"];
 
 const VALID_POSITIONS = [
-	"default",
-	"above", "below", "left", "right",
-	"above_left", "above_right", "below_left", "below_right",
+	"DEFAULT",
+	"ABOVE", "BELOW", "LEFT", "RIGHT",
+	"ABOVE_LEFT", "ABOVE_RIGHT", "BELOW_LEFT", "BELOW_RIGHT",
 ];
 
 
@@ -66,7 +66,7 @@ export class LabelIncantation extends ArgIncantation<LOCAL>
 		}
 
 		if (typeof out.pos != "undefined") {
-			let pos = out.pos.trim().toLowerCase().replaceAll("-", "_");
+			let pos = out.pos.trim().toUpperCase().replaceAll("-", "_");
 
 			if (VALID_POSITIONS.includes(pos)) {
 				// @ts-expect-error: validated
