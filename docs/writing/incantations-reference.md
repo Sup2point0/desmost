@@ -121,7 +121,7 @@ This page documents all the incantations available in Desmost.
 <tr>
     <td>
 
-[`/color`](#color)<br>[`/colour`](#color)
+[`/colour`](#colour)<br>[`/color`](#colour)
     </td>
     <td>required</td>
     <td><code>DesmosColour</code></td>
@@ -167,10 +167,13 @@ This page documents all the incantations available in Desmost.
     </td>
     <td>required</td>
     <td><pre lang="ts"><code>{
-<br>   text: string;
-<br>   show?: boolean;
-<br>   size?: number;
-<br>   pos?: "ABOVE" \| "BELOW" \| "LEFT" \| "RIGHT" \| "ABOVE_LEFT" \| "ABOVE_RIGHT" \| "BELOW_LEFT" \| "BELOW_RIGHT";
+<br>   text: string
+<br>   show?: boolean
+<br>   size?: number
+<br>   pos?:
+<br>      \| "DEFAULT"
+<br>      \| "ABOVE" \| "BELOW" \| "LEFT" \| "RIGHT"
+<br>      \| "ABOVE_LEFT" \| "ABOVE_RIGHT" \| "BELOW_LEFT" \| "BELOW_RIGHT"
 <br>}</code></pre></td>
     <td>Label a block that evaluates to a point(s).</td>
   </tr>

@@ -4,7 +4,7 @@
 <br>
 
 
-## Next Major (v0.11)
+## v0.11
 
 ### New
 - Decompiler extracts local incantations
