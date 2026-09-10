@@ -3,6 +3,7 @@ import { Incantation, type LOCAL } from "../incantation";
 import { anim    } from "./anim";
 import { colour  } from "./colour";
 import { dashed  } from "./dashed";
+import { dotted  } from "./dotted";
 import { fill    } from "./fill";
 import { hide    } from "./hide";
 import { label   } from "./label";
@@ -17,6 +18,7 @@ export const LOCAL_INCANTATIONS = {
 	anim,
 	colour,
 	dashed,
+	dotted,
 	fill,
 	hide,
 	label,

@@ -7,7 +7,8 @@
 ## v0.12
 
 ### New
-- `/no-border` incantation to remove border around calculator
+- `/no-border` global incantation to remove border around calculator
+- `/dotted` local incantation to style a dotted line
 
 
 <br>
