@@ -1,9 +1,10 @@
 import { GenericParser } from "./generic-parser";
 import { Ast } from "./ast";
+import { NO_MATCH, INVALID_PARSE } from "./errors";
+import type { NoMatch, InvalidParse } from "./errors";
 
 import type { DesmostOptions } from "../options";
-import { NO_MATCH, DesmostError } from "../errors";
-import type { NoMatch, Fallible } from "../errors";
+import { DesmostError, type Fallible } from "../errors";
 import * as utils from "../utils";
 
 import {

@@ -1,5 +1,5 @@
 import { DesmostParser, Ast } from "../../src/parser";
-import { NO_MATCH } from "../../src/errors";
+import { NO_MATCH } from "../../src/parser/errors";
 
 import {
 	ArgIncantation,

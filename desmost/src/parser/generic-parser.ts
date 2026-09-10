@@ -1,5 +1,7 @@
-import { NO_MATCH, DesmostError } from "../errors";
-import type { NoMatch, Fallible } from "../errors";
+import { NO_MATCH, INVALID_PARSE } from "./errors";
+import type { NoMatch, InvalidParse } from "./errors";
+
+import { DesmostError, type Fallible } from "../errors";
 
 
 const IGNORED_CHARACTERS = new Set([

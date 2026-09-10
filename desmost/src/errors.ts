@@ -1,12 +1,14 @@
 import type { Range } from "./utils";
 
 
-/** The parser failed to parse something (usually during speculative parsing), which only results in internal backtracking. */
-export const NO_MATCH = Symbol("no-match");
-
-/** The compiler encountered a non-fatal recoverable failure (usually during speculative parsing), which only results in internal backtracking. */
-export type NoMatch = typeof NO_MATCH & { readonly __brand?: unique symbol };
-
+/**
+ * Multiple aggregated errors.
+ * 
+ * Since the compiler does its best to recover from errors, it often needs to aggregate errors to report later, instead of immediately throwing.
+ */
+export class DesmostErrors {
+	constructor(public errors: DesmostError[] = []) {}
+}
 
 /**
  * The compiler encountered a fatal unrecoverable error, which will reach the end user.
@@ -56,6 +58,11 @@ export namespace DesmostError
 	/** The parser received excess input that it did not expect. */
 	export class ExcessInput extends DesmostError {
 		constructor(override data: Data) { super(data.msg, "Excess Input"); }
+	}
+
+	/** No incantation with this identifier exists. */
+	export class UnknownIncantation extends DesmostError {
+		constructor(override data: Data) { super(data.msg, "Unknown Incantation"); }
 	}
 
 	/** An incantation can't be applied here. */
