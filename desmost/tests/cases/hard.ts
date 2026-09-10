@@ -17,6 +17,8 @@ export const HARD = ltx `
   \{ 0<x: 1, 0 \}
 }
 
+/colour{#f00} :: y=x
+/color{#ff0000} :: y=x
 /label{ pos: LEFT, text: " } should not close the block", pos: RIGHT} :: (0, 0)
 
 /dark
