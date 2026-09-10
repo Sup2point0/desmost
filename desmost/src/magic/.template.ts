@@ -7,12 +7,12 @@
 
 // export class ?Incantation extends ArgIncantation<?>
 // {
-// 	override readonly description
-//    	= ""
-
+// 	override readonly effect       = Incantation.Effect.?
 // 	override readonly identifier   = ?
 // 	override readonly requires_arg = ?
 // 	override readonly arg_type     = Incantation.ArgType.?
+// 	override readonly description
+//    	= ""
 
 // 	override apply(target: ?, data: ?)
 // 	{
@@ -30,7 +30,7 @@
 // 		return out;
 // 	}
 
-// 	override extract(target: ?): Ast.IncantationInvocation<?> | undefined
+// 	override extract(target: ?): Ast.IncantationInvocation<?> | void
 // 	{
 // 		// TODO
 // 	}

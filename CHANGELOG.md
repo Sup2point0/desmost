@@ -4,6 +4,15 @@
 <br>
 
 
+## v0.12
+
+### New
+- `/no-border` incantation to remove border around calculator
+
+
+<br>
+
+
 ## v0.11
 
 ### New
