@@ -7,8 +7,9 @@
 ## v0.12
 
 ### New
-- `/no-border` global incantation to remove border around calculator
-- `/dotted` local incantation to style a dotted line
+- Add `/no-border` global incantation to remove border around calculator
+- Add `/dotted` local incantation to style a dotted line
+- `/colour` supports `/colour{#abcdef}` hex colours
 
 
 <br>
