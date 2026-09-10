@@ -15,13 +15,13 @@ const VALID_KEYS = ["left", "right", "bottom", "top"];
 
 
 export class ViewportIncantation extends ArgIncantation<GLOBAL>
-{
-	override readonly description
-		= "Set the bounds of the viewport via `Calculator.setMathBounds()`."
-	
+{	
+	override readonly effect       = Incantation.Effect.GLOBAL
 	override readonly identifier   = "viewport"
 	override readonly requires_arg = true
 	override readonly arg_type     = Incantation.ArgType.OBJECT
+	override readonly description
+		= "Set the bounds of the viewport via `Calculator.setMathBounds()`."
 
 	override apply(target: Desmos.Calculator, data: ViewportBounds)
 	{

@@ -10,12 +10,12 @@ type DesmosSettings = Desmos.GraphConfiguration & Desmos.GraphSettings
 
 export class DesmosIncantation extends ArgIncantation<GLOBAL>
 {
-	override readonly description
-		= "Tweak calculator settings via `Calculator.updateSettings()`."
-	
+	override readonly effect       = Incantation.Effect.GLOBAL
 	override readonly identifier   = "desmos"
 	override readonly requires_arg = false
 	override readonly arg_type     = Incantation.ArgType.OBJECT
+	override readonly description
+		= "Tweak calculator settings via `Calculator.updateSettings()`."
 
 	override apply(target: Desmos.Calculator, data?: DesmosSettings): void
 	{
