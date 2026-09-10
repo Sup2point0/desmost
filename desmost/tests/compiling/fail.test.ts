@@ -1,7 +1,7 @@
-import { compile } from "../../../src";
+import { compile } from "../../src";
 
-import { testing_desmos } from "../../shared";
-import { assert_has_errors } from "../shared";
+import { testing_desmos } from "../shared";
+import { assert_has_errors } from "./shared";
 
 
 test.each([
