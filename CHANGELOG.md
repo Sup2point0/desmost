@@ -7,7 +7,7 @@
 ## v0.11.1
 
 ### New
-- Decompile prettifies `\operatorname{}` when `prettify: true`
+- Decompiler prettifies `\operatorname{}` when `prettify: true`
 
 
 ## v0.11
