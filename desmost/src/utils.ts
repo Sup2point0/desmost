@@ -17,6 +17,21 @@ export function* reversing<T>(items: ArrayLike<T>): Generator<T>
 	}
 }
 
+export function* zipping<T,V>(left: Iterable<T>, right: Iterable<V>): Generator<[left: T, right: T]>
+{
+	let iter_left = left[Symbol.iterator]();
+	let iter_right = left[Symbol.iterator]();
+
+	while (true) {
+		let l = iter_left.next();
+		let r = iter_right.next();
+		if (l.done) return;
+		if (r.done) return;
+
+		yield [l.value, r.value];
+	}
+}
+
 export function paired<T>(items: Iterable<T>): Array<[left: T, right: T]>
 {
 	return pairing(items).toArray();

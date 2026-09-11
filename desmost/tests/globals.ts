@@ -11,5 +11,20 @@ beforeAll(() => {
 			ORANGE: "#fa7e19",
 			BLACK:  "#000000",
 		},
+		Styles: {
+			CROSS: "CROSS",
+			DASHED: "DASHED",
+			DOTTED: "DOTTED",
+			OPEN: "OPEN",
+			POINT: "POINT",
+			SOLID: "SOLID",
+		},
+		DragModes: {
+			AUTO: "AUTO",
+			X: "X",
+			Y: "Y",
+			XY: "XY",
+			NONE: "NONE",
+		},
 	};
 });
