@@ -9,6 +9,7 @@
 ### Fixes
 - 【decompiler】Fix incorrectly ignored fields when emitting `/incantation{object}` object arguments
 - 【decompiler】Remove leading `\n\n` when no global incantations are needed
+- 【decompiler】Don’t `/line` when `lineStyle: undefined`
 
 
 ## v0.11.1
