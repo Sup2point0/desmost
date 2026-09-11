@@ -48,12 +48,18 @@ export class ColourIncantation extends ArgIncantation<LOCAL>
 		}
 	}
 	
-	override extract(target: Desmos.Expression): Ast.IncantationInvocation<LOCAL>
+	override extract(target: Desmos.Expression): Ast.IncantationInvocation<LOCAL> | void
 	{
+		if (target.color == undefined) return;
+
+		let hex = target.color.toLowerCase();
+
 		return {
 			kind: Ast.Kind.INCANTATION_INVOCATION,
 			incantation: colour,
-			arg_raw: target.color,  // FIXME use name
+			arg_raw:
+				Object.entries(Desmos.Colors).find(([k, v]) => v === hex)?.[0]
+				?? target.color,
 		};
 	}
 }

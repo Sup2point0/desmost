@@ -6,6 +6,9 @@
 
 ## v0.11.2
 
+### New
+- 【decompiler】Extract colour name when able, e.g. `/colour{BLUE}` instead of `/colour{#2d70b3}`
+
 ### Fixes
 - 【decompiler】Fix incorrectly ignored fields when emitting `/incantation{object}` object arguments
 - 【decompiler】Remove leading `\n\n` when no global incantations are needed
