@@ -27,10 +27,10 @@ jobs:
           cache: 'npm'
           cache-dependency-path: './desmost/package-lock.json'
 
-      - name: '> npm ci'
+      - name: '› npm ci'
         run: |
           npm ci
       
-      - name: '> npm run test'
+      - name: '› npm run test'
         run: |
           npm run test
