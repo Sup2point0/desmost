@@ -26,10 +26,9 @@ jobs:
           cache: 'npm'
           cache-dependency-path: './playground/package-lock.json'
 
-      - name: '› npm ci'
+      - name: '› npm install'
         run: |
           npm install desmost@latest
-          npm ci
 
       - name: '› npm run build'
         run: |
