@@ -151,7 +151,7 @@ export abstract class ArgIncantation<
 	 */
 	protected emit_object_arg(data: object): string
 	{
-		let defined = Object.fromEntries(Object.entries(data).filter((k, v) => Boolean(v)));
+		let defined = Object.fromEntries(Object.entries(data).filter(([k, v]) => Boolean(v)));
 		
 		return Json5.stringify(defined).slice(1, -1);
 	}

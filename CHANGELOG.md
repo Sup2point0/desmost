@@ -4,6 +4,12 @@
 <br>
 
 
+## v0.11.2
+
+### Fixes
+- Fix decompiler incorrectly ignoring fields when emitting `/incantation{object}` object arguments
+
+
 ## v0.11.1
 
 ### New
