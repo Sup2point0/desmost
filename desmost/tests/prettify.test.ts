@@ -10,7 +10,7 @@ test.each([
 	ltx `\{ x > 0: 1, -1 \}`,
 	ltx `min(x, y)`,
 ])
-("source", src =>
+("source (%s)", src =>
 {
 	assert.equal(prettify_source(prettify_latex(src)), src);
 });
@@ -21,7 +21,7 @@ test.each([
 	ltx `\left\{ x > 0:\ 1,\ -1 \right\}`,
 	ltx `\operatorname{min}\left(x,\ y\right)`,
 ])
-("latex", src =>
+("latex (%s)", src =>
 {
 	assert.equal(prettify_latex(prettify_source(src)), src);
 });

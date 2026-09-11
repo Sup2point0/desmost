@@ -30,7 +30,7 @@ test("easy", () =>
 	// \frac{1}{10} \sum_{n=1}^{10} \frac{f(n+1)}{f(n)}
 	r = parses_block(parser);
 	is_expr(r);
-	assert.equal(r.data.latex, ltx `\frac{1}{10} \sum_{n=1}^{10} \frac{f(n+1)}{f(n)}`);
+	assert.equal(r.data.latex, ltx `\frac{1}{10} \sum_{n = 1}^{10} \frac{f(n+1)}{f(n)}`);
 
 	assert.isUndefined(parser.parse_next());
 })

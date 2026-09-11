@@ -23,7 +23,7 @@ describe("easy", () =>
 		assert.equal(exprs[i++].latex, ltx `f\left(1\right) = 1`);
 		assert.equal(exprs[i++].latex, ltx `f\left(n\right) = f\left(n-1\right) + f\left(n\right)`);
 		assert.equal(exprs[i++].latex, ltx ` `);
-		assert.equal(exprs[i++].latex, ltx `\frac{1}{10} \sum_{n=1}^{10} \frac{f\left(n+1\right)}{f\left(n\right)}`);
+		assert.equal(exprs[i++].latex, ltx `\frac{1}{10} \sum_{n = 1}^{10} \frac{f\left(n+1\right)}{f\left(n\right)}`);
 		assert.equal(exprs[i++], undefined);
 	});
 })
