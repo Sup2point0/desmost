@@ -16,7 +16,7 @@ export const MEDIUM = ltx `
 }
 
 % Enter your integrand here:
-/colour{ BLUE } :: f(x) =
+/colour{BLUE} :: f(x) =
 
 % Enter your integration bounds here:
 a = 0
@@ -26,7 +26,7 @@ b = 1
 \int_{a}^{b} f(x) \ dx
 
 /secret
-/colour{ BLUE }
+/colour{BLUE}
 /no-line
 /fill{ opacity: 0.2 }
   :: /latex{

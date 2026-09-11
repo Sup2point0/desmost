@@ -15,7 +15,7 @@ import { type DesmostOptions, fill_defaults } from "../options";
  * 
  * compile(calc, `/text{ sup world! }`);
  * 
- * compile(calc, `/slider{ error! } :: t = 0`, {
+ * compile(calc, `/slider{error!} :: t = 0`, {
  *   errors: "crash",
  * });
  * ```

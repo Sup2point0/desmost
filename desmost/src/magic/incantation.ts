@@ -12,7 +12,7 @@ import { DesmostError, type Fallible } from "../errors";
  * Incantations must be prefixed by a `/`. They look like this:
  * 
  * ```math
- * /viewport{ left: -1, right: 1 }
+ * /viewport{left: -1, right: 1}
  * /hidden :: x = 69
  * /text :: Never gonna give you up
  * ```
