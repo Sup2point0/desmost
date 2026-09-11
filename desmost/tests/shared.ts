@@ -12,10 +12,12 @@ export function matrix<P,Q>(left: P[], right: Q[]): Array<[P, Q]>
 }
 
 
-/** Produce a dummy Desmos calculator instance with limited functionality for testing. */
-export function testing_desmos(): Desmos.Calculator
+/**
+ * Produce a dummy Desmos calculator instance with limited functionality for testing.
+ */
+export function testing_desmos(...exprs: Desmos.ExpressionState[]): Desmos.Calculator
 {
-	let expressions: Desmos.ExpressionState[] = [];
+	let expressions: Desmos.ExpressionState[] = exprs;
 
 	return {
 		getExpressions: () => expressions,
