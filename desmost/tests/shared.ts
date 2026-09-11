@@ -17,17 +17,40 @@ export function matrix<P,Q>(left: P[], right: Q[]): Array<[P, Q]>
  */
 export function testing_desmos(...exprs: Desmos.ExpressionState[]): Desmos.Calculator
 {
-	let expressions: Desmos.ExpressionState[] = exprs;
+	let ex: Desmos.ExpressionState[] = exprs;
+
+	function find(expr: Desmos.ExpressionState): number | undefined {
+		let idx = ex.findIndex(x => x.id != undefined && x.id === expr.id);
+		return idx !== -1 ? idx : undefined;
+	}
 
 	return {
-		getExpressions: () => expressions,
+		getExpressions: () => ex,
+
 		updateSettings: () => {},
+
 		setMathBounds: () => {},
-		setExpression: (expr: Desmos.ExpressionState) => expressions.push(expr),
-		setExpressions: (exprs: Desmos.ExpressionState[]) => expressions.push(...exprs),
-		removeExpression: () => {},
+
+		setExpression: expr => {
+			let i = find(expr);
+
+			if (i != undefined) {
+				ex.splice(i, 1, expr);
+			} else {
+				ex.push(expr);
+			}
+		},
+
+		setExpressions: exprs => ex.push(...exprs),
+
+		removeExpression: expr => {
+			let i = find(expr);
+			if (i != undefined) ex.splice(i, 1);
+		},
+
 		graphpaperBounds: {
 			mathCoordinates: { left: -10, right: 10, bottom: -10, top: 10 },
 		},
+
 	} as unknown as Desmos.Calculator;
 }
