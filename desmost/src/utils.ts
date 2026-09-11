@@ -17,10 +17,10 @@ export function* reversing<T>(items: ArrayLike<T>): Generator<T>
 	}
 }
 
-export function* zipping<T,V>(left: Iterable<T>, right: Iterable<V>): Generator<[left: T, right: T]>
+export function* zipping<T,V>(left: Iterable<T>, right: Iterable<V>): Generator<[left: T, right: V]>
 {
 	let iter_left = left[Symbol.iterator]();
-	let iter_right = left[Symbol.iterator]();
+	let iter_right = right[Symbol.iterator]();
 
 	while (true) {
 		let l = iter_left.next();
