@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - '.github/workflows/deploy.yml'
+      - '.github/workflows/site.yaml'
       - 'playground/package-lock.json'
       - 'desmost/package.json'
 
