@@ -7,7 +7,8 @@
 ## v0.11.2
 
 ### Fixes
-- Fix decompiler incorrectly ignoring fields when emitting `/incantation{object}` object arguments
+- 【decompiler】Fix incorrectly ignored fields when emitting `/incantation{object}` object arguments
+- 【decompiler】Remove leading `\n\n` when no global incantations are needed
 
 
 ## v0.11.1
