@@ -56,6 +56,12 @@ export function normalise_latex(latex: string): string
  * 
  * - Replace `()`, `[]`, etc. with `\left(\right)`
  * - Replace `min()`, `max()`, etc. with `\operatorname{min}()`
+ * 
+ * This is the inverse of `prettify_source()`, satisfying:
+ * 
+ * ```ts
+ * prettify_latex(prettify_source(x)) === x
+ * ```
  */
 export function prettify_latex(latex: string): string
 {
