@@ -2,14 +2,17 @@ import { decompile } from "../../../src/decompiler";
 import { testing_desmos } from "../../shared";
 
 
+test("none", () => {
+	let desmos = testing_desmos({ latex: `1` });
+	let src = decompile(desmos, testing_desmos());
+	assert.equal(src, `1`);
+});
+
 test.each([
 	"RED", "BLUE", "GREEN", "PURPLE", "ORANGE", "BLACK",
 ])
 ("name (%s)", col => {
-	let desmos = testing_desmos(
-		{ latex: `1`, color: Desmos.Colors[col] },
-	);
-
+	let desmos = testing_desmos({ latex: `1`, color: Desmos.Colors[col] });
 	let src = decompile(desmos, testing_desmos());
 	assert.equal(src, `/colour{${col}} :: 1`);
 });
@@ -20,10 +23,7 @@ test.each([
 	"#ff0090",
 ])
 ("hex (%s)", color => {
-	let desmos = testing_desmos(
-		{ latex: `1`, color },
-	);
-
+	let desmos = testing_desmos({ latex: `1`, color });
 	let src = decompile(desmos, testing_desmos());
 	assert.equal(src, `/colour{${color}} :: 1`);
 });

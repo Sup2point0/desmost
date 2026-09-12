@@ -139,19 +139,38 @@ describe("functions", () =>
 		describe("replace", () =>
 		{
 			test_cases("1 line", [
-				[ltx`min()`, ltx`\operatorname{min}\left(\right)`],
-				[ltx`min(x)`, ltx`\operatorname{min}\left(x\right)`],
-				[ltx`min(x, y)`, ltx`\operatorname{min}\left(x,\ y\right)`],
-				[ltx`max(x, y)`, ltx`\operatorname{max}\left(x,\ y\right)`],
+				[ltx`min()`, ltx`\min\left(\right)`],
+				[ltx`min(x)`, ltx`\min\left(x\right)`],
+				[ltx`min(x, y)`, ltx`\min\left(x,\ y\right)`],
+				[ltx`max(x, y)`, ltx`\max\left(x,\ y\right)`],
 			]);
 		})
 
 		describe("preserve", () =>
 		{
 			test_cases("1 line", [
-				[ltx`\operatorname{min}`, ltx`\operatorname{min}`],
-				[ltx`\operatorname{min}(x)`, ltx`\operatorname{min}\left(x\right)`],
-				[ltx`\operatorname{min}(x, y)`, ltx`\operatorname{min}\left(x,\ y\right)`],
+				[ltx`\min`,       ltx`\min`],
+				[ltx`\min(x)`,    ltx`\min\left(x\right)`],
+				[ltx`\min(x, y)`, ltx`\min\left(x,\ y\right)`],
+			]);
+		})
+	})
+	
+	describe("round", () =>
+	{
+		describe("replace", () =>
+		{
+			test_cases("1 line", [
+				[ltx`round()`,  ltx`\operatorname{round}\left(\right)`],
+				[ltx`round(x)`, ltx`\operatorname{round}\left(x\right)`],
+			]);
+		})
+
+		describe("preserve", () =>
+		{
+			test_cases("1 line", [
+				[ltx`\operatorname{round}`,    ltx`\operatorname{round}`],
+				[ltx`\operatorname{round}(x)`, ltx`\operatorname{round}\left(x\right)`],
 			]);
 		})
 	})
