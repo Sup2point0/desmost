@@ -18,7 +18,7 @@ describe("/desmos", () =>
 	})
 	
 	test("with arg", () => {
-		let parser = new DesmostParser(`/desmos{ keypad: false, expressionsCollapsed: true }`);
+		let parser = new DesmostParser(`/desmos{keypad: false, expressionsCollapsed: true}`);
 		let r = parser.parse_incantation();
 		
 		is_invoc(r);

@@ -10,8 +10,8 @@ test.each([
 	`/viewport`,
 	`/line y = x`,
 	`/line :: y = x`,
-	`/line{ opacity: 1 } y = x`,
-	`/text{ This didn't stop`,
+	`/line{opacity: 1} y = x`,
+	`/text{This didn't stop`,
 ])
 ("syntax error", src => {
 	let desmos = testing_desmos();

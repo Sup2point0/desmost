@@ -50,7 +50,7 @@ test("medium", () =>
 	assert.equal(r.data.text, "Enter your integrand here:");
 	assert.deepEqual(r.incantations, []);
 
-	// /colour{ BLUE } :: f(x) =
+	// /colour{BLUE} :: f(x) =
 	r = parses_block(parser);
 	is_expr(r);
 	assert.equal(r.data.latex, `f(x) =`);
