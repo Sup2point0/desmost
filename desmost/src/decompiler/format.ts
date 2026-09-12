@@ -19,7 +19,11 @@ export function prettify_source(source: string): string
 	source = source.replaceAll(/(:|,)\\ /g, "$1 ");
 
 	source = source.replaceAll(
-      /\\operatorname\{(length|mean|median|min|max|count|total|repeat|join|sort|shuffle|unique|mod|ceil|floor|round|sign)\} ?(?=\(|\\left\()/g,
+      /\\operatorname\{(length|mean|median|count|total|repeat|join|sort|shuffle|unique|mod|ceil|floor|round|sign)\}\s*(?=\(|\\left\()/g,
+		"$1"
+	);
+   source = source.replaceAll(
+		/\\(min|max)\s*(?=\(|\\left\()/g,
 		"$1"
 	);
 

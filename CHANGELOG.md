@@ -4,6 +4,12 @@
 <br>
 
 
+## v0.12.1
+
+### Fixes
+- Prettify `min`/`max` to `\min` instead of `\operatorname{min}`
+
+
 ## v0.12
 
 ### New
