@@ -193,6 +193,9 @@ export class DesmostCompiler
 				this.evaluate_error(e as Error);
 			}
 		}
+		else {
+			invocation.incantation.apply(this.desmos);
+		}
 	}
 
 
