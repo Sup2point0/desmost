@@ -82,7 +82,7 @@ export function prettify_latex(latex: string): string
 	);
 	latex = latex.replaceAll(
 		/\s(and|or)\s/g,
-		"\\operatorname{$1}"
+		" \\operatorname{$1} "
 	);
 
 	return latex;
