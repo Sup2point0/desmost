@@ -9,78 +9,68 @@ import {
 import { is_expr, is_invoc } from "./shared";
 
 
-describe("try-parse-incantation<GLOBAL>()", () =>
+describe("global", () =>
 {
 	test.each(Object.values(GLOBAL_INCANTATIONS))
 	("without arg", incantation => {
 		if (incantation instanceof ArgIncantation) return;
 		
 		let parser = new DesmostParser(`/${incantation.identifier}`);
-		let r = parser.try_parse_incantation(Object.values(GLOBAL_INCANTATIONS));
+		let r = parser.parse_incantation();
 		
 		is_invoc(r);
 		assert.equal(r.kind, Ast.Kind.INCANTATION_INVOCATION);
 		assert.equal(r.incantation, incantation);
-	})
+	});
 	
 	test.each(Object.values(GLOBAL_INCANTATIONS))
 	("with arg", incantation => {
-		if (incantation instanceof ArgIncantation) return;
+		if (!(incantation instanceof ArgIncantation)) return;
 		
-		let parser = new DesmostParser(`/${incantation.identifier}`);
-		let r = parser.try_parse_incantation(Object.values(GLOBAL_INCANTATIONS));
+		let parser = new DesmostParser(`/${incantation.identifier}{}`);
+		let r = parser.parse_incantation();
 		
 		is_invoc(r);
 		assert.equal(r.kind, Ast.Kind.INCANTATION_INVOCATION);
 		assert.equal(r.incantation, incantation);
-	})
-
-	test.each(Object.values(LOCAL_INCANTATIONS))
-	("invalid identifier", incantation => {
-		let parser = new DesmostParser(`/${incantation.identifier}`);
-		let r = parser.try_parse_incantation(Object.values(GLOBAL_INCANTATIONS));
-		assert.equal(r, NO_MATCH);
-	})
+	});
 })
 
-describe("try-parse-incantation<LOCAL>()", () =>
+describe("local", () =>
 {
+	test.each(Object.values(LOCAL_INCANTATIONS))
+	("without arg", incantation => {
+		if (incantation instanceof ArgIncantation) return;
+		
+		let parser = new DesmostParser(`/${incantation.identifier}`);
+		let r = parser.parse_incantation();
+		
+		is_invoc(r);
+		assert.equal(r.kind, Ast.Kind.INCANTATION_INVOCATION);
+		assert.equal(r.incantation, incantation);
+	});
 	test.each(Object.values(LOCAL_INCANTATIONS))
 	("with arg", incantation => {
-		if (incantation instanceof ArgIncantation) return;
+		if (!(incantation instanceof ArgIncantation)) return;
 		
-		let parser = new DesmostParser(`/${incantation.identifier}`);
-		let r = parser.try_parse_incantation(Object.values(LOCAL_INCANTATIONS));
+		let parser = new DesmostParser(`/${incantation.identifier}{}`);
+		let r = parser.parse_incantation();
 		
 		is_invoc(r);
 		assert.equal(r.kind, Ast.Kind.INCANTATION_INVOCATION);
 		assert.equal(r.incantation, incantation);
 	});
-
-	test.each(Object.values(EXPR_INCANTATIONS))
-	("invalid identifier", incantation => {
-		let parser = new DesmostParser(`/${incantation.identifier}`);
-		let r = parser.try_parse_incantation(Object.values(LOCAL_INCANTATIONS));
-		assert.equal(r, NO_MATCH);
-	});
 })
 
-describe("try-parse-expr-incantation()", () =>
+describe("expr", () =>
 {
 	test.each(Object.values(EXPR_INCANTATIONS))
-	("/expr{ sup }", incantation => {
+	("with arg", incantation => {
 		if (!(incantation instanceof ArgIncantation)) return;
 
-		let parser = new DesmostParser(`/${incantation.identifier}{ sup }`);
+		let parser = new DesmostParser(`/${incantation.identifier}{}`);
 		let r = parser.try_parse_expr_incantation();
 		
 		is_expr(r);
-	})
-
-	test.each(Object.values(GLOBAL_INCANTATIONS))
-	("invalid identifier", incantation => {
-		let parser = new DesmostParser(`/${incantation.identifier}`);
-		let r = parser.try_parse_expr_incantation();
-		assert.equal(r, NO_MATCH);
 	})
 })
