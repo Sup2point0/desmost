@@ -5,6 +5,8 @@ The dropdown panel for configuring compile options.
 
 <script lang="ts">
 
+import { DEFAULT_OPTIONS } from "desmost/internal";
+
 import { options } from "#scripts/options";
 
 </script>
@@ -116,6 +118,10 @@ import { options } from "#scripts/options";
 			<p> Keep blank lines at the end of the source as empty expressions? </p>
 		</label>
 	</section>
+
+	<button onclick={() => { $options = { ...DEFAULT_OPTIONS }; }}>
+		Reset to Defaults
+	</button>
 </form>
 
 
@@ -179,6 +185,23 @@ select {
 	@include font-ui;
 	font-size: 100%;
 	outline: none;
+}
+
+
+button {
+	padding: 0.25rem 0.5rem;
+	margin-bottom: 1rem;
+	@include font-ui;
+	color: white;
+	font-size: 100%;
+	background: $col-blue;
+	border: none;
+	outline: none;
+
+	&:hover {
+		cursor: pointer;
+		background: color-mix(in oklch, 90% $col-blue, 10% black);
+	}
 }
 
 </style>
