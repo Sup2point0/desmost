@@ -17,6 +17,22 @@ const EXAMPLES =
 		f(x) = x^2
 	`,
 
+	colours: ltx `
+		/colour{RED}    :: 0 < y < 1
+		/colour{ORANGE} :: 1 < y < 2
+		/colour{GREEN}  :: 2 < y < 3
+		/colour{BLUE}   :: 3 < y < 4
+		/colour{PURPLE} :: 4 < y < 5
+	`,
+
+	labels: ltx `
+		y = x^3 - 3x^2
+
+		/label{text: "This is a local maximum", pos: ABOVE_LEFT} :: (0, 0)
+		/label{text: "This is also the origin", pos: BELOW_LEFT} :: (0, 0)
+		/label{text: "This is a local minimum", pos: BELOW_RIGHT} :: (2, -4)
+	`,
+
 	// from Awxynth
 	waveform: ltx `
 		/dark
@@ -81,11 +97,17 @@ header {
 ul {
 	padding-bottom: 0.5rem;
 	list-style: none;
+	overflow-y: auto;
+	scrollbar-width: thin;
 
 	button {
 		width: 100%;
-		padding: 0.5rem 1rem;
+		padding: 0.25rem 1rem;
 		@include font-ui;
+		color: light-dark(
+			rgb(black, 80%),
+			rgb(white, 80%)
+		);
 		font-weight: normal;
 		text-align: left;
 		background: none;
