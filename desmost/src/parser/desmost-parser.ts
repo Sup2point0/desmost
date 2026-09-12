@@ -8,7 +8,7 @@ import { DesmostError, type Fallible } from "../errors";
 import * as utils from "../utils";
 
 import {
-	Incantation, ArgIncantation,
+	Incantation, ArgIncantation, ALL_INCANTATIONS,
 	GLOBAL_INCANTATIONS, LOCAL_INCANTATIONS, EXPR_INCANTATIONS
 } from "../magic";
 import type { GLOBAL, LOCAL, EXPR } from "../magic";
@@ -48,49 +48,75 @@ export class DesmostParser extends GenericParser
 	public parse_next():
 		Fallible<{ blocks: Ast[], errors: DesmostError[] } | undefined>
 	{
-		this.errors = [];
-
-		this.eat_whitespace();
-
 		if (this.out_of_bounds()) {
 			return undefined;
 		}
 
-		let blocks = [];
+		this.errors = [];
+		let blocks = this.parse_block();
+
+		return { blocks, errors: this.errors };
+	}
+
+	parse_block(): Ast[]
+	{
+		this.eat_whitespace();
+
+		let blocks: Ast[] = [];
 
 		if (this.current === "%") {
 			// comment
 			if (this.options?.ignore_comments) {
 				this.parse_line();
-			}
-			else {
+			} else {
 				blocks.push(this.parse_comment());
 			}
 		}
-		else if (this.current === "/") {
-			let r = this.parse_pre_sep();
+		else if (this.current === "/" && /[a-z]/.test(this.peek() ?? "")) {
+			let invocation = this.parse_incantation();
 
-			if ("global" in r) {
-				// 1 global
-				if (r.global !== null) {
-					blocks.push(r.global);
-				}
+			if (invocation === INVALID_PARSE) {
+				// FIXME
+				return this.parse_block();
 			}
-			else {
+
+			switch (invocation.incantation.effect) {
+				// 1 global
+				case Incantation.Effect.GLOBAL:
+					blocks.push(invocation);
+					break;
+
+				// 1 expr
+				case Incantation.Effect.EXPR:
+					let data = {};
+
+					/* NOTE: All expression incantations currently require arguments, and all for the foreseeable future will too */
+					invocation.incantation.apply(data, invocation.arg_raw);
+
+					blocks.push({
+						kind: Ast.Kind.EXPRESSION,
+						data,
+						incantations: [],
+					});
+					break;
+				
 				// 1+ locals + 1 expr
-				let incantations = r.locals;
-
-				if (incantations.length > 0) {
+				case Incantation.Effect.LOCAL:
+					this.eat_newlines();
+					
+					let invocations = [
+						invocation as Ast.IncantationInvocation<LOCAL>,
+						...this.parse_pre_sep(),
+					];
 					this.parse_sep();
-				}
+					let block = this.parse_post_sep();
 
-				let block = this.parse_post_sep();
+					for (let invocation of invocations) {
+						block.incantations.push(invocation);
+					}
 
-				for (let invocation of incantations) {
-					block.incantations.push(invocation);
-				}
-
-				blocks.push(block);
+					blocks.push(block);
+					break;
 			}
 		}
 		else {
@@ -100,53 +126,31 @@ export class DesmostParser extends GenericParser
 
 		this.eat_end_of_block();
 
-		return { blocks, errors: this.errors };
+		return blocks;
 	}
 
 	/**
-	 * Parse Desmost syntax before the `::` separator, which may be:
-	 * 
-	 * - 1 global incantation
-	 * - 1+ local incantations
+	 * Parse any number of local incantations before the `::` separator.
 	 */
-	parse_pre_sep():
-		Fallible<
-		| { global: Ast.IncantationInvocation<GLOBAL> | null }
-		| { locals: Ast.IncantationInvocation<LOCAL>[] }
-		>
+	*parse_pre_sep(): Generator<Ast.IncantationInvocation<LOCAL>>
 	{
-		// 1 global incantation
-		try {
-			let r = this.try_parse_incantation(Object.values(GLOBAL_INCANTATIONS));
-
-			if (r !== NO_MATCH) {
-				this.eat_whitespace();
-				return { global: r };
-			}
-		}
-		catch (e) {
-			this.errors.push(e as Error);
-			return { global: null };
-		}
-
-		// 1+ local incantations
-		let incantations = [];
-
 		while (this.current === "/") {
-			try {
-				var invocation = this.try_parse_incantation(Object.values(LOCAL_INCANTATIONS));
-			}
-			catch (e) {
-				this.errors.push(e as Error);
-				continue;
+			let invocation = this.parse_incantation();
+
+			if (invocation !== INVALID_PARSE) {
+				if (invocation.incantation.effect === Incantation.Effect.LOCAL) {
+					yield invocation as Ast.IncantationInvocation<LOCAL>;
+				}
+				else {
+					this.errors.push(new DesmostError.IllegalIncantation({
+						msg:  `/${invocation.incantation.identifier} can't be used as a local incantation`,
+						hint: `/${invocation.incantation.identifier} is a ${invocation.incantation.effect} incantation`,
+					}));
+				}
 			}
 
-			if (invocation === NO_MATCH) break;
-			incantations.push(invocation);
 			this.eat_newlines();
 		}
-
-		return { locals: incantations };
 	}
 
 	/**
@@ -253,9 +257,62 @@ export class DesmostParser extends GenericParser
 	}
 
 	/**
+	 * Parse an incantation invocation, along with its argument if appropriate.
+	 * 
+	 * Does not backtrack.
+	 */
+	parse_incantation(): Ast.IncantationInvocation | InvalidParse
+	{
+		if (this.try_eat("/") === NO_MATCH) return INVALID_PARSE;
+
+		let ident = this.try_eat_identifier();
+		if (ident === NO_MATCH) return INVALID_PARSE;
+
+		let incantation =
+			Object.values(ALL_INCANTATIONS)
+			.find(inc => inc.identifier === ident || inc.alias === ident)
+		;
+		let arg_raw = undefined;
+
+		if (incantation instanceof ArgIncantation) {
+			if (this.current === "{") {
+				arg_raw = this.parse_incantation_arg(incantation.arg_type);
+			}
+			else if (incantation.requires_arg) {
+				this.errors.push(new DesmostError.MissingInput({
+					msg:  `No argument provided for /${incantation.identifier}`,
+					hint: `/${incantation.identifier} requires an argument of type: \`${incantation.arg_type}\``,
+				}));
+				return INVALID_PARSE;
+			}
+		}
+
+		if (incantation == undefined) {
+			let alternative =
+				Object.values(ALL_INCANTATIONS)
+				.map(inc => inc.identifier)
+				.find(i => i.startsWith(ident[0]))
+			;
+			
+			this.errors.push(new DesmostError.UnknownIncantation({
+				msg:  `/${ident}`,
+				hint: alternative && `Did you mean /${alternative}?`,
+			}));
+
+			return INVALID_PARSE;
+		}
+
+		return {
+			kind: Ast.Kind.INCANTATION_INVOCATION,
+			incantation,
+			arg_raw,
+		};
+	}
+
+	/**
 	 * Attempt to parse an incantation invocation allowed by `incantations`.
 	 */
-	try_parse_incantation<Effect extends Incantation.Effect>(
+	try_parse_incantation_from<Effect extends Incantation.Effect>(
 		incantations: Incantation<Effect>[],
 	): Fallible<Ast.IncantationInvocation<Effect> | NoMatch>
 	{

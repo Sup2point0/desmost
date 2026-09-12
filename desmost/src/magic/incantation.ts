@@ -174,13 +174,13 @@ export namespace Incantation
 	export enum Effect
 	{
 		/** An incantation that affects the entire Desmos calculator state, like `/desmos` or `/viewport`. */
-		GLOBAL,
+		GLOBAL = "global",
 
 		/** An incantation that affects only the expression immediately following it, like `/hide` or `/slider`. */
-		LOCAL,
+		LOCAL = "local",
 		
 		/** An incantation that produces an expression, like `/latex` or `/text`. */
-		EXPR,
+		EXPR = "expression",
 	}
 
 	/** The type of argument an incantation accepts, which affects how it is parsed. */
