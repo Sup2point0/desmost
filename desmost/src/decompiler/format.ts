@@ -13,6 +13,8 @@
  */
 export function prettify_source(source: string): string
 {
+	source = source.replaceAll(/\s*\\leq\s*/g, " =< ")
+	source = source.replaceAll(/\s*\\geq\s*/g, " >= ")
    source = source.replaceAll(/(?<=[^ ])=(?=[^ ])/g, " = ");
    source = source.replaceAll(/\\left\s*(\(|\[|\\\{)/g, "$1");
    source = source.replaceAll(/\\right\s*(\)|\]|\\\})/g, "$1");

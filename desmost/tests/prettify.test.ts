@@ -6,6 +6,8 @@ import { ltx } from "./shared";
 
 test.each([
 	ltx `y = x`,
+	ltx `y =< x`,
+	ltx `y >= x`,
 	ltx `f(x) = x`,
 	ltx `\{ x > 0: 1, -1 \}`,
 	ltx `min(x, y)`,
@@ -18,6 +20,8 @@ test.each([
 
 test.each([
 	ltx `y = x`,
+	ltx `y \leq x`,
+	ltx `y \geq x`,
 	ltx `f\left(x\right) = x`,
 	ltx `\left\{ x > 0:\ 1,\ -1 \right\}`,
 	ltx `\min\left(x,\ y\right)`,

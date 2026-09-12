@@ -6,6 +6,9 @@
 
 ## v0.12.1
 
+### New
+- Prettify `=<`/`>=` to `\leq`/`\geq`
+
 ### Fixes
 - Prettify `min`/`max` to `\min` instead of `\operatorname{min}`
 - 【decompiler】Prettify `\operatorname{and}`/`\operatorname{or}` to `and`/`or`
