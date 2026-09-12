@@ -33,6 +33,7 @@ export function format_error(
 	if (options.expand_errors) {
 		if (e.data.hint  != undefined) display += `\n${LINE}\nHint: ${e.data.hint}`;
 		if (e.data.note  != undefined) display += `\n${LINE}\nNote: ${e.data.note}`;
+		if (e.data.debug != undefined) display += `\n${LINE}\nDebug Info:\n${e.data.debug}`;
 	}
 
 	return display;
