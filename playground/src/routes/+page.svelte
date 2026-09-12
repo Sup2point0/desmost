@@ -298,6 +298,8 @@ main {
 aside {
 	max-width: 25vw;
 	z-index: 4;
+	display: flex;
+	flex-flow: column nowrap;
 	background: light-dark(white, black);
 
 	.sep {

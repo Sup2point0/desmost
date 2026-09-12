@@ -121,16 +121,6 @@ import { options } from "#scripts/options";
 
 <style lang="scss">
 
-form {
-	flex: 0.5;
-	max-height: max-content;
-	padding: 0.5rem 1rem;
-	z-index: 2;
-	overflow-y: auto;
-	scrollbar-width: thin;
-	scrollbar-color: $col-green black;
-}
-
 header {
 	padding: 0.5rem 1rem;
 	display: flex;
@@ -145,6 +135,16 @@ header {
 		font-size: 80%;
 		font-weight: normal;
 	}
+}
+
+
+form {
+	flex: 1;
+	max-height: max-content;
+	padding: 0.5rem 1rem;
+	z-index: 2;
+	overflow-y: auto;
+	scrollbar-width: thin;
 }
 
 section {
