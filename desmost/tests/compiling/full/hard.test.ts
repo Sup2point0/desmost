@@ -34,6 +34,12 @@ describe("medium", () =>
 		assert.equal(exprs[i].latex, ` `);
 
 		i++;
+		assert.equal(exprs[i].latex, `y=x`);
+		
+		i++;
+		assert.equal(exprs[i].latex, `y=x`);
+
+		i++;
 		assert.equal(exprs[i].latex, ltx `\left(0,\ 0\right)`);
 		assert.equal(exprs[i].label, ` } should not close the block`);
 		assert.equal(exprs[i].labelOrientation, "RIGHT");

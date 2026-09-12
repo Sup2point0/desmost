@@ -20,7 +20,7 @@ describe("/desmos", () =>
 	})
 	
 	test("with arg", () => {
-		let parser = new DesmostParser(`/desmos{ keypad: false, expressionsCollapsed: true }`);
+		let parser = new DesmostParser(`/desmos{keypad: false, expressionsCollapsed: true}`);
 		let r = parser.try_parse_incantation(Object.values(GLOBAL_INCANTATIONS));
 		
 		is_invoc(r);
@@ -40,7 +40,7 @@ describe("/viewport", () =>
 	})
 	
 	test("with arg", () => {
-		let parser = new DesmostParser(`/viewport{ left: -1, right: 1 }`);
+		let parser = new DesmostParser(`/viewport{left: -1, right: 1}`);
 		let r = parser.try_parse_incantation(Object.values(GLOBAL_INCANTATIONS));
 
 		is_invoc(r);
