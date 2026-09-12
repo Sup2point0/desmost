@@ -81,6 +81,16 @@ This page documents all the incantations available in Desmost.
 <tr>
     <td>
 
+[`/no-border`](#no-border)
+    </td>
+    <td>—</td>
+    <td>—</td>
+    <td>Remove the “subtle 1px gray border around the entire calculator”.</td>
+  </tr>
+  <tr></tr>
+<tr>
+    <td>
+
 [`/viewport`](#viewport)
     </td>
     <td>required</td>
@@ -124,7 +134,7 @@ This page documents all the incantations available in Desmost.
 [`/colour`](#colour)<br>[`/color`](#colour)
     </td>
     <td>required</td>
-    <td><code>DesmosColour</code></td>
+    <td><code>DesmosColour \| HexColour</code></td>
     <td>Change the colour of a rendered expression, such as a line, region, polygon, etc.</td>
   </tr>
   <tr></tr>
@@ -136,6 +146,16 @@ This page documents all the incantations available in Desmost.
     <td>—</td>
     <td>—</td>
     <td>Render a block as a dashed line.</td>
+  </tr>
+  <tr></tr>
+<tr>
+    <td>
+
+[`/dotted`](#dotted)
+    </td>
+    <td>—</td>
+    <td>—</td>
+    <td>Render a block as a dotted line.</td>
   </tr>
   <tr></tr>
 <tr>
@@ -195,6 +215,16 @@ This page documents all the incantations available in Desmost.
 <tr>
     <td>
 
+[`/no-fill`](#no-fill)
+    </td>
+    <td>—</td>
+    <td>—</td>
+    <td>Disable rendering fill for a block.</td>
+  </tr>
+  <tr></tr>
+<tr>
+    <td>
+
 [`/no-line`](#no-line)
     </td>
     <td>—</td>
@@ -212,8 +242,9 @@ This page documents all the incantations available in Desmost.
 <br>   style?: keyof typeof Desmos.Styles;
 <br>   size?: number;
 <br>   opacity?: number;
+<br>   drag: keyof typeof Desmos.DragModes;
 <br>}</code></pre></td>
-    <td></td>
+    <td>Change point styles for a rendered block.</td>
   </tr>
   <tr></tr>
 <tr>
