@@ -20,15 +20,19 @@ let { is_compiling, recompile, is_decompiling, redecompile }: Props = $props();
 	<div class="left">
 		<h1> Desmost <span>Playground</span> &ensp;<small>by Sup#2.0</small> </h1>
 
-		<button
-			class:off={!$prefs.show_options}
+		<button class:off={!$prefs.show_examples}
+			onclick={() => { $prefs.show_examples = !$prefs.show_examples; }}
+		>
+			Examples
+		</button>
+
+		<button class:off={!$prefs.show_options}
 			onclick={() => { $prefs.show_options = !$prefs.show_options; }}
 		>
 			Options
 		</button>
 
-		<button
-			class:off={!$options.debug}
+		<button class:off={!$options.debug}
 			onclick={() => { $options.debug = !$options.debug; }}
 		>
 			Debug
@@ -62,7 +66,7 @@ let { is_compiling, recompile, is_decompiling, redecompile }: Props = $props();
 <style lang="scss">
 
 $pad-vert: 0.5rem;
-$font-size: 1.2rem;
+$font-size: 1.1rem;
 
 nav {
 	padding-right: 1rem;

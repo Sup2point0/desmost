@@ -139,38 +139,38 @@ header {
 	justify-content: space-between;
 	position: sticky;
 	top: 0;
-	background: #002;
 
 	h2 {
 		@include font-code;
-		color: rgb(white, 50%);
+		color: rgb(black, 50%);
 		font-size: 80%;
 		font-weight: normal;
 	}
 }
 
 section {
-	margin-bottom: 0.5rem;
+	margin-bottom: 1rem;
 	display: flex;
 	flex-flow: row nowrap;
+	align-items: center;
 	gap: 1rem;
 
 	h3 {
 		margin-bottom: 0.2rem;
 		@include font-ui;
-		color: white;
+		color: black;
 		font-size: 100%;
 		font-weight: normal;
 	}
 
 	p {
 		@include font-ui;
-		color: rgb(white, 40%);
+		color: rgb(black, 40%);
 		font-size: 90%;
 	}
 
 	&:hover p {
-		color: white;
+		color: black;
 	}
 }
 

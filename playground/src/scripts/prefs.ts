@@ -7,6 +7,9 @@ interface PlaygroundPrefs
   /** Is the compiler options panel open? */
   show_options: boolean;
 
+  /** Is the examples panel open? */
+  show_examples: boolean;
+
   frac_x: number;
 
   frac_y: number;
@@ -14,6 +17,7 @@ interface PlaygroundPrefs
 
 const DEFAULTS: PlaygroundPrefs = {
   show_options: false,
+  show_examples: false,
   frac_x: 0.5,
   frac_y: 0.6,
 };

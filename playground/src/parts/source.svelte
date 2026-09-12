@@ -22,11 +22,8 @@ let { source = $bindable(), debug }: Props = $props();
 </script>
 
 
+<!-- FIXME -->
 <div class="container">
-	{#if $prefs.show_options}
-		<DesmostOptions />
-	{/if}
-
 	<div class="panel">
 		<header>
 			<h2> Source </h2>

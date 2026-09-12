@@ -12,9 +12,10 @@ import { prefs } from "#scripts/prefs";
 import { options } from "#scripts/options";
 
 import Nav from "#parts/nav.svelte";
-import DesmostSource from "#parts/source.svelte";
-import DesmostAst from "#parts/ast.svelte";
+import DesmostSource     from "#parts/source.svelte";
+import DesmostAst        from "#parts/ast.svelte";
 import DesmosExpressions from "#parts/exprs.svelte";
+import DesmostOptions    from "#parts/options.svelte";
 
 import { onMount, untrack } from "svelte";
 
@@ -185,31 +186,41 @@ function finish_drag()
 <div class="root" onmousemove={continue_drag} onmouseup={finish_drag}>
 	<Nav {is_compiling} {recompile} {is_decompiling} {redecompile} />
 
-	<main
-		class:debug={$options.debug}
-		style:--frac-x={$prefs.frac_x}
-		style:--frac-y={$prefs.frac_y}
-	>
-		<DesmostSource bind:source {debug} />
-
-		<div class="resize-drag x" onmousedown={start_drag("x")}></div>
-
-		<div id="desmos" bind:this={el_desmos}>
-			{#if desmos === null}
-				<p> Oops, failed to load Desmos! Try checking your internet connection and reloading the page? </p>
-			{/if}
-		</div>
-
-		{#if $options.debug}
-			<div class="resize-drag y" onmousedown={start_drag("y")}></div>
-			<div></div>
-			<div class="resize-drag y" onmousedown={start_drag("y")}></div>
-
-			<DesmostAst ast={ast} />
-			<div class="resize-drag x" onmousedown={start_drag("x")}></div>
-			<DesmosExpressions {exprs} />
+	<div class="layout">
+		{#if $prefs.show_options || $prefs.show_examples}
+			<aside>
+				{#if $prefs.show_options}
+					<DesmostOptions />
+				{/if}
+			</aside>
 		{/if}
-	</main>
+
+		<main
+			class:debug={$options.debug}
+			style:--frac-x={$prefs.frac_x}
+			style:--frac-y={$prefs.frac_y}
+		>
+			<DesmostSource bind:source {debug} />
+
+			<div class="resize-drag x" onmousedown={start_drag("x")}></div>
+
+			<div id="desmos" bind:this={el_desmos}>
+				{#if desmos === null}
+					<p> Oops, failed to load Desmos! Try checking your internet connection and reloading the page? </p>
+				{/if}
+			</div>
+
+			{#if $options.debug}
+				<div class="resize-drag y" onmousedown={start_drag("y")}></div>
+				<div></div>
+				<div class="resize-drag y" onmousedown={start_drag("y")}></div>
+
+				<DesmostAst ast={ast} />
+				<div class="resize-drag x" onmousedown={start_drag("x")}></div>
+				<DesmosExpressions {exprs} />
+			{/if}
+		</main>
+	</div>
 </div>
 
 
@@ -221,6 +232,13 @@ function finish_drag()
 	display: flex;
 	flex-flow: column nowrap;
 	position: relative;
+}
+
+.layout {
+	flex: 1;
+	min-height: 0;
+	display: flex;
+	flex-flow: row nowrap;
 }
 
 main {
@@ -266,6 +284,12 @@ main {
 		&:hover, &:active { background: #ff60ff; }
 		&:active { filter: brightness(75%); }
 	}
+}
+
+aside {
+	max-width: 25vw;
+	z-index: 4;
+	background: light-dark(white, black);
 }
 
 #desmos {
