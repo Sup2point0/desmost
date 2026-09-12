@@ -26,6 +26,10 @@ export function prettify_source(source: string): string
 		/\\(min|max)\s*(?=\(|\\left\()/g,
 		"$1"
 	);
+	source = source.replaceAll(
+		/\\operatorname\{(and|or)\}/g,
+		"$1",
+	);
 
    return source;
 }
