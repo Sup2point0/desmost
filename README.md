@@ -92,7 +92,7 @@ But if you enjoy nice things, Desmost provides a [Svelte<sup>↗</sup>](https://
 ```svelte
 <script>
   import Content from "./intro.md";
-  import { Desmost } from "desmost/svelte";
+  import Desmost from "desmost/svelte";
 </script>
 
 <Desmost>

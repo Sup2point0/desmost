@@ -26,7 +26,7 @@ Rendering is intentionally left open-ended so you can render the calculator howe
 However, Desmost does provide a Svelte component for rendering Desmost in Markdown:
 
 ```ts
-import { Desmost } from "desmost/svelte";
+import Desmost from "desmost/svelte";
 ```
 
 ### Desmost doesn’t handle LaTeX

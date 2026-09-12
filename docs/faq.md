@@ -91,7 +91,7 @@ It’s LaTeX ofc! Except the `\` backslash is mirrored, to avoid confusing Desmo
 Technically speaking, a separator is not necessary for Desmost to parse your source correctly! But it does make error recovery from unclosed brackets significantly easier.
 
 ```hs
-/label{ text: "This argument wasn’t fi :: (0, 0)
+/label{text: "This argument wasn’t fi :: (0, 0)
 -- Now we can keep (0, 0) and keep parsing, instead of completely imploding
 ```
 
