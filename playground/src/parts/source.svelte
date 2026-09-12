@@ -103,7 +103,7 @@ textarea {
 	min-height: 80%;
 	padding: 0.5rem 1rem 1rem;
 	@include font-code;
-	font-size: 100%;
+	font-size: 90%;
 	font-weight: 350;
 	line-height: 1.5;
 	color: white;

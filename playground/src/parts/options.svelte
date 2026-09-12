@@ -126,7 +126,6 @@ form {
 	max-height: max-content;
 	padding: 0.5rem 1rem;
 	z-index: 2;
-	border-bottom: 0.5px solid rgb(white, 30%);
 	overflow-y: auto;
 	scrollbar-width: thin;
 	scrollbar-color: $col-green black;

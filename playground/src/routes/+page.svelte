@@ -12,10 +12,11 @@ import { prefs } from "#scripts/prefs";
 import { options } from "#scripts/options";
 
 import Nav from "#parts/nav.svelte";
-import DesmostSource     from "#parts/source.svelte";
-import DesmostAst        from "#parts/ast.svelte";
 import DesmosExpressions from "#parts/exprs.svelte";
+import DesmostAst        from "#parts/ast.svelte";
+import DesmostExamples   from "#parts/examples.svelte";
 import DesmostOptions    from "#parts/options.svelte";
+import DesmostSource     from "#parts/source.svelte";
 
 import { onMount, untrack } from "svelte";
 
@@ -187,8 +188,16 @@ function finish_drag()
 	<Nav {is_compiling} {recompile} {is_decompiling} {redecompile} />
 
 	<div class="layout">
-		{#if $prefs.show_options || $prefs.show_examples}
+		{#if $prefs.show_examples || $prefs.show_options}
 			<aside>
+				{#if $prefs.show_examples}
+					<DesmostExamples bind:source />
+				{/if}
+
+				{#if $prefs.show_examples && $prefs.show_options}
+					<div class="sep"></div>
+				{/if}
+
 				{#if $prefs.show_options}
 					<DesmostOptions />
 				{/if}
@@ -290,6 +299,10 @@ aside {
 	max-width: 25vw;
 	z-index: 4;
 	background: light-dark(white, black);
+
+	.sep {
+		border-top: 0.5px solid rgb(black, 30%);
+	}
 }
 
 #desmos {
