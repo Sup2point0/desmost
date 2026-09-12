@@ -70,13 +70,16 @@ export function prettify_latex(latex: string): string
 	latex = latex.replaceAll(/(?:\\left\s?)+/g, "\\left");
 	latex = latex.replaceAll(/(?<!\\right)(\)|\]|\\\})/g, "\\right$1");
 	latex = latex.replaceAll(/(?:\\right\s?)+/g, "\\right");
-	latex = latex.replaceAll(/(:|,)(?!\\ ) */g, "$1\\ ");
+	latex = latex.replaceAll(/(:|,)\s*(?!\\ )/g, "$1\\ ");
 
 	latex = latex.replaceAll(
-		/(?<=[^\w]|^)\\?(length|mean|median|min|max|count|total|repeat|join|sort|shuffle|unique|mod|ceil|floor|round|sign) ?(?=\(|\\left\()/g,
+		/(?<=[^\w]|^)\\?(length|mean|median|count|total|repeat|join|sort|shuffle|unique|mod|ceil|floor|round|sign)\s*(?=\(|\\left\()/g,
 		"\\operatorname{$1}"
 	);
-
+	latex = latex.replaceAll(
+		/\\?(min|max)\s*(?=\(|\\left\()/g,
+		"\\$1"
+	);
 	latex = latex.replaceAll(
 		/\s(and|or)\s/g,
 		"\\operatorname{$1}"
