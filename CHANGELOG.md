@@ -8,14 +8,15 @@
 
 ### Fixes
 - Prettify `min`/`max` to `\min` instead of `\operatorname{min}`
+- 【decompiler】Prettify `\operatorname{and}`/`\operatorname{or}` to `and`/`or`
 
 
 ## v0.12
 
 ### New
-- Add `/no-border` global incantation to remove border around calculator
-- Add `/no-fill` local incantation to remove fill from polygons
-- Add `/dotted` local incantation to style a dotted line
+- `/no-border` global incantation to remove border around calculator
+- `/no-fill` local incantation to remove fill from polygons
+- `/dotted` local incantation to style a dotted line
 - `/colour` supports `/colour{#abcdef}` hex colours
 - `/point` supports `/point{drag: XY}` to customise point draggability
 

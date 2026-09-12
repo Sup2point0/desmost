@@ -9,6 +9,7 @@ test.each([
 	ltx `f(x) = x`,
 	ltx `\{ x > 0: 1, -1 \}`,
 	ltx `min(x, y)`,
+	ltx `0 < x and x < 1`,
 ])
 ("source (%s)", src =>
 {
@@ -19,7 +20,8 @@ test.each([
 	ltx `y = x`,
 	ltx `f\left(x\right) = x`,
 	ltx `\left\{ x > 0:\ 1,\ -1 \right\}`,
-	ltx `\operatorname{min}\left(x,\ y\right)`,
+	ltx `\min\left(x,\ y\right)`,
+	ltx `0 < x \operatorname{and} x < 1`,
 ])
 ("latex (%s)", src =>
 {
