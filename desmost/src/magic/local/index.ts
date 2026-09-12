@@ -8,6 +8,7 @@ import { fill    } from "./fill";
 import { hide    } from "./hide";
 import { label   } from "./label";
 import { line    } from "./line";
+import { no_fill } from "./no-fill";
 import { no_line } from "./no-line";
 import { point   } from "./point";
 import { secret  } from "./secret";
@@ -23,6 +24,7 @@ export const LOCAL_INCANTATIONS = {
 	hide,
 	label,
 	line,
+	no_fill,
 	no_line,
 	point,
 	secret,

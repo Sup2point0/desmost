@@ -8,6 +8,7 @@
 
 ### New
 - Add `/no-border` global incantation to remove border around calculator
+- Add `/no-fill` local incantation to remove fill from polygons
 - Add `/dotted` local incantation to style a dotted line
 - `/colour` supports `/colour{#abcdef}` hex colours
 - `/point` supports `/point{drag: XY}` to customise point draggability
