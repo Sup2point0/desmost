@@ -83,6 +83,7 @@ function recompile()
 		}
 
 		desmos.setState(blank_state);
+		desmos.updateSettings({ invertedColors: false });
 
 		let r;
 		try {
