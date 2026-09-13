@@ -33,16 +33,46 @@ const EXAMPLES =
 		/label{text: "This is a local minimum", pos: BELOW_RIGHT} :: (2, -4)
 	`,
 
+	lines: ltx `
+		/no-line :: y < 0.1x
+
+		/line{width: 40, opacity: 0.2} :: y = \sin(x)
+	`,
+
+	points: ltx `
+		/point{style: CROSS, size: 5} :: ([-10...10], \sin([-10...10]))
+	`,
+
+	"animated slider": ltx `
+		/anim /slider{min: -10, max: 10} :: A = 0
+
+		A \sin(x)
+	`,
+
+	"multi line": ltx `
+		/text{
+		   The normalised Gaussian (normal distribution) has some messy scaling factors.
+
+		   But these ensure the area under the curve is precisely 1.
+		}
+		/latex{
+		   \int_{-\infty}^{\infty}
+			   \frac{1}{\sqrt{2\pi}}
+		      e^{-x^2/2}
+		   \ dx
+		}
+	`,
+
 	// from Awxynth
 	waveform: ltx `
 		/dark
 		/viewport{bottom: -2, top: 2}
 
-		/hide :: f(x) = \sum_{n=1}^{4}\frac{1}{n}\sin(n^{2}x)
+		/hide :: f(x) = \sum_{n=1}^{4} \frac{1}{n}\sin(n^{2}x)
 
-		/colour{ BLUE } /no-line :: \min(0, f(x-3t)) <  y < \max(0, f(x-3t))\ \{ 0 < x \}
+		/colour{BLUE} /no-line :: \min(0, f(x-3t)) <  y < \max(0, f(x-3t))\ \{ 0 < x \}
 		/line{ opacity: 0.2 } :: y = f(x-3t) \{ x < 0 \}
-		/colour{ BLUE } :: y = f(x-3t) \{ x > 0 \}
+		/colour{BLUE} :: y = f(x-3t) \{ x > 0 \}
 		/point{ size: 16 } :: (0, f(0-3t))
 
 		t = \{ t_2 < 0: 2\pi - t_1, t_1 \}
