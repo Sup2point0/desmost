@@ -137,7 +137,10 @@ header {
 
 	h2 {
 		@include font-code;
-		color: rgb(black, 50%);
+		color: light-dark(
+			rgb(black, 50%),
+			rgb(white, 50%),
+		);
 		font-size: 80%;
 		font-weight: normal;
 	}
@@ -163,14 +166,17 @@ section {
 	h3 {
 		margin-bottom: 0.2rem;
 		@include font-ui;
-		color: black;
+		color: light-dark(black, white);
 		font-size: 100%;
 		font-weight: normal;
 	}
 
 	p {
 		@include font-ui;
-		color: rgb(black, 40%);
+		color: light-dark(
+			rgb(black, 40%),
+			rgb(white, 50%)
+		);
 		font-size: 90%;
 	}
 

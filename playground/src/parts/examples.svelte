@@ -88,7 +88,10 @@ header {
 
 	h2 {
 		@include font-code;
-		color: rgb(black, 50%);
+		color: light-dark(
+			rgb(black, 50%),
+			rgb(white, 50%),
+		);
 		font-size: 80%;
 		font-weight: normal;
 	}
@@ -105,7 +108,7 @@ ul {
 		padding: 0.25rem 1rem;
 		@include font-ui;
 		color: light-dark(
-			rgb(black, 80%),
+			$col-blue,
 			rgb(white, 80%)
 		);
 		font-weight: normal;

@@ -303,7 +303,10 @@ aside {
 	background: light-dark(white, black);
 
 	.sep {
-		border-top: 0.5px solid rgb(black, 30%);
+		border-top: 0.5px solid light-dark(
+			rgb(black, 30%),
+			rgb(white, 30%),
+		);
 	}
 }
 
