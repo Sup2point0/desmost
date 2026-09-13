@@ -31,7 +31,7 @@ function show_expr(expression: Desmos.ExpressionState & { open: boolean })
 		}
 	}
 
-	let json = Json5.stringify(expr, undefined, "  ");
+	let json = Json5.stringify(expr, (key, value) => key === "open" ? undefined : value, "  ");
 	
 	if (!expression.open && did_redact) {
 		json = json.replaceAll("\n}", ",\n  ...\n}");
